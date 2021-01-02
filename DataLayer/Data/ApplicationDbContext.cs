@@ -1,9 +1,6 @@
 ﻿using DomainClass;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DataLayer.Data
 {
@@ -14,11 +11,19 @@ namespace DataLayer.Data
 		{
 		}
 
+		#region Tables
+		public DbSet<Province> Provinces { get; set; }
+		public DbSet<City> Cities { get; set; }
+		public DbSet<District> Districts { get; set; }
+
+		#endregion
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			base.OnModelCreating(builder);
 
+
+			builder.Entity<City>().Property(p => p.Id).ValueGeneratedOnAdd();
 		}
 	}
 }
