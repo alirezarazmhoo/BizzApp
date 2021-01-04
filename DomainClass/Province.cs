@@ -17,7 +17,7 @@ namespace DomainClass
 
 		#region Properties
 		[Key]
-		public int Id { get; private set; }
+		public int Id { get; set; }
 		[Required]
 		[Column(TypeName = "nvarchar(50)")]
 		public string Name { get; set; }
