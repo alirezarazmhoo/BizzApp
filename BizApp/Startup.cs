@@ -13,6 +13,9 @@ using Microsoft.Extensions.Hosting;
 using DataLayer.Data;
 using Microsoft.Extensions.Configuration;
 using DomainClass;
+using DataLayer.Services;
+using DataLayer.Infrastructure;
+using AutoMapper;
 
 namespace BizApp
 {
@@ -43,10 +46,14 @@ namespace BizApp
 
 			}).AddRoles<IdentityRole>()
 			   .AddEntityFrameworkStores<ApplicationDbContext>();
+
+			services.AddTransient<IUnitOfWorkRepo, UnitOfWorkRepo>();
+
+			services.AddAutoMapper(typeof(Startup));
+
 			services.AddControllersWithViews();
 			services.AddRazorPages();
 			services.AddControllersWithViews();
-
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,6 +70,7 @@ namespace BizApp
 				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
+
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 

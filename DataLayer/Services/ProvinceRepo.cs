@@ -27,6 +27,11 @@ namespace DataLayer.Services
 			return await FindAll().ToListAsync();
 		}
 
+		public async Task<List<Province>> GetAll(string searchString)
+		{
+			return await FindAll(f => f.Name.Contains(searchString)).ToListAsync();
+		}
+
 		public async Task<Province> GetById(int id)
 		{
 			return await FindByCondition(f => f.Id == id).FirstOrDefaultAsync();
