@@ -39,7 +39,7 @@ namespace DataLayer.Services
 
 		public void Remove(Province province)
 		{
-			throw new NotImplementedException();
+			Delete(province);
 		}
 	}
 }

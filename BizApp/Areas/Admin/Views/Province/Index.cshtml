@@ -30,7 +30,7 @@
                 <div class="box-body table-responsive no-padding row ">
                     <div style="width:90%;margin-right:40px;margin-top:10px">
                         <div class="row">
-                            <label for="exampleInputEmail1">عنوان جستجو:</label>
+                            <label for="searchString">عنوان جستجو:</label>
                             <input name="searchString" placeholder="متن را وارد کنید" class="" style="width:260px">
                         </div>
                     </div>
@@ -71,7 +71,7 @@
                                 @item.Name
                             </td>
                             <td>
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.Id"> حدف</button> |
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.Id"> حذف</button> |
                                 <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.Id"> ویرایش</button>
                             </td>
                         </tr>
@@ -129,6 +129,7 @@
 <div id="Success"></div>
 <div id="Question"></div>
 
+
 <script>
     window.onload = Load;
     function Load() {
@@ -137,7 +138,7 @@
             clear('register', ["input"]);
         });
         $(".btn-warning").click(function () {
-            EditAjax("../Province/Deatails", this.id);
+            EditAjax("/admin/Province/GetById", this.id);
             var bodyStyle = document.body.style;
             bodyStyle.removeProperty('padding-right');
         });
@@ -149,15 +150,15 @@
         else {
             $("#myModal").modal('toggle');
             var Parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "Id", htmlname: "Id", special: "" }];
-            PostAjax('../Province/CreateOrUpdate', Parameters, "../Province/Index");
+            PostAjax('/admin/Province/CreateOrUpdate', Parameters, "/admin/Province/Index");
         }
     }
     function AssignButtonClicked(elem) {
         $('#ProvinceId').val($(elem).data('assigned-id'));
     }
     function Remove() {
-        var Parameters = [{ id: "Id", htmlname: "Id", special: "" }];
-        PostAjax('../Province/Remove', Parameters, "../Province/Index");
+        var Parameters = [{ id: "ProvinceId", htmlname: "ProvinceId", special: "" }];
+        PostAjax('/admin/Province/Remove', Parameters, "/admin/Province/Index");
     }
 
 

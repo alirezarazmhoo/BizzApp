@@ -16,6 +16,7 @@ using DomainClass;
 using DataLayer.Services;
 using DataLayer.Infrastructure;
 using AutoMapper;
+using BizApp.Automapper;
 
 namespace BizApp
 {
@@ -49,7 +50,14 @@ namespace BizApp
 
 			services.AddTransient<IUnitOfWorkRepo, UnitOfWorkRepo>();
 
-			services.AddAutoMapper(typeof(Startup));
+			var config = new MapperConfiguration(c =>
+			{
+				c.AddProfile(new AutomapperProfile());
+			});
+			var mapper = config.CreateMapper();
+			services.AddSingleton(mapper);
+
+			//services.AddAutoMapper(typeof(Startup));
 
 			services.AddControllersWithViews();
 			services.AddRazorPages();

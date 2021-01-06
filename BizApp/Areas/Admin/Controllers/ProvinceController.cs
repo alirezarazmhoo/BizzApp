@@ -7,12 +7,11 @@ using BizApp.Utility;
 using DataLayer.Infrastructure;
 using DomainClass;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace BizApp.Areas.Admin.Controllers
 {
 	[Area("admin")]
-	[Route("admin/province")]
+	//[Route("admin/province")]
 	public class ProvinceController : Controller
 	{
 		private IUnitOfWorkRepo _unitofwork;
@@ -46,7 +45,6 @@ namespace BizApp.Areas.Admin.Controllers
 		}
 
 		[HttpPost]
-		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> CreateOrUpdate(ProvinceViewModel province)
 		{
 			ModelState.Remove("id");
@@ -58,16 +56,51 @@ namespace BizApp.Areas.Admin.Controllers
 					await _unitofwork.ProvinceRepo.AddOrUpdate(model);
 					await _unitofwork.SaveAsync();
 				}
-				catch //(DbUpdateConcurrencyException)
+				catch //(Exception ex)
 				{
 					return Json("Error");
 				}
-
 
 				RedirectToAction(nameof(Index));
 			}
 
 			return Json("Done");
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Remove(int provinceId) 
+		{
+			var model = await _unitofwork.ProvinceRepo.GetById(provinceId);
+			try
+			{
+				_unitofwork.ProvinceRepo.Remove(model);
+				await _unitofwork.SaveAsync();
+
+				return Json("Done");
+			}
+			catch (Exception)
+			{
+				return Json("Error");
+				throw;
+			}
+		}
+
+		public async Task<IActionResult> GetById(int ItemId)
+		{
+			if (ItemId == 0)
+			{
+				return NotFound();
+			}
+
+			var province = await _unitofwork.ProvinceRepo.GetById(ItemId);
+			if (province == null)
+			{
+				return NotFound();
+			}
+
+
+			var model = _mapper.Map<ProvinceViewModel>(province);
+			return Json(model);
 		}
 
 	}
