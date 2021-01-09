@@ -147,7 +147,7 @@
         }
         else {
             $("#myModal").modal('toggle');
-            var Parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "Id", htmlname: "Id", special: "" }];
+            var Parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "ProvinceId", htmlname: "ProvinceId", special: "" }];
             PostAjax('/admin/Province/CreateOrUpdate', Parameters, "/admin/Province/Index");
         }
     }

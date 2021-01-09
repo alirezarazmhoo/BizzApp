@@ -12,49 +12,49 @@ namespace DataLayer.Services
 {
 	public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
 	{
-		protected ApplicationDbContext _DbContext;
+		protected ApplicationDbContext DbContext;
 		private readonly SignInManager<ApplicationUser> _signInManager;
 		private readonly UserManager<ApplicationUser> _userManager;
 
-		public RepositoryBase(ApplicationDbContext DbContext)
+		public RepositoryBase(ApplicationDbContext dbContext)
 		{
-			_DbContext = DbContext;
+			DbContext = dbContext;
 		}
-		public RepositoryBase(ApplicationDbContext DbContext, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+		public RepositoryBase(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
 		{
-			_DbContext = DbContext;
+			DbContext = dbContext;
 			_userManager = userManager;
 			_signInManager = signInManager;
 		}
 
 		public async Task CreateAsync(T entity)
 		{
-			await _DbContext.Set<T>().AddAsync(entity);
+			await DbContext.Set<T>().AddAsync(entity);
 		}
 
 		public void Delete(T entity)
 		{
-			_DbContext.Remove(entity);
+			DbContext.Remove(entity);
 		}
 
 		public IQueryable<T> FindAll()
 		{
-			return _DbContext.Set<T>().AsNoTracking();
+			return DbContext.Set<T>().AsNoTracking();
 		}
 
 		public IQueryable<T> FindAll(Expression<Func<T, object>> expression)
 		{
-			return _DbContext.Set<T>().Include(expression).AsNoTracking();
+			return DbContext.Set<T>().Include(expression).AsNoTracking();
 		}
 
 		public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression)
 		{
-			return _DbContext.Set<T>().Where(expression).AsNoTracking();
+			return DbContext.Set<T>().Where(expression).AsNoTracking();
 		}
 
 		public void Update(T entity)
 		{
-			_DbContext.Set<T>().Update(entity);
+			DbContext.Set<T>().Update(entity);
 		}
 	}
 }

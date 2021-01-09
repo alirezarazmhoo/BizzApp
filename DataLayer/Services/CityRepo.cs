@@ -1,7 +1,7 @@
 ﻿using DataLayer.Data;
 using DataLayer.Infrastructure;
 using DomainClass;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,24 +13,32 @@ namespace DataLayer.Services
 		{
 		}
 
-		public Task AddOrUpdate(City city)
+		public async Task AddOrUpdate(City model)
 		{
-			throw new NotImplementedException();
+			if (model.Id == 0)
+				await CreateAsync(model);
+			else
+				Update(model);
 		}
 
-		public Task<List<City>> GetAll()
+		public async Task<List<City>> GetAll()
 		{
-			throw new NotImplementedException();
+			return await FindAll().ToListAsync();
 		}
 
-		public Task<City> GetById(int id)
+		public async Task<List<City>> GetAll(string searchString)
 		{
-			throw new NotImplementedException();
+			return await FindByCondition(f => f.Name.Contains(searchString)).ToListAsync();
+		}
+
+		public async Task<City> GetById(int id)
+		{
+			return await FindByCondition(f => f.Id == id).FirstOrDefaultAsync();
 		}
 
 		public void Remove(City city)
 		{
-			throw new NotImplementedException();
+			Delete(city);
 		}
 	}
 }

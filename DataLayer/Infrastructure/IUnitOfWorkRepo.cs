@@ -5,6 +5,8 @@ namespace DataLayer.Infrastructure
 	public interface IUnitOfWorkRepo
 	{
 		IProvinceRepo ProvinceRepo { get; }
+		ICityRepo CityRepo { get; }
+		IDistrictRepo DistrictRepo { get; }
 
 		Task SaveAsync();
 	}

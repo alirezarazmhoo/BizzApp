@@ -12,17 +12,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BizApp.Areas.Admin.Controllers
 {
-	[Area("admin")]
-	//[Route("admin/province")]
-	public class ProvinceController : Controller
+	public class CityController : Controller
 	{
-		private IUnitOfWorkRepo _unitofwork;
 		private readonly IMapper _mapper;
+		private readonly IUnitOfWorkRepo _UnitOfWork;
 
-		public ProvinceController(IUnitOfWorkRepo uow, IMapper mapper)
+		public CityController(IUnitOfWorkRepo unitOfWork, IMapper mapper)
 		{
-			_unitofwork = uow;
 			_mapper = mapper;
+			_UnitOfWork = unitOfWork;
 		}
 
 		public async Task<IActionResult> Index(string searchString, int? pageNumber)
@@ -34,8 +32,8 @@ namespace BizApp.Areas.Admin.Controllers
 
 				int pageSize = 5;
 				var items = (shouldSearch == false) ?
-						await _unitofwork.ProvinceRepo.GetAll()
-						: await _unitofwork.ProvinceRepo.GetAll(searchString);
+						await _UnitOfWork.CityRepo.GetAll()
+						: await _UnitOfWork.CityRepo.GetAll(searchString);
 
 				var provinces = items.Select(s => new ProvinceViewModel { ProvinceId = s.Id, Name = s.Name })
 									.OrderByDescending(o => o.ProvinceId);
@@ -47,26 +45,26 @@ namespace BizApp.Areas.Admin.Controllers
 				return Content(CustomeMessages.Try);
 			}
 		}
-
+		
 		[HttpPost]
-		public async Task<IActionResult> CreateOrUpdate(ProvinceViewModel province)
+		public async Task<IActionResult> CreateOrUpdate(CityViewModel model)
 		{
-			ModelState.Remove("id");
+			ModelState.Remove("CityId");
 			if (ModelState.IsValid)
 			{
+				var entity = _mapper.Map<City>(model);
+
 				try
 				{
-					var model = _mapper.Map<Province>(province);
-					await _unitofwork.ProvinceRepo.AddOrUpdate(model);
-					await _unitofwork.SaveAsync();
+					await _UnitOfWork.CityRepo.AddOrUpdate(entity);
+					await _UnitOfWork.SaveAsync();
+
+					return Json(new { success = true, responseText = CustomeMessages.Succcess });
 				}
-				catch //(Exception ex)
+				catch //(Exception)
 				{
 					return Json(new { success = false, responseText = CustomeMessages.Fail });
-
 				}
-				return Json(new { success = true, responseText = CustomeMessages.Succcess });
-
 			}
 
 			return Json(new { success = false, responseText = CustomeMessages.Empty });
@@ -74,18 +72,22 @@ namespace BizApp.Areas.Admin.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Remove(int provinceId) 
+		public async Task<IActionResult> Remove(int cityId)
 		{
-			var model = await _unitofwork.ProvinceRepo.GetById(provinceId);
+			if (cityId == 0) return NotFound();
+
+			var city = await _UnitOfWork.CityRepo.GetById(cityId);
+			if (city == null) return NotFound();
+
 			try
 			{
-				_unitofwork.ProvinceRepo.Remove(model);
-				await _unitofwork.SaveAsync();
+				_UnitOfWork.CityRepo.Remove(city);
+				await _UnitOfWork.SaveAsync();
 
 				return Json(new { success = true, responseText = CustomeMessages.Succcess });
 
 			}
-			catch (Exception)
+			catch // (Exception)
 			{
 				return Json(new { success = false, responseText = CustomeMessages.Fail });
 			}
@@ -98,21 +100,22 @@ namespace BizApp.Areas.Admin.Controllers
 				return NotFound();
 			}
 
-			var province = await _unitofwork.ProvinceRepo.GetById(ItemId);
-			if (province == null)
+			var city = await _UnitOfWork.ProvinceRepo.GetById(ItemId);
+			if (city == null)
 			{
 				return NotFound();
 			}
 
 
-			var model = _mapper.Map<ProvinceViewModel>(province);
+			var model = _mapper.Map<CityViewModel>(city);
 			var edit = new List<EditViewModels>
 			{
 				new EditViewModels { key = "Name", value = model.Name },
+				new EditViewModels { key = "CityId", value = model.CityId.ToString() },
 				new EditViewModels { key = "ProvinceId", value = model.ProvinceId.ToString() }
 			};
 
-			return Json(new { success = true, listItem = edit.ToList(), majoritem = ItemId});
+			return Json(new { success = true, listItem = edit.ToList(), majoritem = ItemId });
 		}
 
 	}
