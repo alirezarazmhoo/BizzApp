@@ -165,12 +165,13 @@ function EditAjax(ActionName, id) {
         dataType: "json",
         contentType: false,
         processData: false,
-        beforeSend: function () {
-            $("#LoadingModal").modal('show');
-        },
+        //beforeSend: function () {
+        //    $("#LoadingModal").modal('show');
+        //},
         success: function (response) {
             if (response.success) {
                 $.each(response.listItem, function () {
+                    alert(this.value);
                     $('#' + this.key + '').val(this.value);
                 });
                 //if (response.listartists != null) {                        
@@ -229,10 +230,10 @@ function EditAjax(ActionName, id) {
         },
         error: function (response) {
             $("#LoadingModal").modal('show');
-        },
-        complete: function () {
-            $("#LoadingModal").modal('toggle');
         }
+        //complete: function () {
+        //    $("#LoadingModal").modal('toggle');
+        //}
     });
 
 

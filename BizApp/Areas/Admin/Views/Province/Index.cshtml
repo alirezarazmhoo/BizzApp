@@ -65,14 +65,14 @@
                     {
                         <tr>
                             <td>
-                                @(rowNo++)
+                                @(++rowNo)
                             </td>
                             <td>
                                 @item.Name
                             </td>
                             <td>
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.Id"> حذف</button> |
-                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.Id"> ویرایش</button>
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.ProvinceId">حذف</button> |
+                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.ProvinceId"> ویرایش</button>
                             </td>
                         </tr>
                     }

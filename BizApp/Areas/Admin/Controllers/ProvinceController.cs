@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BizApp.Areas.Admin.Models;
+using BizApp.Models;
 using BizApp.Utility;
 using DataLayer.Infrastructure;
 using DomainClass;
@@ -34,7 +36,8 @@ namespace BizApp.Areas.Admin.Controllers
 						await _unitofwork.ProvinceRepo.GetAll()
 						: await _unitofwork.ProvinceRepo.GetAll(searchString);
 
-				var provinces = items.Select(s => new ProvinceViewModel { Id = s.Id, Name = s.Name });
+				var provinces = items.Select(s => new ProvinceViewModel { ProvinceId = s.Id, Name = s.Name })
+									.OrderByDescending(o => o.ProvinceId);
 
 				return View(PaginatedList<ProvinceViewModel>.CreateAsync(provinces.AsQueryable(), pageNumber ?? 1, pageSize));
 			}
@@ -104,7 +107,13 @@ namespace BizApp.Areas.Admin.Controllers
 
 
 			var model = _mapper.Map<ProvinceViewModel>(province);
-			return Json(model);
+			var edit = new List<EditViewModels>
+			{
+				new EditViewModels { key = "Name", value = model.Name },
+				new EditViewModels { key = "ProvinceId", value = model.ProvinceId.ToString() }
+			};
+
+			return Json(new { success = true, listItem = edit.ToList(), majoritem = ItemId});
 		}
 
 	}

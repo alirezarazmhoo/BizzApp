@@ -5,7 +5,7 @@ namespace BizApp.Areas.Admin.Models
 {
 	public class ProvinceViewModel
 	{
-		public int Id { get; set; }
+		public int ProvinceId { get; set; }
 		[Required(ErrorMessage = "نام راوارد کنید")]
 		[MaxLength(50, ErrorMessage = "نام بسیار طولانی است")]
 		[MinLength(1, ErrorMessage = "نام بسیار کوتاه است")]

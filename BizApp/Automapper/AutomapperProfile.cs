@@ -8,7 +8,9 @@ namespace BizApp.Automapper
 	{
 		public AutomapperProfile()
 		{
-			CreateMap<Province, ProvinceViewModel>().ReverseMap();
+			CreateMap<Province, ProvinceViewModel>()
+				.ForMember(dest => dest.ProvinceId, opt => opt.MapFrom(src => src.Id))
+				.ReverseMap();
 		}
 	}
 }
