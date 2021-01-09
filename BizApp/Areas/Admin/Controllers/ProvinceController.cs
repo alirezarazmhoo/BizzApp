@@ -58,13 +58,15 @@ namespace BizApp.Areas.Admin.Controllers
 				}
 				catch //(Exception ex)
 				{
-					return Json("Error");
-				}
+					return Json(new { success = false, responseText = CustomeMessages.Fail });
 
-				RedirectToAction(nameof(Index));
+				}
+				return Json(new { success = true, responseText = CustomeMessages.Succcess });
+
 			}
 
-			return Json("Done");
+			return Json(new { success = false, responseText = CustomeMessages.Empty });
+
 		}
 
 		[HttpPost]
@@ -76,11 +78,13 @@ namespace BizApp.Areas.Admin.Controllers
 				_unitofwork.ProvinceRepo.Remove(model);
 				await _unitofwork.SaveAsync();
 
-				return Json("Done");
+				return Json(new { success = true, responseText = CustomeMessages.Succcess });
+
 			}
 			catch (Exception)
 			{
-				return Json("Error");
+				return Json(new { success = false, responseText = CustomeMessages.Fail });
+
 				throw;
 			}
 		}

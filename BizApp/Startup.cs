@@ -58,8 +58,8 @@ namespace BizApp
 			services.AddSingleton(mapper);
 
 			//services.AddAutoMapper(typeof(Startup));
-
-			services.AddControllersWithViews();
+			
+			services.AddControllersWithViews().AddRazorRuntimeCompilation();
 			services.AddRazorPages();
 			services.AddControllersWithViews();
 		}
