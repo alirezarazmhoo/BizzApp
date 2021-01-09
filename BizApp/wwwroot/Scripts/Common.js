@@ -153,7 +153,6 @@ function FillComboBox(ActionName, Target) {
         }
     });
 }
-
 function EditAjax(ActionName, id) {
 
     var fd = new FormData();
@@ -170,43 +169,37 @@ function EditAjax(ActionName, id) {
         //},
         success: function (response) {
             if (response.success) {
-                $.each(response.listItem, function () {
-                    alert(this.value);
+                $.each(response.listItem, function () {                 
                     $('#' + this.key + '').val(this.value);
-                });
-                //if (response.listartists != null) {                        
-                //    $.each(response.listartists, function () {
-                //        $("#ArtistsId option[value=" + this.key + "]").attr("selected", true);
-                //    });        
+                });               
+                //if (response.majoritem != null) {
+                //    $.each(response.majoritem, function () {
+                //        $("#MajorId option[value=" + this.key + "]").attr("selected", true);
+                //    });
                 //}
-                if (response.majoritem != null) {
-                    $.each(response.majoritem, function () {
-                        $("#MajorId option[value=" + this.key + "]").attr("selected", true);
-                    });
-                }
-                if (response.gradeitem != null) {
-                    $.each(response.gradeitem, function () {
-                        $("#GradeId option[value=" + this.key + "]").attr("selected", true);
-                    });
-                }
-                if (response.teacherfiles != null) {
-                    var Filescontent = "";
+                //if (response.gradeitem != null) {
+                //    $.each(response.gradeitem, function () {
+                //        $("#GradeId option[value=" + this.key + "]").attr("selected", true);
+                //    });
+                //}
+                //if (response.teacherfiles != null) {
+                //    var Filescontent = "";
 
-                    $.each(response.teacherfiles, function () {
+                //    $.each(response.teacherfiles, function () {
 
-                        Filescontent += '<div id= "' + this.id + '"><img src="../' + this.url + '" style="width: 70px; height: 60px;id="' + this.id + '" " /></div>';
-                    });
-                    $('#RemoveImageItems').html(Filescontent);
-                }
-                if (response.studentfiles != null) {
-                    var Filescontent2 = "";
+                //        Filescontent += '<div id= "' + this.id + '"><img src="../' + this.url + '" style="width: 70px; height: 60px;id="' + this.id + '" " /></div>';
+                //    });
+                //    $('#RemoveImageItems').html(Filescontent);
+                //}
+                //if (response.studentfiles != null) {
+                //    var Filescontent2 = "";
 
-                    $.each(response.teacherfiles, function () {
+                //    $.each(response.teacherfiles, function () {
 
-                        Filescontent2 += '<div id= "' + this.id + '"><img src="../' + this.url + '" style="width: 70px; height: 60px;id="' + this.id + '" " /></div>';
-                    });
-                    $('#RemoveImageItems').html(Filescontent2);
-                }
+                //        Filescontent2 += '<div id= "' + this.id + '"><img src="../' + this.url + '" style="width: 70px; height: 60px;id="' + this.id + '" " /></div>';
+                //    });
+                //    $('#RemoveImageItems').html(Filescontent2);
+                //}
                 //if (response.audio != null) {
                 //    var audiocontent = '<audio controls><source src="../Upload/Music/' + response.audio + '" ></audio>';
                 //    $('#MusicItem').html(audiocontent);
