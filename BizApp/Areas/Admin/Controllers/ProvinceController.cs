@@ -51,7 +51,7 @@ namespace BizApp.Areas.Admin.Controllers
 		[HttpPost]
 		public async Task<IActionResult> CreateOrUpdate(ProvinceViewModel province)
 		{
-			ModelState.Remove("id");
+			ModelState.Remove("ProvinceId");
 			if (ModelState.IsValid)
 			{
 				try
