@@ -5,13 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20210102082928_AddProvinceDetailModels.cs" />
-    <Compile Remove="Migrations\20210102082928_AddProvinceDetailModels.Designer.cs" />
-    <Compile Remove="Migrations\20210102083727_AddProvinceDetailModels.cs" />
-    <Compile Remove="Migrations\20210102083727_AddProvinceDetailModels.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />

@@ -7,7 +7,7 @@ namespace DataLayer.Infrastructure
 		IProvinceRepo ProvinceRepo { get; }
 		ICityRepo CityRepo { get; }
 		IDistrictRepo DistrictRepo { get; }
-
+		ICateogryRepo CateogryRepo { get; }
 		Task SaveAsync();
 	}
 }

@@ -49,13 +49,13 @@
             <section class="sidebar">
                 <div class="user-panel" style="height:40px;">
                     <div class="pull-right info">
-                        <p style="text-align:right;margin-left:80px"> فرهنگیان</p>
+                        <p style="text-align:right;margin-left:80px">سامانه مدیریت اطلاعات</p>
                     </div>
                 </div>
                 <ul class="sidebar-menu" data-widget="tree">
 
                     <li class="treeview">
-                        <a href="#">
+                        <a>
                             <i class="fa fa-fw fa-newspaper-o"></i> <span>مدیریت مناطق</span>
                             <span class="pull-left-container">
                                 <i class="fa fa-angle-right pull-left"></i>
@@ -68,17 +68,28 @@
                         </ul>
                     </li>
 
-
+                    <li class="treeview">
+                        <a>
+                            <i class="fa fa-fw fa-newspaper-o"></i> <span>مدیریت دسته بندی</span>
+                            <span class="pull-left-container">
+                                <i class="fa fa-angle-right pull-left"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="/admin/Categories/Index"><i class="fa fa-circle-o"></i>دسته بندی</a></li>
+                            <li><a href="/admin/City"><i class="fa fa-circle-o"></i>ویژگی دسته ها</a></li>
+                        </ul>
+                    </li>
 
                     @*<li class="active">
-                        <a href="/SchoolName/Index"><i class="fas fa-school"></i> <span>مدیریت مناطق</span></a>
+            <a href="/SchoolName/Index"><i class="fas fa-school"></i> <span>مدیریت مناطق</span></a>
 
-                    </li>
-                    <li class="active"><a href="/Grades/Index"><i class="fas fa-graduation-cap"></i> <span>مقاطع تحصیلی</span></a></li>
-                    <li class="active"><a href="/Majors/Index"><i class="fas fa-book-open"></i> <span>رشته تحصیلی</span></a></li>
-                    <li class="active"><a href="/Teachers/Index"><i class="fas fa-chalkboard-teacher"></i> <span>مدیریت معلمان </span></a></li>
-                    <li class="active"><a href="/Students/Index"><i class="fas fa-book-reader"></i> <span>مدیریت دانش آموزان </span></a></li>
-                    <li class="active"><a href="/ClassRooms/Index"><i class="fas fa-chalkboard"></i> <span>کلاس بندی </span></a></li>*@
+        </li>
+        <li class="active"><a href="/Grades/Index"><i class="fas fa-graduation-cap"></i> <span>مقاطع تحصیلی</span></a></li>
+        <li class="active"><a href="/Majors/Index"><i class="fas fa-book-open"></i> <span>رشته تحصیلی</span></a></li>
+        <li class="active"><a href="/Teachers/Index"><i class="fas fa-chalkboard-teacher"></i> <span>مدیریت معلمان </span></a></li>
+        <li class="active"><a href="/Students/Index"><i class="fas fa-book-reader"></i> <span>مدیریت دانش آموزان </span></a></li>
+        <li class="active"><a href="/ClassRooms/Index"><i class="fas fa-chalkboard"></i> <span>کلاس بندی </span></a></li>*@
 
                     @*<li class="active"><a href="#"><i class="fa fa-sign-out"></i> <span>خروج</span></a></li>*@
                 </ul>
@@ -102,7 +113,6 @@
                 @RenderBody()
             </section>
             <div class="modal"><!-- Place at bottom of page --></div>
-
         </div>
         <aside class="control-sidebar control-sidebar-dark">
             <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
@@ -114,7 +124,7 @@
     </div>
     @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>*@
     @*<script src="../Admin/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>*@
-    <script src="../Admin/dist/js/adminlte.min.js"></script>
+    <script src="~/Admin/dist/js/adminlte.min.js"></script>
     @*<script src="../Scripts/Common.js"></script>*@
     <script src="~/Scripts/Common.js"></script>
 </body>

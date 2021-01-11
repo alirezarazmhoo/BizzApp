@@ -87,6 +87,28 @@ namespace DataLayer.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("DomainClass.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<int?>("ParentCategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentCategoryId");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("DomainClass.City", b =>
                 {
                     b.Property<int>("Id")
@@ -278,6 +300,13 @@ namespace DataLayer.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("DomainClass.Category", b =>
+                {
+                    b.HasOne("DomainClass.Category", "ParentCategory")
+                        .WithMany()
+                        .HasForeignKey("ParentCategoryId");
                 });
 
             modelBuilder.Entity("DomainClass.City", b =>

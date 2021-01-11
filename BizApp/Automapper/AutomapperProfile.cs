@@ -22,6 +22,13 @@ namespace BizApp.Automapper
 				.ForMember(dest => dest.CityName, opt => opt.MapFrom(src => src.City.Name))
 				.ReverseMap();
 
+
+			CreateMap<Category, CategoryViewModel>()
+			.ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.Id))
+			.ForMember(dest => dest.ParentCategoryId, opt => opt.MapFrom(src => src.ParentCategoryId))
+
+			.ReverseMap();
+
 		}
 	}
 }

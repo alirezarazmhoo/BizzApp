@@ -5,6 +5,13 @@
     <UserSecretsId>aspnet-BizApp-7EB58756-B7F6-45A6-AE58-52A4D6884B75</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Areas\Admin\Data\**" />
+    <Content Remove="Areas\Admin\Data\**" />
+    <EmbeddedResource Remove="Areas\Admin\Data\**" />
+    <None Remove="Areas\Admin\Data\**" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
@@ -25,8 +32,7 @@
 
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="wwwroot\Admin\" />
+    <Folder Include="wwwroot\Admin\bower_components\" />
   </ItemGroup>
 
 </Project>
