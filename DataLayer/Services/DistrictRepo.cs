@@ -23,7 +23,14 @@ namespace DataLayer.Services
 
 		public async Task<List<District>> GetAll()
 		{
-			return await FindAll().ToListAsync();
+			return await FindAll().Include(i => i.City).ToListAsync();
+		}
+
+		public async Task<List<District>> GetAll(string searchString)
+		{
+			return await FindByCondition(f=>f.Name.Contains(searchString))
+								.Include(i => i.City)
+								.ToListAsync();
 		}
 
 		public async Task<District> GetById(int id)
