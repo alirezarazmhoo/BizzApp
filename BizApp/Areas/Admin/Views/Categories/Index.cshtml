@@ -52,34 +52,40 @@
                             نام
                         </th>
                         <th>
+                            تعداد زیردسته
+                        </th>
+                        <th>
                             عملیات
                         </th>
                     </tr>
                     @{ int rowNo = 0; }
                     @foreach (var item in Model)
                     {
-                        <tr>
-                            <td>
-                                @(++rowNo)
-                            </td>
-                            <td>
-                                @item.Name
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.CategoryId">حذف</button> |
-                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.CategoryId"> ویرایش</button>
+                <tr>
+                    <td>
+                        @(++rowNo)
+                    </td>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.ChildCount عدد
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.CategoryId">حذف</button> |
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.CategoryId"> ویرایش</button>
 
-                                @if (item.HasChild)
-                                {
-                                <a href="/admin/Categories/ShowSubCateogries?Id=@item.CategoryId" class="btn btn-flickr">مشاهده زیر دسته</a>
-                                }
-                                <button type="button" class="btn btn-bitbucket" data-toggle="modal" data-target="#SubcategoryModal" onclick="SubCategoryAssignButtonClicked(this)" data-assigned-id="@item.CategoryId"> ایجاد زیردسته</button>
-                                @if (!item.ParentCategoryId.HasValue)
-                                {
-                                <button type="button" class="btn btn-adn" id="@item.CategoryId">ثبت خصوصیات</button>
-                                }
-                            </td>
-                        </tr>
+                        @if (item.HasChild)
+                        {
+                            <a href="/admin/Categories/ShowSubCateogries?Id=@item.CategoryId" class="btn btn-flickr">مشاهده زیر دسته</a>
+                        }
+                        <button type="button" class="btn btn-bitbucket" data-toggle="modal" data-target="#SubcategoryModal" onclick="SubCategoryAssignButtonClicked(this)" data-assigned-id="@item.CategoryId"> ایجاد زیردسته</button>
+                        @if (!item.ParentCategoryId.HasValue)
+                        {
+                            <button type="button" class="btn btn-adn" id="@item.CategoryId">ثبت خصوصیات</button>
+                        }
+                    </td>
+                </tr>
                     }
                 </table>
             </div>

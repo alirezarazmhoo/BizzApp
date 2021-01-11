@@ -14,5 +14,6 @@ namespace BizApp.Areas.Admin.Models
 		public int? ParentCategoryId { get; set; }
 
 		public bool HasChild { get; set; }
+		public int ChildCount { get; set; }
 	}
 }

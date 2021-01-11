@@ -15,5 +15,6 @@ namespace DataLayer.Infrastructure
 		void Remove(Category city);
 	    Task<bool> HasChild(int Id);
 		Task<List<Category>> GetChilds(int Id);
+		Task<int> GetChildCount(int Id); 
 	}
 }

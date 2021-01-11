@@ -38,7 +38,7 @@ namespace BizApp.Areas.Admin.Controllers
 
 				foreach (var item in items.OrderByDescending(s=>s.Id))
 				{
-					categoryViewModel.Add(new CategoryViewModel() { CategoryId = item.Id, HasChild =await _UnitOfWork.CateogryRepo.HasChild(item.Id) , Name = item.Name , ParentCategoryId = item.ParentCategoryId });
+					categoryViewModel.Add(new CategoryViewModel() { CategoryId = item.Id, HasChild =await _UnitOfWork.CateogryRepo.HasChild(item.Id) , Name = item.Name , ParentCategoryId = item.ParentCategoryId , ChildCount = await _UnitOfWork.CateogryRepo.GetChildCount(item.Id) });
 				}
 
 				return View(PaginatedList<CategoryViewModel>.CreateAsync(categoryViewModel.AsQueryable(), pageNumber ?? 1, pageSize));
@@ -120,10 +120,10 @@ namespace BizApp.Areas.Admin.Controllers
 				var CategoryItem = await _UnitOfWork.CateogryRepo.GetById(Id);
 				ViewBag.ParentCategoryId = Id;
 				ViewBag.ParentCategoryName = CategoryItem.Name; 
-				var Categoires = items.Select(s => new CategoryViewModel {  CategoryId = s.Id,  Name = s.Name , ParentCategoryId = s.ParentCategoryId  }).OrderByDescending(o => o.CategoryId);
+				var Categoires = items.Select(s => new CategoryViewModel {  CategoryId = s.Id,  Name = s.Name , ParentCategoryId = s.ParentCategoryId   }).OrderByDescending(o => o.CategoryId);
 				foreach (var item in Categoires.OrderByDescending(S=>S.CategoryId))
 				{
-					categoryViewModel.Add(new CategoryViewModel() { CategoryId = item.CategoryId, HasChild = await _UnitOfWork.CateogryRepo.HasChild(item.CategoryId), Name = item.Name, ParentCategoryId = item.ParentCategoryId });
+					categoryViewModel.Add(new CategoryViewModel() { CategoryId = item.CategoryId, HasChild = await _UnitOfWork.CateogryRepo.HasChild(item.CategoryId), Name = item.Name, ParentCategoryId = item.ParentCategoryId, ChildCount = await _UnitOfWork.CateogryRepo.GetChildCount(item.CategoryId) });
 				}
 				return View(categoryViewModel);
 			}
