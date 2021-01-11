@@ -14,6 +14,8 @@ namespace BizApp.Automapper
 
 			CreateMap<City, CityViewModel>()
 				.ForMember(dest => dest.CityId, opt => opt.MapFrom(src => src.Id))
+				.ForMember(dest => dest.ProvinceName, opt => opt.MapFrom(src => src.Province.Name))
+				//.ForMember(dest => dest.ProvinceId, opt => opt.MapFrom(src => src.ProvinceId))
 				.ReverseMap();
 		}
 	}

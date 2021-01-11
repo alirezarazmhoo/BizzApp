@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BizApp.Areas.Admin.Models;
-using BizApp.Models;
+using BizApp.Models.Basic;
 using BizApp.Utility;
 using DataLayer.Infrastructure;
 using DomainClass;
@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BizApp.Areas.Admin.Controllers
 {
+	[Area("admin")]
 	public class CityController : Controller
 	{
 		private readonly IMapper _mapper;
@@ -23,6 +24,7 @@ namespace BizApp.Areas.Admin.Controllers
 			_UnitOfWork = unitOfWork;
 		}
 
+		[HttpGet]
 		public async Task<IActionResult> Index(string searchString, int? pageNumber)
 		{
 			bool shouldSearch = false;
@@ -35,17 +37,37 @@ namespace BizApp.Areas.Admin.Controllers
 						await _UnitOfWork.CityRepo.GetAll()
 						: await _UnitOfWork.CityRepo.GetAll(searchString);
 
-				var provinces = items.Select(s => new ProvinceViewModel { ProvinceId = s.Id, Name = s.Name })
+				var cities = items.Select(city => _mapper.Map<City, CityViewModel>(city))
 									.OrderByDescending(o => o.ProvinceId);
 
-				return View(PaginatedList<ProvinceViewModel>.CreateAsync(provinces.AsQueryable(), pageNumber ?? 1, pageSize));
+				return View(PaginatedList<CityViewModel>.CreateAsync(cities.AsQueryable(), pageNumber ?? 1, pageSize));
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
 				return Content(CustomeMessages.Try);
 			}
 		}
-		
+
+		[HttpGet]
+		public async Task<IActionResult> LoadProvinces()
+		{
+			List<ComboBoxViewModel> items = new List<ComboBoxViewModel>();
+
+			try
+			{
+				foreach (var item in await _UnitOfWork.ProvinceRepo.GetAll())
+				{
+					items.Add(new ComboBoxViewModel() { id = item.Id, name = item.Name });
+
+				}
+				return Json(new { success = true, list = items.ToList() });
+			}
+			catch (Exception ex)
+			{
+				return Json(new { response = false, responseText = "Faild To Get Genres Data" });
+			}
+		}
+
 		[HttpPost]
 		public async Task<IActionResult> CreateOrUpdate(CityViewModel model)
 		{
@@ -53,6 +75,7 @@ namespace BizApp.Areas.Admin.Controllers
 			if (ModelState.IsValid)
 			{
 				var entity = _mapper.Map<City>(model);
+				entity.Province = null;
 
 				try
 				{
@@ -61,7 +84,7 @@ namespace BizApp.Areas.Admin.Controllers
 
 					return Json(new { success = true, responseText = CustomeMessages.Succcess });
 				}
-				catch //(Exception)
+				catch (Exception ex)
 				{
 					return Json(new { success = false, responseText = CustomeMessages.Fail });
 				}
@@ -100,22 +123,31 @@ namespace BizApp.Areas.Admin.Controllers
 				return NotFound();
 			}
 
-			var city = await _UnitOfWork.ProvinceRepo.GetById(ItemId);
+			var city = await _UnitOfWork.CityRepo.GetById(ItemId);
 			if (city == null)
 			{
 				return NotFound();
 			}
 
-
-			var model = _mapper.Map<CityViewModel>(city);
-			var edit = new List<EditViewModels>
+			try
 			{
-				new EditViewModels { key = "Name", value = model.Name },
-				new EditViewModels { key = "CityId", value = model.CityId.ToString() },
-				new EditViewModels { key = "ProvinceId", value = model.ProvinceId.ToString() }
-			};
+				var model = _mapper.Map<CityViewModel>(city);
+				var edit = new List<EditViewModels>
+				{
+					new EditViewModels { key = "Name", value = model.Name },
+					new EditViewModels { key = "CityId", value = model.CityId.ToString() },
+					new EditViewModels { key = "ProvinceId", value = model.ProvinceId.ToString() }
+				};
 
-			return Json(new { success = true, listItem = edit.ToList(), majoritem = ItemId });
+				return Json(new { success = true, listItem = edit.ToList(), majoritem = ItemId });
+
+			}
+			catch (Exception ex)
+			{
+				return Json(new { success = false, responseText = CustomeMessages.Fail });
+
+			}
+
 		}
 
 	}

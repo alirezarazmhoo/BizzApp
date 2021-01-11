@@ -1,4 +1,4 @@
-﻿namespace BizApp.Models
+﻿namespace BizApp.Models.Basic
 {
 	public class EditViewModels
 	{
