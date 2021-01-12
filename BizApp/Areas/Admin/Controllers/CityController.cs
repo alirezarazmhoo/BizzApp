@@ -38,7 +38,7 @@ namespace BizApp.Areas.Admin.Controllers
 						: await _UnitOfWork.CityRepo.GetAll(searchString);
 
 				var cities = items.Select(city => _mapper.Map<City, CityViewModel>(city))
-									.OrderByDescending(o => o.ProvinceId);
+									.OrderByDescending(o => o.CityId);
 
 				return View(PaginatedList<CityViewModel>.CreateAsync(cities.AsQueryable(), pageNumber ?? 1, pageSize));
 			}
