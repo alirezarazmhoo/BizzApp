@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BizApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using BizApp.Models;
+using System.Diagnostics;
 
 namespace BizApp.Controllers
 {
@@ -23,7 +19,6 @@ namespace BizApp.Controllers
 			return View();
 		}
 
-	
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()

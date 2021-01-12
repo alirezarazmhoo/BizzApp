@@ -56,7 +56,7 @@
 							<a href="/admin/Categories/ShowSubCateogries?Id=@item.CategoryId" class="btn btn-flickr">مشاهده زیر دسته</a>
 						}
 						<button type="button" class="btn btn-bitbucket" data-toggle="modal" data-target="#SubcategoryModal" onclick="SubCategoryAssignButtonClicked(this)" data-assigned-id="@item.CategoryId"> ایجاد زیردسته</button>
-						@if (!item.ParentCategoryId.HasValue)
+						@if (!item.HasChild)
 						{
 							<button type="button" class="btn btn-adn" id="@item.CategoryId">ثبت خصوصیات</button>
 						}
