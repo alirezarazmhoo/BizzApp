@@ -58,7 +58,7 @@
 						<button type="button" class="btn btn-bitbucket" data-toggle="modal" data-target="#SubcategoryModal" onclick="SubCategoryAssignButtonClicked(this)" data-assigned-id="@item.CategoryId"> ایجاد زیردسته</button>
 						@if (!item.HasChild)
 						{
-							<button type="button" class="btn btn-adn" id="@item.CategoryId">ثبت خصوصیات</button>
+							<a href="/admin/category/@item.CategoryId/features" class="btn btn-adn">ثبت خصوصیات</a>
 						}
 					</td>
 				</tr>
@@ -78,7 +78,7 @@
 			<div class="modal-body" style="height:auto">
 				<form id="register">
 					<input id="CategoryId" name="CategoryId" hidden />
-					<input id="ParentCategoryId" name="ParentCategoryId" value="@ViewBag.ParentCategoryId" hidden />
+					<input id="ParentCategoryId" name="ParentCategoryId" value="3" hidden />
 
 					<div class="form-group" style="margin-right:5px">
 						<label for="Name"> نام :</label>

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace DomainClass
 {
@@ -15,5 +13,6 @@ namespace DomainClass
 		public string Name { get; set; }
 		public int? ParentCategoryId { get; set; }
 		public virtual Category ParentCategory { get; set; }
+		public virtual ICollection<CategoryFeature> CategoryFeatures { get; set; }
 	}
 }

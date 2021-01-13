@@ -31,6 +31,11 @@ namespace BizApp.Automapper
 				.ForMember(dest => dest.ParentCategoryId, opt => opt.MapFrom(src => src.ParentCategoryId))
 				.ReverseMap();
 
+			// Category Features
+			CreateMap<CategoryFeature, CategoryFeaturesViewModel>()
+				.ForMember(dest => dest.CategoryFeatureId, opt => opt.MapFrom(src => src.Id))
+				.ReverseMap();
+
 			// Feature
 			CreateMap<Feature, FeatureViewModel>()
 				.ForMember(dest => dest.FeatureId, opt => opt.MapFrom(src => src.Id))

@@ -12,6 +12,7 @@ namespace DataLayer.Services
 		private readonly CityRepo cityRepo;
 		private readonly CategoryRepo categoryRepo;
 		private readonly FeatureRepo featureRepo;
+		private readonly CategoryFeatureRepo categoryFeaturesRepo;
 
 		public UnitOfWorkRepo(ApplicationDbContext DbContext)
 		{
@@ -21,8 +22,9 @@ namespace DataLayer.Services
 		public IProvinceRepo ProvinceRepo => provinceRepo ?? new ProvinceRepo(_DbContext);
 		public ICityRepo CityRepo => cityRepo ?? new CityRepo(_DbContext);
 		public IDistrictRepo DistrictRepo => districtRepo ?? new DistrictRepo(_DbContext);
-		public ICateogryRepo  CateogryRepo =>  categoryRepo ?? new CategoryRepo(_DbContext);
+		public ICateogryRepo  CategoryRepo =>  categoryRepo ?? new CategoryRepo(_DbContext);
 		public IFeatureRepo FeatureRepo =>  featureRepo ?? new FeatureRepo(_DbContext);
+		public ICategoryFeatureRepo CategoryFeaturesRepo => categoryFeaturesRepo ?? new CategoryFeatureRepo(_DbContext);
 		public async Task SaveAsync()
 		{
 			await _DbContext.SaveChangesAsync();

@@ -33,12 +33,12 @@ namespace BizApp.Areas.Admin.Controllers
 
 				int pageSize = 5;
 				var items = (shouldSearch == false) ?
-						await _UnitOfWork.CateogryRepo.GetAll()
-						: await _UnitOfWork.CateogryRepo.GetAll(searchString);
+						await _UnitOfWork.CategoryRepo.GetAll()
+						: await _UnitOfWork.CategoryRepo.GetAll(searchString);
 
 				foreach (var item in items.OrderByDescending(s=>s.Id))
 				{
-					categoryViewModel.Add(new CategoryViewModel() { CategoryId = item.Id, HasChild =await _UnitOfWork.CateogryRepo.HasChild(item.Id) , Name = item.Name , ParentCategoryId = item.ParentCategoryId , ChildCount = await _UnitOfWork.CateogryRepo.GetChildCount(item.Id) });
+					categoryViewModel.Add(new CategoryViewModel() { CategoryId = item.Id, HasChild =await _UnitOfWork.CategoryRepo.HasChild(item.Id) , Name = item.Name , ParentCategoryId = item.ParentCategoryId , ChildCount = await _UnitOfWork.CategoryRepo.GetChildCount(item.Id) });
 				}
 
 				return View(PaginatedList<CategoryViewModel>.CreateAsync(categoryViewModel.AsQueryable(), pageNumber ?? 1, pageSize));
@@ -57,7 +57,7 @@ namespace BizApp.Areas.Admin.Controllers
 				var entity = _mapper.Map<Category>(model);
 				try
 				{
-					await _UnitOfWork.CateogryRepo.AddOrUpdate(entity);
+					await _UnitOfWork.CategoryRepo.AddOrUpdate(entity);
 					await _UnitOfWork.SaveAsync();
 					return Json(new { success = true, responseText = CustomeMessages.Succcess });
 				}
@@ -72,11 +72,11 @@ namespace BizApp.Areas.Admin.Controllers
 		public async Task<IActionResult> Remove(int categoryId)
 		{
 			if (categoryId == 0) return Json(new { success = true, responseText = CustomeMessages.Fail });
-			var category = await _UnitOfWork.CateogryRepo.GetById(categoryId);
+			var category = await _UnitOfWork.CategoryRepo.GetById(categoryId);
 			if (category == null) return Json(new { success = true, responseText = CustomeMessages.Fail });
 			try
 			{
-				_UnitOfWork.CateogryRepo.Remove(category);
+				_UnitOfWork.CategoryRepo.Remove(category);
 				await _UnitOfWork.SaveAsync();
 				return Json(new { success = true, responseText = CustomeMessages.Succcess });
 			}
@@ -92,7 +92,7 @@ namespace BizApp.Areas.Admin.Controllers
 				return NotFound();
 			}
 
-			var category = await _UnitOfWork.CateogryRepo.GetById(ItemId);
+			var category = await _UnitOfWork.CategoryRepo.GetById(ItemId);
 			if (category == null)
 			{
 				return NotFound();
@@ -116,14 +116,14 @@ namespace BizApp.Areas.Admin.Controllers
 			}
 			else
 			{
-				var items =await _UnitOfWork.CateogryRepo.GetChilds(Id);
-				var CategoryItem = await _UnitOfWork.CateogryRepo.GetById(Id);
+				var items =await _UnitOfWork.CategoryRepo.GetChilds(Id);
+				var CategoryItem = await _UnitOfWork.CategoryRepo.GetById(Id);
 				ViewBag.ParentCategoryId = Id;
 				ViewBag.ParentCategoryName = CategoryItem.Name; 
 				var Categoires = items.Select(s => new CategoryViewModel {  CategoryId = s.Id,  Name = s.Name , ParentCategoryId = s.ParentCategoryId   }).OrderByDescending(o => o.CategoryId);
 				foreach (var item in Categoires.OrderByDescending(S=>S.CategoryId))
 				{
-					categoryViewModel.Add(new CategoryViewModel() { CategoryId = item.CategoryId, HasChild = await _UnitOfWork.CateogryRepo.HasChild(item.CategoryId), Name = item.Name, ParentCategoryId = item.ParentCategoryId, ChildCount = await _UnitOfWork.CateogryRepo.GetChildCount(item.CategoryId) });
+					categoryViewModel.Add(new CategoryViewModel() { CategoryId = item.CategoryId, HasChild = await _UnitOfWork.CategoryRepo.HasChild(item.CategoryId), Name = item.Name, ParentCategoryId = item.ParentCategoryId, ChildCount = await _UnitOfWork.CategoryRepo.GetChildCount(item.CategoryId) });
 				}
 				return View(categoryViewModel);
 			}

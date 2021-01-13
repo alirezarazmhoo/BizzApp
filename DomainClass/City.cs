@@ -28,8 +28,8 @@ namespace DomainClass
 		public int ProvinceId { get; set; }
 
 
-		public Province Province { get; set; }
-		public ICollection<District> Districts { get; set; }
+		public virtual Province Province { get; set; }
+		public virtual ICollection<District> Districts { get; set; }
 		
 		#endregion
 	}
