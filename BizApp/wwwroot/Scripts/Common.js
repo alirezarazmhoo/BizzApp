@@ -89,7 +89,7 @@ function PostAjax(ActionName, Parameters, redirecturl) {
             fd.append("pictiremusic", $('#' + Parameters[i].htmlname + '')[0].files[0]);
         }
         else {
-            //alert($('#' + Parameters[i].htmlname + '').val());
+           
             fd.append(Parameters[i].id, $('#' + Parameters[i].htmlname + '').val());
         }
     }
@@ -116,7 +116,6 @@ function PostAjax(ActionName, Parameters, redirecturl) {
         },
         error: function (response) {
             $("#LoadingModal").modal('show');
-
         },
         complete: function () {
             $("#LoadingModal").modal('toggle');

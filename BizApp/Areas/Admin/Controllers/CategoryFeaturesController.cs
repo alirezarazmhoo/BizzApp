@@ -27,7 +27,6 @@ namespace BizApp.Areas.Admin.Controllers
 
 		private async Task<string> GetCategoryName(int categoryId)
 		{
-			ViewBag.CategoryId = categoryId;
 
 			var category = await _unitOfWork.CategoryRepo.GetById(categoryId);
 			//if (category == null) return null;
@@ -55,6 +54,8 @@ namespace BizApp.Areas.Admin.Controllers
 		{
 			try
 			{
+				ViewBag.CategoryId = categoryId;
+
 				var categoryName = await GetCategoryName(categoryId);
 				if (categoryName == null) return NotFound();
 
@@ -65,7 +66,7 @@ namespace BizApp.Areas.Admin.Controllers
 				int pageSize = 5;
 				return View(PaginatedList<CategoryFeaturesViewModel>.CreateAsync(categoryFeatures, pageNumber ?? 1, pageSize));
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				return Content(CustomeMessages.Try);
 			}
@@ -80,13 +81,14 @@ namespace BizApp.Areas.Admin.Controllers
 				if (categoryName == null) return NotFound();
 
 				ViewBag.CategoryName = categoryName;
+				ViewBag.CategoryId = categoryId;
 
 				var categoryFeatures = await GetAll(categoryId, searchString);
 				
 				int pageSize = 5;
 				return View(PaginatedList<CategoryFeaturesViewModel>.CreateAsync(categoryFeatures, pageNumber ?? 1, pageSize));
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				return Content(CustomeMessages.Try);
 			}
@@ -95,8 +97,7 @@ namespace BizApp.Areas.Admin.Controllers
 		public async Task<IActionResult> CreateOrUpdate(CategoryFeaturesViewModel model)
 		{
 			ModelState.Remove(nameof(model.CategoryFeatureId));
-			ModelState.Remove(nameof(model.CategoryId)
-				);
+			ModelState.Remove(nameof(model.CategoryId));
 			if (ModelState.IsValid)
 			{
 				var entity = _mapper.Map<CategoryFeature>(model);
