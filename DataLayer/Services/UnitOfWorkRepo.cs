@@ -13,6 +13,7 @@ namespace DataLayer.Services
 		private readonly CategoryRepo categoryRepo;
 		private readonly FeatureRepo featureRepo;
 		private readonly CategoryFeatureRepo categoryFeaturesRepo;
+		private readonly BusinessRepo businessRepo;
 
 		public UnitOfWorkRepo(ApplicationDbContext DbContext)
 		{
@@ -25,6 +26,7 @@ namespace DataLayer.Services
 		public ICateogryRepo  CategoryRepo =>  categoryRepo ?? new CategoryRepo(_DbContext);
 		public IFeatureRepo FeatureRepo =>  featureRepo ?? new FeatureRepo(_DbContext);
 		public ICategoryFeatureRepo CategoryFeaturesRepo => categoryFeaturesRepo ?? new CategoryFeatureRepo(_DbContext);
+		public IBusinessRepo BusinessRepo => businessRepo ?? new BusinessRepo(_DbContext);
 		public async Task SaveAsync()
 		{
 			await _DbContext.SaveChangesAsync();

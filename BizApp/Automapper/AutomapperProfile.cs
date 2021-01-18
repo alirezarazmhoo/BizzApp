@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BizApp.Areas.Admin.Models;
 using DomainClass;
+using DomainClass.Businesses.Queries;
 
 namespace BizApp.Automapper
 {
@@ -40,6 +41,9 @@ namespace BizApp.Automapper
 			CreateMap<Feature, FeatureViewModel>()
 				.ForMember(dest => dest.FeatureId, opt => opt.MapFrom(src => src.Id))
 				.ReverseMap();
+
+			// Business List
+			CreateMap<BusinessListQuery, BusinessListViewModel>().ReverseMap();
 
 		}
 	}
