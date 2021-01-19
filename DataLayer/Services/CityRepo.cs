@@ -21,6 +21,10 @@ namespace DataLayer.Services
 				Update(model);
 		}
 
+		public async Task<IEnumerable<City>> GetAll(int provinceId)
+		{
+			return await FindByCondition(f => f.ProvinceId == provinceId).ToListAsync();
+		}
 		public async Task<List<City>> GetAll()
 		{
 			return await FindAll().Include(i => i.Province).ToListAsync();

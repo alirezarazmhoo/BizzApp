@@ -25,6 +25,11 @@ namespace DataLayer.Services
 		{
 			return await FindAll().Include(i => i.City).ToListAsync();
 		}
+		
+		public async Task<List<District>> GetAll(int cityId)
+		{
+			return await FindByCondition(f => f.CityId == cityId).ToListAsync();
+		}
 
 		public async Task<List<District>> GetAll(string searchString)
 		{

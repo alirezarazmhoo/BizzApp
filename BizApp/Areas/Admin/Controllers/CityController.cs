@@ -9,6 +9,7 @@ using BizApp.Utility;
 using DataLayer.Infrastructure;
 using DomainClass;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BizApp.Areas.Admin.Controllers
 {
@@ -148,6 +149,22 @@ namespace BizApp.Areas.Admin.Controllers
 
 			}
 
+		}
+
+		[HttpGet, ActionName("getCities")]
+		public async Task<JsonResult> GetCities(int provinceId)
+		{
+			if (provinceId == 0) throw new NullReferenceException();
+
+			try
+			{
+				var items = await _UnitOfWork.CityRepo.GetAll(provinceId);
+				return Json(new SelectList(items, "Id", "Name"));
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
 		}
 
 	}

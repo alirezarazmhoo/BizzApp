@@ -7,9 +7,11 @@ namespace DataLayer.Infrastructure
 	public interface ICityRepo
 	{
 		Task<List<City>> GetAll();
+		Task<IEnumerable<City>> GetAll(int provinceId);
 		Task<List<City>> GetAll(string searchString);
 		Task<City> GetById(int id);
 		Task AddOrUpdate(City city);
 		void Remove(City city);
+
 	}
 }

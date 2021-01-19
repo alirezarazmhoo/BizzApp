@@ -8,6 +8,7 @@ using BizApp.Utility;
 using DataLayer.Infrastructure;
 using DomainClass;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BizApp.Areas.Admin.Models
 {
@@ -149,5 +150,20 @@ namespace BizApp.Areas.Admin.Models
 
 		}
 
+		[HttpGet, ActionName("getDistricts")]
+		public async Task<JsonResult> GetDistricts(int cityId)
+		{
+			if (cityId == 0) throw new NullReferenceException();
+
+			try
+			{
+				var items = await _unitOfWork.DistrictRepo.GetAll(cityId);
+				return Json(new SelectList(items, "Id", "Name"));
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
 	}
 }

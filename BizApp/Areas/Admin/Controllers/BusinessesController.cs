@@ -58,7 +58,7 @@ namespace BizApp.Areas.Admin.Controllers
 
 				// convert provinces to view model
 				var provinces = provinceEntities.Select(s => _mapper.Map<Province, ProvinceViewModel>(s)).ToList();
-
+				ViewBag.Provinces = provinces;
 				return View(new CreateBusinessViewModel(provinces));
 			}
 			catch (Exception ex)
