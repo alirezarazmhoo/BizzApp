@@ -5,8 +5,8 @@ using System.Text;
 
 namespace DomainClass
 {
-	public class BizAppUser : IdentityUser
+	public class BizAppUser : ApplicationUser
 	{
-		public long NationalCode { get; set; }
+		//public long NationalCode { get; set; }
 	}
 }

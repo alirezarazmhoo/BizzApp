@@ -1,147 +1,152 @@
-﻿<!DOCTYPE html>
+﻿@inject UserManager<DomainClass.BizAppUser> UserManager
+
+<!DOCTYPE html>
 @*<script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)*@
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	@RenderSection("Scripts", required: false)*@
 <html>
 <head>
-    <meta charset="utf-8">
+	<meta charset="utf-8">
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>کنترل پنل مدیریت</title>
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <!-- Bootstrap 3.3.7 -->
-    @*<link rel="stylesheet" href="~/Admin/dist/css/bootstrap-theme.css">*@
-    <!-- Bootstrap rtl -->
-    <link rel="stylesheet" href="~/Admin/dist/css/rtl.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="~/Admin/bower_components/font-awesome/css/font-awesome.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="~/Admin/bower_components/Ionicons/css/ionicons.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="~/Admin/dist/css/AdminLTE.css">
-    <link rel="stylesheet" href="~/Admin/dist/css/skins/skin-blue.min.css">
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link href="~/Paging/MyPagerStyle.css" rel="stylesheet" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>کنترل پنل مدیریت</title>
+	<!-- Tell the browser to be responsive to screen width -->
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<!-- Bootstrap 3.3.7 -->
+	@*<link rel="stylesheet" href="~/Admin/dist/css/bootstrap-theme.css">*@
+	<!-- Bootstrap rtl -->
+	<link rel="stylesheet" href="~/Admin/dist/css/rtl.css">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="~/Admin/bower_components/font-awesome/css/font-awesome.min.css">
+	<!-- Ionicons -->
+	<link rel="stylesheet" href="~/Admin/bower_components/Ionicons/css/ionicons.min.css">
+	<!-- Theme style -->
+	<link rel="stylesheet" href="~/Admin/dist/css/AdminLTE.css">
+	<link rel="stylesheet" href="~/Admin/dist/css/skins/skin-blue.min.css">
+	<link rel="stylesheet"
+		  href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<link href="~/Paging/MyPagerStyle.css" rel="stylesheet" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<script src='https://kit.fontawesome.com/a076d05399.js'></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    @RenderSection("head", false)
+	@RenderSection("head", false)
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini" style="font-family:'B Yekan'" dir="rtl">
-    <div class="wrapper">
-        <header class="main-header">
-            <a class="logo">
-                <span class="logo-mini">Panel</span>
-                <span class="logo-lg"><b>کنترل پنل مدیریت</b></span>
-            </a>
-            <nav class="navbar navbar-static-top">
-                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-                    <span class="sr-only">Toggle navigation</span>
-                </a>
-            </nav>
-        </header>
-        <aside class="main-sidebar">
-            <section class="sidebar">
-                <div class="user-panel" style="height:40px;">
-                    <div class="pull-right info">
-                        <p style="text-align:right;margin-left:80px">سامانه مدیریت اطلاعات</p>
-                    </div>
-                </div>
-                <ul class="sidebar-menu" data-widget="tree">
+	<div class="wrapper">
+		<header class="main-header">
+			<a class="logo">
+				<span class="logo-mini">Panel</span>
+				<span class="logo-lg"><b>کنترل پنل مدیریت</b></span>
+			</a>
+			<nav class="navbar navbar-static-top">
+				<a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+					<span class="sr-only">Toggle navigation</span>
+				</a>
+			</nav>
+		</header>
+		<aside class="main-sidebar">
+			<section class="sidebar">
+				<div class="user-panel" style="height:40px;">
+					<div class="pull-right info">
+						<p style="text-align:right;margin-left:80px">سامانه مدیریت اطلاعات</p>
+					</div>
+				</div>
+				<ul class="sidebar-menu" data-widget="tree">
+					@if (User.IsInRole("admin"))
+					{
+						<li class="treeview">
+							<a>
+								<i class="fa fa-globe"></i> <span>مدیریت مناطق</span>
+								<span class="pull-left-container">
+									<i class="fa fa-angle-right pull-left"></i>
+								</span>
+							</a>
+							<ul class="treeview-menu">
+								<li><a href="/admin/Province/Index"><i class="fa fa-bank"></i> استان</a></li>
+								<li><a href="/admin/City"><i class="fa fa-building"></i>شهر</a></li>
+								<li><a href="/admin/district"><i class="fa fa-crosshairs"></i>محدوده کسب و کار</a></li>
+							</ul>
+						</li>
 
-                    <li class="treeview">
-                        <a>
-                            <i class="fa fa-globe"></i> <span>مدیریت مناطق</span>
-                            <span class="pull-left-container">
-                                <i class="fa fa-angle-right pull-left"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li><a href="/admin/Province/Index"><i class="fa fa-bank"></i> استان</a></li>
-                            <li><a href="/admin/City"><i class="fa fa-building"></i>شهر</a></li>
-                            <li><a href="/admin/district"><i class="fa fa-crosshairs"></i>محدوده کسب و کار</a></li>
-                        </ul>
-                    </li>
+						<li class="treeview">
+							<a>
+								<i class="fa fa-pie-chart"></i> <span>مدیریت دسته بندی</span>
+								<span class="pull-left-container">
+									<i class="fa fa-angle-right pull-left"></i>
+								</span>
+							</a>
+							<ul class="treeview-menu">
+								<li><a href="/admin/Categories/Index"><i class="fa fa-plus-square-o"></i>دسته بندی</a></li>
 
-                    <li class="treeview">
-                        <a>
-                            <i class="fa fa-pie-chart"></i> <span>مدیریت دسته بندی</span>
-                            <span class="pull-left-container">
-                                <i class="fa fa-angle-right pull-left"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li><a href="/admin/Categories/Index"><i class="fa fa-plus-square-o"></i>دسته بندی</a></li>
+							</ul>
+						</li>
+					}
+					else if (User.IsInRole("user") || User.IsInRole("admin"))
+					{
+						<li class="treeview">
+							<a>
+								<i class="fa fa-gears"></i> <span>کسب و کارها</span>
+								<span class="pull-left-container">
+									<i class="fa fa-angle-right pull-left"></i>
+								</span>
+							</a>
+							<ul class="treeview-menu">
+								<li><a href="/admin/businesses/Index"><i class="fa fa-id-card"></i>مدیریت کسب و کار</a></li>
+								<li><a href="/admin/Feature/Index"><i class="fa fa-id-card"></i>مدیریت ویژگی کسب و کار</a></li>
+							</ul>
+						</li>
+					}
+					@*<li class="active">
+							<a href="/SchoolName/Index"><i class="fas fa-school"></i> <span>مدیریت مناطق</span></a>
 
-                        </ul>
-                    </li>
+						</li>
+						<li class="active"><a href="/Grades/Index"><i class="fas fa-graduation-cap"></i> <span>مقاطع تحصیلی</span></a></li>
+						<li class="active"><a href="/Majors/Index"><i class="fas fa-book-open"></i> <span>رشته تحصیلی</span></a></li>
+						<li class="active"><a href="/Teachers/Index"><i class="fas fa-chalkboard-teacher"></i> <span>مدیریت معلمان </span></a></li>
+						<li class="active"><a href="/Students/Index"><i class="fas fa-book-reader"></i> <span>مدیریت دانش آموزان </span></a></li>
+						<li class="active"><a href="/ClassRooms/Index"><i class="fas fa-chalkboard"></i> <span>کلاس بندی </span></a></li>*@
 
-                    <li class="treeview">
-                        <a>
-                            <i class="fa fa-gears"></i> <span>کسب و کارها</span>
-                            <span class="pull-left-container">
-                                <i class="fa fa-angle-right pull-left"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li><a href="/admin/businesses/Index"><i class="fa fa-id-card"></i>مدیریت کسب و کار</a></li>
-                            <li><a href="/admin/Feature/Index"><i class="fa fa-id-card"></i>مدیریت ویژگی کسب و کار</a></li>
-                        </ul>
-                    </li>
+					@*<li class="active"><a href="#"><i class="fa fa-sign-out"></i> <span>خروج</span></a></li>*@
+				</ul>
+			</section>
+		</aside>
+		<div class="content-wrapper" dir="rtl">
 
-                    @*<li class="active">
-            <a href="/SchoolName/Index"><i class="fas fa-school"></i> <span>مدیریت مناطق</span></a>
-
-        </li>
-        <li class="active"><a href="/Grades/Index"><i class="fas fa-graduation-cap"></i> <span>مقاطع تحصیلی</span></a></li>
-        <li class="active"><a href="/Majors/Index"><i class="fas fa-book-open"></i> <span>رشته تحصیلی</span></a></li>
-        <li class="active"><a href="/Teachers/Index"><i class="fas fa-chalkboard-teacher"></i> <span>مدیریت معلمان </span></a></li>
-        <li class="active"><a href="/Students/Index"><i class="fas fa-book-reader"></i> <span>مدیریت دانش آموزان </span></a></li>
-        <li class="active"><a href="/ClassRooms/Index"><i class="fas fa-chalkboard"></i> <span>کلاس بندی </span></a></li>*@
-
-                    @*<li class="active"><a href="#"><i class="fa fa-sign-out"></i> <span>خروج</span></a></li>*@
-                </ul>
-            </section>
-        </aside>
-        <div class="content-wrapper" dir="rtl">
-
-            <section class="content container-fluid">
-                <div class="modal fade" id="LoadingModal" role="dialog" style="z-index:2">
-                    <div class="modal-dialog modal-sm">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title">درحال انجام عملیات </h4>
-                            </div>
-                            <div class="modal-body">
-                                <p class="text text-warning">لطیفا منتظر بمانید<p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @RenderBody()
-            </section>
-            <div class="modal"><!-- Place at bottom of page --></div>
-        </div>
-        <aside class="control-sidebar control-sidebar-dark">
-            <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-                <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-                <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-            </ul>
-        </aside>
-        <div class="control-sidebar-bg"></div>
-    </div>
-    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>*@
-    @*<script src="../Admin/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>*@
-    <script src="~/Admin/dist/js/adminlte.min.js"></script>
-    @*<script src="../Scripts/Common.js"></script>*@
-    <script src="~/Scripts/Common.js"></script>
+			<section class="content container-fluid">
+				<div class="modal fade" id="LoadingModal" role="dialog" style="z-index:2">
+					<div class="modal-dialog modal-sm">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title">درحال انجام عملیات </h4>
+							</div>
+							<div class="modal-body">
+								<p class="text text-warning">لطیفا منتظر بمانید<p>
+							</div>
+						</div>
+					</div>
+				</div>
+				@RenderBody()
+			</section>
+			<div class="modal"><!-- Place at bottom of page --></div>
+		</div>
+		<aside class="control-sidebar control-sidebar-dark">
+			<ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+				<li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+				<li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+			</ul>
+		</aside>
+		<div class="control-sidebar-bg"></div>
+	</div>
+	@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>*@
+	@*<script src="../Admin/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>*@
+	<script src="~/Admin/dist/js/adminlte.min.js"></script>
+	@*<script src="../Scripts/Common.js"></script>*@
+	<script src="~/Scripts/Common.js"></script>
 </body>
 </html>

@@ -33,6 +33,8 @@ namespace DataLayer.Data
 			builder.Entity<Feature>()
 				.Property(b => b.ValueType).HasDefaultValue("bool");
 
+			builder.Seed();
+
 			builder.Entity<City>().Property(p => p.Id).ValueGeneratedOnAdd();
 		}
 	}
