@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DomainClass.Businesses
 {
@@ -26,6 +27,10 @@ namespace DomainClass.Businesses
 
 		public virtual District District { get; set; }
 		public virtual Category Category { get; set; }
+
+		[AllowNull]
+		public string UserCreatorId { get; set; }
+		public BizAppUser UserCreator { get; set;  }
 
 		public virtual ICollection<BusinessCallNumber> CallNumbers { get; set; }
 		public virtual ICollection<BusinessGallery> Galleries { get; set; }

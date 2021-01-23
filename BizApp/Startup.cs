@@ -33,8 +33,8 @@ namespace BizApp
 		public void ConfigureServices(IServiceCollection services)
 		{
 
-			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=BizApp;Trusted_Connection=True;MultipleActiveResultSets=true"));
-			//services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Data Source=45.159.113.39,2014;Initial Catalog=BizApp;User ID=BizzApp;Password=BizzApp2021;MultipleActiveResultSets=true"));
+			//services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=BizApp;Trusted_Connection=True;MultipleActiveResultSets=true"));
+			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Data Source=45.159.113.39,2014;Initial Catalog=BizApp;User ID=BizzApp;Password=BizzApp2021;MultipleActiveResultSets=true"));
 
 			//services.AddDbContext<ApplicationDbContext>(options =>
 			//	options.UseSqlServer(
