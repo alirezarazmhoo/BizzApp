@@ -45,6 +45,7 @@ namespace BizApp.Automapper
 			// Business List
 			CreateMap<BusinessListQuery, BusinessListViewModel>().ReverseMap();
 
+
 		}
 	}
 }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210123102935_RemoveNationalCodeFromUser")]
-    partial class RemoveNationalCodeFromUser
+    [Migration("20210124070556_RemoveNationCodeAndUserSeed")]
+    partial class RemoveNationCodeAndUserSeed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -114,17 +114,17 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0d63b791-27da-4859-a6a7-5a497f4928d5",
-                            CreateDate = new DateTime(2021, 1, 23, 13, 59, 34, 816, DateTimeKind.Local).AddTicks(9904),
+                            ConcurrencyStamp = "b92f8379-2d02-4ff4-ad98-438aea4c9456",
+                            CreateDate = new DateTime(2021, 1, 24, 10, 35, 55, 19, DateTimeKind.Local).AddTicks(2499),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
-                            NormalizedUserName = "Administrator",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPC4B4UL1d4P6OXiG2GaWsQRJphTzH2V7GKvoFOzNgPESOYfYrU/9BLfQUFPI7IglA==",
+                            NormalizedUserName = "mainadmin",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHJwFNnfhnaUqpY47/k/449TYxA5rxi/YgBPrS2d/PraVmSk6+A2p0wewZQ0jGxdUw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "80f0d9c2-a1a2-42cc-9228-4c9580385b49",
+                            SecurityStamp = "35d4091c-37ed-431e-a422-7a6771cfa6cb",
                             TwoFactorEnabled = false,
                             UserName = "mianadmin"
                         });
@@ -424,8 +424,8 @@ namespace DataLayer.Migrations
                         },
                         new
                         {
-                            Id = "7ca5c265-1d57-430d-93a9-5b2959e50922",
-                            ConcurrencyStamp = "7ca5c265-1d57-430d-93a9-5b2959e50922",
+                            Id = "01010c75-4381-4c7e-a8f8-f3fd9458a45d",
+                            ConcurrencyStamp = "01010c75-4381-4c7e-a8f8-f3fd9458a45d",
                             Name = "user",
                             NormalizedName = "user"
                         });

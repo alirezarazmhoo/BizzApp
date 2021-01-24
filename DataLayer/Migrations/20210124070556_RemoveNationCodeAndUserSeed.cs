@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataLayer.Migrations
 {
-    public partial class RemoveNationalCodeFromUser : Migration
+    public partial class RemoveNationCodeAndUserSeed : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -59,12 +59,12 @@ namespace DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "7ca5c265-1d57-430d-93a9-5b2959e50922", "7ca5c265-1d57-430d-93a9-5b2959e50922", "user", "user" });
+                values: new object[] { "01010c75-4381-4c7e-a8f8-f3fd9458a45d", "01010c75-4381-4c7e-a8f8-f3fd9458a45d", "user", "user" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Address", "ApiToken", "ConcurrencyStamp", "CreateDate", "Email", "EmailConfirmed", "FullName", "LockoutEnabled", "LockoutEnd", "Mobile", "NationalCode", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "Url", "UserName" },
-                values: new object[] { "02174cf0–9412–4cfe-afbf-59f706d72cf6", 0, null, null, "0d63b791-27da-4859-a6a7-5a497f4928d5", new DateTime(2021, 1, 23, 13, 59, 34, 816, DateTimeKind.Local).AddTicks(9904), "mainadmin@email.com", true, null, false, null, 0L, null, "mainadmin@email.com", "Administrator", null, "AQAAAAEAACcQAAAAEPC4B4UL1d4P6OXiG2GaWsQRJphTzH2V7GKvoFOzNgPESOYfYrU/9BLfQUFPI7IglA==", null, false, "80f0d9c2-a1a2-42cc-9228-4c9580385b49", false, null, "mianadmin" });
+                values: new object[] { "02174cf0–9412–4cfe-afbf-59f706d72cf6", 0, null, null, "b92f8379-2d02-4ff4-ad98-438aea4c9456", new DateTime(2021, 1, 24, 10, 35, 55, 19, DateTimeKind.Local).AddTicks(2499), "mainadmin@email.com", true, null, false, null, 0L, null, "mainadmin@email.com", "mainadmin", null, "AQAAAAEAACcQAAAAEHJwFNnfhnaUqpY47/k/449TYxA5rxi/YgBPrS2d/PraVmSk6+A2p0wewZQ0jGxdUw==", null, false, "35d4091c-37ed-431e-a422-7a6771cfa6cb", false, null, "mianadmin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -77,7 +77,7 @@ namespace DataLayer.Migrations
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "7ca5c265-1d57-430d-93a9-5b2959e50922");
+                keyValue: "01010c75-4381-4c7e-a8f8-f3fd9458a45d");
 
             migrationBuilder.DeleteData(
                 table: "AspNetUserRoles",

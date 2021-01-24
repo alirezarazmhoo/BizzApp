@@ -1,0 +1,203 @@
+﻿@model BizApp.Utility.PaginatedList<BizApp.Areas.Admin.Models.UserViewModel>
+
+@{
+	ViewData["Title"] = "متصدیان";
+}
+
+
+<section class="content-header">
+	<h1 style="float:right">
+		مدیریت متصدی ها
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-home"></i> خانه</a></li>
+		<li class="active">متصدی ها</li>
+	</ol>
+</section>
+
+<div style="margin-top: 50px;margin-bottom:3px">
+	<a class="btn btn-success openmodal" href="#" data-toggle="modal" data-target="#myModal">ثبت جدید</a>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="text-center" style="border-style: solid;border-color:dimgray">
+			<h2 style="font-size:medium">جستجو</h2>
+		</div>
+		@using (Html.BeginForm("Index", "Province", FormMethod.Post))
+		{
+			<div class="box zmdi-border-color" style="height:auto">
+				<div class="box-body table-responsive no-padding row ">
+					<div style="width:90%;margin-right:40px;margin-top:10px">
+						<div class="row">
+							<label for="searchString">عنوان جستجو:</label>
+							<input name="searchString" placeholder="متن را وارد کنید" class="" style="width:260px">
+						</div>
+					</div>
+				</div>
+				<div style="margin-top:20px" dir="rtl">
+					<button style="margin-right:20px;" type="submit" class="btn btn-primary">جتسجو یا بارگزاری مجدد</button>
+				</div>
+			</div>
+		}
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-body table-responsive no-padding">
+				<table class="table table-hover text-center">
+					<tr>
+						<th>
+							ردیف
+						</th>
+						<th>
+							نام
+						</th>
+						<th>
+							نام کاربری
+						</th>
+						<th>
+							موبایل
+						</th>
+						<th>
+							ایمیل
+						</th>
+						<th>
+							عملیات
+						</th>
+					</tr>
+					@{ int rowNo = 0; }
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>
+								@(++rowNo)
+							</td>
+							<td>
+								@item.FullName
+							</td>
+							<td>
+								@item.Username
+							</td>
+							<td>
+								@item.Mobile
+							</td>
+							<td>
+								@item.Email
+							</td>
+							<td>
+								<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.Id">حذف</button> |
+								<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.Id"> ویرایش</button>
+							</td>
+						</tr>
+					}
+				</table>
+			</div>
+		</div>
+
+		@{
+			var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+			var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+		}
+
+		<a asp-action="Index"
+		   asp-route-pageNumber="@(Model.PageIndex - 1)"
+		   class="btn btn-default @prevDisabled">
+			صفحه قبل
+		</a>
+		<a asp-action="Index"
+		   asp-route-pageNumber="@(Model.PageIndex + 1)"
+		   class="btn btn-default @nextDisabled">
+			صفحه بعد
+		</a>
+
+	</div>
+</div>
+
+<div class="modal fade" id="myModal" role="dialog" style="height:auto;overflow-y:visible">
+	<div class="modal-dialog modal-sm" style="width:400px">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">ثبت جدید</h4>
+			</div>
+			<div class="modal-body" style="height:auto">
+				<form id="register" method="post">
+					<input name="Id" id="Id" hidden />
+					<div class="form-group" style="margin-right:5px">
+						<label for="FullName">نام و نام خانوادگی :</label>
+						<input display="نام" id="FullName" name="FullName" placeholder="نام و نام خانوادگی را وارد کنید" class="form-control" required>
+					</div>
+
+					<div class="form-group col-md-6">
+						<label for="Password">رمز عبور</label>
+						<input display="رمز عبور" id="Username" type="password" name="Username" placeholder="نام کاربری را وارد کنید" class="form-control" required>
+					</div>
+
+					<div class="form-group col-md-6">
+						<label for="Username">نام کاربری</label>
+						<input display="نام کاربری" id="Username" name="Username" placeholder="نام کاربری را وارد کنید" class="form-control" required>
+					</div>
+					
+					<div class="form-group col-md-6">
+						<label for="Email">ایمیل</label>
+						<input display="نام کاربری" id="Email" name="Email" placeholder="ایمیل را وارد کنید" class="form-control" required>
+					</div>
+
+					<div class="form-group col-md-6">
+						<label for="Mobile">موبایل</label>
+						<input display="موبایل" id="Mobile" name="Mobile" placeholder="موبایل را وارد کنید" class="form-control" required>
+					</div>
+
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+				<button type="button" class="btn btn-success" onclick="Save();">ثبت</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="Error"></div>
+<div id="Success"></div>
+<div id="Question"></div>
+
+
+<script>
+	window.onload = Load;
+	function Load() {
+		CreateAllModals();
+		$(".openmodal").click(function () {
+			clear('register', ["input"]);
+		});
+		$(".btn-warning").click(function () {
+			EditAjax("/admin/Province/GetById", this.id);
+			var bodyStyle = document.body.style;
+			bodyStyle.removeProperty('padding-right');
+		});
+	}
+	function Save() {
+		if (checkvalidity('register') === 0) {
+			return;
+		}
+		else {
+			$("#myModal").modal('toggle');
+			var Parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "ProvinceId", htmlname: "ProvinceId", special: "" }];
+			PostAjax('/admin/Province/CreateOrUpdate', Parameters, "/admin/Province/Index");
+		}
+	}
+	function AssignButtonClicked(elem) {
+		$('#ProvinceId').val($(elem).data('assigned-id'));
+	}
+	function Remove() {
+		var Parameters = [{ id: "ProvinceId", htmlname: "ProvinceId", special: "" }];
+		PostAjax('/admin/Province/Remove', Parameters, "/admin/Province/Index");
+	}
+
+
+</script>
+

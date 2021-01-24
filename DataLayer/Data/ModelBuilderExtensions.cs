@@ -16,7 +16,7 @@ namespace DataLayer.Data
 			{
 				Id = userId,
 				UserName = "mianadmin",
-				NormalizedUserName = "Administrator",
+				NormalizedUserName = "mainadmin",
 				Email = "mainadmin@email.com",
 				NormalizedEmail = "mainadmin@email.com",
 				EmailConfirmed = true,
