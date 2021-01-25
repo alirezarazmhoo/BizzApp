@@ -57,6 +57,9 @@
 							نام
 						</th>
 						<th>
+							استان
+						</th>
+						<th>
 							منطقه
 						</th>
 						<th>
@@ -69,24 +72,28 @@
 					@{ int rowNo = 0; }
 					@foreach (var item in Model)
 					{
-						<tr>
-							<td>
-								@(++rowNo)
-							</td>
-							<td>
-								@item.Name
-							</td>
-							<td>
-								@item.DistrictName
-							</td>
-							<td>
-								@item.CategoryName
-							</td>
-							<td>
-								<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.Id">تخصیص ویژگی ها</button> |
-								<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.Id"> ویرایش</button>
-							</td>
-						</tr>
+				<tr>
+					<td>
+						@(++rowNo)
+					</td>
+					<td>
+						@item.Name
+					</td>
+					<td>
+						@item.CityName
+					</td>
+					<td>
+						@item.DistrictName
+					</td>
+					<td>
+						@item.CategoryName
+					</td>
+					<td>
+						<a type="button" class="btn btn-dark" href="/admin/Businesses/BusinessFeature?Id=@item.Id">تخصیص ویژگی های کسب و کار</a> |
+						<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.Id">تخصیص ویژگی دسته بندی</button> |
+						@*<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.Id"> ویرایش</button>*@
+					</td>
+				</tr>
 					}
 				</table>
 			</div>

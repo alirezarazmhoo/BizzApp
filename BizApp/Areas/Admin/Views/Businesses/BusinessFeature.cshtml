@@ -1,0 +1,68 @@
+﻿@model IEnumerable<DomainClass.Businesses.Queries.AllBusinessFeatureViewModel>
+@{
+    ViewData["Title"] = "BusinessFeature";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<section class="content-header">
+    <h1 style="float:right;margin-bottom:10px">
+        اختصاص ویژگی ها به   @ViewBag.BussinessName    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-home"></i> خانه</a></li>
+        <li class="active"></li>
+    </ol>
+</section>
+
+
+<div class="row" >
+    <div class="col-xs-12">
+        <div>
+            <a class="btn btn-warning" href="/admin/Businesses/Index" style="margin-top:20px">بازگشت به کسب وکار</a>
+        </div>
+        <div class="box" style="margin-top:20px">
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover text-center">
+                    <tr>
+                        <th>
+                            ردیف
+                        </th>
+                        <th>
+                            عنوان ویژگی
+                        </th>
+                        <th>
+                            عملیات
+                        </th>
+                    </tr>
+                    @{ int rowNo = 0; }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @(rowNo += 1)
+                            </td>
+                            <td>
+                                @item.FeatureName
+                            </td>
+
+                            <td>
+                                @{
+                                    if (item.IsInFeature)
+                                    {
+
+                                        <a href="/admin/Businesses/RemoveBusinessFeature?Id=@ViewBag.BussinessId&FeatureId=@item.FeatureId" class="btn btn-danger">حذف ویژگی</a>
+
+                                    }
+                                    else
+                                    {
+                                        <a href="/admin/Businesses/AssingBusinessFeature?Id=@ViewBag.BussinessId&FeatureId=@item.FeatureId" class="btn btn-success">اختصاص ویژگی</a>
+                                    }
+                                }
+
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

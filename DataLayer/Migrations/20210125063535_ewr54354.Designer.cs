@@ -4,14 +4,16 @@ using DataLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210125063535_ewr54354")]
+    partial class ewr54354
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,18 +29,9 @@ namespace DataLayer.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ApiToken")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(256)")
@@ -47,23 +40,14 @@ namespace DataLayer.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<long>("Mobile")
+                    b.Property<long>("NationalCode")
                         .HasColumnType("bigint");
-
-                    b.Property<string>("NationalCode")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasColumnType("nvarchar(256)")
@@ -72,9 +56,6 @@ namespace DataLayer.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
-
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -91,9 +72,6 @@ namespace DataLayer.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Url")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
@@ -109,27 +87,6 @@ namespace DataLayer.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "d3b475bd-335f-4581-aca9-97ccd0879eab",
-                            CreateDate = new DateTime(2021, 1, 25, 13, 50, 31, 49, DateTimeKind.Local).AddTicks(8392),
-                            Email = "mainadmin@email.com",
-                            EmailConfirmed = true,
-                            IsDeleted = false,
-                            LockoutEnabled = false,
-                            Mobile = 0L,
-                            NormalizedEmail = "mainadmin@email.com",
-                            NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKccDMhbmTEgTSz3hDlOJQ9hlU49de3zvLX5bdmVpcyX8n8iHO9Mlpsq68v6/QMQFw==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "5b90aa01-30fe-43ea-8f56-6b8b8db6503c",
-                            TwoFactorEnabled = false,
-                            UserName = "mianadmin"
-                        });
                 });
 
             modelBuilder.Entity("DomainClass.Businesses.Business", b =>
@@ -437,22 +394,6 @@ namespace DataLayer.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "341743f0-asd2–42de-afbf-59kmkkmk72cf6",
-                            ConcurrencyStamp = "341743f0-asd2–42de-afbf-59kmkkmk72cf6",
-                            Name = "admin",
-                            NormalizedName = "admin"
-                        },
-                        new
-                        {
-                            Id = "f5606f00-0d32-4dc6-bf88-03fb9c53f134",
-                            ConcurrencyStamp = "f5606f00-0d32-4dc6-bf88-03fb9c53f134",
-                            Name = "operator",
-                            NormalizedName = "operator"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -540,13 +481,6 @@ namespace DataLayer.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
-                            RoleId = "341743f0-asd2–42de-afbf-59kmkkmk72cf6"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>

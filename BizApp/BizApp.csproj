@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\Admin\bower_components\" />
+    <Folder Include="wwwroot\Upload\Bussiness\Files\" />
   </ItemGroup>
 
 </Project>

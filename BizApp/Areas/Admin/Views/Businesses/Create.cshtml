@@ -18,7 +18,7 @@
 
 <div class="row">
 	<div class="col-sm-12">
-		@using (Html.BeginForm("Index", "Businesses", FormMethod.Post))
+		@using (Html.BeginForm("create", "Businesses",FormMethod.Post, new { enctype = "multipart/form-data" }))
 		{
 			<div class="box zmdi-border-color" style="height:auto; padding:5px; margin: 5px;">
 				<div class="box-body table-responsive no-padding row ">
@@ -26,59 +26,118 @@
 						<div class="form-row">
 							<div class="form-group col-md-12">
 								<label for="Name">نام کسب و کار</label>
-								<input id="Name" name="Name" placeholder="نام کسب و کار را وارد کنید" class="form-control" aria-describedby="namelHelp">
+								<input asp-for="Name" placeholder="نام کسب و کار را وارد کنید" class="form-control" aria-describedby="namelHelp">
 								<small id="nameHelp" class="form-text text-muted">نام مناسب با کسب و کار خود را تا حداکثر 50 کاراکتر وارد کنید</small>
 							</div>
 
 							<div class="form-group col-md-6">
 								<label for="DistrictId">انتخاب منطقه</label>
-								<select id="provinceId" name="provinceId" class="form-control"
+								<select asp-for="provinceId" class="form-control"
 										asp-items="@(new SelectList(ViewBag.Provinces, "ProvinceId", "Name"))">
 									<option value="0">لطفا شهرستان را انتخاب کنید</option>
 								</select>
-								<select id="cityId" name="cityId" class="form-control" style="margin: 2px 0;">
+								<select asp-for="cityId" class="form-control" style="margin: 2px 0;">
 									<option>لطفا شهر را انتخاب کنید</option>
 								</select>
-								<select id="districtId" name="districtId" class="form-control" style="margin: 2px 0;">
+								<select asp-for="districtId" class="form-control" style="margin: 2px 0;">
 									<option>لطفا ناحیه را انتخاب کنید</option>
 								</select>
 							</div>
 
 							<div class="form-group col-md-6">
 								<label for="DistrictId">دسته</label>
-								<select id="categoryId" name="categoryId" class="form-control">
-									<option value="0">لطفا دسته بندی را انتخاب کنید</option>
-								</select>
+
+								<button type="button" class="btn btn-link" data-target="#modalcategory" data-toggle="modal">انتخاب کنید </button>
+								<input class="title form-control" type="text" id="categoryId" name="categoryId" hidden />
+								<p style="margin-right:15px" id="currentcat" name="currentcat"></p>
 							</div>
 
 							<div class="form-group">
-								<textarea name="descritpion" id="description" class="form-control" placeholder="توضیحات"></textarea>
+								<textarea asp-for="Description" class="form-control" placeholder="توضیحات"></textarea>
+							</div>
+							<div class="form-group">
+								<textarea asp-for="biograpy" class="form-control" placeholder="بیوگرافی کسب و کار"></textarea>
 							</div>
 							<div class="form-group col-md-6">
 								<label for="websiteurl">آدرس وبسایت</label>
-								<input id="websiteurl" name="websiteurl" placeholder="آدرس وبسایت را وارد کنید" class="form-control" aria-describedby="websiteurlHelp">
+								<input asp-for="websiteurl" placeholder="آدرس وبسایت را وارد کنید" class="form-control" aria-describedby="websiteurlHelp">
 								<small id="websiteurlHelp" class="form-text text-muted">مثال: sitename.com</small>
 							</div>
 							<div class="form-group col-md-6">
 								<label for="address">نشانی کسب و کار</label>
-								<input id="address" name="address" placeholder="نشانی کسب و کار را وارد کنید" class="form-control" >
+								<input asp-for="address" placeholder="نشانی کسب و کار را وارد کنید" class="form-control">
 							</div>
 
+
+							<div class="form-group">
+								<label>انتخاب موقعیت</label>
+								<div id="mapid" style="height:180px"></div>
+							</div>
+							<div class="form-group col-md-6" style="margin-right:5px">
+								<label for="exampleInputEmail1">تصویر اصلی کسب و کار:</label>
+								<div id="main-container">
+									<input display="Image" id="file" name="file" class="TheFile" onchange="SetPictures('file','ImageItems');" style="display:none" type="file">
+									<button type="button" style="height:20%;margin-left:15px;top:0;" class="btn btn-primary" onclick="file.click()"><i class="fa fa-camera"></i>انتخاب کنید</button>
+									<div id="ImageItems" style="width:400px;height:auto;margin-left:5px;margin-top:15px">
+									</div>
+									<div id="RemoveImageItems" style="width:auto;height:auto;margin-left:5px;">
+									</div>
+								</div>
+							</div>
+							<div class="form-group " style="margin-right:5px">
+								<label for="exampleInputEmail1">تصاویر دیگر کسب و کار:</label>
+								<div id="main-container">
+									<input display="BussinessFiles" id="BussinessFiles" name="BussinessFiles" class="BussinessFiles" onchange="SetPictures('BussinessFiles','BussinessFilesItems');" style="display:none" multiple type="file">
+									<button type="button" style="height:20%;margin-left:15px;top:0;" class="btn btn-primary" onclick="BussinessFiles.click()"><i class="fa fa-camera"></i>انتخاب کنید </button>
+									<div id="BussinessFilesItems" style="width:400px;height:auto;margin-left:5px;margin-top:15px">
+
+									</div>
+									<div id="RemoveMusicFilesItems" style="width:auto;height:auto;margin-left:5px;">
+
+									</div>
+								</div>
+							</div>
+							<input id="latitude" name="latitude" hidden />
+							<input id="longitude" name="longitude" hidden />
 						</div>
 					</div>
 				</div>
 				<div style="margin-top:20px">
-					<button style="margin-right:20px;" type="submit" class="btn btn-primary">ذخیره کسب و کار</button>
+					<button style="margin-right:20px;" type="submit" class="btn btn-light">ذخیره کسب و کار</button>
 				</div>
 			</div>
 		}
 	</div>
 </div>
 
+<div class="modal fade " id="modalcategory">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header " style="text-align:center">
+				<h6 class="modal-title" style="margin:auto;vertical-align:middle;">دسته بندی</h6>
+			</div>
+			<div class="modal-body" id="categorybody">
+				@foreach (var item in (IEnumerable<Category>)ViewData["Categorie"])
+				{
+					<div class="form-group" onclick="CategoryGetChilds(@item.Id);">
+						<div style="width : 100% ;height:30px ;background-color:whitesmoke;border-bottom:1px solid">
+							<p style="text-align:center;height:inherit;cursor:pointer">@item.Name</p>
+						</div>
+					</div>
+				}
+			</div>
 
+			<div id="divbtnreturn">
+			</div>
+
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
 <script type="text/javascript">
 	$(document).ready(function () {
-
+		LoadMap( 32.650823 , 51.668037);
 		$("#provinceId").change(function () {
 			// clear city dropdownl
 			$('#cityId').empty();
@@ -94,7 +153,7 @@
 
 			$.getJSON(url, { provinceId: this.value }, function (data) {
 				var items = nonVauleItem;
-				
+
 				$.each(data, function (i, model) {
 					items += '<option value="' + model.value + '">' + model.text + '</option>';
 				});
@@ -118,7 +177,7 @@
 
 			$.getJSON(url, { cityId: this.value }, function (data) {
 				var items = nonVauleItem;
-				
+
 				$.each(data, function (i, model) {
 					items += '<option value="' + model.value + '">' + model.text + '</option>';
 				});
@@ -128,4 +187,129 @@
 		});
 
 	});
+
+	function CategoryGetChilds(id) {
+
+		$.ajax({
+			type: "GET",
+			url: "/admin/Businesses/GetChildsCategories?Id=" + id + "",
+			dataType: "json",
+			contentType: false,
+			processData: false,
+			success: function (response) {
+				if (response.success) {
+
+					if (response.isfinal == false) {
+						$('#categorybody').html('');
+						$.each(response.list, function () {
+
+							$("#divbtnreturn").html("<button class='btn btn-sm' type='button' onclick='GetBack(" + response.parentid + ");' style='float:right'>دسته قبل</button>");
+
+							if (this.havenext == false) {
+								$('#categorybody').append("<div class='form-group' onclick='SetCatId(" + this.id + ",\"" + this.name + "\" );'><div  style='width : 100% ;height:30px ;background-color:#83c030;border-bottom:1px solid'><p style='text-align:center;height:inherit;cursor:pointer'>" + this.name + "</p></div></div>");
+							}
+							else {
+								$('#categorybody').append("<div class='form-group' onclick='CategoryGetChilds(" + this.id + ");'><div  style='width : 100% ;height:30px ;background-color:whitesmoke;border-bottom:1px solid'><p style='text-align:center;height:inherit;cursor:pointer'>" + this.name + "</p></div></div>");
+							}
+						});
+					}
+				}
+				else {
+
+				}
+			},
+			error: function (response) {
+				alert("Error");
+			}
+		});
+
+	}
+
+	function GetBack(id) {
+		$.ajax({
+			type: "GET",
+			url: "/admin/Businesses/getbackcategories?Id=" + id + "",
+			dataType: "json",
+			contentType: false,
+			processData: false,
+			success: function (response) {
+				if (response.success) {
+					$('#categoryId').find('option').remove();
+					if (response.isfinal == false) {
+						$("#divbtnreturn").html("<button class='btn btn-sm' type='button' onclick='GetBack(" + response.parentid + ");' style='float:right'>دسته قبل</button>");
+					}
+					if (response.isfinal == true) {
+						$("#divbtnreturn").html('');
+					}
+					$('#categorybody').html('');
+					$.each(response.list, function () {
+						//$('#categoryId').append($("<option/>").val(this.id).text(this.name));
+						if (this.havenext == false) {
+							$('#categorybody').append("<div class='form-group' onclick='SetCatId(" + this.id + ",\"" + this.name + "\" );'><div  style='width : 100% ;height:30px ;background-color:#83c030;border-bottom:1px solid'><p style='text-align:center;height:inherit;cursor:pointer'>" + this.name + "</p></div></div>");
+						}
+						else {
+							$('#categorybody').append("<div class='form-group' onclick='CategoryGetChilds(" + this.id + ");'><div  style='width : 100% ;height:30px ;background-color:whitesmoke;border-bottom:1px solid'><p style='text-align:center;height:inherit;cursor:pointer'>" + this.name + "</p></div></div>");
+						}
+					});
+
+				}
+				else {
+				}
+			},
+			error: function (response) {
+				alert("Error");
+			}
+		});
+
+	
+	}
+		function SetCatId(id, name) {
+			$("#categoryId").val(id);
+			$("#currentcat").text("دسته انتخابی : " + name + " ")
+			$("#modalcategory").modal('toggle')
+	}
+
+
+	function LoadMap(lon, lat) {
+    
+    var theMarker = {};
+    if (lon == 0 && lat == 0) {
+
+        lon = 32.650823;
+        lat = 51.668037;
+    }
+    var mymap = L.map('mapid').setView([lon, lat], 13);
+    if (lon !== 0 && lat !== 0) {
+        theMarker = L.marker([lon, lat]).addTo(mymap);
+
+    }
+    //var mymap = L.map('mapid').setView([32.650823, 51.668037], 13);
+    //theMarker = L.marker([lon,lat], { icon: icon }).addTo(mymap);
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 18,
+        id: 'mapbox/streets-v11',
+        tileSize: 512,
+        zoomOffset: -1,
+        accessToken: 'pk.eyJ1IjoiYWxpcmV6YXJhem1qb28iLCJhIjoiY2s1Yzg2aTM4MWo1bjNvcDN2dWQwbGs5byJ9.0MqeBvs7xijOfpnGE73R_A'
+    }).addTo(mymap);
+    mymap.on('click', function (e) {
+        var icon = new L.Icon.Default();
+        icon.options.shadowSize = [0, 0];
+        lat = e.latlng.lat;
+        lon = e.latlng.lng;
+        if (theMarker !== undefined) {
+
+            mymap.removeLayer(theMarker);
+        }
+        theMarker = L.marker([lat, lon], { icon: icon }).addTo(mymap);
+
+        $("#latitude").val(e.latlng.lat);
+        $("#longitude").val(e.latlng.lng);
+    });
+}
+
+
+
+
 </script>

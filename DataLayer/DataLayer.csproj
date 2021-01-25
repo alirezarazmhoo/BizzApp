@@ -5,10 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+
     <Compile Remove="Migrations\20210123102935_RemoveNationalCodeFromUser.cs" />
     <Compile Remove="Migrations\20210123102935_RemoveNationalCodeFromUser.Designer.cs" />
     <Compile Remove="Migrations\20210124070556_RemoveNationCodeAndUserSeed.cs" />
     <Compile Remove="Migrations\20210124070556_RemoveNationCodeAndUserSeed.Designer.cs" />
+
+    <Compile Remove="Migrations\20210124094546_initial53463456.cs" />
+    <Compile Remove="Migrations\20210124094546_initial53463456.Designer.cs" />
+
   </ItemGroup>
 
   <ItemGroup>

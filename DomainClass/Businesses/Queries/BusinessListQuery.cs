@@ -8,5 +8,7 @@ namespace DomainClass.Businesses.Queries
 		public string Name { get; set; }
 		public string DistrictName { get; set; }
 		public string CategoryName { get; set; }
+		public string CityName { get; set; }
+
 	}
 }

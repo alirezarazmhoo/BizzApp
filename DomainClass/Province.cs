@@ -22,7 +22,6 @@ namespace DomainClass
 		[Column(TypeName = "nvarchar(50)")]
 		public string Name { get; set; }
 
-
 		public virtual ICollection<City> Cities{ get; set; }
 		#endregion
 	}

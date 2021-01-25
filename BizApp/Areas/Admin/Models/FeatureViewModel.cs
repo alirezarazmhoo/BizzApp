@@ -9,5 +9,9 @@ namespace BizApp.Areas.Admin.Models
 		[MaxLength(99, ErrorMessage = "نام بسیار طولانی است")]
 		[MinLength(1, ErrorMessage = "نام بسیار کوتاه است")]
 		public string Name { get; set; }
+
+		public bool HasValue { get; set;  }
+		
+
 	}
 }
