@@ -127,29 +127,36 @@
 			<div class="modal-body" style="height:auto">
 				<form id="register" method="post">
 					<input name="Id" id="Id" hidden />
+					<input name="operation" id="operation" hidden />
 					<div class="form-group" style="margin-right:5px">
-						<label for="FullName">نام و نام خانوادگی :</label>
-						<input display="نام" id="FullName" name="FullName" placeholder="نام و نام خانوادگی را وارد کنید" class="form-control" required>
+						@*<label for="FullName">نام و نام خانوادگی :</label>*@
+						<input display="نام" id="FullName" name="FullName" placeholder="نام و نام خانوادگی *" class="form-control" required>
+					</div>
+
+					<div id="createInputs">
+						<div class="form-group col-md-6">
+							@*<label for="Password">رمز عبور</label>*@
+							<input display="رمز عبور" id="Password" type="password" name="Password" placeholder="رمز عبور *" class="form-control" required>
+						</div>
+
+						<div class="form-group col-md-6">
+							@*<label for="Username">نام کاربری</label>*@
+							<input display="نام کاربری" id="Username" name="Username" placeholder="نام کاربری *" class="form-control" required>
+						</div>
 					</div>
 
 					<div class="form-group col-md-6">
-						<label for="Password">رمز عبور</label>
-						<input display="رمز عبور" id="Username" type="password" name="Username" placeholder="نام کاربری را وارد کنید" class="form-control" required>
+						@*<label for="Email">ایمیل</label>*@
+						<input display="ایمیل" id="Email" name="Email" placeholder="ایمیل" class="form-control">
 					</div>
 
 					<div class="form-group col-md-6">
-						<label for="Username">نام کاربری</label>
-						<input display="نام کاربری" id="Username" name="Username" placeholder="نام کاربری را وارد کنید" class="form-control" required>
-					</div>
-					
-					<div class="form-group col-md-6">
-						<label for="Email">ایمیل</label>
-						<input display="نام کاربری" id="Email" name="Email" placeholder="ایمیل را وارد کنید" class="form-control" required>
+						@*<label for="Mobile">موبایل</label>*@
+						<input display="موبایل" id="Mobile" name="Mobile" placeholder="موبایل *" class="form-control" required>
 					</div>
 
-					<div class="form-group col-md-6">
-						<label for="Mobile">موبایل</label>
-						<input display="موبایل" id="Mobile" name="Mobile" placeholder="موبایل را وارد کنید" class="form-control" required>
+					<div class="form-group col-md-12">
+						<textarea class="form-control" id="Address" name="Address" placeholder="نشانی"></textarea>
 					</div>
 
 				</form>
@@ -173,9 +180,17 @@
 		CreateAllModals();
 		$(".openmodal").click(function () {
 			clear('register', ["input"]);
+			// show inputs
+			$("#createInputs").css("display", "");
+			$("#operation").val("addNew");
 		});
 		$(".btn-warning").click(function () {
-			EditAjax("/admin/Province/GetById", this.id);
+			EditAjax("/admin/operator/GetById", this.id);
+
+			// hdie username and password
+			$("#createInputs").css("display", "none");
+			$("#operation").val("update");
+
 			var bodyStyle = document.body.style;
 			bodyStyle.removeProperty('padding-right');
 		});
@@ -186,16 +201,36 @@
 		}
 		else {
 			$("#myModal").modal('toggle');
-			var Parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "ProvinceId", htmlname: "ProvinceId", special: "" }];
-			PostAjax('/admin/Province/CreateOrUpdate', Parameters, "/admin/Province/Index");
+			var Parameters =
+				[{ id: "Id", htmlname: "Id", special: "" },
+				{ id: "FullName", htmlname: "FullName", special: "" },
+				{ id: "Mobile", htmlname: "Mobile", special: "" },
+				{ id: "Email", htmlname: "Email", special: "" },
+				{ id: "Address", htmlname: "Address", special: "" }
+				];
+
+			var operation = $("#operation").val();
+			var url = '/admin/operator/Update';
+
+			if (operation == 'addNew') {
+				Parameters.push({ id: "Username", htmlname: "Username", special: "" },
+								{ id: "Password", htmlname: "Password", special: "" });
+
+				url = '/admin/operator/Create';
+			}
+
+			PostAjax(url, Parameters, "/admin/operator");
 		}
 	}
+
+
+
 	function AssignButtonClicked(elem) {
-		$('#ProvinceId').val($(elem).data('assigned-id'));
+		$('#Id').val($(elem).data('assigned-id'));
 	}
 	function Remove() {
-		var Parameters = [{ id: "ProvinceId", htmlname: "ProvinceId", special: "" }];
-		PostAjax('/admin/Province/Remove', Parameters, "/admin/Province/Index");
+		var Parameters = [{ id: "Id", htmlname: "Id", special: "" }];
+		PostAjax('/admin/operator/Remove', Parameters, "/admin/operator/Index");
 	}
 
 

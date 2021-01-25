@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210124070556_RemoveNationCodeAndUserSeed")]
-    partial class RemoveNationCodeAndUserSeed
+    [Migration("20210125102031_AddSoftDeleteForUser")]
+    partial class AddSoftDeleteForUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -51,6 +51,9 @@ namespace DataLayer.Migrations
 
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -114,17 +117,18 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b92f8379-2d02-4ff4-ad98-438aea4c9456",
-                            CreateDate = new DateTime(2021, 1, 24, 10, 35, 55, 19, DateTimeKind.Local).AddTicks(2499),
+                            ConcurrencyStamp = "d3b475bd-335f-4581-aca9-97ccd0879eab",
+                            CreateDate = new DateTime(2021, 1, 25, 13, 50, 31, 49, DateTimeKind.Local).AddTicks(8392),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
+                            IsDeleted = false,
                             LockoutEnabled = false,
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHJwFNnfhnaUqpY47/k/449TYxA5rxi/YgBPrS2d/PraVmSk6+A2p0wewZQ0jGxdUw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKccDMhbmTEgTSz3hDlOJQ9hlU49de3zvLX5bdmVpcyX8n8iHO9Mlpsq68v6/QMQFw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "35d4091c-37ed-431e-a422-7a6771cfa6cb",
+                            SecurityStamp = "5b90aa01-30fe-43ea-8f56-6b8b8db6503c",
                             TwoFactorEnabled = false,
                             UserName = "mianadmin"
                         });
@@ -424,10 +428,10 @@ namespace DataLayer.Migrations
                         },
                         new
                         {
-                            Id = "01010c75-4381-4c7e-a8f8-f3fd9458a45d",
-                            ConcurrencyStamp = "01010c75-4381-4c7e-a8f8-f3fd9458a45d",
-                            Name = "user",
-                            NormalizedName = "user"
+                            Id = "f5606f00-0d32-4dc6-bf88-03fb9c53f134",
+                            ConcurrencyStamp = "f5606f00-0d32-4dc6-bf88-03fb9c53f134",
+                            Name = "operator",
+                            NormalizedName = "operator"
                         });
                 });
 

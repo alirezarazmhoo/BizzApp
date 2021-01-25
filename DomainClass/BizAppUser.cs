@@ -2,5 +2,6 @@
 {
 	public class BizAppUser : ApplicationUser
 	{
+		public bool IsDeleted { get; set; }
 	}
 }

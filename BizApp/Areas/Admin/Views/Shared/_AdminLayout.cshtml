@@ -95,12 +95,12 @@
 								</span>
 							</a>
 							<ul class="treeview-menu">
-								<li><a href="/admin/Province/Index"><i class="fa fa-bank"></i>لیست متصدیان</a></li>
-								<li><a href="/admin/City"><i class="fa fa-building"></i>ثبت متصدی</a></li>
+								<li><a href="/admin/operator/"><i class="fa fa-bank"></i>لیست متصدیان</a></li>
+								@*<li><a href="/admin/City"><i class="fa fa-building"></i>ثبت متصدی</a></li>*@
 							</ul>
 						</li>
 					}
-					else if (User.IsInRole("user") || User.IsInRole("admin"))
+					else if (User.IsInRole("operator") || User.IsInRole("admin"))
 					{
 						<li class="treeview">
 							<a>

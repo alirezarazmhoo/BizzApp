@@ -35,7 +35,7 @@ namespace DataLayer.Data
 
 			builder.Entity<IdentityRole>().HasData(
 				new IdentityRole { Name = "admin", NormalizedName = "admin", Id = adminRoleId, ConcurrencyStamp = adminRoleId},
-				new IdentityRole { Name = "user", NormalizedName = "user", Id = userRoleId, ConcurrencyStamp = userRoleId }
+				new IdentityRole { Name = "operator", NormalizedName = "operator", Id = userRoleId, ConcurrencyStamp = userRoleId }
 			);
 
 			builder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>

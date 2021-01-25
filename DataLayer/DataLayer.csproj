@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20210123102935_RemoveNationalCodeFromUser.cs" />
     <Compile Remove="Migrations\20210123102935_RemoveNationalCodeFromUser.Designer.cs" />
+    <Compile Remove="Migrations\20210124070556_RemoveNationCodeAndUserSeed.cs" />
+    <Compile Remove="Migrations\20210124070556_RemoveNationCodeAndUserSeed.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,6 +19,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DomainClass\DomainClass.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Extensions\" />
   </ItemGroup>
 
 </Project>
