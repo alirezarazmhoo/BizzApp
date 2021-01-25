@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DomainClass.Enums;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace DomainClass.Businesses
@@ -12,8 +13,10 @@ namespace DomainClass.Businesses
 		[Required]
 		public int FeatureId { get; set; }
 		public int? Value { get; set; }
-
 		public virtual Business Business { get; set; }
 		public virtual Feature Feature { get; set; }
+		public BusinessFeatureType  BusinessFeatureType { get; set; }
+
+
 	}
 }

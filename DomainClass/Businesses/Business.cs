@@ -19,6 +19,8 @@ namespace DomainClass.Businesses
 		public string Address { get; set; }
 		[Column(TypeName = "nvarchar(100)")]
 		public string WebsiteUrl { get; set; }
+		[Column(TypeName = "nvarchar(100)")]
+		public string Biography { get; set; }
 		[Required]
 		public int DistrictId { get; set; }
 		public int? CategoryId { get; set; }
@@ -31,6 +33,15 @@ namespace DomainClass.Businesses
 		[AllowNull]
 		public string UserCreatorId { get; set; }
 		public BizAppUser UserCreator { get; set;  }
+
+
+		public int?  CityId { get; set; }
+		public virtual City City { get; set; }
+		public int? ProvinceId { get; set; }
+		public virtual Province Province { get; set; }
+
+		public double Latitude { get; set; }
+		public double Longitude { get; set; }
 
 		public virtual ICollection<BusinessCallNumber> CallNumbers { get; set; }
 		public virtual ICollection<BusinessGallery> Galleries { get; set; }

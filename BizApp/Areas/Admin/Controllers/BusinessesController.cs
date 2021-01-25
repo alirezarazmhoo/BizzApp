@@ -7,7 +7,9 @@ using BizApp.Areas.Admin.Models;
 using BizApp.Utility;
 using DataLayer.Infrastructure;
 using DomainClass;
+using DomainClass.Businesses;
 using DomainClass.Businesses.Queries;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BizApp.Areas.Admin.Controllers
@@ -42,7 +44,7 @@ namespace BizApp.Areas.Admin.Controllers
 
 				return View(PaginatedList<BusinessListViewModel>.CreateAsync(businesses.AsQueryable(), pageNumber ?? 1, pageSize));
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				return Json(new { success = false, responseText = CustomeMessages.Fail });
 			}
@@ -55,25 +57,116 @@ namespace BizApp.Areas.Admin.Controllers
 			{
 				// get provinces
 				var provinceEntities = await _unitOfWork.ProvinceRepo.GetAll();
-
 				// convert provinces to view model
 				var provinces = provinceEntities.Select(s => _mapper.Map<Province, ProvinceViewModel>(s)).ToList();
 				ViewBag.Provinces = provinces;
+				ViewData["Categorie"] = await _unitOfWork.CategoryRepo.GetAll();
 				return View(new CreateBusinessViewModel(provinces));
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				return Json(new { success = false, responseText = CustomeMessages.Fail });
 			}
-
+		}
+		[HttpPost, ActionName("create")]
+		public async Task<IActionResult>  CreatePost(CreateBusinessViewModel model, IFormFile file, IFormFile[] BussinessFiles)
+		{
+			try
+			{
+				var entity = _mapper.Map<Business>(model);
+				await _unitOfWork.BusinessRepo.Add(entity, file , BussinessFiles );
+				await _unitOfWork.SaveAsync();
+			}
+			catch (Exception)
+			{
+				return Json(new { success = false, responseText = CustomeMessages.Fail });
+			}
+			return View();
 		}
 
-		[HttpPost, ActionName("create")]
-		public IActionResult CreatePost(CreateBusinessViewModel model)
+		[HttpGet, ActionName("getchildscategories")]
+		public async Task<JsonResult> getchildscategories(int Id)
 		{
+			if(Id != 0)
+			{
+				var data =await _unitOfWork.CategoryRepo.AdminGetChildsCateogry(Id);
+				return Json(new { success = true, list = data.items.ToList(), isfinal = data.Isfinal, parentid = data.Parentid });
+			}
+			else
+			{
+				return Json(new { success = false, responseText = CustomeMessages.Fail });
+			}
+		}
+
+		[HttpGet, ActionName("getbackcategories")]
+		public async Task<JsonResult> getbackcategories(int Id)
+		{
+			if (Id != 0)
+			{
+				var data = await _unitOfWork.CategoryRepo.GetBackCategories(Id);
+				return Json(new { success = true, list = data.items.ToList(), isfinal = data.Isfinal, parentid = data.Parentid });
+			}
+			else
+			{
+				return Json(new { success = false, responseText = CustomeMessages.Fail });
+			}
+		}
 
 
-			return View();
+		[HttpGet, ActionName("BusinessFeature")]
+		public async Task<IActionResult> BusinessFeature(Guid? Id)
+		{
+			if (Id.HasValue)
+			{
+				Business businessItem =await _unitOfWork.BusinessRepo.GetById(Id.Value);
+				if(businessItem != null)
+				{
+				ViewBag.BussinessId = Id;
+		      	ViewBag.BussinessName = businessItem.Name; 
+				return View(await _unitOfWork.BusinessRepo.GetBusinessFature(Id));
+				}
+				else
+				{
+					return NotFound();
+				}
+			}
+			else
+			{
+				return NotFound();
+			}
+		}
+
+
+		[HttpGet, ActionName("AssingBusinessFeature")]
+		public async Task<IActionResult> AssingBusinessFeature(Guid? Id ,int FeatureId)
+		{
+			if (Id.HasValue && FeatureId !=0)
+			{
+				await _unitOfWork.BusinessRepo.AssignFeature(Id.Value , FeatureId);
+				await _unitOfWork.SaveAsync();
+				return RedirectToAction("BusinessFeature", "Businesses", new { Id = Id.Value });
+			}
+			else
+			{
+				return RedirectToAction("BusinessFeature", "Businesses", new { Id = Id.Value });
+
+			}
+		}
+
+		[HttpGet, ActionName("RemoveBusinessFeature")]
+		public async Task<IActionResult> RemoveBusinessFeature(Guid? Id, int FeatureId)
+		{
+			if (Id.HasValue && FeatureId != 0)
+			{
+
+				await _unitOfWork.BusinessRepo.RemoveFeature(Id.Value, FeatureId);
+				await _unitOfWork.SaveAsync();
+				return RedirectToAction("BusinessFeature", "Businesses", new { Id = Id.Value });
+			}
+			else
+			{
+				return RedirectToAction("BusinessFeature", "Businesses", new { Id = Id.Value });
+			}
 		}
 	}
 }

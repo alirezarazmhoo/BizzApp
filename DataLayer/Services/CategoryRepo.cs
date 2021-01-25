@@ -1,9 +1,11 @@
 ﻿using DataLayer.Data;
 using DataLayer.Infrastructure;
 using DomainClass;
+using DomainClass.Businesses.Queries;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,7 +23,7 @@ namespace DataLayer.Services
 			else
 				Update(model);
 		}
-		public async Task<List<Category>> GetAll()
+		public async Task<IEnumerable<Category>> GetAll()
 		{
 			return await FindByCondition(f=>f.ParentCategoryId == null).ToListAsync();
 		}
@@ -52,5 +54,77 @@ namespace DataLayer.Services
 			return await FindByCondition(f => f.ParentCategoryId == Id).CountAsync();
 		}
 
+		public async Task<ChildsCategoryResponse> AdminGetChildsCateogry(int Id)
+		{
+			List<ComboBoxViewModel> items = new List<ComboBoxViewModel>();
+			ChildsCategoryResponse childsCategoryResponse = new ChildsCategoryResponse();
+			var categoryitems = await DbContext.Categories.Where(s => s.ParentCategoryId == Id).ToListAsync();
+			if (categoryitems.Count() > 0)
+			{
+				foreach (var item in categoryitems)
+				{
+					items.Add(new ComboBoxViewModel() {  id = item.Id,  name = item.Name,   havenext = DbContext.Categories.Any(s => s.ParentCategoryId == item.Id) });
+				}
+				childsCategoryResponse.items = items;
+				childsCategoryResponse.Isfinal = false;
+				childsCategoryResponse.Parentid = Id;
+				return childsCategoryResponse; 
+			}
+			else
+			{
+				var catitem = await DbContext.Categories.Where(s => s.Id == Id).FirstOrDefaultAsync();
+				if (catitem != null)
+				{
+					items.Add(new ComboBoxViewModel() {   id = catitem.Id,   name = catitem.Name  });
+				}
+				childsCategoryResponse.items = items;
+				childsCategoryResponse.Isfinal = true;
+				childsCategoryResponse.Parentid = Id;
+				return childsCategoryResponse;
+			}
+		}
+
+		public async Task<ChildsCategoryResponse> GetBackCategories(int Id)
+		{
+			bool isfinal = true;
+			List<ComboBoxViewModel> items = new List<ComboBoxViewModel>();
+			ChildsCategoryResponse childsCategoryResponse = new ChildsCategoryResponse();
+
+			var categoriitem = await DbContext.Categories.Where(s => s.Id == Id).FirstOrDefaultAsync();
+			if (categoriitem != null)
+			{
+				var previouscategores = await DbContext.Categories.Where(s => s.ParentCategoryId == categoriitem.ParentCategoryId).ToListAsync();
+				if (previouscategores.Count() > 0)
+				{
+					foreach (var item in previouscategores)
+					{
+						items.Add(new ComboBoxViewModel() {  id = item.Id,  name = item.Name,   havenext = DbContext.Categories.Any(s => s.ParentCategoryId == item.Id) });
+					}
+					foreach (var item2 in previouscategores)
+					{
+						if (item2.ParentCategoryId != null)
+						{
+							isfinal = false;
+							break;
+						}
+					}
+					childsCategoryResponse.items = items;
+					childsCategoryResponse.Isfinal = true;
+					if (categoriitem.ParentCategoryId.HasValue)
+					{
+						childsCategoryResponse.Parentid = categoriitem.ParentCategoryId.Value;
+					}
+					else
+					{
+						childsCategoryResponse.Parentid = null; 
+					}
+				}
+				return childsCategoryResponse; 
+			}
+
+			return null; 
+
+
+		}
 	}
 }
