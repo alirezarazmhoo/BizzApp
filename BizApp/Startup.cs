@@ -34,6 +34,7 @@ namespace BizApp
 		{
 
 			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=BizApp;Trusted_Connection=True;MultipleActiveResultSets=true"));
+
 			//services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Data Source=45.159.113.39,2014;Initial Catalog=BizApp;User ID=BizzApp;Password=BizzApp2021;MultipleActiveResultSets=true"));
 
 			//services.AddDbContext<ApplicationDbContext>(options =>
@@ -92,7 +93,8 @@ namespace BizApp
 			{
 				endpoints.MapControllerRoute(
 					name: "adminArea",
-					pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+					pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}")
+				.RequireAuthorization();
 
 				endpoints.MapControllerRoute(
 					name: "default",

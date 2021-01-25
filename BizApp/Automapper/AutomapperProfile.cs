@@ -46,6 +46,10 @@ namespace BizApp.Automapper
 			// Business List
 			CreateMap<BusinessListQuery, BusinessListViewModel>().ReverseMap();
 
+			// Users
+			CreateMap<BizAppUser, UserViewModel>().ReverseMap();
+			CreateMap<BizAppUser, UpdateOperatorViewModel>().ReverseMap();
+
 			// Business Create
 			CreateMap<Business, CreateBusinessViewModel>()
 			.ForMember(dest => dest.address, opt => opt.MapFrom(src => src.Address))
@@ -59,6 +63,7 @@ namespace BizApp.Automapper
 			.ForMember(dest => dest.websiteurl, opt => opt.MapFrom(src => src.WebsiteUrl))
 			.ForMember(dest => dest.categoryId, opt => opt.MapFrom(src => src.CategoryId))
 			.ReverseMap();
+
 		}
 	}
 }

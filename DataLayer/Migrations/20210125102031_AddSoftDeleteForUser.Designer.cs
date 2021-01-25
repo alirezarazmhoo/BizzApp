@@ -4,14 +4,16 @@ using DataLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210125102031_AddSoftDeleteForUser")]
+    partial class AddSoftDeleteForUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -141,13 +143,7 @@ namespace DataLayer.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("Biography")
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CityId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -159,18 +155,9 @@ namespace DataLayer.Migrations
                     b.Property<string>("FeatureImage")
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<double>("Latitude")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Longitude")
-                        .HasColumnType("float");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<int?>("ProvinceId")
-                        .HasColumnType("int");
 
                     b.Property<string>("UserCreatorId")
                         .HasColumnType("nvarchar(450)");
@@ -182,11 +169,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("CityId");
-
                     b.HasIndex("DistrictId");
-
-                    b.HasIndex("ProvinceId");
 
                     b.HasIndex("UserCreatorId");
 
@@ -220,9 +203,6 @@ namespace DataLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("BusinessFeatureType")
-                        .HasColumnType("int");
 
                     b.Property<Guid>("BusinessId")
                         .HasColumnType("uniqueidentifier");
@@ -576,19 +556,11 @@ namespace DataLayer.Migrations
                         .WithMany()
                         .HasForeignKey("CategoryId");
 
-                    b.HasOne("DomainClass.City", "City")
-                        .WithMany()
-                        .HasForeignKey("CityId");
-
                     b.HasOne("DomainClass.District", "District")
                         .WithMany()
                         .HasForeignKey("DistrictId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("DomainClass.Province", "Province")
-                        .WithMany()
-                        .HasForeignKey("ProvinceId");
 
                     b.HasOne("DomainClass.BizAppUser", "UserCreator")
                         .WithMany()
