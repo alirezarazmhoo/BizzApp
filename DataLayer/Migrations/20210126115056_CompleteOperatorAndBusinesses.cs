@@ -3,10 +3,16 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataLayer.Migrations
 {
-    public partial class SoftDeleteAndAddUserIdAutoGenerator : Migration
+    public partial class CompleteOperatorAndBusinesses : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<int>(
+                name: "BusinessFeatureType",
+                table: "Features",
+                nullable: false,
+                defaultValue: 0);
+
             migrationBuilder.AlterColumn<string>(
                 name: "NationalCode",
                 table: "AspNetUsers",
@@ -70,7 +76,7 @@ namespace DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Address", "ApiToken", "ConcurrencyStamp", "CreateDate", "Email", "EmailConfirmed", "FullName", "IsDeleted", "LockoutEnabled", "LockoutEnd", "Mobile", "NationalCode", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "Url", "UserName" },
-                values: new object[] { "02174cf0–9412–4cfe-afbf-59f706d72cf6", 0, null, null, "56aeb0a7-5bea-4bf0-9130-bd9051d65d0f", new DateTime(2021, 1, 26, 12, 46, 40, 357, DateTimeKind.Local).AddTicks(9450), "mainadmin@email.com", true, null, false, false, null, 0L, null, "mainadmin@email.com", "mainadmin", null, "AQAAAAEAACcQAAAAEGCoPVRXMkRl16BNzejd+Gc1JWNDeHYmkKoNYtHctI5KZeBHY9h7In6C1a/1sUjzkg==", null, false, "6e5e84c8-f475-43e1-8edd-2451519fed57", false, null, "mianadmin" });
+                values: new object[] { "02174cf0–9412–4cfe-afbf-59f706d72cf6", 0, null, null, "1c40342a-0af3-4268-a4a5-87af1611077a", new DateTime(2021, 1, 26, 15, 20, 55, 491, DateTimeKind.Local).AddTicks(5299), "mainadmin@email.com", true, null, false, false, null, 0L, null, "mainadmin@email.com", "mainadmin", null, "AQAAAAEAACcQAAAAEP9Qh6kgt38RRioQ0/pDmwQF4HhRFJ3qf8MBnZW4jDqpeGTk2B3g9VvO6ImEb4PVxQ==", null, false, "0d503c40-f437-4835-a0e8-1fe32d7e7295", false, null, "mianadmin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -99,6 +105,10 @@ namespace DataLayer.Migrations
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "02174cf0–9412–4cfe-afbf-59f706d72cf6");
+
+            migrationBuilder.DropColumn(
+                name: "BusinessFeatureType",
+                table: "Features");
 
             migrationBuilder.DropColumn(
                 name: "Address",

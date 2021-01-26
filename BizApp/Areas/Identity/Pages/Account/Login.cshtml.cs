@@ -80,7 +80,7 @@ namespace BizApp.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var user = await _userManager.FindByNameAsync(Input.Username);
-                if (user == null)
+                if (user != null)
                 {
                     var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                     if (result.Succeeded)
