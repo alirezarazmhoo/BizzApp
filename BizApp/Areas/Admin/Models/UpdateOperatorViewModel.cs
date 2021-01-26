@@ -6,7 +6,7 @@ namespace BizApp.Areas.Admin.Models
 {
 	public class UpdateOperatorViewModel
 	{
-		public Guid Id { get; set; }
+		public string Id { get; set; }
 		[Required(ErrorMessage = "نام و نام خانوادگی را وارد کنید")]
 		[MaxLength(150, ErrorMessage = "نام و نام خانوادگی بسیار طولانی است")]
 		[MinLength(3, ErrorMessage = "نام و نام خانوادگی حداقل باید دارای 3 کاراکتر باشد")]

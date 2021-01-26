@@ -24,7 +24,7 @@
 		<div class="text-center" style="border-style: solid;border-color:dimgray">
 			<h2 style="font-size:medium">جستجو</h2>
 		</div>
-		@using (Html.BeginForm("Index", "Province", FormMethod.Post))
+		@using (Html.BeginForm("Index", "operator", FormMethod.Get))
 		{
 			<div class="box zmdi-border-color" style="height:auto">
 				<div class="box-body table-responsive no-padding row ">
@@ -180,9 +180,13 @@
 		CreateAllModals();
 		$(".openmodal").click(function () {
 			clear('register', ["input"]);
+
 			// show inputs
 			$("#createInputs").css("display", "");
 			$("#operation").val("addNew");
+			$("#Username").prop('required', true);
+			$("#Password").prop('required', true);
+
 		});
 		$(".btn-warning").click(function () {
 			EditAjax("/admin/operator/GetById", this.id);
@@ -190,6 +194,8 @@
 			// hdie username and password
 			$("#createInputs").css("display", "none");
 			$("#operation").val("update");
+			$('#Username').removeAttr('required');
+			$('#Password').removeAttr('required');
 
 			var bodyStyle = document.body.style;
 			bodyStyle.removeProperty('padding-right');
@@ -230,7 +236,7 @@
 	}
 	function Remove() {
 		var Parameters = [{ id: "Id", htmlname: "Id", special: "" }];
-		PostAjax('/admin/operator/Remove', Parameters, "/admin/operator/Index");
+		PostAjax('/admin/operator/Remove', Parameters, "/admin/operator/");
 	}
 
 

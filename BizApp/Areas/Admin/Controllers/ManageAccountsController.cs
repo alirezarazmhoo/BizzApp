@@ -71,21 +71,29 @@ namespace BizApp.Areas.Admin.Controllers
 			{
 				try
 				{
-					var user = _mapper.Map<BizAppUser>(model);
-					user.EmailConfirmed = true;
-					// Create New User
-					if (model.Id == default)
+					//var user = _mapper.Map<BizAppUser>(model);
+					var user = new BizAppUser
 					{
-						using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+						UserName = model.Username,
+						Address = model.Address,
+						Mobile = model.Mobile,
+						FullName = model.FullName,
+						Email = model.Email,
+						Password = model.Password,
+						EmailConfirmed = true
+					};
+
+					// Create New User
+					using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+					{
+						var result = await _userManager.CreateAsync(user, user.Password);
+						if (result.Succeeded)
 						{
-							var result = await _userManager.CreateAsync(user, user.Password);
-							if (result.Succeeded)
-							{
-								await _userManager.AddToRoleAsync(user, "operator");
-							}
-							scope.Complete();
+							await _userManager.AddToRoleAsync(user, "operator");
 						}
+						scope.Complete();
 					}
+
 					return Json(new { success = true, responseText = CustomeMessages.Succcess });
 				}
 				catch (Exception ex)
@@ -106,7 +114,14 @@ namespace BizApp.Areas.Admin.Controllers
 				try
 				{
 					// Map UpdateOperatorViewModel to BizAppUser
-					var user = _mapper.Map<BizAppUser>(model);
+					var user = new BizAppUser
+					{
+						Id = model.Id,
+						Email = model.Email,
+						Address = model.Address,
+						Mobile = model.Mobile,
+						FullName = model.FullName
+					};
 					// Update New User
 					await _userManager.UpdateAsync(user);
 					return Json(new { success = true, responseText = CustomeMessages.Succcess });
@@ -120,15 +135,15 @@ namespace BizApp.Areas.Admin.Controllers
 			return Json(new { success = false, responseText = CustomeMessages.Empty });
 		}
 
-		[HttpGet("getById")]
-		public async Task<IActionResult> GetById(Guid id)
+		[HttpPost("getById")]
+		public async Task<IActionResult> GetById(string itemId)
 		{
-			if (id == default)
+			if (itemId == default)
 			{
 				return Json(new { success = false, responseText = CustomeMessages.Fail });
 			}
 
-			var user = await _userManager.FindByIdAsync(id.ToString());
+			var user = await _userManager.FindByIdAsync(itemId);
 			if (user == null)
 			{
 				return NotFound();
@@ -144,17 +159,17 @@ namespace BizApp.Areas.Admin.Controllers
 				new EditViewModels { key = "Address", value = model.Address }
 			};
 
-			return Json(new { success = true, listItem = edit.ToList(), majoritem = id });
+			return Json(new { success = true, listItem = edit.ToList(), majoritem = itemId });
 		}
 
 		[HttpPost("remove")]
-		public async Task<IActionResult> Remove(Guid id)
+		public async Task<IActionResult> Remove(string id)
 		{
 			if (id == default) throw new NullReferenceException();
 
 			try
 			{
-				var user = await _userManager.FindByIdAsync(id.ToString());
+				var user = await _userManager.FindByIdAsync(id);
 				await _userManager.DeleteAsync(user);
 
 				return Json(new { success = true, responseText = CustomeMessages.Succcess });

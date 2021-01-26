@@ -29,13 +29,12 @@ namespace DataLayer.Data
 
 			builder.Entity<BizAppUser>().HasData(adminUser);
 
-
 			var adminRoleId = "341743f0-asd2–42de-afbf-59kmkkmk72cf6";
-			var userRoleId = Guid.NewGuid().ToString();
+			var operatorRoleId = "467ffd0e-d5f1-4301-b9c1-bf08f8d351d2";
 
 			builder.Entity<IdentityRole>().HasData(
 				new IdentityRole { Name = "admin", NormalizedName = "admin", Id = adminRoleId, ConcurrencyStamp = adminRoleId},
-				new IdentityRole { Name = "operator", NormalizedName = "operator", Id = userRoleId, ConcurrencyStamp = userRoleId }
+				new IdentityRole { Name = "operator", NormalizedName = "operator", Id = operatorRoleId, ConcurrencyStamp = operatorRoleId }
 			);
 
 			builder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>

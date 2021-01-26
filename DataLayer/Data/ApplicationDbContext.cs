@@ -1,9 +1,11 @@
 ﻿using DomainClass;
 using DomainClass.Businesses;
 using DomainClass.Infrastructure;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -41,6 +43,9 @@ namespace DataLayer.Data
 			builder.Entity<City>().Property(p => p.Id).ValueGeneratedOnAdd();
 
 			builder.Entity<BizAppUser>().HasQueryFilter(m => EF.Property<bool>(m, "IsDeleted") == false);
+
+			// User Id Auto Generator 
+			//builder.Entity<BizAppUser>().Property(p => p.Id).HasDefaultValueSql("NEWID()");
 		}
 
 		public override int SaveChanges()

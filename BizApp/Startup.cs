@@ -50,6 +50,9 @@ namespace BizApp
 			}).AddRoles<IdentityRole>()
 			   .AddEntityFrameworkStores<ApplicationDbContext>();
 
+			//services.AddIdentity<BizAppUser, CustomRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+
+
 			services.AddTransient<IUnitOfWorkRepo, UnitOfWorkRepo>();
 
 			var config = new MapperConfiguration(c =>

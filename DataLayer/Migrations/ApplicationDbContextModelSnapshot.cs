@@ -115,8 +115,8 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d3b475bd-335f-4581-aca9-97ccd0879eab",
-                            CreateDate = new DateTime(2021, 1, 25, 13, 50, 31, 49, DateTimeKind.Local).AddTicks(8392),
+                            ConcurrencyStamp = "56aeb0a7-5bea-4bf0-9130-bd9051d65d0f",
+                            CreateDate = new DateTime(2021, 1, 26, 12, 46, 40, 357, DateTimeKind.Local).AddTicks(9450),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
@@ -124,9 +124,9 @@ namespace DataLayer.Migrations
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKccDMhbmTEgTSz3hDlOJQ9hlU49de3zvLX5bdmVpcyX8n8iHO9Mlpsq68v6/QMQFw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGCoPVRXMkRl16BNzejd+Gc1JWNDeHYmkKoNYtHctI5KZeBHY9h7In6C1a/1sUjzkg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5b90aa01-30fe-43ea-8f56-6b8b8db6503c",
+                            SecurityStamp = "6e5e84c8-f475-43e1-8edd-2451519fed57",
                             TwoFactorEnabled = false,
                             UserName = "mianadmin"
                         });
@@ -448,8 +448,8 @@ namespace DataLayer.Migrations
                         },
                         new
                         {
-                            Id = "f5606f00-0d32-4dc6-bf88-03fb9c53f134",
-                            ConcurrencyStamp = "f5606f00-0d32-4dc6-bf88-03fb9c53f134",
+                            Id = "467ffd0e-d5f1-4301-b9c1-bf08f8d351d2",
+                            ConcurrencyStamp = "467ffd0e-d5f1-4301-b9c1-bf08f8d351d2",
                             Name = "operator",
                             NormalizedName = "operator"
                         });
