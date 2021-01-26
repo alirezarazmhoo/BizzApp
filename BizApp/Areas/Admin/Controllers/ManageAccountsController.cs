@@ -20,12 +20,14 @@ namespace BizApp.Areas.Admin.Controllers
 	[Route("/admin/operator")]
 	public class ManageAccountsController : Controller
 	{
+		private readonly IUnitOfWorkRepo _unitOfWork;
 		private readonly UserManager<BizAppUser> _userManager;
 		private string _userId;
 		private readonly IMapper _mapper;
 
-		public ManageAccountsController(UserManager<BizAppUser> userManager, IMapper mapper)
+		public ManageAccountsController(UserManager<BizAppUser> userManager, IMapper mapper, IUnitOfWorkRepo unitOfWork)
 		{
+			_unitOfWork = unitOfWork;
 			_userManager = userManager;
 			_mapper = mapper;
 		}
@@ -124,6 +126,7 @@ namespace BizApp.Areas.Admin.Controllers
 					};
 					// Update New User
 					await _userManager.UpdateAsync(user);
+					await _unitOfWork.SaveAsync();
 					return Json(new { success = true, responseText = CustomeMessages.Succcess });
 				}
 				catch (Exception ex)

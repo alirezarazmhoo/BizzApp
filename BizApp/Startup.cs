@@ -95,13 +95,13 @@ namespace BizApp
 
 			app.UseEndpoints(endpoints =>
 			{
-				//endpoints.MapControllerRoute(
-				//	name: "adminArea",
-				//	pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}")
-				//.RequireAuthorization();
 				endpoints.MapControllerRoute(
 					name: "adminArea",
-					pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+					pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}")
+				.RequireAuthorization();
+				//endpoints.MapControllerRoute(
+				//	name: "adminArea",
+				//	pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 				endpoints.MapControllerRoute(
 					name: "default",
