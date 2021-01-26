@@ -1,4 +1,5 @@
 ﻿using DomainClass.Businesses;
+using DomainClass.Enums;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -23,6 +24,7 @@ namespace DomainClass
 		public string Name { get; set; }
 		[Required]
 		public string ValueType { get; set; }
+		public BusinessFeatureType BusinessFeatureType { get; set; }
 
 		public virtual ICollection<BusinessFeature> Businesses { get; set; }
 	}

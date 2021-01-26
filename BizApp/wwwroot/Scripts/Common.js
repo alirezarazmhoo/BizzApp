@@ -171,49 +171,14 @@ function EditAjax(ActionName, id) {
             if (response.success) {
                 $.each(response.listItem, function () {                 
                     $('#' + this.key + '').val(this.value);
-                });               
-                //if (response.majoritem != null) {
-                //    $.each(response.majoritem, function () {
-                //        $("#MajorId option[value=" + this.key + "]").attr("selected", true);
-                //    });
-                //}
-                //if (response.gradeitem != null) {
-                //    $.each(response.gradeitem, function () {
-                //        $("#GradeId option[value=" + this.key + "]").attr("selected", true);
-                //    });
-                //}
-                //if (response.teacherfiles != null) {
-                //    var Filescontent = "";
-
-                //    $.each(response.teacherfiles, function () {
-
-                //        Filescontent += '<div id= "' + this.id + '"><img src="../' + this.url + '" style="width: 70px; height: 60px;id="' + this.id + '" " /></div>';
-                //    });
-                //    $('#RemoveImageItems').html(Filescontent);
-                //}
-                //if (response.studentfiles != null) {
-                //    var Filescontent2 = "";
-
-                //    $.each(response.teacherfiles, function () {
-
-                //        Filescontent2 += '<div id= "' + this.id + '"><img src="../' + this.url + '" style="width: 70px; height: 60px;id="' + this.id + '" " /></div>';
-                //    });
-                //    $('#RemoveImageItems').html(Filescontent2);
-                //}
-                //if (response.audio != null) {
-                //    var audiocontent = '<audio controls><source src="../Upload/Music/' + response.audio + '" ></audio>';
-                //    $('#MusicItem').html(audiocontent);
-                //}
-                //if (response.musicattachedfiles != null) {
-                //    var MusicFilescontent = "";
-
-                //    $.each(response.musicattachedfiles, function () {
-                //        if (this.specialtypefile == "Picture") {
-                //            MusicFilescontent +='<div id= "' + this.id + '"><img src="../Upload/MusicFiles/' + this.url + '" style="width: 70px; height: 60px;id="' + this.id + '" " /><button type="button"  class="btn btn-danger btn-sm btnremovefile"   style="width:30px;margin-left:30%;"><i class="fa fa-remove"></i></button></div>';
-                //        }
-                //        $('#RemoveMusicFilesItems').html(MusicFilescontent);
-                //    }); 
-                //}             
+                });   
+                if (response.featuretype != null) {
+                    
+                    $.each(response.featuretype, function () {
+                       
+                        $("#FeatureType option[value=" + this.key + "]").attr("selected", true);
+                    });
+                }
                 $('#myModal').modal('show');
             }
             else {
