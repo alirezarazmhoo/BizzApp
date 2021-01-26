@@ -76,12 +76,12 @@ namespace BizApp.Areas.Admin.Controllers
 					// Create New User
 					if (model.Id == default)
 					{
-						using (TransactionScope scope = new TransactionScope())
+						using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
 						{
 							var result = await _userManager.CreateAsync(user, user.Password);
 							if (result.Succeeded)
 							{
-								await _userManager.AddToRoleAsync(user, "user");
+								await _userManager.AddToRoleAsync(user, "operator");
 							}
 							scope.Complete();
 						}

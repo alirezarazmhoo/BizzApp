@@ -1,6 +1,8 @@
-﻿namespace DomainClass
+﻿using DomainClass.Infrastructure;
+
+namespace DomainClass
 {
-	public class BizAppUser : ApplicationUser
+	public class BizAppUser : ApplicationUser, ISoftDelete
 	{
 		public bool IsDeleted { get; set; }
 	}
