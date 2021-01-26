@@ -81,7 +81,7 @@ namespace BizApp.Areas.Admin.Controllers
 			{
 				return Json(new { success = false, responseText = CustomeMessages.Fail });
 			}
-			return View();
+			return RedirectToAction(nameof(Index));
 		}
 
 		[HttpGet, ActionName("getchildscategories")]
@@ -168,5 +168,28 @@ namespace BizApp.Areas.Admin.Controllers
 				return RedirectToAction("BusinessFeature", "Businesses", new { Id = Id.Value });
 			}
 		}
+
+		[HttpPost]
+		public async Task<JsonResult> Remove(Guid BusinessId)
+		{
+			try
+			{
+				var item = await _unitOfWork.BusinessRepo.GetById(BusinessId);
+				if (item == null)
+				{
+					return Json(new { success = false, responseText = CustomeMessages.Try });
+				}
+			await	_unitOfWork.BusinessRepo.Remove(item);
+				await _unitOfWork.SaveAsync();
+				return Json(new { success = true, responseText = CustomeMessages.Succcess });
+			}
+			catch (Exception)
+			{
+				return Json(new { success = false, responseText = CustomeMessages.Fail });
+			}
+		}
+
+
+
 	}
 }

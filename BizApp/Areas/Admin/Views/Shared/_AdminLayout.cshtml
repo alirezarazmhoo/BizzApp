@@ -63,8 +63,7 @@
 					</div>
 				</div>
 				<ul class="sidebar-menu" data-widget="tree">
-					@if (User.IsInRole("admin"))
-					{
+				
 						<li class="treeview">
 							<a>
 								<i class="fa fa-globe"></i> <span>مدیریت مناطق</span>
@@ -104,9 +103,8 @@
 								@*<li><a href="/admin/City"><i class="fa fa-building"></i>ثبت متصدی</a></li>*@
 							</ul>
 						</li>
-					}
-					else if (User.IsInRole("operator") || User.IsInRole("admin"))
-					{
+					
+				
 						<li class="treeview">
 							<a>
 								<i class="fa fa-gears"></i> <span>کسب و کارها</span>
@@ -119,7 +117,11 @@
 								<li><a href="/admin/Feature/Index"><i class="fa fa-id-card"></i>مدیریت ویژگی کسب و کار</a></li>
 							</ul>
 						</li>
-					}
+					
+			
+					
+
+
 					@*<li class="active">
 			<a href="/SchoolName/Index"><i class="fas fa-school"></i> <span>مدیریت مناطق</span></a>
 

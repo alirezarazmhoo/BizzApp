@@ -41,6 +41,7 @@ namespace BizApp.Automapper
 			// Feature
 			CreateMap<Feature, FeatureViewModel>()
 				.ForMember(dest => dest.FeatureId, opt => opt.MapFrom(src => src.Id))
+			    .ForMember(dest => dest.FeatureType, opt => opt.MapFrom(src => src.BusinessFeatureType))
 				.ReverseMap();
 
 			// Business List

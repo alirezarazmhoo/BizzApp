@@ -28,6 +28,7 @@ namespace DataLayer.Services
 			using (var fileStream = new FileStream(filePath, FileMode.Create))
 			{
 				mainimage.CopyTo(fileStream);
+				model.FeatureImage = "/Upload/Bussiness/Files/" + fileName; ;
 			}
 			DbContext.Businesses.Add(model);
 			DbContext.SaveChanges();
@@ -48,7 +49,7 @@ namespace DataLayer.Services
 					}) ;
 				}
 			}
-			await CreateAsync(model);
+		
 		}
 		public void Update(Business model)
 		{
@@ -86,11 +87,23 @@ namespace DataLayer.Services
 
 		public async Task<Business> GetById(Guid id)
 		{
-			return await FindByCondition(f => f.Id == id).FirstOrDefaultAsync();
+			return await FindByCondition(f => f.Id == id).Include(s=>s.Galleries).FirstOrDefaultAsync();
 		}
 
-		public void Remove(Business model)
+		public async Task Remove(Business model)
 		{
+			var MainItem = await GetById(model.Id);
+			if (!string.IsNullOrEmpty(model.FeatureImage))
+			{		
+				File.Delete($"wwwroot/{MainItem.FeatureImage}");
+			}
+			if (MainItem.Galleries.Count > 0)
+			{
+				foreach (var item in MainItem.Galleries)
+				{
+					File.Delete($"wwwroot/{item.FileAddress}");
+				}
+			}
 			Delete(model);
 		}
 		public async Task<IEnumerable<AllBusinessFeatureViewModel>> GetBusinessFature(Guid? id)
@@ -136,14 +149,6 @@ namespace DataLayer.Services
 				DbContext.BusinessFeatures.Remove(businessFeature);
 
 			}
-
-
-
-
 		}
-
-
-
-
 	}
 }

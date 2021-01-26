@@ -105,13 +105,17 @@ namespace BizApp.Areas.Admin.Controllers
 
 
 			var model = _mapper.Map<FeatureViewModel>(feature);
+			List<EditViewModels> FeatureTypeItem = new List<EditViewModels>();
+
 			var edit = new List<EditViewModels>
 			{
 				new EditViewModels { key = "Name", value = model.Name },
-				new EditViewModels { key = "FeatureId", value = model.FeatureId.ToString() }
+				new EditViewModels { key = "FeatureId", value = model.FeatureId.ToString() },
+			
 			};
+			FeatureTypeItem.Add(new EditViewModels() { key = model.FeatureType.ToString(), value = "" });
 
-			return Json(new { success = true, listItem = edit.ToList(), majoritem = ItemId });
+			return Json(new { success = true, listItem = edit.ToList(), majoritem = ItemId , featuretype = FeatureTypeItem });
 		}
 	}
 }

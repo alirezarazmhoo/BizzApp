@@ -36,7 +36,7 @@
 					</div>
 				</div>
 				<div style="margin-top:20px" dir="rtl">
-					<button style="margin-right:20px;" type="submit" class="btn btn-primary">جتسجو یا بارگزاری مجدد</button>
+					<button style="margin-right:20px;" type="submit" class="btn btn-primary">جستجو یا بارگزاری مجدد</button>
 				</div>
 			</div>
 		}
@@ -72,28 +72,30 @@
 					@{ int rowNo = 0; }
 					@foreach (var item in Model)
 					{
-				<tr>
-					<td>
-						@(++rowNo)
-					</td>
-					<td>
-						@item.Name
-					</td>
-					<td>
-						@item.CityName
-					</td>
-					<td>
-						@item.DistrictName
-					</td>
-					<td>
-						@item.CategoryName
-					</td>
-					<td>
-						<a type="button" class="btn btn-dark" href="/admin/Businesses/BusinessFeature?Id=@item.Id">تخصیص ویژگی های کسب و کار</a> |
-						<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.Id">تخصیص ویژگی دسته بندی</button> |
-						@*<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.Id"> ویرایش</button>*@
-					</td>
-				</tr>
+						<tr>
+							<td>
+								@(++rowNo)
+							</td>
+							<td>
+								@item.Name
+							</td>
+							<td>
+								@item.CityName
+							</td>
+							<td>
+								@item.DistrictName
+							</td>
+							<td>
+								@item.CategoryName
+							</td>
+							<td>
+								<a type="button" class="btn btn-dark" href="/admin/Businesses/BusinessFeature?Id=@item.Id">تخصیص ویژگی های کسب و کار</a> |
+								<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.Id">تخصیص ویژگی دسته بندی</button> |
+								<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.Id">حذف</button>
+
+								@*<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.Id"> ویرایش</button>*@
+							</td>
+						</tr>
 					}
 				</table>
 			</div>
@@ -117,36 +119,10 @@
 
 	</div>
 </div>
-
-<div class="modal fade" id="myModal" role="dialog" style="height:auto;overflow-y:visible">
-	<div class="modal-dialog modal-sm" style="width:400px">
-		<div class="modal-content">
-			<div class="modal-header text-center">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">ثبت جدید</h4>
-			</div>
-			<div class="modal-body" style="height:auto">
-				<form id="register">
-					<input id="Id" name="Id" hidden />
-					<div class="form-group" style="margin-right:5px">
-						<label for="Name"> نام :</label>
-						<input display="نام" id="Name" name="Name" placeholder="نام استان را وارد کنید" class="form-control" style="width:70%" required>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
-				<button type="button" class="btn btn-success" onclick="Save();">ثبت</button>
-			</div>
-		</div>
-	</div>
-</div>
-
+<input id="BusinessId" name="BusinessId"/>
 <div id="Error"></div>
 <div id="Success"></div>
 <div id="Question"></div>
-
-
 <script>
 	window.onload = Load;
 	function Load() {
@@ -171,11 +147,11 @@
 		}
 	}
 	function AssignButtonClicked(elem) {
-		$('#ProvinceId').val($(elem).data('assigned-id'));
+		$('#BusinessId').val($(elem).data('assigned-id'));
 	}
 	function Remove() {
-		var Parameters = [{ id: "ProvinceId", htmlname: "ProvinceId", special: "" }];
-		PostAjax('/admin/Province/Remove', Parameters, "/admin/Province/Index");
+		var Parameters = [{ id: "BusinessId", htmlname: "BusinessId", special: "" }];
+		PostAjax('/admin/Businesses/Remove', Parameters, "/admin/Businesses/Index");
 	}
 
 
