@@ -115,8 +115,11 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "63eb8e7c-45e9-4ffc-8736-0a6728773424",
-                            CreateDate = new DateTime(2021, 1, 26, 10, 19, 40, 929, DateTimeKind.Local).AddTicks(2933),
+
+                            ConcurrencyStamp = "56aeb0a7-5bea-4bf0-9130-bd9051d65d0f",
+                            CreateDate = new DateTime(2021, 1, 26, 12, 46, 40, 357, DateTimeKind.Local).AddTicks(9450),
+
+
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
@@ -124,9 +127,12 @@ namespace DataLayer.Migrations
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHYYGsKwTvdXQqjje9MzWKKUrMetmuvJXBu96nabBFmnMb+Xp8fMIKcDl2ZChvT3WA==",
+
+                            PasswordHash = "AQAAAAEAACcQAAAAEGCoPVRXMkRl16BNzejd+Gc1JWNDeHYmkKoNYtHctI5KZeBHY9h7In6C1a/1sUjzkg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "702732d5-cccd-4c5e-bef4-09105f52a74b",
+                            SecurityStamp = "6e5e84c8-f475-43e1-8edd-2451519fed57",
+
+
                             TwoFactorEnabled = false,
                             UserName = "mianadmin"
                         });
@@ -451,8 +457,10 @@ namespace DataLayer.Migrations
                         },
                         new
                         {
-                            Id = "6cf20c8c-fbce-4c80-8424-0cef41c422f8",
-                            ConcurrencyStamp = "6cf20c8c-fbce-4c80-8424-0cef41c422f8",
+
+                            Id = "467ffd0e-d5f1-4301-b9c1-bf08f8d351d2",
+                            ConcurrencyStamp = "467ffd0e-d5f1-4301-b9c1-bf08f8d351d2",
+
                             Name = "operator",
                             NormalizedName = "operator"
                         });

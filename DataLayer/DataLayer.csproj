@@ -13,6 +13,14 @@
 
     <Compile Remove="Migrations\20210124094546_initial53463456.cs" />
     <Compile Remove="Migrations\20210124094546_initial53463456.Designer.cs" />
+    <Compile Remove="Migrations\20210125102031_AddSoftDeleteForUser.cs" />
+    <Compile Remove="Migrations\20210125102031_AddSoftDeleteForUser.Designer.cs" />
+    <Compile Remove="Migrations\20210126070544_AddUserIdAutoGenerator.cs" />
+    <Compile Remove="Migrations\20210126070544_AddUserIdAutoGenerator.Designer.cs" />
+    <Compile Remove="Migrations\20210126071233_SoftDeleteAndAddUserIdAutoGenerator.cs" />
+    <Compile Remove="Migrations\20210126071233_SoftDeleteAndAddUserIdAutoGenerator.Designer.cs" />
+    <Compile Remove="Migrations\20210126081018_SoftDeleteAndAddUserIdAutoGenerator.cs" />
+    <Compile Remove="Migrations\20210126081018_SoftDeleteAndAddUserIdAutoGenerator.Designer.cs" />
 
   </ItemGroup>
 

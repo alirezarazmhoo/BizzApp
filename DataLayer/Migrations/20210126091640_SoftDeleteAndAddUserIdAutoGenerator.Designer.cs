@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210125102031_AddSoftDeleteForUser")]
-    partial class AddSoftDeleteForUser
+    [Migration("20210126091640_SoftDeleteAndAddUserIdAutoGenerator")]
+    partial class SoftDeleteAndAddUserIdAutoGenerator
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -117,8 +117,8 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d3b475bd-335f-4581-aca9-97ccd0879eab",
-                            CreateDate = new DateTime(2021, 1, 25, 13, 50, 31, 49, DateTimeKind.Local).AddTicks(8392),
+                            ConcurrencyStamp = "56aeb0a7-5bea-4bf0-9130-bd9051d65d0f",
+                            CreateDate = new DateTime(2021, 1, 26, 12, 46, 40, 357, DateTimeKind.Local).AddTicks(9450),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
@@ -126,9 +126,9 @@ namespace DataLayer.Migrations
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKccDMhbmTEgTSz3hDlOJQ9hlU49de3zvLX5bdmVpcyX8n8iHO9Mlpsq68v6/QMQFw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGCoPVRXMkRl16BNzejd+Gc1JWNDeHYmkKoNYtHctI5KZeBHY9h7In6C1a/1sUjzkg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5b90aa01-30fe-43ea-8f56-6b8b8db6503c",
+                            SecurityStamp = "6e5e84c8-f475-43e1-8edd-2451519fed57",
                             TwoFactorEnabled = false,
                             UserName = "mianadmin"
                         });
@@ -143,7 +143,13 @@ namespace DataLayer.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<string>("Biography")
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CityId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -155,9 +161,18 @@ namespace DataLayer.Migrations
                     b.Property<string>("FeatureImage")
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("ProvinceId")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserCreatorId")
                         .HasColumnType("nvarchar(450)");
@@ -169,7 +184,11 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("CityId");
+
                     b.HasIndex("DistrictId");
+
+                    b.HasIndex("ProvinceId");
 
                     b.HasIndex("UserCreatorId");
 
@@ -203,6 +222,9 @@ namespace DataLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BusinessFeatureType")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("BusinessId")
                         .HasColumnType("uniqueidentifier");
@@ -428,8 +450,8 @@ namespace DataLayer.Migrations
                         },
                         new
                         {
-                            Id = "f5606f00-0d32-4dc6-bf88-03fb9c53f134",
-                            ConcurrencyStamp = "f5606f00-0d32-4dc6-bf88-03fb9c53f134",
+                            Id = "467ffd0e-d5f1-4301-b9c1-bf08f8d351d2",
+                            ConcurrencyStamp = "467ffd0e-d5f1-4301-b9c1-bf08f8d351d2",
                             Name = "operator",
                             NormalizedName = "operator"
                         });
@@ -556,11 +578,19 @@ namespace DataLayer.Migrations
                         .WithMany()
                         .HasForeignKey("CategoryId");
 
+                    b.HasOne("DomainClass.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId");
+
                     b.HasOne("DomainClass.District", "District")
                         .WithMany()
                         .HasForeignKey("DistrictId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("DomainClass.Province", "Province")
+                        .WithMany()
+                        .HasForeignKey("ProvinceId");
 
                     b.HasOne("DomainClass.BizAppUser", "UserCreator")
                         .WithMany()
