@@ -115,11 +115,8 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-
-                            ConcurrencyStamp = "56aeb0a7-5bea-4bf0-9130-bd9051d65d0f",
-                            CreateDate = new DateTime(2021, 1, 26, 12, 46, 40, 357, DateTimeKind.Local).AddTicks(9450),
-
-
+                            ConcurrencyStamp = "1c40342a-0af3-4268-a4a5-87af1611077a",
+                            CreateDate = new DateTime(2021, 1, 26, 15, 20, 55, 491, DateTimeKind.Local).AddTicks(5299),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
@@ -127,12 +124,9 @@ namespace DataLayer.Migrations
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-
-                            PasswordHash = "AQAAAAEAACcQAAAAEGCoPVRXMkRl16BNzejd+Gc1JWNDeHYmkKoNYtHctI5KZeBHY9h7In6C1a/1sUjzkg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEP9Qh6kgt38RRioQ0/pDmwQF4HhRFJ3qf8MBnZW4jDqpeGTk2B3g9VvO6ImEb4PVxQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6e5e84c8-f475-43e1-8edd-2451519fed57",
-
-
+                            SecurityStamp = "0d503c40-f437-4835-a0e8-1fe32d7e7295",
                             TwoFactorEnabled = false,
                             UserName = "mianadmin"
                         });
@@ -457,10 +451,8 @@ namespace DataLayer.Migrations
                         },
                         new
                         {
-
                             Id = "467ffd0e-d5f1-4301-b9c1-bf08f8d351d2",
                             ConcurrencyStamp = "467ffd0e-d5f1-4301-b9c1-bf08f8d351d2",
-
                             Name = "operator",
                             NormalizedName = "operator"
                         });

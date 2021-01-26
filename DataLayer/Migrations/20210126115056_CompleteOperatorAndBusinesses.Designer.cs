@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210126064941_FeatureType")]
-    partial class FeatureType
+    [Migration("20210126115056_CompleteOperatorAndBusinesses")]
+    partial class CompleteOperatorAndBusinesses
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -117,8 +117,8 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "63eb8e7c-45e9-4ffc-8736-0a6728773424",
-                            CreateDate = new DateTime(2021, 1, 26, 10, 19, 40, 929, DateTimeKind.Local).AddTicks(2933),
+                            ConcurrencyStamp = "1c40342a-0af3-4268-a4a5-87af1611077a",
+                            CreateDate = new DateTime(2021, 1, 26, 15, 20, 55, 491, DateTimeKind.Local).AddTicks(5299),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
@@ -126,9 +126,9 @@ namespace DataLayer.Migrations
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHYYGsKwTvdXQqjje9MzWKKUrMetmuvJXBu96nabBFmnMb+Xp8fMIKcDl2ZChvT3WA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEP9Qh6kgt38RRioQ0/pDmwQF4HhRFJ3qf8MBnZW4jDqpeGTk2B3g9VvO6ImEb4PVxQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "702732d5-cccd-4c5e-bef4-09105f52a74b",
+                            SecurityStamp = "0d503c40-f437-4835-a0e8-1fe32d7e7295",
                             TwoFactorEnabled = false,
                             UserName = "mianadmin"
                         });
@@ -453,8 +453,8 @@ namespace DataLayer.Migrations
                         },
                         new
                         {
-                            Id = "6cf20c8c-fbce-4c80-8424-0cef41c422f8",
-                            ConcurrencyStamp = "6cf20c8c-fbce-4c80-8424-0cef41c422f8",
+                            Id = "467ffd0e-d5f1-4301-b9c1-bf08f8d351d2",
+                            ConcurrencyStamp = "467ffd0e-d5f1-4301-b9c1-bf08f8d351d2",
                             Name = "operator",
                             NormalizedName = "operator"
                         });
