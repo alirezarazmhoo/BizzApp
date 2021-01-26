@@ -1,7 +1,9 @@
 ﻿using DomainClass;
 using DomainClass.Businesses;
+using DomainClass.Infrastructure;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -61,8 +63,12 @@ namespace DataLayer.Data
 
 		private void UpdateSoftDeleteStatuses()
 		{
+			bool isSoftDelete;
 			foreach (var entry in ChangeTracker.Entries())
 			{
+				isSoftDelete = typeof(ISoftDelete).IsAssignableFrom(entry.Entity.GetType());
+				if (!isSoftDelete) continue;
+
 				switch (entry.State)
 				{
 					case EntityState.Added:
