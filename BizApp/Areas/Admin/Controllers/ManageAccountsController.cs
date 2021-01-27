@@ -9,7 +9,6 @@ using BizApp.Models.Basic;
 using BizApp.Utility;
 using DataLayer.Infrastructure;
 using DomainClass;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -59,7 +58,7 @@ namespace BizApp.Areas.Admin.Controllers
 
 				return View(PaginatedList<UserViewModel>.CreateAsync(users.AsQueryable(), pageNumber ?? 1, pageSize));
 			}
-			catch (Exception ex)
+			catch // (Exception ex)
 			{
 				return Json(new { success = false, responseText = CustomeMessages.Fail });
 			}
@@ -98,7 +97,7 @@ namespace BizApp.Areas.Admin.Controllers
 
 					return Json(new { success = true, responseText = CustomeMessages.Succcess });
 				}
-				catch (Exception ex)
+				catch //(Exception ex)
 				{
 					return Json(new { success = false, responseText = CustomeMessages.Fail });
 				}
@@ -115,21 +114,25 @@ namespace BizApp.Areas.Admin.Controllers
 			{
 				try
 				{
+					// Find user for get username and hash password
+					var user = await _userManager.FindByIdAsync(model.Id);
+
 					// Map UpdateOperatorViewModel to BizAppUser
-					var user = new BizAppUser
-					{
-						Id = model.Id,
-						Email = model.Email,
-						Address = model.Address,
-						Mobile = model.Mobile,
-						FullName = model.FullName
-					};
-					// Update New User
-					await _userManager.UpdateAsync(user);
-					//await _unitOfWork.SaveAsync();
-					return Json(new { success = true, responseText = CustomeMessages.Succcess });
+					user.Address = model.Address;
+					user.Email = model.Email;
+					user.Mobile = model.Mobile;
+					user.FullName = model.FullName;
+
+					//update data
+					var result = await _userManager.UpdateAsync(user);
+					
+					// if updated
+					if (result == IdentityResult.Success)
+						return Json(new { success = true, responseText = CustomeMessages.Succcess });
+
+					return Json(new { success = false, responseText = CustomeMessages.Fail });
 				}
-				catch (Exception ex)
+				catch
 				{
 					return Json(new { success = false, responseText = CustomeMessages.Fail });
 				}
@@ -177,7 +180,7 @@ namespace BizApp.Areas.Admin.Controllers
 
 				return Json(new { success = true, responseText = CustomeMessages.Succcess });
 			}
-			catch (Exception ex)
+			catch //(Exception ex)
 			{
 				return Json(new { success = false, responseText = CustomeMessages.Fail });
 			}
