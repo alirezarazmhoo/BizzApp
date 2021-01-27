@@ -15,10 +15,10 @@ namespace DataLayer.Data
 			var adminUser = new BizAppUser
 			{
 				Id = userId,
-				UserName = "mianadmin",
-				NormalizedUserName = "mainadmin",
-				Email = "mainadmin@email.com",
-				NormalizedEmail = "mainadmin@email.com",
+				UserName = "mainnadmin",
+				NormalizedUserName = "mainnadmin",
+				Email = "mainnadmin@email.com",
+				NormalizedEmail = "mainnadmin@email.com",
 				EmailConfirmed = true,
 				LockoutEnabled = false,
 				SecurityStamp = Guid.NewGuid().ToString(),
