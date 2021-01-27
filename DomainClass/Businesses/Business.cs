@@ -33,6 +33,8 @@ namespace DomainClass.Businesses
 		[AllowNull]
 		public string UserCreatorId { get; set; }
 		public BizAppUser UserCreator { get; set;  }
+		[Required]
+		public DateTime CreatedDate { get; set; } = DateTime.Now;
 
 
 		public int?  CityId { get; set; }

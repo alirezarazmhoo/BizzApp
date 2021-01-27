@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BizApp.Areas.Admin.Models;
+using BizApp.Utility;
 using DomainClass;
 using DomainClass.Businesses;
 using DomainClass.Businesses.Queries;
@@ -45,7 +46,9 @@ namespace BizApp.Automapper
 				.ReverseMap();
 
 			// Business List
-			CreateMap<BusinessListQuery, BusinessListViewModel>().ReverseMap();
+			CreateMap<BusinessListQuery, BusinessListViewModel>()
+				.ForMember(d => d.CreatedDate, opt => opt.MapFrom(src => src.CreatedDate.ToPersianShortDate()))
+				.ReverseMap();
 
 			// Users
 			CreateMap<BizAppUser, UserViewModel>().ReverseMap();
