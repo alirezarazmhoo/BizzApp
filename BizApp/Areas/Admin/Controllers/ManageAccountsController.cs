@@ -126,7 +126,7 @@ namespace BizApp.Areas.Admin.Controllers
 					};
 					// Update New User
 					await _userManager.UpdateAsync(user);
-					await _unitOfWork.SaveAsync();
+					//await _unitOfWork.SaveAsync();
 					return Json(new { success = true, responseText = CustomeMessages.Succcess });
 				}
 				catch (Exception ex)

@@ -40,7 +40,9 @@
 				<input asp-for="Input.Password" placeholder="رمز عبور" />
 				<span asp-validation-for="Input.Password" class="text-danger"></span>
 
-				<div class="form-check">
+				<button type="submit">ورود</button>
+
+				<div class="form-check" style="margin-top:10px">
 					<input class="form-check-input" asp-for="Input.RememberMe">
 					<label class="form-check-label" asp-for="Input.RememberMe">
 						@*@Html.DisplayNameFor(m => m.Input.RememberMe)*@
@@ -49,8 +51,7 @@
 					</label>
 				</div>
 				
-				<p class="message">رمز خود را فراموش کرده اید؟ <a id="forgot-password" asp-page="./ForgotPassword">بازیابی رمز عبور</a></p>
-				<button type="submit">ورود</button>
+				@*<p class="message">رمز خود را فراموش کرده اید؟ <a id="forgot-password" asp-page="./ForgotPassword">بازیابی رمز عبور</a></p>*@
 				<div asp-validation-summary="All" class="text-danger"></div>
 
 			</form>

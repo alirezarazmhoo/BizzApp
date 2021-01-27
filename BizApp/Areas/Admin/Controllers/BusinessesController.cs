@@ -77,9 +77,9 @@ namespace BizApp.Areas.Admin.Controllers
 				await _unitOfWork.BusinessRepo.Add(entity, file , BussinessFiles );
 				await _unitOfWork.SaveAsync();
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
-				return Json(new { success = false, responseText = CustomeMessages.Fail });
+				return Json(new { success = false, responseText = ex.Message });
 			}
 			return RedirectToAction(nameof(Index));
 		}

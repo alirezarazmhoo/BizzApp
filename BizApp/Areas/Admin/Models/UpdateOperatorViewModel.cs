@@ -21,7 +21,7 @@ namespace BizApp.Areas.Admin.Models
 		[DisplayName("شماره موبایل")]
 		public long Mobile { get; set; }
 		[MaxLength(100, ErrorMessage = "نشانی بسیار طولانی است")]
-		[MinLength(6, ErrorMessage = "نشانی حداقل باید دارای 6 کاراکتر باشد")]
+		[MinLength(4, ErrorMessage = "نشانی حداقل باید دارای 6 کاراکتر باشد")]
 		[DisplayName("نشانی")]
 		public string Address { get; set; }
 	}

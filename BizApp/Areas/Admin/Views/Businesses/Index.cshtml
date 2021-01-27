@@ -90,7 +90,7 @@
 							</td>
 							<td>
 								<a type="button" class="btn btn-dark" href="/admin/Businesses/BusinessFeature?Id=@item.Id">تخصیص ویژگی های کسب و کار</a> |
-								<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.Id">تخصیص ویژگی دسته بندی</button> |
+								@*<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.Id">تخصیص ویژگی دسته بندی</button> |*@
 								<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.Id">حذف</button>
 
 								@*<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.Id"> ویرایش</button>*@
@@ -119,7 +119,7 @@
 
 	</div>
 </div>
-<input id="BusinessId" name="BusinessId"/>
+<input id="BusinessId" name="BusinessId" hidden/>
 <div id="Error"></div>
 <div id="Success"></div>
 <div id="Question"></div>
