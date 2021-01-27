@@ -38,9 +38,7 @@ namespace BizApp
 
 			//services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Data Source=45.159.113.39,2014;Initial Catalog=BizApp;User ID=BizzApp;Password=BizzApp2021;MultipleActiveResultSets=true"));
 
-			//services.AddDbContext<ApplicationDbContext>(options =>
-			//	options.UseSqlServer(
-			//		Configuration.GetConnectionString("DefaultConnection")));
+	
 			services.AddDefaultIdentity<BizAppUser>(options =>
 			{
 				options.SignIn.RequireConfirmedAccount = false;

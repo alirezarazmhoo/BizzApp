@@ -15,7 +15,7 @@ namespace DataLayer.Data
 			var adminUser = new BizAppUser
 			{
 				Id = userId,
-				UserName = "mianadmin",
+				UserName = "mainadmin",
 				NormalizedUserName = "mainadmin",
 				Email = "mainadmin@email.com",
 				NormalizedEmail = "mainadmin@email.com",

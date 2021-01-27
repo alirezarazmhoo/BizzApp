@@ -4,14 +4,16 @@ using DataLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210127052121_ChangeMainAdmin")]
+    partial class ChangeMainAdmin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,20 +117,20 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e09a6d3c-7b7e-48b4-9cca-4db2e1509d5a",
-                            CreateDate = new DateTime(2021, 1, 27, 9, 19, 47, 141, DateTimeKind.Local).AddTicks(6982),
-                            Email = "mainadmin@email.com",
+                            ConcurrencyStamp = "9dc36be5-0037-400c-9045-219fc8f63e30",
+                            CreateDate = new DateTime(2021, 1, 27, 8, 51, 21, 134, DateTimeKind.Local).AddTicks(6540),
+                            Email = "mainnadmin@email.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
                             LockoutEnabled = false,
                             Mobile = 0L,
-                            NormalizedEmail = "mainadmin@email.com",
-                            NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIneKef5ULoLi2tBMBW7XDc3sht5+hmDkZbccxe6W0nr+PL2iUayO91K7c8Ph3el1A==",
+                            NormalizedEmail = "mainnadmin@email.com",
+                            NormalizedUserName = "mainnadmin",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIAAydL83RRMOMU6AC46emiEGKf0C7PhJ5PHmYYYqea5USioCoBGTTxWiHGJhCak7g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5692ad92-e9dd-470f-9320-ba4fdcc80256",
+                            SecurityStamp = "16100e91-9a2b-4416-b1b2-45cf43c970c0",
                             TwoFactorEnabled = false,
-                            UserName = "mainadmin"
+                            UserName = "mainnadmin"
                         });
                 });
 
