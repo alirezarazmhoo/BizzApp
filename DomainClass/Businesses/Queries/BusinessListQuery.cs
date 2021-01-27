@@ -9,6 +9,8 @@ namespace DomainClass.Businesses.Queries
 		public string DistrictName { get; set; }
 		public string CategoryName { get; set; }
 		public string CityName { get; set; }
+		public DateTime CreatedDate { get; set; }
+		public string Creator { get; set; }
 
 	}
 }

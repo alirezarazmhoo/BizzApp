@@ -66,6 +66,12 @@
 							دسته
 						</th>
 						<th>
+							متصدی
+						</th>
+						<th>
+							تاریخ ثبت
+						</th>
+						<th>
 							عملیات
 						</th>
 					</tr>
@@ -87,6 +93,14 @@
 							</td>
 							<td>
 								@item.CategoryName
+							</td>
+							<td>
+								@item.Creator
+							</td>
+							<td>
+
+								@item.CreatedDate
+								
 							</td>
 							<td>
 								<a type="button" class="btn btn-dark" href="/admin/Businesses/BusinessFeature?Id=@item.Id">تخصیص ویژگی های کسب و کار</a> |
@@ -119,7 +133,7 @@
 
 	</div>
 </div>
-<input id="BusinessId" name="BusinessId" hidden/>
+<input id="BusinessId" name="BusinessId" hidden />
 <div id="Error"></div>
 <div id="Success"></div>
 <div id="Question"></div>

@@ -65,31 +65,56 @@ namespace DataLayer.Services
 						Name = s.Name,
 						DistrictName = s.District.Name,
 						CategoryName = s.Category.Name,
-						 CityName = s.City.Name
+						CityName = s.City.Name,
+						CreatedDate = s.CreatedDate,
+						Creator = s.UserCreator.FullName
 					})
 					.ToListAsync();
 		}
-
-		public async Task<List<BusinessListQuery>> GetAll(string searchString)
+		public async Task<List<BusinessListQuery>> GetAll(string userId)
 		{
-			return 
-				await 
-					FindByCondition(f => (f.Name.Contains(searchString) || f.District.Name.Contains(searchString) || f.Category.Name.Contains(searchString)))					
-						.Select(s => new BusinessListQuery
-						{
-							Id = s.Id,
-							Name = s.Name,
-							DistrictName = s.District.Name,
-							CategoryName = s.Category.Name
-						})
+			return
+				await
+					FindByCondition(f => f.UserCreatorId == userId).Select(s => new BusinessListQuery
+					{
+						Id = s.Id,
+						Name = s.Name,
+						DistrictName = s.District.Name,
+						CategoryName = s.Category.Name,
+						CityName = s.City.Name,
+						Creator = s.UserCreator.FullName,
+						CreatedDate = s.CreatedDate
+					})
 					.ToListAsync();
 		}
+		public async Task<List<BusinessListQuery>> GetAll(string searchString, string userId = null)
+		{
+			var query = FindByCondition(f => (f.Name.Contains(searchString) || 
+											  f.District.Name.Contains(searchString) || 
+											  f.Category.Name.Contains(searchString)));
 
+			if (userId != null)
+				query = FindByCondition(f => (f.Name.Contains(searchString) || 
+											  f.District.Name.Contains(searchString) || 
+											  f.Category.Name.Contains(searchString)) 
+											&& f.UserCreatorId == userId);
+			return await query
+				.Select(s => new BusinessListQuery
+				{
+					Id = s.Id,
+					Name = s.Name,
+					DistrictName = s.District.Name,
+					CategoryName = s.Category.Name,
+					CreatedDate = s.CreatedDate,
+					CityName = s.City.Name,
+					Creator = s.UserCreator.FullName
+				})
+				.ToListAsync();
+		}
 		public async Task<Business> GetById(Guid id)
 		{
 			return await FindByCondition(f => f.Id == id).Include(s=>s.Galleries).FirstOrDefaultAsync();
 		}
-
 		public async Task Remove(Business model)
 		{
 			var MainItem = await GetById(model.Id);

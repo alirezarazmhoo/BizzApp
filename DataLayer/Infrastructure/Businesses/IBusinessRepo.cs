@@ -10,7 +10,8 @@ namespace DataLayer.Infrastructure
 	public interface IBusinessRepo
 	{
 		Task<List<BusinessListQuery>> GetAll();
-		Task<List<BusinessListQuery>> GetAll(string searchString);
+		Task<List<BusinessListQuery>> GetAll(string userId);
+		Task<List<BusinessListQuery>> GetAll(string searchString, string userId = null);
 		Task<Business> GetById(Guid id);
 		Task Add(Business model, IFormFile mainimage, IFormFile[] otherimages); 
 		void Update(Business model);

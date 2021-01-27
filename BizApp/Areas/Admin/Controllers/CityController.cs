@@ -43,7 +43,7 @@ namespace BizApp.Areas.Admin.Controllers
 
 				return View(PaginatedList<CityViewModel>.CreateAsync(cities.AsQueryable(), pageNumber ?? 1, pageSize));
 			}
-			catch (Exception ex)
+			catch //(Exception ex)
 			{
 				return Content(CustomeMessages.Try);
 			}
@@ -63,7 +63,7 @@ namespace BizApp.Areas.Admin.Controllers
 				}
 				return Json(new { success = true, list = items.ToList() });
 			}
-			catch (Exception ex)
+			catch //(Exception ex)
 			{
 				return Json(new { response = false, responseText = "Faild To Get Genres Data" });
 			}
@@ -85,7 +85,7 @@ namespace BizApp.Areas.Admin.Controllers
 
 					return Json(new { success = true, responseText = CustomeMessages.Succcess });
 				}
-				catch (Exception ex)
+				catch //(Exception ex)
 				{
 					return Json(new { success = false, responseText = CustomeMessages.Fail });
 				}
@@ -143,7 +143,7 @@ namespace BizApp.Areas.Admin.Controllers
 				return Json(new { success = true, listItem = edit.ToList(), majoritem = ItemId });
 
 			}
-			catch (Exception ex)
+			catch //(Exception ex)
 			{
 				return Json(new { success = false, responseText = CustomeMessages.Fail });
 

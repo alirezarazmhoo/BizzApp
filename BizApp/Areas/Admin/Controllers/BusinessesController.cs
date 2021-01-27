@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using BizApp.Areas.Admin.Models;
@@ -27,7 +28,7 @@ namespace BizApp.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Index(string searchString, int? pageNumber)
+		public async Task<IActionResult> Index(string searchString, int? pageNumber, string userId = null)
 		{
 			bool shouldSearch = false;
 			try
@@ -35,16 +36,25 @@ namespace BizApp.Areas.Admin.Controllers
 				if (!string.IsNullOrEmpty(searchString)) shouldSearch = true;
 
 				int pageSize = 5;
-				var items = (shouldSearch == false) ?
-						await _unitOfWork.BusinessRepo.GetAll()
-						: await _unitOfWork.BusinessRepo.GetAll(searchString);
 
+				var hasUserFilter = !string.IsNullOrEmpty(userId);
+
+				List<BusinessListQuery> items;
+				if (!shouldSearch && !hasUserFilter) // no search no user filter
+					items = await _unitOfWork.BusinessRepo.GetAll();
+				else if (shouldSearch && !hasUserFilter) // search without user
+					items = await _unitOfWork.BusinessRepo.GetAll(searchString);
+				else if (!shouldSearch && hasUserFilter) // no seach, just user filter
+					items = await _unitOfWork.BusinessRepo.GetAll(userId);
+				else
+					items = await _unitOfWork.BusinessRepo.GetAll(searchString, userId); // search with user filter
+				
 				var businesses = items.Select(s => _mapper.Map<BusinessListQuery, BusinessListViewModel>(s))
 									.OrderByDescending(o => o.Id);
 
 				return View(PaginatedList<BusinessListViewModel>.CreateAsync(businesses.AsQueryable(), pageNumber ?? 1, pageSize));
 			}
-			catch (Exception)
+			catch //(Exception ex)
 			{
 				return Json(new { success = false, responseText = CustomeMessages.Fail });
 			}
@@ -74,6 +84,7 @@ namespace BizApp.Areas.Admin.Controllers
 			try
 			{
 				var entity = _mapper.Map<Business>(model);
+				entity.UserCreatorId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 				await _unitOfWork.BusinessRepo.Add(entity, file , BussinessFiles );
 				await _unitOfWork.SaveAsync();
 			}
