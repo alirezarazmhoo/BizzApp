@@ -63,63 +63,68 @@
 					</div>
 				</div>
 				<ul class="sidebar-menu" data-widget="tree">
+
+					<li class="treeview">
+						<a>
+							<i class="fa fa-globe"></i> <span>مدیریت مناطق</span>
+							<span class="pull-left-container">
+								<i class="fa fa-angle-right pull-left"></i>
+							</span>
+						</a>
+						<ul class="treeview-menu">
+							<li><a href="/admin/Province/Index"><i class="fa fa-bank"></i>استان</a></li>
+							<li><a href="/admin/City"><i class="fa fa-building"></i>شهر</a></li>
+							<li><a href="/admin/district"><i class="fa fa-crosshairs"></i>محدوده کسب و کار</a></li>
+						</ul>
+					</li>
+
+					<li class="treeview">
+						<a>
+							<i class="fa fa-pie-chart"></i> <span>دسته بندی ها</span>
+							<span class="pull-left-container">
+								<i class="fa fa-angle-right pull-left"></i>
+							</span>
+						</a>
+						<ul class="treeview-menu">
+							<li><a href="/admin/Categories/Index"><i class="fa fa-plus-square-o"></i>دسته بندی</a></li>
+
+						</ul>
+					</li>
+
+					<li class="treeview">
+						<a>
+							<i class="fa fa-globe"></i> <span>کاربران</span>
+							<span class="pull-left-container">
+								<i class="fa fa-angle-right pull-left"></i>
+							</span>
+						</a>
+						<ul class="treeview-menu">
+							<li><a href="/admin/operator/"><i class="fa fa-bank"></i>لیست متصدیان</a></li>
+							@*<li><a href="/admin/City"><i class="fa fa-building"></i>ثبت متصدی</a></li>*@
+						</ul>
+					</li>
+
+
+					<li class="treeview">
+						<a>
+							<i class="fa fa-gears"></i> <span>کسب و کارها</span>
+							<span class="pull-left-container">
+								<i class="fa fa-angle-right pull-left"></i>
+							</span>
+						</a>
+						<ul class="treeview-menu">
+							<li><a href="/admin/businesses/Index"><i class="fa fa-id-card"></i>مدیریت کسب و کار</a></li>
+							<li><a href="/admin/Feature/Index"><i class="fa fa-id-card"></i>مدیریت ویژگی کسب و کار</a></li>
+						</ul>
+					</li>
+					<li class="nav-item">
+						<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+							<button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+						</form>
+					</li>
 				
-						<li class="treeview">
-							<a>
-								<i class="fa fa-globe"></i> <span>مدیریت مناطق</span>
-								<span class="pull-left-container">
-									<i class="fa fa-angle-right pull-left"></i>
-								</span>
-							</a>
-							<ul class="treeview-menu">
-								<li><a href="/admin/Province/Index"><i class="fa fa-bank"></i>استان</a></li>
-								<li><a href="/admin/City"><i class="fa fa-building"></i>شهر</a></li>
-								<li><a href="/admin/district"><i class="fa fa-crosshairs"></i>محدوده کسب و کار</a></li>
-							</ul>
-						</li>
 
-						<li class="treeview">
-							<a>
-								<i class="fa fa-pie-chart"></i> <span>دسته بندی ها</span>
-								<span class="pull-left-container">
-									<i class="fa fa-angle-right pull-left"></i>
-								</span>
-							</a>
-							<ul class="treeview-menu">
-								<li><a href="/admin/Categories/Index"><i class="fa fa-plus-square-o"></i>دسته بندی</a></li>
 
-							</ul>
-						</li>
-
-						<li class="treeview">
-							<a>
-								<i class="fa fa-globe"></i> <span>کاربران</span>
-								<span class="pull-left-container">
-									<i class="fa fa-angle-right pull-left"></i>
-								</span>
-							</a>
-							<ul class="treeview-menu">
-								<li><a href="/admin/operator/"><i class="fa fa-bank"></i>لیست متصدیان</a></li>
-								@*<li><a href="/admin/City"><i class="fa fa-building"></i>ثبت متصدی</a></li>*@
-							</ul>
-						</li>
-					
-				
-						<li class="treeview">
-							<a>
-								<i class="fa fa-gears"></i> <span>کسب و کارها</span>
-								<span class="pull-left-container">
-									<i class="fa fa-angle-right pull-left"></i>
-								</span>
-							</a>
-							<ul class="treeview-menu">
-								<li><a href="/admin/businesses/Index"><i class="fa fa-id-card"></i>مدیریت کسب و کار</a></li>
-								<li><a href="/admin/Feature/Index"><i class="fa fa-id-card"></i>مدیریت ویژگی کسب و کار</a></li>
-							</ul>
-						</li>
-					
-			
-					
 
 
 					@*<li class="active">
