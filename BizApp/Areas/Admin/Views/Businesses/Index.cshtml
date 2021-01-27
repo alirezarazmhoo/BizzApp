@@ -24,7 +24,7 @@
 		<div class="text-center" style="border-style: solid;border-color:dimgray">
 			<h2 style="font-size:medium">جستجو</h2>
 		</div>
-		@using (Html.BeginForm("Index", "Businesses", FormMethod.Post))
+		@using (Html.BeginForm("Index", "Businesses", FormMethod.Get))
 		{
 			<div class="box zmdi-border-color" style="height:auto">
 				<div class="box-body table-responsive no-padding row ">
@@ -48,6 +48,13 @@
 	<div class="col-xs-12">
 		<div class="box">
 			<div class="box-body table-responsive no-padding">
+				@if (!string.IsNullOrEmpty(Context.Request.Query["userId"]))
+				{
+					<div class="text-right">
+						<h3 style="font-size:medium">تعداد کسب و کارهای ثبت شده توسط این کاربر: @Model.Count عدد</h3>
+					</div>
+				}
+
 				<table class="table table-hover text-center">
 					<tr>
 						<th>
@@ -100,7 +107,7 @@
 							<td>
 
 								@item.CreatedDate
-								
+
 							</td>
 							<td>
 								<a type="button" class="btn btn-dark" href="/admin/Businesses/BusinessFeature?Id=@item.Id">تخصیص ویژگی های کسب و کار</a> |
@@ -119,7 +126,7 @@
 			var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
 			var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 		}
-
+		
 		<a asp-action="Index"
 		   asp-route-pageNumber="@(Model.PageIndex - 1)"
 		   class="btn btn-default @prevDisabled">
