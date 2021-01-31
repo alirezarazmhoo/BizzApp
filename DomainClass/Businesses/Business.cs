@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DomainClass.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,7 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace DomainClass.Businesses
 {
-	public class Business
+	public class Business : ICreator
 	{
 		[Key]
 		public Guid Id { get; set; }

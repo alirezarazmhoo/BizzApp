@@ -43,7 +43,7 @@ namespace BizApp.Areas.Admin.Controllers
 				if (!shouldSearch && !hasUserFilter) // no search no user filter
 					items = await _unitOfWork.BusinessRepo.GetAll();
 				else if (shouldSearch && !hasUserFilter) // search without user
-					items = await _unitOfWork.BusinessRepo.GetAll(searchString);
+					items = await _unitOfWork.BusinessRepo.GetAll(searchString, null);
 				else if (!shouldSearch && hasUserFilter) // no seach, just user filter
 					items = await _unitOfWork.BusinessRepo.GetAll(userId);
 				else

@@ -1,4 +1,5 @@
 ﻿using DataLayer.Data;
+using DataLayer.Extensions;
 using DataLayer.Infrastructure;
 using DomainClass.Businesses;
 using DomainClass.Businesses.Queries;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,8 +17,11 @@ namespace DataLayer.Services
 {
 	public class BusinessRepo : RepositoryBase<Business>, IBusinessRepo
 	{
-		public BusinessRepo(ApplicationDbContext dbContext) : base(dbContext)
+		private readonly ClaimsPrincipal _currentUser;
+
+		public BusinessRepo(ApplicationDbContext dbContext, ClaimsPrincipal currentUser) : base(dbContext)
 		{
+			_currentUser = currentUser;
 		}
 
 		public async Task Add(Business model , IFormFile mainimage, IFormFile[] otherimages)
@@ -59,7 +64,9 @@ namespace DataLayer.Services
 		{
 			return 
 				await 
-					FindAll().Select(s => new BusinessListQuery
+					FindAll()
+					.ApplyRowsAuthFilter(_currentUser)
+					.Select(s => new BusinessListQuery
 					{
 						Id = s.Id,
 						Name = s.Name,
@@ -68,14 +75,15 @@ namespace DataLayer.Services
 						CityName = s.City.Name,
 						CreatedDate = s.CreatedDate,
 						Creator = s.UserCreator.FullName
-					})
-					.ToListAsync();
+					}).ToListAsync();
 		}
 		public async Task<List<BusinessListQuery>> GetAll(string userId)
 		{
 			return
 				await
-					FindByCondition(f => f.UserCreatorId == userId).Select(s => new BusinessListQuery
+					FindByCondition(f => f.UserCreatorId == userId)
+					.ApplyRowsAuthFilter(_currentUser)
+					.Select(s => new BusinessListQuery
 					{
 						Id = s.Id,
 						Name = s.Name,
@@ -98,7 +106,7 @@ namespace DataLayer.Services
 											  f.District.Name.Contains(searchString) || 
 											  f.Category.Name.Contains(searchString)) 
 											&& f.UserCreatorId == userId);
-			return await query
+			return await query.ApplyRowsAuthFilter(_currentUser)
 				.Select(s => new BusinessListQuery
 				{
 					Id = s.Id,
@@ -109,6 +117,7 @@ namespace DataLayer.Services
 					CityName = s.City.Name,
 					Creator = s.UserCreator.FullName
 				})
+				
 				.ToListAsync();
 		}
 		public async Task<Business> GetById(Guid id)

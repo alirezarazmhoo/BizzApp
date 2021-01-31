@@ -17,6 +17,8 @@ using DataLayer.Services;
 using DataLayer.Infrastructure;
 using AutoMapper;
 using BizApp.Automapper;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace BizApp
 {
@@ -33,9 +35,10 @@ namespace BizApp
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Data Source=45.159.113.39,2014;Initial Catalog=BizAppTestDatabase;User ID=BizzApp;Password=BizzApp2021;MultipleActiveResultSets=true"));
+			services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
 			//services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Data Source=45.159.113.39,2014;Initial Catalog=BizApp;User ID=BizzApp;Password=BizzApp2021;MultipleActiveResultSets=true"));
-				
+
 			services.AddDefaultIdentity<BizAppUser>(options =>
 			{
 				options.SignIn.RequireConfirmedAccount = false;
@@ -47,8 +50,9 @@ namespace BizApp
 			}).AddRoles<IdentityRole>()
 			   .AddEntityFrameworkStores<ApplicationDbContext>();
 
+			services.AddTransient<ClaimsPrincipal>(s => s.GetService<IHttpContextAccessor>().HttpContext.User);
 			//services.AddIdentity<BizAppUser, CustomRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
-			
+
 			services.AddTransient<IUnitOfWorkRepo, UnitOfWorkRepo>();
 
 			var config = new MapperConfiguration(c =>
