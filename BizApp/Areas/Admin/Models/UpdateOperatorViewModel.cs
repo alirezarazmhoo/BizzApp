@@ -24,5 +24,6 @@ namespace BizApp.Areas.Admin.Models
 		[MinLength(4, ErrorMessage = "نشانی حداقل باید دارای 6 کاراکتر باشد")]
 		[DisplayName("نشانی")]
 		public string Address { get; set; }
+		public bool IsEnabled { get; set; }
 	}
 }

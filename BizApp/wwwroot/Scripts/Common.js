@@ -172,6 +172,11 @@ function EditAjax(ActionName, id) {
                 $.each(response.listItem, function () {                 
                     $('#' + this.key + '').val(this.value);
                 });   
+
+                $.each(response.statusitem, function () {
+                    $("#IsEnabled option[value=" + this.key + "]").attr("selected", true);
+                });
+
                 if (response.featuretype != null) {
                     
                     $.each(response.featuretype, function () {

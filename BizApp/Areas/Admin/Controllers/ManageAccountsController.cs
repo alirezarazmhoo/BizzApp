@@ -42,8 +42,7 @@ namespace BizApp.Areas.Admin.Controllers
 				if (!string.IsNullOrEmpty(searchString)) shouldSearch = true;
 
 				var query = _userManager.Users.Where(w => w.Id != _userId);
-
-
+				
 				int pageSize = 5;
 				var items = (shouldSearch == false) ?
 						await query.ToListAsync()
@@ -81,11 +80,12 @@ namespace BizApp.Areas.Admin.Controllers
 						FullName = model.FullName,
 						Email = model.Email,
 						Password = model.Password,
-						EmailConfirmed = true
+						EmailConfirmed = true,
+						IsEnabled = model.IsEnabled
 					};
 
 					// Create New User
-					using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+					using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
 					{
 						var result = await _userManager.CreateAsync(user, user.Password);
 						if (result.Succeeded)
@@ -122,6 +122,7 @@ namespace BizApp.Areas.Admin.Controllers
 					user.Email = model.Email;
 					user.Mobile = model.Mobile;
 					user.FullName = model.FullName;
+					user.IsEnabled = model.IsEnabled;
 
 					//update data
 					var result = await _userManager.UpdateAsync(user);
@@ -156,6 +157,8 @@ namespace BizApp.Areas.Admin.Controllers
 			}
 
 			var model = _mapper.Map<UserViewModel>(user);
+			List<EditViewModels> StatusItem = new List<EditViewModels>();
+
 			var edit = new List<EditViewModels>
 			{
 				new EditViewModels { key = "FullName", value = model.FullName },
@@ -164,8 +167,9 @@ namespace BizApp.Areas.Admin.Controllers
 				new EditViewModels { key = "Email", value = model.Email },
 				new EditViewModels { key = "Address", value = model.Address }
 			};
+			StatusItem.Add(new EditViewModels() { key = model.IsEnabled.ToString(), value = "" });
 
-			return Json(new { success = true, listItem = edit.ToList(), majoritem = itemId });
+			return Json(new { success = true, listItem = edit.ToList(), majoritem = itemId  , statusitem = StatusItem});
 		}
 
 		[HttpPost("remove")]
@@ -185,7 +189,6 @@ namespace BizApp.Areas.Admin.Controllers
 				return Json(new { success = false, responseText = CustomeMessages.Fail });
 			}
 		}
+
 	}
-
-
 }
