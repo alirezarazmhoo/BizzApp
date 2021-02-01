@@ -67,10 +67,12 @@ namespace BizApp.Areas.Admin.Controllers
 			{
 				// get provinces
 				var provinceEntities = await _unitOfWork.ProvinceRepo.GetAll();
+				
 				// convert provinces to view model
 				var provinces = provinceEntities.Select(s => _mapper.Map<Province, ProvinceViewModel>(s)).ToList();
 				ViewBag.Provinces = provinces;
 				ViewData["Categorie"] = await _unitOfWork.CategoryRepo.GetAll();
+
 				return View(new CreateBusinessViewModel(provinces));
 			}
 			catch (Exception)
@@ -79,8 +81,10 @@ namespace BizApp.Areas.Admin.Controllers
 			}
 		}
 		[HttpPost, ActionName("create")]
-		public async Task<IActionResult>  CreatePost(CreateBusinessViewModel model, IFormFile file, IFormFile[] BussinessFiles)
+		public async Task<IActionResult> Create(CreateBusinessViewModel model, IFormFile file, IFormFile[] BussinessFiles)
 		{
+			//if (!ModelState.IsValid) return View(model);
+
 			try
 			{
 				var entity = _mapper.Map<Business>(model);

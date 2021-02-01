@@ -18,8 +18,12 @@ namespace DomainClass.Businesses
 		public string Description { get; set; }
 		[Column(TypeName = "nvarchar(200)")]
 		public string Address { get; set; }
+		[Column(TypeName = "nvarchar(11)")]
+		public string PostalCode { get; set; }
 		[Column(TypeName = "nvarchar(100)")]
 		public string WebsiteUrl { get; set; }
+		[Column(TypeName = "nvarchar(50)")]
+		public string Email { get; set; }
 		[Column(TypeName = "nvarchar(100)")]
 		public string Biography { get; set; }
 		[Required]
