@@ -126,5 +126,14 @@ namespace DataLayer.Services
 
 
 		}
+
+		public List<HierarchyNamesCategory> GetCategoryHierarchyNames(string searchString) 
+		{
+			var result = 
+				DbContext.CategoryHierarchyNames.FromSqlRaw("EXEC [dbo].[sp_GetCategoriesForAutoComplete] @SERACHKEY = {0}", searchString).ToList();
+
+			return result;
+		}
+
 	}
 }

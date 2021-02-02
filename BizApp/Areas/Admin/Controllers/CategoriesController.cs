@@ -10,6 +10,7 @@ using BizApp.Utility;
 using DataLayer.Infrastructure;
 using DomainClass;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BizApp.Areas.Admin.Controllers
 {
@@ -128,5 +129,25 @@ namespace BizApp.Areas.Admin.Controllers
 				return View(categoryViewModel);
 			}
 		}
+
+		[HttpGet]
+		[ActionName("getHierarchyNames")]
+		public JsonResult GetHierarcyNames(string searchString) 
+		{
+			if (string.IsNullOrEmpty(searchString))
+				return Json(new { });
+
+			try
+			{
+				var items = _UnitOfWork.CategoryRepo.GetCategoryHierarchyNames(searchString);
+				return Json(new SelectList(items, "Id", "ListName"));
+			}
+			catch (Exception ex)
+			{
+				return Json(ex.Message);
+			}
+			
+		}
+
 	}
 }

@@ -7,6 +7,10 @@
 	//TempData.Keep("Provinces");
 }
 
+@section head {
+	<link href="~/css/autocomplete.css" rel="stylesheet" />
+}
+
 <div class="content-header">
 	<h1 style="float:right">
 		مدیریت کسب و کارها
@@ -52,9 +56,12 @@
 							<div class="form-group col-md-6">
 								<label for="DistrictId">دسته</label>
 
-								<button type="button" class="btn btn-link" data-target="#modalcategory" data-toggle="modal">انتخاب کنید </button>
-								<input type="text" id="categoryId" name="categoryId" hidden />
-								<p style="margin-right:15px" id="currentcat" name="currentcat"></p>
+								<div style="position: relative; height: 80px;">
+									<input type="text" placeholder="حداقل 3 کاراکتر تایپ کنید" id="autocomplete-ajax" class="form-control" />
+									<div id="categorySelection"></div>
+									<input type="text" name="categoryId" value="0" id="categoryId" style="display:none" />
+								</div>
+
 							</div>
 
 							<div class="form-group">
@@ -150,6 +157,9 @@
 	</div>
 	<!-- /.modal-dialog -->
 </div>
+
+
+<script src="~/lib/autocomplete/jquery.autocomplete.js"></script>
 <script type="text/javascript">
 	$(document).ready(function () {
 		LoadMap(32.650823, 51.668037);
@@ -215,8 +225,43 @@
 		});
 	});
 
-	function CategoryGetChilds(id) {
+	// Initialize ajax autocomplete:
+	// HELP: https://www.devbridge.com/sourcery/components/jquery-autocomplete/
+	$('#autocomplete-ajax').autocomplete({
+		serviceUrl: '/admin/categories/getHierarchyNames',
+		minChars: 3,
+		noSuggestionNotice: "متاسفانه موردی پیدا نشد",
+		paramName: 'searchString',
+		transformResult: function (response) {
+			var result = JSON.parse(response);
+			return {
+				suggestions: $.map(result, function (dataItem) {
+					return { data: dataItem.value, value: dataItem.text };
+				})
+			};
+		},
+		type: "get",
+		//lookupFilter: function (suggestion, originalQuery, queryLowerCase) {
+		//	var re = new RegExp('\\b' + $.Autocomplete.utils.escapeRegExChars(queryLowerCase), 'gi');
+		//	return re.test(suggestion.value);
+		//},
+		onSelect: function (suggestion) {
+			$('#categorySelection').html('<b>دسته انتخاب شده: </b><i>' + suggestion.value + '</i>');
+			$('#categoryId').attr('value', suggestion.data);
+			
+		},
+		//onHint: function (hint) {
+		//	alert(hint);
+		//	$('#categoryId').val(hint);
+		//},
+		onInvalidateSelection: function () {
+			$('#categorySelection').html('دسته انتخاب شده: هیچ');
+			$('#categoryId').attr('value', 0);
+		}
+	});
 
+
+	function CategoryGetChilds(id) {
 		$.ajax({
 			type: "GET",
 			url: "/admin/Businesses/GetChildsCategories?Id=" + id + "",
@@ -249,7 +294,6 @@
 				alert("Error");
 			}
 		});
-
 	}
 
 	function GetBack(id) {
@@ -287,8 +331,6 @@
 				alert("Error");
 			}
 		});
-
-
 	}
 	function SetCatId(id, name) {
 		$("#categoryId").val(id);

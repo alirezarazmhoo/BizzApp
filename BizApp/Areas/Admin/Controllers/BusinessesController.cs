@@ -204,7 +204,5 @@ namespace BizApp.Areas.Admin.Controllers
 			}
 		}
 
-
-
 	}
 }

@@ -30,6 +30,7 @@ namespace DataLayer.Data
 		public DbSet<City> Cities { get; set; }
 		public DbSet<District> Districts { get; set; }
 		public DbSet<Feature> Features { get; set; }
+		public DbSet<HierarchyNamesCategory> CategoryHierarchyNames { get; set; }
 		#endregion
 
 		protected override void OnModelCreating(ModelBuilder builder)
