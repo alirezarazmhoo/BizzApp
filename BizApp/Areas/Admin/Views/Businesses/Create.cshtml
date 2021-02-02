@@ -2,6 +2,9 @@
 
 @{
 	ViewData["Title"] = "Index";
+
+	//var provicnes = TempData["Provinces"] as List<ProvinceViewModel>;
+	//TempData.Keep("Provinces");
 }
 
 <div class="content-header">
@@ -18,7 +21,7 @@
 
 <div class="row">
 	<div class="col-sm-12">
-		@using (Html.BeginForm("create", "Businesses",FormMethod.Post, new { enctype = "multipart/form-data" }))
+		@using (Html.BeginForm("create", "Businesses", FormMethod.Post, new { enctype = "multipart/form-data" }))
 		{
 			<div class="box zmdi-border-color" style="height:auto; padding:5px; margin: 5px;">
 				<div class="box-body table-responsive no-padding row ">
@@ -26,8 +29,9 @@
 						<div class="form-row">
 							<div class="form-group col-md-12">
 								<label for="Name">نام کسب و کار</label>
-								<input asp-for="Name" placeholder="نام کسب و کار را وارد کنید" class="form-control" aria-describedby="namelHelp">
+								<input asp-for="Name" placeholder="نام کسب و کار را وارد کنید" class="form-control" aria-describedby="namelHelp" required>
 								<small id="nameHelp" class="form-text text-muted">نام مناسب با کسب و کار خود را تا حداکثر 50 کاراکتر وارد کنید</small>
+								<span asp-validation-for="Name" class="text-danger"></span>
 							</div>
 
 							<div class="form-group col-md-6">
@@ -39,16 +43,17 @@
 								<select asp-for="cityId" class="form-control" style="margin: 2px 0;">
 									<option>لطفا شهر را انتخاب کنید</option>
 								</select>
-								<select asp-for="districtId" class="form-control" style="margin: 2px 0;">
-									<option>لطفا ناحیه را انتخاب کنید</option>
+								<select asp-for="districtId" class="form-control" style="margin: 2px 0;" required>
+									<option value="0">لطفا ناحیه را انتخاب کنید</option>
 								</select>
+								<span asp-validation-for="districtId" class="text-danger"></span>
 							</div>
 
 							<div class="form-group col-md-6">
 								<label for="DistrictId">دسته</label>
 
 								<button type="button" class="btn btn-link" data-target="#modalcategory" data-toggle="modal">انتخاب کنید </button>
-								<input  type="text" id="categoryId" name="categoryId" hidden />
+								<input type="text" id="categoryId" name="categoryId" hidden />
 								<p style="margin-right:15px" id="currentcat" name="currentcat"></p>
 							</div>
 
@@ -58,16 +63,26 @@
 							<div class="form-group">
 								<textarea asp-for="biograpy" class="form-control" placeholder="بیوگرافی کسب و کار"></textarea>
 							</div>
+
+							<div class="form-group col-md-6">
+								<label for="websiteurl">کد پستی</label>
+								<input asp-for="PostalCode" placeholder="کد پستی را وارد کنید" class="form-control">
+							</div>
+							<div class="form-group col-md-6">
+								<label for="address">نشانی کسب و کار</label>
+								<input asp-for="address" placeholder="نشانی کسب و کار را وارد کنید" class="form-control" required>
+								<span asp-validation-for="address" class="text-danger"></span>
+							</div>
+
 							<div class="form-group col-md-6">
 								<label for="websiteurl">آدرس وبسایت</label>
 								<input asp-for="websiteurl" placeholder="آدرس وبسایت را وارد کنید" class="form-control" aria-describedby="websiteurlHelp">
 								<small id="websiteurlHelp" class="form-text text-muted">مثال: sitename.com</small>
 							</div>
 							<div class="form-group col-md-6">
-								<label for="address">نشانی کسب و کار</label>
-								<input asp-for="address" placeholder="نشانی کسب و کار را وارد کنید" class="form-control">
+								<label for="websiteurl">ایمیل</label>
+								<input asp-for="Email" placeholder="ایمیل را وارد کنید" class="form-control">
 							</div>
-
 
 							<div class="form-group">
 								<label>انتخاب موقعیت</label>
@@ -103,7 +118,7 @@
 					</div>
 				</div>
 				<div style="margin-top:20px">
-					<button style="margin-right:20px;" type="submit" class="btn btn-light">ذخیره کسب و کار</button>
+					<button id="saveButton" style="margin-right:20px;" type="submit" class="btn btn-light">ذخیره کسب و کار</button>
 				</div>
 			</div>
 		}
@@ -137,7 +152,7 @@
 </div>
 <script type="text/javascript">
 	$(document).ready(function () {
-		LoadMap( 32.650823 , 51.668037);
+		LoadMap(32.650823, 51.668037);
 		$("#provinceId").change(function () {
 			// clear city dropdownl
 			$('#cityId').empty();
@@ -186,6 +201,18 @@
 			});
 		});
 
+		$("#districtId").change(function () {
+			$("span[data-valmsg-for='districtId']").html('');
+		});
+
+		$("#saveButton").click(function (e) {
+			var districtId = $("#districtId").val();
+			if (districtId == 0) {
+				e.preventDefault();
+				$("span[data-valmsg-for='districtId']").html('منطقه را انتخاب کنید');
+				$(window).scrollTop($('#districtId').position().top);
+			}
+		});
 	});
 
 	function CategoryGetChilds(id) {
@@ -261,53 +288,53 @@
 			}
 		});
 
-	
+
 	}
-		function SetCatId(id, name) {
-			$("#categoryId").val(id);
-			$("#currentcat").text("دسته انتخابی : " + name + " ")
-			$("#modalcategory").modal('toggle')
+	function SetCatId(id, name) {
+		$("#categoryId").val(id);
+		$("#currentcat").text("دسته انتخابی : " + name + " ")
+		$("#modalcategory").modal('toggle')
 	}
 
 
 	function LoadMap(lon, lat) {
-    
-    var theMarker = {};
-    if (lon == 0 && lat == 0) {
 
-        lon = 32.650823;
-        lat = 51.668037;
-    }
-    var mymap = L.map('mapid').setView([lon, lat], 13);
-    if (lon !== 0 && lat !== 0) {
-        theMarker = L.marker([lon, lat]).addTo(mymap);
+		var theMarker = {};
+		if (lon == 0 && lat == 0) {
 
-    }
-    //var mymap = L.map('mapid').setView([32.650823, 51.668037], 13);
-    //theMarker = L.marker([lon,lat], { icon: icon }).addTo(mymap);
-    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        maxZoom: 18,
-        id: 'mapbox/streets-v11',
-        tileSize: 512,
-        zoomOffset: -1,
-        accessToken: 'pk.eyJ1IjoiYWxpcmV6YXJhem1qb28iLCJhIjoiY2s1Yzg2aTM4MWo1bjNvcDN2dWQwbGs5byJ9.0MqeBvs7xijOfpnGE73R_A'
-    }).addTo(mymap);
-    mymap.on('click', function (e) {
-        var icon = new L.Icon.Default();
-        icon.options.shadowSize = [0, 0];
-        lat = e.latlng.lat;
-        lon = e.latlng.lng;
-        if (theMarker !== undefined) {
+			lon = 32.650823;
+			lat = 51.668037;
+		}
+		var mymap = L.map('mapid').setView([lon, lat], 13);
+		if (lon !== 0 && lat !== 0) {
+			theMarker = L.marker([lon, lat]).addTo(mymap);
 
-            mymap.removeLayer(theMarker);
-        }
-        theMarker = L.marker([lat, lon], { icon: icon }).addTo(mymap);
+		}
+		//var mymap = L.map('mapid').setView([32.650823, 51.668037], 13);
+		//theMarker = L.marker([lon,lat], { icon: icon }).addTo(mymap);
+		L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+			maxZoom: 18,
+			id: 'mapbox/streets-v11',
+			tileSize: 512,
+			zoomOffset: -1,
+			accessToken: 'pk.eyJ1IjoiYWxpcmV6YXJhem1qb28iLCJhIjoiY2s1Yzg2aTM4MWo1bjNvcDN2dWQwbGs5byJ9.0MqeBvs7xijOfpnGE73R_A'
+		}).addTo(mymap);
+		mymap.on('click', function (e) {
+			var icon = new L.Icon.Default();
+			icon.options.shadowSize = [0, 0];
+			lat = e.latlng.lat;
+			lon = e.latlng.lng;
+			if (theMarker !== undefined) {
 
-        $("#latitude").val(e.latlng.lat);
-        $("#longitude").val(e.latlng.lng);
-    });
-}
+				mymap.removeLayer(theMarker);
+			}
+			theMarker = L.marker([lat, lon], { icon: icon }).addTo(mymap);
+
+			$("#latitude").val(e.latlng.lat);
+			$("#longitude").val(e.latlng.lng);
+		});
+	}
 
 
 

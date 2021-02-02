@@ -4,14 +4,16 @@ using DataLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210201062026_AddUserDisableFeature")]
+    partial class AddUserDisableFeature
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,8 +122,8 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0ce4c779-565c-41b5-8df5-7000ef1f4d6d",
-                            CreateDate = new DateTime(2021, 2, 1, 14, 1, 42, 315, DateTimeKind.Local).AddTicks(1601),
+                            ConcurrencyStamp = "0203e438-ef69-4af6-acae-fe1e9c0acb63",
+                            CreateDate = new DateTime(2021, 2, 1, 9, 50, 25, 906, DateTimeKind.Local).AddTicks(3022),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
@@ -130,9 +132,9 @@ namespace DataLayer.Migrations
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEHZ23C3keU5hi35kjaJWaK/EHwcTotAhe07ns4MKZUONpPLsuQEUTQsTDio83Kb4w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEP+CM6axaXPHcR6i74qqFOS2HpZQ4KU1LZeo7cBPzl/pcHOiwp8MjDz7/AmMhq886A==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "bea8269e-780c-494a-96a7-655f6016f187",
+                            SecurityStamp = "a48b455b-8911-40c6-86c0-199864e05e3a",
                             TwoFactorEnabled = false,
                             UserName = "mainadmin"
                         });
@@ -165,9 +167,6 @@ namespace DataLayer.Migrations
                     b.Property<int>("DistrictId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<string>("FeatureImage")
                         .HasColumnType("nvarchar(255)");
 
@@ -180,9 +179,6 @@ namespace DataLayer.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("PostalCode")
-                        .HasColumnType("nvarchar(11)");
 
                     b.Property<int?>("ProvinceId")
                         .HasColumnType("int");

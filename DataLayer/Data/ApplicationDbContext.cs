@@ -39,6 +39,10 @@ namespace DataLayer.Data
 			builder.Entity<Feature>()
 				.Property(b => b.ValueType).HasDefaultValue("bool");
 
+			// default value for IsEnabled in users
+			builder.Entity<BizAppUser>()
+				.Property(b => b.IsEnabled).HasDefaultValue(true);
+
 			builder.Seed();
 			builder.Entity<City>().Property(p => p.Id).ValueGeneratedOnAdd();
 
