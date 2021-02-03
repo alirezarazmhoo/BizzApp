@@ -43,6 +43,10 @@ namespace DataLayer.Data
 			// default value for IsEnabled in users
 			builder.Entity<BizAppUser>()
 				.Property(b => b.IsEnabled).HasDefaultValue(true);
+			
+			// default value for Call Number in business
+			builder.Entity<Business>()
+				.Property(b => b.CallNumber).HasDefaultValue(0);
 
 			builder.Seed();
 			builder.Entity<City>().Property(p => p.Id).ValueGeneratedOnAdd();

@@ -31,7 +31,8 @@ namespace DomainClass.Businesses
 		public int? CategoryId { get; set; }
 		[Column(TypeName = "nvarchar(255)")]
 		public string FeatureImage { get; set; }
-
+		[Required]
+		public long CallNumber { get; set; }
 		public virtual District District { get; set; }
 		public virtual Category Category { get; set; }
 
