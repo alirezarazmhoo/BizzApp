@@ -139,7 +139,7 @@ namespace BizApp.Areas.Admin.Controllers
 
 			try
 			{
-				var items = _UnitOfWork.CategoryRepo.GetCategoryHierarchyNames(searchString);
+				var items = _UnitOfWork.CategoryRepo.GetCategoriesHierarchyNames(searchString);
 				return Json(new SelectList(items, "Id", "ListName"));
 			}
 			catch (Exception ex)

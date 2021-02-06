@@ -150,6 +150,24 @@ namespace BizApp.Areas.Admin.Models
 
 		}
 
+		[HttpGet]
+		[ActionName("getAllWithParentNames")]
+		public async Task<JsonResult> GetAllWithParentNames(string searchString) 
+		{
+			if (string.IsNullOrEmpty(searchString))
+				return Json(new { });
+
+			try
+			{
+				var items = await _unitOfWork.DistrictRepo.GetAllWithParentNames(searchString);
+				return Json(new SelectList(items, "Id", "ListName"));
+			}
+			catch (Exception ex)
+			{
+				return Json(ex.Message);
+			}
+		}
+
 		[HttpGet, ActionName("getDistricts")]
 		public async Task<JsonResult> GetDistricts(int cityId)
 		{

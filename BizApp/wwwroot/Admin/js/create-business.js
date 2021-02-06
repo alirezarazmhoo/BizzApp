@@ -1,59 +1,58 @@
 ﻿$(document).ready(function () {
-	LoadMap(32.650823, 51.668037);
-	$("#provinceId").change(function () {
-		// clear city dropdownl
-		$('#cityId').empty();
+	//$("#provinceId").change(function () {
+	//	// clear city dropdownl
+	//	$('#cityId').empty();
 
-		// set default value
-		var nonVauleItem = '<option value="0">لطفا شهر را انتخاب کنید</option>';
-		$('#cityId').html(nonVauleItem);
+	//	// set default value
+	//	var nonVauleItem = '<option value="0">لطفا شهر را انتخاب کنید</option>';
+	//	$('#cityId').html(nonVauleItem);
 
-		// check if province not selected
-		if (this.value == '0') return;
+	//	// check if province not selected
+	//	if (this.value == '0') return;
 
-		var url = '/admin/city/getcities';
+	//	var url = '/admin/city/getcities';
 
-		$.getJSON(url, { provinceId: this.value }, function (data) {
-			var items = nonVauleItem;
+	//	$.getJSON(url, { provinceId: this.value }, function (data) {
+	//		var items = nonVauleItem;
 
-			$.each(data, function (i, model) {
-				items += '<option value="' + model.value + '">' + model.text + '</option>';
-			});
+	//		$.each(data, function (i, model) {
+	//			items += '<option value="' + model.value + '">' + model.text + '</option>';
+	//		});
 
-			$('#cityId').html(items);
-		});
-	});
+	//		$('#cityId').html(items);
+	//	});
+	//});
 
-	$("#cityId").change(function () {
-		// clear district dropdown
-		$('#districtId').empty();
+	//$("#cityId").change(function () {
+	//	// clear district dropdown
+	//	$('#districtId').empty();
 
-		// set default value for dropdwon
-		var nonVauleItem = '<option value="0">لطفا ناحیه را انتخاب کنید</option>';
-		$('#districtId').html(nonVauleItem);
+	//	// set default value for dropdwon
+	//	var nonVauleItem = '<option value="0">لطفا ناحیه را انتخاب کنید</option>';
+	//	$('#districtId').html(nonVauleItem);
 
-		// check if province not selected
-		if (this.value == '0') return;
+	//	// check if province not selected
+	//	if (this.value === '0') return;
 
-		var url = '/admin/district/getdistricts';
+	//	var url = '/admin/district/getdistricts';
 
-		$.getJSON(url, { cityId: this.value }, function (data) {
-			var items = nonVauleItem;
+	//	$.getJSON(url, { cityId: this.value }, function (data) {
+	//		var items = nonVauleItem;
 
-			$.each(data, function (i, model) {
-				items += '<option value="' + model.value + '">' + model.text + '</option>';
-			});
+	//		$.each(data, function (i, model) {
+	//			items += '<option value="' + model.value + '">' + model.text + '</option>';
+	//		});
 
-			$('#districtId').html(items);
-		});
-	});
+	//		$('#districtId').html(items);
+	//	});
+	//});
 
-	$("#districtId").change(function () {
-		$("span[data-valmsg-for='districtId']").html('');
-	});
+	//$("#districtId").change(function () {
+	//	$("span[data-valmsg-for='districtId']").html('');
+	//});
 
 	$("#saveButton").click(function (e) {
-		var categoryId = $("#categoryId").val();
+		var categoryId = $("#CategoryId").val();
 		if (categoryId == 0) {
 			e.preventDefault();
 
@@ -61,10 +60,19 @@
 			$('#autocomplete-ajax').focus();
 			return false;
 		}
+
+		var districtId = $("#DistrictId").val();
+		if (districtId === 0) {
+			e.preventDefault();
+
+			$(window).scrollTop($('#autocomplete-district').position().top);
+			$('#autocomplete-district').focus();
+			return false;
+		}
 	});
 });
 
-// Initialize ajax autocomplete:
+// Initialize ajax autocomplete for categories:
 // HELP: https://www.devbridge.com/sourcery/components/jquery-autocomplete/
 $('#autocomplete-ajax').autocomplete({
 	serviceUrl: '/admin/categories/getHierarchyNames',
@@ -81,16 +89,44 @@ $('#autocomplete-ajax').autocomplete({
 	type: "get",
 	onSelect: function (suggestion) {
 		$('#categorySelection').html('<b>دسته انتخاب شده: </b><i>' + suggestion.value + '</i>');
-		$('#categoryId').attr('value', suggestion.data);
+		$('#CategoryId').attr('value', suggestion.data);
 	},
 	onInvalidateSelection: function () {
 		$('#categorySelection').html('دسته انتخاب شده: هیچ');
-		$('#categoryId').attr('value', 0);
+		$('#CategoryId').attr('value', 0);
 	},
 	showNoSuggestionNotice: true,
 	noSuggestionNotice: "متاسفانه موردی پیدا نشد"
 
 });
+
+// Initailize ajax autocomplete for districts
+$('#autocomplete-district').autocomplete({
+	serviceUrl: '/admin/district/getAllWithParentNames',
+	minChars: 3,
+	paramName: 'searchString',
+	transformResult: function (response) {
+		var result = JSON.parse(response);
+		return {
+			suggestions: $.map(result, function (dataItem) {
+				return { data: dataItem.value, value: dataItem.text };
+			})
+		};
+	},
+	type: "get",
+	onSelect: function (suggestion) {
+		$('#districtSelection').html('<b>ناحیه انتخاب شده: </b><i>' + suggestion.value + '</i>');
+		$('#DistrictId').attr('value', suggestion.data);
+	},
+	onInvalidateSelection: function () {
+		$('#districtSelection').html('دسته انتخاب شده: هیچ');
+		$('#DistrictId').attr('value', 0);
+	},
+	showNoSuggestionNotice: true,
+	noSuggestionNotice: "متاسفانه موردی پیدا نشد"
+
+});
+
 
 function LoadMap(lon, lat) {
 

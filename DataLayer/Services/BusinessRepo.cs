@@ -24,37 +24,46 @@ namespace DataLayer.Services
 			_currentUser = currentUser;
 		}
 
-		public async Task Add(Business model , IFormFile mainimage, IFormFile[] otherimages)
+		public async Task Add(Business model, IFormFile mainimage, IFormFile[] otherimages)
 		{
-			string fileName = string.Empty;
-			string filePath = string.Empty; 
-			 fileName = Guid.NewGuid().ToString().Replace('-', '0') + Path.GetExtension(mainimage.FileName).ToLower(); ;
-			 filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Upload\Bussiness\Files", fileName);
-			using (var fileStream = new FileStream(filePath, FileMode.Create))
+			string fileName = string.Empty,
+				   filePath = string.Empty;
+			// if mainImage is not null then upload it
+			if (mainimage != null)
 			{
-				mainimage.CopyTo(fileStream);
-				model.FeatureImage = "/Upload/Bussiness/Files/" + fileName; ;
+				// Upload main images
+				fileName = Guid.NewGuid().ToString().Replace('-', '0') + Path.GetExtension(mainimage.FileName).ToLower(); ;
+				filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Upload\Bussiness\Files", fileName);
+				using (var fileStream = new FileStream(filePath, FileMode.Create))
+				{
+					mainimage.CopyTo(fileStream);
+					model.FeatureImage = "/Upload/Bussiness/Files/" + fileName; ;
+				}
 			}
+
+			// save business in database
 			DbContext.Businesses.Add(model);
 			DbContext.SaveChanges();
+
+			// upload image gallery
 			if (otherimages != null && otherimages.Count() > 0)
 			{
 				foreach (var item in otherimages)
 				{
-					 fileName = Guid.NewGuid().ToString().Replace('-', '0') + Path.GetExtension(item.FileName).ToLower(); ;
-					 filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Upload\Bussiness\Files\", fileName);
+					fileName = Guid.NewGuid().ToString().Replace('-', '0') + Path.GetExtension(item.FileName).ToLower(); ;
+					filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Upload\Bussiness\Files\", fileName);
 					using (var stream = new FileStream(filePath, FileMode.Create))
 					{
 						item.CopyTo(stream);
 					}
 					DbContext.BusinessGalleries.Add(new BusinessGallery()
 					{
-						BusinessId = model.Id , 
-					 FileAddress = "/Upload/Bussiness/Files/" + fileName,
-					}) ;
+						BusinessId = model.Id,
+						FileAddress = "/Upload/Bussiness/Files/" + fileName,
+					});
 				}
 			}
-		
+
 		}
 		public void Update(Business model)
 		{
@@ -62,8 +71,8 @@ namespace DataLayer.Services
 		}
 		public async Task<List<BusinessListQuery>> GetAll()
 		{
-			return 
-				await 
+			return
+				await
 					FindAll()
 					.ApplyRowsAuthFilter(_currentUser)
 					.Select(s => new BusinessListQuery
@@ -72,7 +81,7 @@ namespace DataLayer.Services
 						Name = s.Name,
 						DistrictName = s.District.Name,
 						CategoryName = s.Category.Name,
-						CityName = s.City.Name,
+						CityName = s.District.City.Name,
 						CreatedDate = s.CreatedDate,
 						Creator = s.UserCreator.FullName
 					}).ToListAsync();
@@ -89,7 +98,7 @@ namespace DataLayer.Services
 						Name = s.Name,
 						DistrictName = s.District.Name,
 						CategoryName = s.Category.Name,
-						CityName = s.City.Name,
+						CityName = s.District.City.Name,
 						Creator = s.UserCreator.FullName,
 						CreatedDate = s.CreatedDate
 					})
@@ -97,14 +106,14 @@ namespace DataLayer.Services
 		}
 		public async Task<List<BusinessListQuery>> GetAll(string searchString, string userId = null)
 		{
-			var query = FindByCondition(f => (f.Name.Contains(searchString) || 
-											  f.District.Name.Contains(searchString) || 
+			var query = FindByCondition(f => (f.Name.Contains(searchString) ||
+											  f.District.Name.Contains(searchString) ||
 											  f.Category.Name.Contains(searchString)));
 
 			if (userId != null)
-				query = FindByCondition(f => (f.Name.Contains(searchString) || 
-											  f.District.Name.Contains(searchString) || 
-											  f.Category.Name.Contains(searchString)) 
+				query = FindByCondition(f => (f.Name.Contains(searchString) ||
+											  f.District.Name.Contains(searchString) ||
+											  f.Category.Name.Contains(searchString))
 											&& f.UserCreatorId == userId);
 			return await query.ApplyRowsAuthFilter(_currentUser)
 				.Select(s => new BusinessListQuery
@@ -114,21 +123,21 @@ namespace DataLayer.Services
 					DistrictName = s.District.Name,
 					CategoryName = s.Category.Name,
 					CreatedDate = s.CreatedDate,
-					CityName = s.City.Name,
+					CityName = s.District.City.Name,
 					Creator = s.UserCreator.FullName
 				})
-				
+
 				.ToListAsync();
 		}
 		public async Task<Business> GetById(Guid id)
 		{
-			return await FindByCondition(f => f.Id == id).Include(s=>s.Galleries).FirstOrDefaultAsync();
+			return await FindByCondition(f => f.Id == id).Include(s => s.Galleries).FirstOrDefaultAsync();
 		}
 		public async Task Remove(Business model)
 		{
 			var MainItem = await GetById(model.Id);
 			if (!string.IsNullOrEmpty(model.FeatureImage))
-			{		
+			{
 				File.Delete($"wwwroot/{MainItem.FeatureImage}");
 			}
 			if (MainItem.Galleries.Count > 0)
@@ -145,30 +154,30 @@ namespace DataLayer.Services
 			List<AllBusinessFeatureViewModel> MainList = new List<AllBusinessFeatureViewModel>();
 
 
-			if(id.HasValue )
+			if (id.HasValue)
 			{
-				
-				var CurrentFeatures = await DbContext.BusinessFeatures.Include(s=>s.Feature).Where(s => s.BusinessId.Equals(id)).ToListAsync();
+
+				var CurrentFeatures = await DbContext.BusinessFeatures.Include(s => s.Feature).Where(s => s.BusinessId.Equals(id)).ToListAsync();
 				var AllFeatures = await DbContext.Features.ToListAsync();
 				foreach (var item in CurrentFeatures)
 				{
-					MainList.Add(new AllBusinessFeatureViewModel() {  FeatureId = item.FeatureId, IsInFeature = true , FeatureName  =  item.Feature.Name  });
+					MainList.Add(new AllBusinessFeatureViewModel() { FeatureId = item.FeatureId, IsInFeature = true, FeatureName = item.Feature.Name });
 				}
 				foreach (var item in AllFeatures)
 				{
-					if(!CurrentFeatures.Any(s=>s.FeatureId == item.Id))
+					if (!CurrentFeatures.Any(s => s.FeatureId == item.Id))
 					{
-						MainList.Add(new AllBusinessFeatureViewModel() {  FeatureId = item.Id,FeatureName = item.Name, IsInFeature = false }); 
+						MainList.Add(new AllBusinessFeatureViewModel() { FeatureId = item.Id, FeatureName = item.Name, IsInFeature = false });
 					}
 				}
-				return MainList.OrderByDescending(s => s.Id); 
+				return MainList.OrderByDescending(s => s.Id);
 			}
 			else
 			{
-				return null;  
+				return null;
 			}
 		}
-		public async Task AssignFeature(Guid? id , int FeatureId)
+		public async Task AssignFeature(Guid? id, int FeatureId)
 		{
 			BusinessFeature businessFeature = new BusinessFeature();
 			businessFeature.FeatureId = FeatureId;
@@ -177,8 +186,8 @@ namespace DataLayer.Services
 		}
 		public async Task RemoveFeature(Guid? id, int FeatureId)
 		{
-			BusinessFeature businessFeature =await DbContext.BusinessFeatures.FirstOrDefaultAsync(s=>s.BusinessId.Equals(id) && s.FeatureId == FeatureId);
-			if(businessFeature != null)
+			BusinessFeature businessFeature = await DbContext.BusinessFeatures.FirstOrDefaultAsync(s => s.BusinessId.Equals(id) && s.FeatureId == FeatureId);
+			if (businessFeature != null)
 			{
 				DbContext.BusinessFeatures.Remove(businessFeature);
 

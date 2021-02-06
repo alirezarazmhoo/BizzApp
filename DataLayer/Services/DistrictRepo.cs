@@ -4,6 +4,8 @@ using DomainClass;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
+using DomainClass.Queries;
 
 namespace DataLayer.Services
 {
@@ -25,7 +27,7 @@ namespace DataLayer.Services
 		{
 			return await FindAll().Include(i => i.City).ToListAsync();
 		}
-		
+
 		public async Task<List<District>> GetAll(int cityId)
 		{
 			return await FindByCondition(f => f.CityId == cityId).ToListAsync();
@@ -33,9 +35,42 @@ namespace DataLayer.Services
 
 		public async Task<List<District>> GetAll(string searchString)
 		{
-			return await FindByCondition(f=>f.Name.Contains(searchString))
+			return await FindByCondition(f => f.Name.Contains(searchString))
 								.Include(i => i.City)
 								.ToListAsync();
+		}
+
+		public async Task<List<DistrictWithParentsName>> GetAllWithParentNames(string searchString)
+		{
+			if (string.IsNullOrEmpty(searchString))
+			{
+				return new List<DistrictWithParentsName>();
+			}
+
+			var resutlt = await DbContext.Districts
+				.Select(s => new DistrictWithParentsName
+				{
+					Id = s.Id,
+					ListName = s.City.Province.Name + " - " + s.City.Name + " - " + s.Name
+				})
+				.Where(w => w.ListName.Contains(searchString))
+				.ToListAsync();
+
+			return resutlt;
+		}
+
+		public async Task<DistrictWithParentsName> GetAllWithParentNamesById(int id)
+		{
+
+			var resutlt = await DbContext.Districts
+					.Select(s => new DistrictWithParentsName
+					{
+						Id = s.Id,
+						ListName = s.City.Province.Name + " - " + s.City.Name + " - " + s.Name
+					})
+					.FirstOrDefaultAsync(f => f.Id == id);
+
+			return resutlt;
 		}
 
 		public async Task<District> GetById(int id)

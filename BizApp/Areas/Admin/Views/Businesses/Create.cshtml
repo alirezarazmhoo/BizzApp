@@ -39,27 +39,22 @@
 							</div>
 
 							<div class="form-group col-md-6">
-								<label for="DistrictId">انتخاب منطقه</label>
-								<select asp-for="provinceId" class="form-control"
-										asp-items="@(new SelectList(ViewBag.Provinces, "ProvinceId", "Name"))">
-									<option value="0">لطفا شهرستان را انتخاب کنید</option>
-								</select>
-								<select asp-for="cityId" class="form-control" style="margin: 2px 0;">
-									<option>لطفا شهر را انتخاب کنید</option>
-								</select>
-								<select asp-for="districtId" class="form-control" style="margin: 2px 0;" required>
-									<option value="0">لطفا ناحیه را انتخاب کنید</option>
-								</select>
-								<span asp-validation-for="districtId" class="text-danger"></span>
+								<label for="autocomplete-district">ناحیه</label>
+
+								<div style="position: relative; height: 80px;">
+									<input type="text" placeholder="حداقل 3 کاراکتر تایپ کنید" value="@Model.DistrictName" id="autocomplete-district" class="form-control" />
+									<div id="districtSelection">ناحیه انتخاب شده: هیچ</div>
+									<input asp-for="DistrictId" style="display:none" />
+								</div>
 							</div>
 
 							<div class="form-group col-md-6">
-								<label for="DistrictId">دسته</label>
+								<label for="autocomplete-ajax">دسته</label>
 
 								<div style="position: relative; height: 80px;">
-									<input type="text" placeholder="حداقل 3 کاراکتر تایپ کنید" id="autocomplete-ajax" class="form-control" />
+									<input type="text" placeholder="حداقل 3 کاراکتر تایپ کنید" value="@Model.CategoryName" id="autocomplete-ajax" class="form-control" />
 									<div id="categorySelection">دسته انتخاب شده: هیچ</div>
-									<input asp-for="categoryId" style="display:none" />
+									<input asp-for="CategoryId" style="display:none" />
 								</div>
 							</div>
 
@@ -67,7 +62,7 @@
 								<textarea asp-for="Description" class="form-control" placeholder="توضیحات"></textarea>
 							</div>
 							<div class="form-group">
-								<textarea asp-for="biograpy" class="form-control" placeholder="بیوگرافی کسب و کار"></textarea>
+								<textarea asp-for="Biography" class="form-control" placeholder="بیوگرافی کسب و کار"></textarea>
 							</div>
 							<div class="form-group col-md-12">
 								<label>انتخاب موقعیت</label>
@@ -78,8 +73,8 @@
 
 							<div class="form-group col-md-12">
 								<label for="address">نشانی کسب و کار</label>
-								<input asp-for="address" placeholder="نشانی کسب و کار را وارد کنید" class="form-control" required>
-								<span asp-validation-for="address" class="text-danger"></span>
+								<input asp-for="Address" placeholder="نشانی کسب و کار را وارد کنید" class="form-control" required>
+								<span asp-validation-for="Address" class="text-danger"></span>
 							</div>
 
 							<div class="form-group col-md-6">
@@ -97,7 +92,7 @@
 
 							<div class="form-group col-md-6">
 								<label for="websiteurl">آدرس وبسایت</label>
-								<input asp-for="websiteurl" placeholder="آدرس وبسایت را وارد کنید" class="form-control" aria-describedby="websiteurlHelp">
+								<input asp-for="WebsiteUrl" placeholder="آدرس وبسایت را وارد کنید" class="form-control" aria-describedby="websiteurlHelp">
 								<small id="websiteurlHelp" class="form-text text-muted">مثال: sitename.com</small>
 							</div>
 							<div class="form-group col-md-6">
@@ -115,6 +110,7 @@
 									<div id="RemoveImageItems" style="width:auto;height:auto;margin-left:5px;">
 									</div>
 								</div>
+								<img src="" alt="عکسی انتخاب نشده است" class="img-thumbnail">
 							</div>
 							<div class="form-group" style="margin-right:5px">
 								<label for="exampleInputEmail1">تصاویر دیگر کسب و کار:</label>
@@ -140,31 +136,6 @@
 	</div>
 </div>
 
-<div class="modal fade " id="modalcategory">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header " style="text-align:center">
-				<h6 class="modal-title" style="margin:auto;vertical-align:middle;">دسته بندی</h6>
-			</div>
-			<div class="modal-body" id="categorybody">
-				@foreach (var item in (IEnumerable<Category>)ViewData["Categorie"])
-				{
-					<div class="form-group" onclick="CategoryGetChilds(@item.Id);">
-						<div style="width : 100% ;height:30px ;background-color:whitesmoke;border-bottom:1px solid">
-							<p style="text-align:center;height:inherit;cursor:pointer">@item.Name</p>
-						</div>
-					</div>
-				}
-			</div>
-
-			<div id="divbtnreturn">
-			</div>
-
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
-</div>
 
 @section scripts {
 	<script src="~/lib/autocomplete/jquery.autocomplete.js"></script>
@@ -172,4 +143,19 @@
 
 	<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
 	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			var longitude = @Model.Longitude;
+			var latitude = @Model.Latitude;
+
+			if (longitude === 0)
+				longitude = 32.650823;
+			if (latitude === 0)
+				latitude = 51.668037;
+
+			LoadMap(longitude, latitude);
+		});
+	</script>
+
 }
