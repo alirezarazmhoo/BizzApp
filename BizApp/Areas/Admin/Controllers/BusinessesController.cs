@@ -103,9 +103,19 @@ namespace BizApp.Areas.Admin.Controllers
 			try
 			{
 				var entity = _mapper.Map<Business>(model);
-				entity.UserCreatorId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-				await _unitOfWork.BusinessRepo.Add(entity, file, BussinessFiles);
-				await _unitOfWork.SaveAsync();
+
+				// if checked 
+				if (model.Id == default)
+				{
+					// create business
+					entity.UserCreatorId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+					await _unitOfWork.BusinessRepo.Add(entity, file, BussinessFiles);
+				}
+				else
+				{
+
+					_unitOfWork.BusinessRepo.Update(entity);
+				}
 			}
 			catch (Exception ex)
 			{

@@ -46,6 +46,6 @@ namespace BizApp.Areas.Admin.Models
 		public string UserCreatorId { get; set; }
 		public string CategoryName { get; set; }
 		public string DistrictName { get; set; }
-
+		public string FeatureImage { get; set; }
 	}
 }

@@ -9,6 +9,26 @@
 
 @section head {
 	<link href="~/css/autocomplete.css" rel="stylesheet" />
+	<style>
+		.img-wrap {
+			position: relative;
+			
+		}
+
+			.img-wrap .close {
+				position: absolute;
+				z-index: 100;
+				top: -65px;
+				right: 2px;
+				color: red;
+				padding: 5px;
+				/* font-weight: 400; */
+				/* -webkit-text-stroke: 4px white; */
+				background: white;
+				/* border-radius: 100% 100%; */
+				opacity: 0.8;
+			}
+	</style>
 }
 
 <div class="content-header">
@@ -100,7 +120,7 @@
 								<input asp-for="Email" placeholder="ایمیل را وارد کنید" class="form-control">
 							</div>
 
-							<div class="form-group col-md-6" style="margin-right:5px">
+							<div class="form-group col-md-6" style="margin-right:5px" id="featureImageMainElement">
 								<label for="exampleInputEmail1">تصویر اصلی کسب و کار:</label>
 								<div id="main-container">
 									<input display="Image" id="file" name="file" class="TheFile" onchange="SetPictures('file','ImageItems');" style="display:none" type="file">
@@ -110,7 +130,13 @@
 									<div id="RemoveImageItems" style="width:auto;height:auto;margin-left:5px;">
 									</div>
 								</div>
-								<img src="" alt="عکسی انتخاب نشده است" class="img-thumbnail">
+								@if (Model.FeatureImage != null)
+								{
+									<div class="img-wrap" id="featureImageDiv">
+										<span class="close" onclick="deleteFeatureImage()">&times;</span>
+										<img src="@Model.FeatureImage" width="500">
+									</div>
+								}
 							</div>
 							<div class="form-group" style="margin-right:5px">
 								<label for="exampleInputEmail1">تصاویر دیگر کسب و کار:</label>
@@ -154,7 +180,7 @@
 			if (latitude === 0)
 				latitude = 51.668037;
 
-			LoadMap(longitude, latitude);
+			LoadMap(latitude, longitude);
 		});
 	</script>
 

@@ -1,55 +1,11 @@
 ﻿$(document).ready(function () {
-	//$("#provinceId").change(function () {
-	//	// clear city dropdownl
-	//	$('#cityId').empty();
 
-	//	// set default value
-	//	var nonVauleItem = '<option value="0">لطفا شهر را انتخاب کنید</option>';
-	//	$('#cityId').html(nonVauleItem);
+	$("#file").change(function () {
+		deleteFeatureImage(this.value);
+		createFeatureImage(this.value);
+	});
 
-	//	// check if province not selected
-	//	if (this.value == '0') return;
-
-	//	var url = '/admin/city/getcities';
-
-	//	$.getJSON(url, { provinceId: this.value }, function (data) {
-	//		var items = nonVauleItem;
-
-	//		$.each(data, function (i, model) {
-	//			items += '<option value="' + model.value + '">' + model.text + '</option>';
-	//		});
-
-	//		$('#cityId').html(items);
-	//	});
-	//});
-
-	//$("#cityId").change(function () {
-	//	// clear district dropdown
-	//	$('#districtId').empty();
-
-	//	// set default value for dropdwon
-	//	var nonVauleItem = '<option value="0">لطفا ناحیه را انتخاب کنید</option>';
-	//	$('#districtId').html(nonVauleItem);
-
-	//	// check if province not selected
-	//	if (this.value === '0') return;
-
-	//	var url = '/admin/district/getdistricts';
-
-	//	$.getJSON(url, { cityId: this.value }, function (data) {
-	//		var items = nonVauleItem;
-
-	//		$.each(data, function (i, model) {
-	//			items += '<option value="' + model.value + '">' + model.text + '</option>';
-	//		});
-
-	//		$('#districtId').html(items);
-	//	});
-	//});
-
-	//$("#districtId").change(function () {
-	//	$("span[data-valmsg-for='districtId']").html('');
-	//});
+	//$('#featureImageRemoveButton').on('click', function () { deleteFeatureImage(null); });
 
 	$("#saveButton").click(function (e) {
 		var categoryId = $("#CategoryId").val();
@@ -72,27 +28,46 @@
 	});
 });
 
+function deleteFeatureImage(value = null) {
+	$("#featureImageDiv").empty();
+	$("#featureImageDiv").remove();
+
+	// if is edited
+	// delete file from server
+
+}
+
+function createFeatureImage(value) {
+	var element = 
+		`<div class="img-wrap" id="featureImageDiv">
+			<span class="close" onclick="deleteFeatureImage()">&times;</span>
+			<img style="width: 200px; height: auto;" src="` + value + `" width="500">
+		</div>`;
+
+	$('#featureImageMainElement').append(element);
+}
+
 // Initialize ajax autocomplete for categories:
 // HELP: https://www.devbridge.com/sourcery/components/jquery-autocomplete/
 $('#autocomplete-ajax').autocomplete({
-	serviceUrl: '/admin/categories/getHierarchyNames',
+			serviceUrl: '/admin/categories/getHierarchyNames',
 	minChars: 3,
 	paramName: 'searchString',
 	transformResult: function (response) {
 		var result = JSON.parse(response);
 		return {
 			suggestions: $.map(result, function (dataItem) {
-				return { data: dataItem.value, value: dataItem.text };
+				return {data: dataItem.value, value: dataItem.text };
 			})
 		};
 	},
 	type: "get",
 	onSelect: function (suggestion) {
-		$('#categorySelection').html('<b>دسته انتخاب شده: </b><i>' + suggestion.value + '</i>');
+			$('#categorySelection').html('<b>دسته انتخاب شده: </b><i>' + suggestion.value + '</i>');
 		$('#CategoryId').attr('value', suggestion.data);
 	},
 	onInvalidateSelection: function () {
-		$('#categorySelection').html('دسته انتخاب شده: هیچ');
+			$('#categorySelection').html('دسته انتخاب شده: هیچ');
 		$('#CategoryId').attr('value', 0);
 	},
 	showNoSuggestionNotice: true,
@@ -102,24 +77,24 @@ $('#autocomplete-ajax').autocomplete({
 
 // Initailize ajax autocomplete for districts
 $('#autocomplete-district').autocomplete({
-	serviceUrl: '/admin/district/getAllWithParentNames',
+			serviceUrl: '/admin/district/getAllWithParentNames',
 	minChars: 3,
 	paramName: 'searchString',
 	transformResult: function (response) {
 		var result = JSON.parse(response);
 		return {
 			suggestions: $.map(result, function (dataItem) {
-				return { data: dataItem.value, value: dataItem.text };
+				return {data: dataItem.value, value: dataItem.text };
 			})
 		};
 	},
 	type: "get",
 	onSelect: function (suggestion) {
-		$('#districtSelection').html('<b>ناحیه انتخاب شده: </b><i>' + suggestion.value + '</i>');
+			$('#districtSelection').html('<b>ناحیه انتخاب شده: </b><i>' + suggestion.value + '</i>');
 		$('#DistrictId').attr('value', suggestion.data);
 	},
 	onInvalidateSelection: function () {
-		$('#districtSelection').html('دسته انتخاب شده: هیچ');
+			$('#districtSelection').html('دسته انتخاب شده: هیچ');
 		$('#DistrictId').attr('value', 0);
 	},
 	showNoSuggestionNotice: true,
@@ -130,21 +105,21 @@ $('#autocomplete-district').autocomplete({
 
 function LoadMap(lon, lat) {
 
-	var theMarker = {};
+	var theMarker = { };
 	if (lon == 0 && lat == 0) {
 
-		lon = 32.650823;
+			lon = 32.650823;
 		lat = 51.668037;
 	}
 	var mymap = L.map('mapid').setView([lon, lat], 13);
 	if (lon !== 0 && lat !== 0) {
-		theMarker = L.marker([lon, lat]).addTo(mymap);
+			theMarker = L.marker([lon, lat]).addTo(mymap);
 
 	}
 	//var mymap = L.map('mapid').setView([32.650823, 51.668037], 13);
-	//theMarker = L.marker([lon,lat], { icon: icon }).addTo(mymap);
+	//theMarker = L.marker([lon,lat], {icon: icon }).addTo(mymap);
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
 		maxZoom: 18,
 		id: 'mapbox/streets-v11',
 		tileSize: 512,
@@ -160,7 +135,7 @@ function LoadMap(lon, lat) {
 
 			mymap.removeLayer(theMarker);
 		}
-		theMarker = L.marker([lat, lon], { icon: icon }).addTo(mymap);
+		theMarker = L.marker([lat, lon], {icon: icon }).addTo(mymap);
 
 		$("#latitude").val(e.latlng.lat);
 		$("#longitude").val(e.latlng.lng);

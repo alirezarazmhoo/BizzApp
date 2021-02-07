@@ -24,28 +24,37 @@ namespace DataLayer.Services
 			_currentUser = currentUser;
 		}
 
-		public async Task Add(Business model, IFormFile mainimage, IFormFile[] otherimages)
+		private string UploadFeutreImage(IFormFile image)
 		{
-			string fileName = string.Empty,
-				   filePath = string.Empty;
+			string fileName, filePath;
+
 			// if mainImage is not null then upload it
-			if (mainimage != null)
+			if (image != null)
 			{
 				// Upload main images
-				fileName = Guid.NewGuid().ToString().Replace('-', '0') + Path.GetExtension(mainimage.FileName).ToLower(); ;
-				filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Upload\Bussiness\Files", fileName);
+				fileName = Guid.NewGuid().ToString().Replace('-', '0') + Path.GetExtension(image.FileName).ToLower(); ;
+				filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Upload\Bussiness\Files", string.Empty);
 				using (var fileStream = new FileStream(filePath, FileMode.Create))
 				{
-					mainimage.CopyTo(fileStream);
-					model.FeatureImage = "/Upload/Bussiness/Files/" + fileName; ;
+					image.CopyTo(fileStream);
+					return "/Upload/Bussiness/Files/" + string.Empty;
 				}
 			}
+
+			return null;
+		}
+
+		public async Task Add(Business model, IFormFile mainimage, IFormFile[] otherimages)
+		{
+			// upload feature image
+			model.FeatureImage = UploadFeutreImage(mainimage);
 
 			// save business in database
 			DbContext.Businesses.Add(model);
 			DbContext.SaveChanges();
 
 			// upload image gallery
+			string fileName, filePath;
 			if (otherimages != null && otherimages.Count() > 0)
 			{
 				foreach (var item in otherimages)
@@ -63,11 +72,26 @@ namespace DataLayer.Services
 					});
 				}
 			}
+			DbContext.SaveChanges();
 
 		}
-		public void Update(Business model)
+		public async void Update(Business model, IFormFile featureImage, IFormFile[] gallery)
 		{
-			Update(model);
+			// Upload new feature image
+			var newFeatureImage = UploadFeutreImage(featureImage);
+
+			// Delete old feature iamge
+			var oldEntity = await GetById(model.Id);
+			// if business has imiage and user select new featrue image
+			if (!string.IsNullOrEmpty(oldEntity.FeatureImage) && !string.IsNullOrEmpty(newFeatureImage))
+			{
+				// delete old feature image
+				File.Delete($"wwwroot/{oldEntity.FeatureImage}");
+				model.FeatureImage = newFeatureImage;
+			}
+
+			base.Update(model);
+			DbContext.SaveChanges();
 		}
 		public async Task<List<BusinessListQuery>> GetAll()
 		{
