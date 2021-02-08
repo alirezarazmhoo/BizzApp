@@ -28,21 +28,58 @@
 	});
 });
 
-function deleteFeatureImage(value = null) {
-	$("#featureImageDiv").empty();
+function deleteFeatureImageButton_click() {
+	$('#file').val('');
+	deleteFeatureImage();
+}
+
+function deleteFeatureImage() {
+	// keep src for deleted from server
+	var src = $("#featureImage").attr('src');
+
+	// hidden input for check image is upload or not
+	var isDeletedFromServer = $('#deletedFromServer').val();
 	$("#featureImageDiv").remove();
 
 	// if is edited
-	// delete file from server
+	if (isDeletedFromServer === '1' || isDeletedFromServer == undefined) return;
 
+	// delete file from server
+	var data = { filePath: src };
+
+	//$.ajax({
+	//	type: "POST",
+	//	url: "/admin/businesses/deleteFeatureImage",
+	//	data: JSON.stringify(data),
+	//	headers: {
+	//		'Accept': 'application/json',
+	//		'Content-Type': 'application/json'
+	//	},
+	//	success: function (data) {
+	//		if (data.status == 'OK')
+	//			alert('Person has been added');
+			
+	//	}
+
+	//});
+
+	$.post("/admin/businesses/deleteFeatureImage?filePath='" + src + "'", function (result) {
+		alert(JSON.stringify(result));
+	});
 }
 
 function createFeatureImage(value) {
-	var element = 
+	var myURL = window.URL || window.webkitURL;
+	var _File = document.getElementById("file").files;
+	var fileURL = myURL.createObjectURL(_File[0]);
+	var tag = "<img src='" + fileURL + "' id='featureImage' style='width:200px;height:auto;'>";
+
+	var element =
 		`<div class="img-wrap" id="featureImageDiv">
-			<span class="close" onclick="deleteFeatureImage()">&times;</span>
-			<img style="width: 200px; height: auto;" src="` + value + `" width="500">
-		</div>`;
+			<span class="close" onclick="deleteFeatureImageButton_click()">&times;</span>
+			<input type="hidden" id="deletedFromServer" value="1" />`
+		+ tag +
+		'</div>';
 
 	$('#featureImageMainElement').append(element);
 }
@@ -50,24 +87,24 @@ function createFeatureImage(value) {
 // Initialize ajax autocomplete for categories:
 // HELP: https://www.devbridge.com/sourcery/components/jquery-autocomplete/
 $('#autocomplete-ajax').autocomplete({
-			serviceUrl: '/admin/categories/getHierarchyNames',
+	serviceUrl: '/admin/categories/getHierarchyNames',
 	minChars: 3,
 	paramName: 'searchString',
 	transformResult: function (response) {
 		var result = JSON.parse(response);
 		return {
 			suggestions: $.map(result, function (dataItem) {
-				return {data: dataItem.value, value: dataItem.text };
+				return { data: dataItem.value, value: dataItem.text };
 			})
 		};
 	},
 	type: "get",
 	onSelect: function (suggestion) {
-			$('#categorySelection').html('<b>دسته انتخاب شده: </b><i>' + suggestion.value + '</i>');
+		$('#categorySelection').html('<b>دسته انتخاب شده: </b><i>' + suggestion.value + '</i>');
 		$('#CategoryId').attr('value', suggestion.data);
 	},
 	onInvalidateSelection: function () {
-			$('#categorySelection').html('دسته انتخاب شده: هیچ');
+		$('#categorySelection').html('دسته انتخاب شده: هیچ');
 		$('#CategoryId').attr('value', 0);
 	},
 	showNoSuggestionNotice: true,
@@ -77,24 +114,24 @@ $('#autocomplete-ajax').autocomplete({
 
 // Initailize ajax autocomplete for districts
 $('#autocomplete-district').autocomplete({
-			serviceUrl: '/admin/district/getAllWithParentNames',
+	serviceUrl: '/admin/district/getAllWithParentNames',
 	minChars: 3,
 	paramName: 'searchString',
 	transformResult: function (response) {
 		var result = JSON.parse(response);
 		return {
 			suggestions: $.map(result, function (dataItem) {
-				return {data: dataItem.value, value: dataItem.text };
+				return { data: dataItem.value, value: dataItem.text };
 			})
 		};
 	},
 	type: "get",
 	onSelect: function (suggestion) {
-			$('#districtSelection').html('<b>ناحیه انتخاب شده: </b><i>' + suggestion.value + '</i>');
+		$('#districtSelection').html('<b>ناحیه انتخاب شده: </b><i>' + suggestion.value + '</i>');
 		$('#DistrictId').attr('value', suggestion.data);
 	},
 	onInvalidateSelection: function () {
-			$('#districtSelection').html('دسته انتخاب شده: هیچ');
+		$('#districtSelection').html('دسته انتخاب شده: هیچ');
 		$('#DistrictId').attr('value', 0);
 	},
 	showNoSuggestionNotice: true,
@@ -105,21 +142,21 @@ $('#autocomplete-district').autocomplete({
 
 function LoadMap(lon, lat) {
 
-	var theMarker = { };
+	var theMarker = {};
 	if (lon == 0 && lat == 0) {
 
-			lon = 32.650823;
+		lon = 32.650823;
 		lat = 51.668037;
 	}
 	var mymap = L.map('mapid').setView([lon, lat], 13);
 	if (lon !== 0 && lat !== 0) {
-			theMarker = L.marker([lon, lat]).addTo(mymap);
+		theMarker = L.marker([lon, lat]).addTo(mymap);
 
 	}
 	//var mymap = L.map('mapid').setView([32.650823, 51.668037], 13);
 	//theMarker = L.marker([lon,lat], {icon: icon }).addTo(mymap);
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
 		maxZoom: 18,
 		id: 'mapbox/streets-v11',
 		tileSize: 512,
@@ -135,9 +172,14 @@ function LoadMap(lon, lat) {
 
 			mymap.removeLayer(theMarker);
 		}
-		theMarker = L.marker([lat, lon], {icon: icon }).addTo(mymap);
+		theMarker = L.marker([lat, lon], { icon: icon }).addTo(mymap);
 
 		$("#latitude").val(e.latlng.lat);
 		$("#longitude").val(e.latlng.lng);
 	});
+}
+
+function alertFeatureImageId() {
+	var src = $("#featureImage").attr('src');
+	alert(src);
 }

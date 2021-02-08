@@ -18,7 +18,8 @@ namespace DataLayer.Infrastructure
 		Task<IEnumerable<AllBusinessFeatureViewModel>> GetBusinessFature(Guid? id);
 		Task AssignFeature(Guid? id, int FeatureId);
 		Task RemoveFeature(Guid? id, int FeatureId);
-		Task Remove(Business model); 
+		Task Remove(Business model);
+		bool DeleteFeatureImage(string filePath);
 
 		}
 }

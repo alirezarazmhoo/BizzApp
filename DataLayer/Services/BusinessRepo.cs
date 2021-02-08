@@ -217,5 +217,15 @@ namespace DataLayer.Services
 
 			}
 		}
+		public bool DeleteFeatureImage(string filePath)
+		{
+			if (!string.IsNullOrEmpty(filePath))
+			{
+				File.Delete($"wwwroot/{filePath}");
+				return true;
+			}
+			return false;
+		}
+
 	}
 }

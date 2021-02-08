@@ -179,6 +179,25 @@ namespace BizApp.Areas.Admin.Controllers
 			}
 		}
 
+		[HttpPost, ActionName("deleteFeatureImage")]
+		public IActionResult DeleteFeatureImage(string filePath)
+		{
+			try
+			{
+				var result = _unitOfWork.BusinessRepo.DeleteFeatureImage(filePath);
+				if (result)
+				{
+					return Json(new { success = true, responseText = CustomeMessages.Succcess });
+				}
+
+				return Json(new { success = false, responseText = CustomeMessages.Fail });
+			}
+			catch (Exception ex)
+			{
+				return Json(new { success = false, responseText = ex.Message });
+			}
+		}
+
 		[HttpPost]
 		public async Task<JsonResult> Remove(Guid BusinessId)
 		{
