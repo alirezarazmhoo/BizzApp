@@ -35,9 +35,10 @@ namespace BizApp
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Data Source=45.159.113.39,2014;Initial Catalog=BizAppTestDatabase;User ID=BizzApp;Password=BizzApp2021;MultipleActiveResultSets=true"));
-			services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
-			//services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Data Source=45.159.113.39,2014;Initial Catalog=BizApp;User ID=BizzApp;Password=BizzApp2021;MultipleActiveResultSets=true"));
+			//services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Data Source=(LocalDb)\\.;Initial Catalog=BizApp;Integrated Security=SSPI;"));
+
+			services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
 			services.AddDefaultIdentity<BizAppUser>(options =>
 			{

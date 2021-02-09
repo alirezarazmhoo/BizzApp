@@ -87,6 +87,8 @@ namespace BizApp.Areas.Admin.Controllers
 				model.CategoryName = category.ListName;
 				model.DistrictName = district.ListName;
 
+				// get galleryImages
+
 				return View("create", model);
 			}
 			catch (Exception ex)
@@ -109,18 +111,20 @@ namespace BizApp.Areas.Admin.Controllers
 				{
 					// create business
 					entity.UserCreatorId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-					await _unitOfWork.BusinessRepo.Add(entity, file, BussinessFiles);
+					_unitOfWork.BusinessRepo.Create(entity, file, BussinessFiles);
 				}
 				else
 				{
-
-					_unitOfWork.BusinessRepo.Update(entity);
+					await _unitOfWork.BusinessRepo.Update(entity, file, BussinessFiles);
 				}
+
+				await _unitOfWork.SaveAsync();
 			}
 			catch (Exception ex)
 			{
 				return Json(new { success = false, responseText = ex.Message });
 			}
+
 			return RedirectToAction(nameof(Index));
 		}
 
@@ -180,15 +184,35 @@ namespace BizApp.Areas.Admin.Controllers
 		}
 
 		[HttpPost, ActionName("deleteFeatureImage")]
-		public IActionResult DeleteFeatureImage(string filePath)
+		public IActionResult DeleteFeatureImage(Guid id, string filePath)
 		{
 			try
 			{
-				var result = _unitOfWork.BusinessRepo.DeleteFeatureImage(filePath);
+				var result = _unitOfWork.BusinessRepo.DeleteFeatureImage(id, filePath);
 				if (result)
 				{
 					return Json(new { success = true, responseText = CustomeMessages.Succcess });
 				}
+
+				return Json(new { success = false, responseText = CustomeMessages.Fail });
+			}
+			catch (Exception ex)
+			{
+				return Json(new { success = false, responseText = ex.Message });
+			}
+		}
+
+		[HttpPost, ActionName("deleteGalleryImage")]
+		public IActionResult DeleteGalleryImage(string filePath)
+		{
+			try
+			{
+				//filePath = filePath.Substring(1);
+				//var result = _unitOfWork.BusinessRepo.DeleteFeatureImage(filePath);
+				//if (result)
+				//{
+				//	return Json(new { success = true, responseText = CustomeMessages.Succcess });
+				//}
 
 				return Json(new { success = false, responseText = CustomeMessages.Fail });
 			}

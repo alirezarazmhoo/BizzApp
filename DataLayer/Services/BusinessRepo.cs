@@ -32,26 +32,26 @@ namespace DataLayer.Services
 			if (image != null)
 			{
 				// Upload main images
-				fileName = Guid.NewGuid().ToString().Replace('-', '0') + Path.GetExtension(image.FileName).ToLower(); ;
-				filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Upload\Bussiness\Files", string.Empty);
+				fileName = Guid.NewGuid().ToString().Replace('-', '0') + Path.GetExtension(image.FileName).ToLower();
+				filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Upload\Bussiness\Files", fileName);
 				using (var fileStream = new FileStream(filePath, FileMode.Create))
 				{
 					image.CopyTo(fileStream);
-					return "/Upload/Bussiness/Files/" + string.Empty;
+					return "/Upload/Bussiness/Files/" + fileName;
 				}
 			}
 
 			return null;
 		}
 
-		public async Task Add(Business model, IFormFile mainimage, IFormFile[] otherimages)
+		public void Create(Business model, IFormFile mainimage, IFormFile[] otherimages)
 		{
 			// upload feature image
 			model.FeatureImage = UploadFeutreImage(mainimage);
 
 			// save business in database
 			DbContext.Businesses.Add(model);
-			DbContext.SaveChanges();
+			//DbContext.SaveChanges();
 
 			// upload image gallery
 			string fileName, filePath;
@@ -65,6 +65,7 @@ namespace DataLayer.Services
 					{
 						item.CopyTo(stream);
 					}
+
 					DbContext.BusinessGalleries.Add(new BusinessGallery()
 					{
 						BusinessId = model.Id,
@@ -72,16 +73,16 @@ namespace DataLayer.Services
 					});
 				}
 			}
-			DbContext.SaveChanges();
+			//DbContext.SaveChanges();
 
 		}
-		public async void Update(Business model, IFormFile featureImage, IFormFile[] gallery)
+		public async Task Update(Business model, IFormFile mainImage, IFormFile[] gallery)
 		{
 			// Upload new feature image
-			var newFeatureImage = UploadFeutreImage(featureImage);
+			var newFeatureImage = UploadFeutreImage(mainImage);
 
 			// Delete old feature iamge
-			var oldEntity = await GetById(model.Id);
+			var oldEntity = await DbContext.Businesses.FirstOrDefaultAsync(f => f.Id == model.Id);
 			// if business has imiage and user select new featrue image
 			if (!string.IsNullOrEmpty(oldEntity.FeatureImage) && !string.IsNullOrEmpty(newFeatureImage))
 			{
@@ -90,8 +91,22 @@ namespace DataLayer.Services
 				model.FeatureImage = newFeatureImage;
 			}
 
-			base.Update(model);
-			DbContext.SaveChanges();
+			oldEntity.Name = model.Name;
+			oldEntity.Address = model.Address;
+			oldEntity.Biography = model.Biography;
+			oldEntity.CallNumber = model.CallNumber;
+			oldEntity.CategoryId = model.CategoryId;
+			oldEntity.Description = model.Description;
+			oldEntity.DistrictId = model.DistrictId;
+			oldEntity.Email = model.Email;
+			oldEntity.FeatureImage = model.FeatureImage;
+			oldEntity.Latitude = model.Latitude;
+			oldEntity.Longitude = model.Longitude;
+			oldEntity.PostalCode = model.PostalCode;
+			oldEntity.WebsiteUrl = model.WebsiteUrl;
+			
+			//Update(model);
+			//await DbContext.SaveChangesAsync();
 		}
 		public async Task<List<BusinessListQuery>> GetAll()
 		{
@@ -217,15 +232,24 @@ namespace DataLayer.Services
 
 			}
 		}
-		public bool DeleteFeatureImage(string filePath)
+		public bool DeleteFeatureImage(Guid id, string filePath)
 		{
+			// update featrue image in database
+			var business = DbContext.Businesses.FirstOrDefault(f => f.Id == id);
+			business.FeatureImage = null;
+			DbContext.SaveChanges();
+			
+			// remove slash(/) from start of url
+			filePath = filePath.Substring(1);
+
+			// delete file from server
 			if (!string.IsNullOrEmpty(filePath))
 			{
 				File.Delete($"wwwroot/{filePath}");
 				return true;
 			}
+
 			return false;
 		}
-
 	}
 }

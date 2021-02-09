@@ -17,7 +17,7 @@
 			.img-wrap .close {
 				position: relative;
 				z-index: 100;
-				top: 5x;
+				top: 5px;
 				right: 35px;
 				color: red;
 				padding: 5px;
@@ -125,10 +125,10 @@
 								<div id="main-container">
 									<input display="Image" id="file" name="file" class="TheFile" style="display:none" type="file">
 									<button type="button" style="height:20%;margin-left:15px;top:0;" class="btn btn-primary" onclick="file.click()"><i class="fa fa-camera"></i>انتخاب کنید</button>
-									<div id="ImageItems" style="width:400px;height:auto;margin-left:5px;margin-top:15px">
-									</div>
-									<div id="RemoveImageItems" style="width:auto;height:auto;margin-left:5px;">
-									</div>
+									@*<div id="ImageItems" style="width:400px;height:auto;margin-left:5px;margin-top:15px">
+										</div>
+										<div id="RemoveImageItems" style="width:auto;height:auto;margin-left:5px;">
+										</div>*@
 								</div>
 								@if (Model.FeatureImage != null)
 								{
@@ -142,13 +142,18 @@
 							<div class="form-group" style="margin-right:5px">
 								<label for="exampleInputEmail1">تصاویر دیگر کسب و کار:</label>
 								<div id="main-container">
-									<input display="BussinessFiles" id="BussinessFiles" name="BussinessFiles" class="BussinessFiles" onchange="SetPictures('BussinessFiles','BussinessFilesItems');" style="display:none" multiple type="file">
+									<input display="BussinessFiles" id="BussinessFiles" name="BussinessFiles" class="BussinessFiles" style="display:none" multiple type="file">
 									<button type="button" style="height:20%;margin-left:15px;top:0;" class="btn btn-primary" onclick="BussinessFiles.click()"><i class="fa fa-camera"></i>انتخاب کنید </button>
-									<div id="BussinessFilesItems" style="width:400px;height:auto;margin-left:5px;margin-top:15px">
-
-									</div>
-									<div id="RemoveMusicFilesItems" style="width:auto;height:auto;margin-left:5px;">
-
+									<div id="galleryImageItems" class="img-wrap" style="width:400px;height:auto;margin-left:5px;margin-top:15px">
+										@if (Model.GalleryImages != null)
+										{
+											foreach (var image in Model.GalleryImages)
+											{
+												<span class="close" onclick="deleteGalleryImageButton_click(@image)">&times;</span>
+												<input type="hidden" id="deletedFromServer" value="0" />
+												<img id="featureImage" src="@image" width="100">
+											}
+										}
 									</div>
 								</div>
 							</div>

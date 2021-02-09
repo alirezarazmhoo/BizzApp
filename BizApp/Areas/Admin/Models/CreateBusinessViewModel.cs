@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace BizApp.Areas.Admin.Models
@@ -47,5 +48,6 @@ namespace BizApp.Areas.Admin.Models
 		public string CategoryName { get; set; }
 		public string DistrictName { get; set; }
 		public string FeatureImage { get; set; }
+		public IList<string> GalleryImages { get; set; }
 	}
 }

@@ -5,6 +5,9 @@
 		createFeatureImage(this.value);
 	});
 
+	$('#BussinessFiles').change(function () {
+		createGalleryImages();
+	});
 	//$('#featureImageRemoveButton').on('click', function () { deleteFeatureImage(null); });
 
 	$("#saveButton").click(function (e) {
@@ -33,6 +36,16 @@ function deleteFeatureImageButton_click() {
 	deleteFeatureImage();
 }
 
+function deleteGalleryImageButton_click(filePath) {
+	alert($('#BussinessFiles').val());
+	alert(filePath);
+	deleteGalleryImage();
+}
+
+function deleteGalleryImage() {
+	//$()
+}
+
 function deleteFeatureImage() {
 	// keep src for deleted from server
 	var src = $("#featureImage").attr('src');
@@ -45,26 +58,9 @@ function deleteFeatureImage() {
 	if (isDeletedFromServer === '1' || isDeletedFromServer == undefined) return;
 
 	// delete file from server
-	var data = { filePath: src };
+	var id = $('#Id').val();
 
-	//$.ajax({
-	//	type: "POST",
-	//	url: "/admin/businesses/deleteFeatureImage",
-	//	data: JSON.stringify(data),
-	//	headers: {
-	//		'Accept': 'application/json',
-	//		'Content-Type': 'application/json'
-	//	},
-	//	success: function (data) {
-	//		if (data.status == 'OK')
-	//			alert('Person has been added');
-			
-	//	}
-
-	//});
-
-	$.post("/admin/businesses/deleteFeatureImage?filePath='" + src + "'", function (result) {
-		alert(JSON.stringify(result));
+	$.post("/admin/businesses/deleteFeatureImage?id=" + id + "&filePath=" + src + "", function (result) {
 	});
 }
 
@@ -82,6 +78,26 @@ function createFeatureImage(value) {
 		'</div>';
 
 	$('#featureImageMainElement').append(element);
+}
+
+function createGalleryImages() {
+	var myURL = window.URL || window.webkitURL;
+	var result = "";
+	var tag = "";
+	var _File = document.getElementById("BussinessFiles").files;
+	for (var i = 0; i < _File.length; i++) {
+		var fileURL = myURL.createObjectURL(_File[i]);
+
+		tag = '<span class="close" onclick="deleteGalleryImageButton_click(' + fileURL + ')">&times;</span>';
+		tag = "<img src='" + fileURL + "' style='width:80px;height:60px;'>";
+
+		result += tag;
+	}
+
+	var element =
+		'<div class="img-wrap" id="featureImageDiv">' + result + '</div>';
+
+	$("#galleryImageItems").append(result);
 }
 
 // Initialize ajax autocomplete for categories:
