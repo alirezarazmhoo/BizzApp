@@ -50,8 +50,25 @@ namespace DataLayer.Services
 			model.FeatureImage = UploadFeutreImage(mainimage);
 
 			// save business in database
-			DbContext.Businesses.Add(model);
-			//DbContext.SaveChanges();
+			var entity = new Business
+			{
+				Name = model.Name,
+				Address = model.Address,
+				Biography = model.Biography,
+				CallNumber = model.CallNumber,
+				CategoryId = model.CategoryId,
+				Description = model.Description,
+				DistrictId = model.DistrictId,
+				Email = model.Email,
+				FeatureImage = model.FeatureImage,
+				Latitude = model.Latitude,
+				Longitude = model.Longitude,
+				PostalCode = model.PostalCode,
+				WebsiteUrl = model.WebsiteUrl
+			};
+
+			DbContext.Businesses.Add(entity);
+			DbContext.SaveChanges();
 
 			// upload image gallery
 			string fileName, filePath;
@@ -68,7 +85,7 @@ namespace DataLayer.Services
 
 					DbContext.BusinessGalleries.Add(new BusinessGallery()
 					{
-						BusinessId = model.Id,
+						BusinessId = entity.Id,
 						FileAddress = "/Upload/Bussiness/Files/" + fileName,
 					});
 				}
@@ -91,6 +108,11 @@ namespace DataLayer.Services
 				model.FeatureImage = newFeatureImage;
 			}
 
+			if (!string.IsNullOrEmpty(model.FeatureImage))
+			{
+				oldEntity.FeatureImage = model.FeatureImage;
+			}
+
 			oldEntity.Name = model.Name;
 			oldEntity.Address = model.Address;
 			oldEntity.Biography = model.Biography;
@@ -99,12 +121,11 @@ namespace DataLayer.Services
 			oldEntity.Description = model.Description;
 			oldEntity.DistrictId = model.DistrictId;
 			oldEntity.Email = model.Email;
-			oldEntity.FeatureImage = model.FeatureImage;
 			oldEntity.Latitude = model.Latitude;
 			oldEntity.Longitude = model.Longitude;
 			oldEntity.PostalCode = model.PostalCode;
 			oldEntity.WebsiteUrl = model.WebsiteUrl;
-			
+
 			//Update(model);
 			//await DbContext.SaveChangesAsync();
 		}
@@ -234,11 +255,6 @@ namespace DataLayer.Services
 		}
 		public bool DeleteFeatureImage(Guid id, string filePath)
 		{
-			// update featrue image in database
-			var business = DbContext.Businesses.FirstOrDefault(f => f.Id == id);
-			business.FeatureImage = null;
-			DbContext.SaveChanges();
-			
 			// remove slash(/) from start of url
 			filePath = filePath.Substring(1);
 
@@ -248,6 +264,11 @@ namespace DataLayer.Services
 				File.Delete($"wwwroot/{filePath}");
 				return true;
 			}
+
+			// update featrue image in database
+			var business = DbContext.Businesses.FirstOrDefault(f => f.Id == id);
+			business.FeatureImage = null;
+			DbContext.SaveChanges();
 
 			return false;
 		}
