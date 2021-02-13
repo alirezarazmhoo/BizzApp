@@ -160,14 +160,12 @@ function LoadMap(lon, lat) {
 
 	var theMarker = {};
 	if (lon == 0 && lat == 0) {
-
-		lon = 32.650823;
-		lat = 51.668037;
+		lon = 51.668037;
+		lat = 32.650823;
 	}
-	var mymap = L.map('mapid').setView([lon, lat], 13);
+	var mymap = L.map('mapid').setView([lat, lon], 13);
 	if (lon !== 0 && lat !== 0) {
-		theMarker = L.marker([lon, lat]).addTo(mymap);
-
+		theMarker = L.marker([lat, lon]).addTo(mymap);
 	}
 	//var mymap = L.map('mapid').setView([32.650823, 51.668037], 13);
 	//theMarker = L.marker([lon,lat], {icon: icon }).addTo(mymap);

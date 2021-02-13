@@ -10,6 +10,14 @@
 @section head {
 	<link href="~/css/autocomplete.css" rel="stylesheet" />
 	<style>
+
+		#Description, #Biography {
+			min-width: 100%;
+			min-height: 100px;
+			max-width: 100%;
+			max-height: 200px;
+		}
+
 		.img-wrap {
 			position: relative;
 		}
@@ -72,10 +80,15 @@
 
 								<div style="position: relative; height: 80px;">
 									<input type="text" placeholder="حداقل 3 کاراکتر تایپ کنید" value="@Model.CategoryName" id="autocomplete-ajax" class="form-control" />
+
 									<div id="categorySelection">دسته انتخاب شده: هیچ</div>
+
 									<input asp-for="CategoryId" style="display:none" />
+
 								</div>
+
 							</div>
+
 
 							<div class="form-group">
 								<textarea asp-for="Description" class="form-control" placeholder="توضیحات"></textarea>
@@ -99,7 +112,7 @@
 
 							<div class="form-group col-md-6">
 								<label for="websiteurl">شماره تماس</label>
-								<input asp-for="CallNumber" type="tel" placeholder="شماره تماس را وارد کنید" class="form-control" required>
+								<input asp-for="CallNumber" type="tel" value="0@(Model.CallNumber)" maxlength="11" placeholder="شماره تماس را وارد کنید" class="form-control" required>
 								<span asp-validation-for="CallNumber" class="text-danger"></span>
 
 							</div>
@@ -161,7 +174,7 @@
 					</div>
 				</div>
 				<div style="margin-top:20px">
-					<button id="saveButton" style="margin-right:20px;" type="submit" class="btn btn-light">ذخیره کسب و کار</button>
+					<button id="saveButton" style="margin-right:20px;" type="submit" class="btn btn-primary">ذخیره کسب و کار</button>
 				</div>
 			</div>
 		}
@@ -182,11 +195,10 @@
 			var latitude = @Model.Latitude;
 
 			if (longitude === 0)
-				longitude = 32.650823;
+				longitude = 51.668037;
 			if (latitude === 0)
-				latitude = 51.668037;
-
-			LoadMap(latitude, longitude);
+				latitude = 32.650823;
+			LoadMap(longitude, latitude);
 		});
 	</script>
 
