@@ -29,6 +29,8 @@
     <Compile Remove="Migrations\20210201055504_AddUserDisableFeature.Designer.cs" />
     <Compile Remove="Migrations\20210201060359_AddUserDisableFeature.cs" />
     <Compile Remove="Migrations\20210201060359_AddUserDisableFeature.Designer.cs" />
+    <Compile Remove="Migrations\20210206060259_AlterGetHierarchyCategoriesSp.cs" />
+    <Compile Remove="Migrations\20210206060259_AlterGetHierarchyCategoriesSp.Designer.cs" />
 
   </ItemGroup>
 

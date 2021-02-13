@@ -4,14 +4,16 @@ using DataLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210203095852_AddCallNumberToBusiness")]
+    partial class AddCallNumberToBusiness
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,8 +122,8 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "66df90b4-a89d-4609-81c2-37461837aec8",
-                            CreateDate = new DateTime(2021, 2, 6, 11, 21, 10, 679, DateTimeKind.Local).AddTicks(1535),
+                            ConcurrencyStamp = "302aea2f-5a31-4e8a-ab86-d11da099965d",
+                            CreateDate = new DateTime(2021, 2, 3, 13, 28, 51, 515, DateTimeKind.Local).AddTicks(6833),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
@@ -130,9 +132,9 @@ namespace DataLayer.Migrations
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFxvWSNBcNI7ty9gS+T60culp+Edn1z4JynIeZE7SJ06TcUNUQTCgN0urOdp1aDGmQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJRicvqur3AvWK3D6tFCuG6VmvKLyIgSX4Cm9k2JUL/M+F29mjeSja+N+ETl8OCthA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f232ba28-8024-452c-bbc5-062e0967d7f2",
+                            SecurityStamp = "27e004de-6804-48c9-8642-f3d2cae68221",
                             TwoFactorEnabled = false,
                             UserName = "mainadmin"
                         });
@@ -156,6 +158,9 @@ namespace DataLayer.Migrations
                         .HasDefaultValue(0L);
 
                     b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CityId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
@@ -186,6 +191,9 @@ namespace DataLayer.Migrations
                     b.Property<string>("PostalCode")
                         .HasColumnType("nvarchar(11)");
 
+                    b.Property<int?>("ProvinceId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserCreatorId")
                         .HasColumnType("nvarchar(450)");
 
@@ -196,7 +204,11 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("CityId");
+
                     b.HasIndex("DistrictId");
+
+                    b.HasIndex("ProvinceId");
 
                     b.HasIndex("UserCreatorId");
 
@@ -604,11 +616,19 @@ namespace DataLayer.Migrations
                         .WithMany()
                         .HasForeignKey("CategoryId");
 
+                    b.HasOne("DomainClass.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId");
+
                     b.HasOne("DomainClass.District", "District")
                         .WithMany()
                         .HasForeignKey("DistrictId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("DomainClass.Province", "Province")
+                        .WithMany()
+                        .HasForeignKey("ProvinceId");
 
                     b.HasOne("DomainClass.BizAppUser", "UserCreator")
                         .WithMany()

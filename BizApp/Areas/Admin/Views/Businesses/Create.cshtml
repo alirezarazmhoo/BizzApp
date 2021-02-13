@@ -7,13 +7,36 @@
 	//TempData.Keep("Provinces");
 }
 
+@section head {
+	<link href="~/css/autocomplete.css" rel="stylesheet" />
+	<style>
+		.img-wrap {
+			position: relative;
+		}
+
+			.img-wrap .close {
+				position: relative;
+				z-index: 100;
+				top: 5px;
+				right: 35px;
+				color: red;
+				padding: 5px;
+				/* font-weight: 400; */
+				/* -webkit-text-stroke: 4px white; */
+				background: white;
+				/* border-radius: 100% 100%; */
+				opacity: 0.8;
+			}
+	</style>
+}
+
 <div class="content-header">
 	<h1 style="float:right">
 		مدیریت کسب و کارها
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="#"><i class="fa fa-home"></i> خانه</a></li>
-		<li class="active">کسب و کارها</li>
+		<li><a href="/admin"><i class="fa fa-home"></i> خانه</a></li>
+		<li class="active"><a href="/admin/businesses">کسب و کارها</a></li>
 		<li class="active">جدید</li>
 	</ol>
 </div>
@@ -35,48 +58,61 @@
 							</div>
 
 							<div class="form-group col-md-6">
-								<label for="DistrictId">انتخاب منطقه</label>
-								<select asp-for="provinceId" class="form-control"
-										asp-items="@(new SelectList(ViewBag.Provinces, "ProvinceId", "Name"))">
-									<option value="0">لطفا شهرستان را انتخاب کنید</option>
-								</select>
-								<select asp-for="cityId" class="form-control" style="margin: 2px 0;">
-									<option>لطفا شهر را انتخاب کنید</option>
-								</select>
-								<select asp-for="districtId" class="form-control" style="margin: 2px 0;" required>
-									<option value="0">لطفا ناحیه را انتخاب کنید</option>
-								</select>
-								<span asp-validation-for="districtId" class="text-danger"></span>
+								<label for="autocomplete-district">ناحیه</label>
+
+								<div style="position: relative; height: 80px;">
+									<input type="text" placeholder="حداقل 3 کاراکتر تایپ کنید" value="@Model.DistrictName" id="autocomplete-district" class="form-control" />
+									<div id="districtSelection">ناحیه انتخاب شده: هیچ</div>
+									<input asp-for="DistrictId" style="display:none" />
+								</div>
 							</div>
 
 							<div class="form-group col-md-6">
-								<label for="DistrictId">دسته</label>
+								<label for="autocomplete-ajax">دسته</label>
 
-								<button type="button" class="btn btn-link" data-target="#modalcategory" data-toggle="modal">انتخاب کنید </button>
-								<input type="text" id="categoryId" name="categoryId" hidden />
-								<p style="margin-right:15px" id="currentcat" name="currentcat"></p>
+								<div style="position: relative; height: 80px;">
+									<input type="text" placeholder="حداقل 3 کاراکتر تایپ کنید" value="@Model.CategoryName" id="autocomplete-ajax" class="form-control" />
+									<div id="categorySelection">دسته انتخاب شده: هیچ</div>
+									<input asp-for="CategoryId" style="display:none" />
+								</div>
 							</div>
 
 							<div class="form-group">
 								<textarea asp-for="Description" class="form-control" placeholder="توضیحات"></textarea>
 							</div>
 							<div class="form-group">
-								<textarea asp-for="biograpy" class="form-control" placeholder="بیوگرافی کسب و کار"></textarea>
+								<textarea asp-for="Biography" class="form-control" placeholder="بیوگرافی کسب و کار"></textarea>
+								<input asp-for="Id" hidden />
+							</div>
+							<div class="form-group col-md-12">
+								<label>انتخاب موقعیت</label>
+								<div id="mapid" style="height:300px"></div>
+								<input id="latitude" name="latitude" hidden />
+								<input id="longitude" name="longitude" hidden />
+							</div>
+
+							<div class="form-group col-md-12">
+								<label for="address">نشانی کسب و کار</label>
+								<input asp-for="Address" placeholder="نشانی کسب و کار را وارد کنید" class="form-control" required>
+								<span asp-validation-for="Address" class="text-danger"></span>
+							</div>
+
+							<div class="form-group col-md-6">
+								<label for="websiteurl">شماره تماس</label>
+								<input asp-for="CallNumber" type="tel" placeholder="شماره تماس را وارد کنید" class="form-control" required>
+								<span asp-validation-for="CallNumber" class="text-danger"></span>
+
 							</div>
 
 							<div class="form-group col-md-6">
 								<label for="websiteurl">کد پستی</label>
 								<input asp-for="PostalCode" placeholder="کد پستی را وارد کنید" class="form-control">
-							</div>
-							<div class="form-group col-md-6">
-								<label for="address">نشانی کسب و کار</label>
-								<input asp-for="address" placeholder="نشانی کسب و کار را وارد کنید" class="form-control" required>
-								<span asp-validation-for="address" class="text-danger"></span>
+								<span asp-validation-for="PostalCode" class="text-danger"></span>
 							</div>
 
 							<div class="form-group col-md-6">
 								<label for="websiteurl">آدرس وبسایت</label>
-								<input asp-for="websiteurl" placeholder="آدرس وبسایت را وارد کنید" class="form-control" aria-describedby="websiteurlHelp">
+								<input asp-for="WebsiteUrl" placeholder="آدرس وبسایت را وارد کنید" class="form-control" aria-describedby="websiteurlHelp">
 								<small id="websiteurlHelp" class="form-text text-muted">مثال: sitename.com</small>
 							</div>
 							<div class="form-group col-md-6">
@@ -84,36 +120,43 @@
 								<input asp-for="Email" placeholder="ایمیل را وارد کنید" class="form-control">
 							</div>
 
-							<div class="form-group">
-								<label>انتخاب موقعیت</label>
-								<div id="mapid" style="height:180px"></div>
-							</div>
-							<div class="form-group col-md-6" style="margin-right:5px">
+							<div class="form-group col-md-6" style="margin-right:5px" id="featureImageMainElement">
 								<label for="exampleInputEmail1">تصویر اصلی کسب و کار:</label>
 								<div id="main-container">
-									<input display="Image" id="file" name="file" class="TheFile" onchange="SetPictures('file','ImageItems');" style="display:none" type="file">
+									<input display="Image" id="file" name="file" class="TheFile" style="display:none" type="file">
 									<button type="button" style="height:20%;margin-left:15px;top:0;" class="btn btn-primary" onclick="file.click()"><i class="fa fa-camera"></i>انتخاب کنید</button>
-									<div id="ImageItems" style="width:400px;height:auto;margin-left:5px;margin-top:15px">
-									</div>
-									<div id="RemoveImageItems" style="width:auto;height:auto;margin-left:5px;">
-									</div>
+									@*<div id="ImageItems" style="width:400px;height:auto;margin-left:5px;margin-top:15px">
+										</div>
+										<div id="RemoveImageItems" style="width:auto;height:auto;margin-left:5px;">
+										</div>*@
 								</div>
+								@if (Model.FeatureImage != null)
+								{
+									<div class="img-wrap" id="featureImageDiv">
+										<span class="close" onclick="deleteFeatureImageButton_click()">&times;</span>
+										<input type="hidden" id="deletedFromServer" value="0" />
+										<img id="featureImage" src="@Model.FeatureImage" width="200">
+									</div>
+								}
 							</div>
-							<div class="form-group " style="margin-right:5px">
+							<div class="form-group" style="margin-right:5px">
 								<label for="exampleInputEmail1">تصاویر دیگر کسب و کار:</label>
 								<div id="main-container">
-									<input display="BussinessFiles" id="BussinessFiles" name="BussinessFiles" class="BussinessFiles" onchange="SetPictures('BussinessFiles','BussinessFilesItems');" style="display:none" multiple type="file">
+									<input display="BussinessFiles" id="BussinessFiles" name="BussinessFiles" class="BussinessFiles" style="display:none" multiple type="file">
 									<button type="button" style="height:20%;margin-left:15px;top:0;" class="btn btn-primary" onclick="BussinessFiles.click()"><i class="fa fa-camera"></i>انتخاب کنید </button>
-									<div id="BussinessFilesItems" style="width:400px;height:auto;margin-left:5px;margin-top:15px">
-
-									</div>
-									<div id="RemoveMusicFilesItems" style="width:auto;height:auto;margin-left:5px;">
-
+									<div id="galleryImageItems" class="img-wrap" style="width:400px;height:auto;margin-left:5px;margin-top:15px">
+										@if (Model.GalleryImages != null)
+										{
+											foreach (var image in Model.GalleryImages)
+											{
+												<span class="close" onclick="deleteGalleryImageButton_click(@image)">&times;</span>
+												<input type="hidden" id="deletedFromServer" value="0" />
+												<img id="featureImage" src="@image" width="100">
+											}
+										}
 									</div>
 								</div>
 							</div>
-							<input id="latitude" name="latitude" hidden />
-							<input id="longitude" name="longitude" hidden />
 						</div>
 					</div>
 				</div>
@@ -125,218 +168,26 @@
 	</div>
 </div>
 
-<div class="modal fade " id="modalcategory">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header " style="text-align:center">
-				<h6 class="modal-title" style="margin:auto;vertical-align:middle;">دسته بندی</h6>
-			</div>
-			<div class="modal-body" id="categorybody">
-				@foreach (var item in (IEnumerable<Category>)ViewData["Categorie"])
-				{
-					<div class="form-group" onclick="CategoryGetChilds(@item.Id);">
-						<div style="width : 100% ;height:30px ;background-color:whitesmoke;border-bottom:1px solid">
-							<p style="text-align:center;height:inherit;cursor:pointer">@item.Name</p>
-						</div>
-					</div>
-				}
-			</div>
 
-			<div id="divbtnreturn">
-			</div>
+@section scripts {
+	<script src="~/lib/autocomplete/jquery.autocomplete.js"></script>
+	<script src="~/Admin/js/create-business.js"></script>
 
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
-</div>
-<script type="text/javascript">
-	$(document).ready(function () {
-		LoadMap(32.650823, 51.668037);
-		$("#provinceId").change(function () {
-			// clear city dropdownl
-			$('#cityId').empty();
+	<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 
-			// set default value
-			var nonVauleItem = '<option value="0">لطفا شهر را انتخاب کنید</option>';
-			$('#cityId').html(nonVauleItem);
+	<script type="text/javascript">
+		$(document).ready(function () {
+			var longitude = @Model.Longitude;
+			var latitude = @Model.Latitude;
 
-			// check if province not selected
-			if (this.value == '0') return;
+			if (longitude === 0)
+				longitude = 32.650823;
+			if (latitude === 0)
+				latitude = 51.668037;
 
-			var url = '/admin/city/getcities';
-
-			$.getJSON(url, { provinceId: this.value }, function (data) {
-				var items = nonVauleItem;
-
-				$.each(data, function (i, model) {
-					items += '<option value="' + model.value + '">' + model.text + '</option>';
-				});
-
-				$('#cityId').html(items);
-			});
+			LoadMap(latitude, longitude);
 		});
+	</script>
 
-		$("#cityId").change(function () {
-			// clear district dropdown
-			$('#districtId').empty();
-
-			// set default value for dropdwon
-			var nonVauleItem = '<option value="0">لطفا ناحیه را انتخاب کنید</option>';
-			$('#districtId').html(nonVauleItem);
-
-			// check if province not selected
-			if (this.value == '0') return;
-
-			var url = '/admin/district/getdistricts';
-
-			$.getJSON(url, { cityId: this.value }, function (data) {
-				var items = nonVauleItem;
-
-				$.each(data, function (i, model) {
-					items += '<option value="' + model.value + '">' + model.text + '</option>';
-				});
-
-				$('#districtId').html(items);
-			});
-		});
-
-		$("#districtId").change(function () {
-			$("span[data-valmsg-for='districtId']").html('');
-		});
-
-		$("#saveButton").click(function (e) {
-			var districtId = $("#districtId").val();
-			if (districtId == 0) {
-				e.preventDefault();
-				$("span[data-valmsg-for='districtId']").html('منطقه را انتخاب کنید');
-				$(window).scrollTop($('#districtId').position().top);
-			}
-		});
-	});
-
-	function CategoryGetChilds(id) {
-
-		$.ajax({
-			type: "GET",
-			url: "/admin/Businesses/GetChildsCategories?Id=" + id + "",
-			dataType: "json",
-			contentType: false,
-			processData: false,
-			success: function (response) {
-				if (response.success) {
-
-					if (response.isfinal == false) {
-						$('#categorybody').html('');
-						$.each(response.list, function () {
-
-							$("#divbtnreturn").html("<button class='btn btn-sm' type='button' onclick='GetBack(" + response.parentid + ");' style='float:right'>دسته قبل</button>");
-
-							if (this.havenext == false) {
-								$('#categorybody').append("<div class='form-group' onclick='SetCatId(" + this.id + ",\"" + this.name + "\" );'><div  style='width : 100% ;height:30px ;background-color:#83c030;border-bottom:1px solid'><p style='text-align:center;height:inherit;cursor:pointer'>" + this.name + "</p></div></div>");
-							}
-							else {
-								$('#categorybody').append("<div class='form-group' onclick='CategoryGetChilds(" + this.id + ");'><div  style='width : 100% ;height:30px ;background-color:whitesmoke;border-bottom:1px solid'><p style='text-align:center;height:inherit;cursor:pointer'>" + this.name + "</p></div></div>");
-							}
-						});
-					}
-				}
-				else {
-
-				}
-			},
-			error: function (response) {
-				alert("Error");
-			}
-		});
-
-	}
-
-	function GetBack(id) {
-		$.ajax({
-			type: "GET",
-			url: "/admin/Businesses/getbackcategories?Id=" + id + "",
-			dataType: "json",
-			contentType: false,
-			processData: false,
-			success: function (response) {
-				if (response.success) {
-					$('#categoryId').find('option').remove();
-					if (response.isfinal == false) {
-						$("#divbtnreturn").html("<button class='btn btn-sm' type='button' onclick='GetBack(" + response.parentid + ");' style='float:right'>دسته قبل</button>");
-					}
-					if (response.isfinal == true) {
-						$("#divbtnreturn").html('');
-					}
-					$('#categorybody').html('');
-					$.each(response.list, function () {
-						//$('#categoryId').append($("<option/>").val(this.id).text(this.name));
-						if (this.havenext == false) {
-							$('#categorybody').append("<div class='form-group' onclick='SetCatId(" + this.id + ",\"" + this.name + "\" );'><div  style='width : 100% ;height:30px ;background-color:#83c030;border-bottom:1px solid'><p style='text-align:center;height:inherit;cursor:pointer'>" + this.name + "</p></div></div>");
-						}
-						else {
-							$('#categorybody').append("<div class='form-group' onclick='CategoryGetChilds(" + this.id + ");'><div  style='width : 100% ;height:30px ;background-color:whitesmoke;border-bottom:1px solid'><p style='text-align:center;height:inherit;cursor:pointer'>" + this.name + "</p></div></div>");
-						}
-					});
-
-				}
-				else {
-				}
-			},
-			error: function (response) {
-				alert("Error");
-			}
-		});
-
-
-	}
-	function SetCatId(id, name) {
-		$("#categoryId").val(id);
-		$("#currentcat").text("دسته انتخابی : " + name + " ")
-		$("#modalcategory").modal('toggle')
-	}
-
-
-	function LoadMap(lon, lat) {
-
-		var theMarker = {};
-		if (lon == 0 && lat == 0) {
-
-			lon = 32.650823;
-			lat = 51.668037;
-		}
-		var mymap = L.map('mapid').setView([lon, lat], 13);
-		if (lon !== 0 && lat !== 0) {
-			theMarker = L.marker([lon, lat]).addTo(mymap);
-
-		}
-		//var mymap = L.map('mapid').setView([32.650823, 51.668037], 13);
-		//theMarker = L.marker([lon,lat], { icon: icon }).addTo(mymap);
-		L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-			maxZoom: 18,
-			id: 'mapbox/streets-v11',
-			tileSize: 512,
-			zoomOffset: -1,
-			accessToken: 'pk.eyJ1IjoiYWxpcmV6YXJhem1qb28iLCJhIjoiY2s1Yzg2aTM4MWo1bjNvcDN2dWQwbGs5byJ9.0MqeBvs7xijOfpnGE73R_A'
-		}).addTo(mymap);
-		mymap.on('click', function (e) {
-			var icon = new L.Icon.Default();
-			icon.options.shadowSize = [0, 0];
-			lat = e.latlng.lat;
-			lon = e.latlng.lng;
-			if (theMarker !== undefined) {
-
-				mymap.removeLayer(theMarker);
-			}
-			theMarker = L.marker([lat, lon], { icon: icon }).addTo(mymap);
-
-			$("#latitude").val(e.latlng.lat);
-			$("#longitude").val(e.latlng.lng);
-		});
-	}
-
-
-
-
-</script>
+}

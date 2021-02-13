@@ -30,6 +30,7 @@ namespace DataLayer.Data
 		public DbSet<City> Cities { get; set; }
 		public DbSet<District> Districts { get; set; }
 		public DbSet<Feature> Features { get; set; }
+		public DbSet<HierarchyNamesCategory> CategoryHierarchyNames { get; set; }
 		#endregion
 
 		protected override void OnModelCreating(ModelBuilder builder)
@@ -42,6 +43,10 @@ namespace DataLayer.Data
 			// default value for IsEnabled in users
 			builder.Entity<BizAppUser>()
 				.Property(b => b.IsEnabled).HasDefaultValue(true);
+			
+			// default value for Call Number in business
+			builder.Entity<Business>()
+				.Property(b => b.CallNumber).HasDefaultValue(0);
 
 			builder.Seed();
 			builder.Entity<City>().Property(p => p.Id).ValueGeneratedOnAdd();
