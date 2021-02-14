@@ -64,7 +64,8 @@ namespace DataLayer.Services
 				Latitude = model.Latitude,
 				Longitude = model.Longitude,
 				PostalCode = model.PostalCode,
-				WebsiteUrl = model.WebsiteUrl
+				WebsiteUrl = model.WebsiteUrl,
+				UserCreatorId = model.UserCreatorId
 			};
 
 			DbContext.Businesses.Add(entity);
