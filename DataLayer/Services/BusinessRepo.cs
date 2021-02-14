@@ -256,6 +256,13 @@ namespace DataLayer.Services
 		}
 		public bool DeleteFeatureImage(Guid id, string filePath)
 		{
+			// check filePath and id validation 
+			if (string.IsNullOrEmpty(filePath) || id == default) return false;
+
+			// find business and chekc it
+			var business = DbContext.Businesses.FirstOrDefault(f => f.Id == id);
+			if (business == null) return false;
+
 			// remove slash(/) from start of url
 			filePath = filePath.Substring(1);
 
@@ -263,15 +270,13 @@ namespace DataLayer.Services
 			if (!string.IsNullOrEmpty(filePath))
 			{
 				File.Delete($"wwwroot/{filePath}");
-				return true;
 			}
 
 			// update featrue image in database
-			var business = DbContext.Businesses.FirstOrDefault(f => f.Id == id);
 			business.FeatureImage = null;
 			DbContext.SaveChanges();
 
-			return false;
+			return true;
 		}
 	}
 }
