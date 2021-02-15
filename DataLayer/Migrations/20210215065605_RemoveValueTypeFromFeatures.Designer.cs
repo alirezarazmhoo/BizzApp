@@ -4,14 +4,16 @@ using DataLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210215065605_RemoveValueTypeFromFeatures")]
+    partial class RemoveValueTypeFromFeatures
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,8 +122,8 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "18a00df3-44eb-42f3-830f-be2fcb4fa36b",
-                            CreateDate = new DateTime(2021, 2, 15, 12, 21, 39, 182, DateTimeKind.Local).AddTicks(875),
+                            ConcurrencyStamp = "1e00b350-3095-4328-bde5-016833c6be6b",
+                            CreateDate = new DateTime(2021, 2, 15, 10, 26, 4, 511, DateTimeKind.Local).AddTicks(5143),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
@@ -130,9 +132,9 @@ namespace DataLayer.Migrations
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOE1mEXu0ThskdD+I6CQ3OloJM4zZ1RRKilf505xc2Xsxe9LxT6JBpMC3zMd1TmKtw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPpfSUN/Vva68b08GwbAT6aJVOvCKtGVbyTkIwWjw/YIi9zW5MQb4AbOdpeJCTssrg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2d01d592-1002-49cc-a379-ceac28f2bf27",
+                            SecurityStamp = "68b383ff-b509-4ebc-8779-9e7fd9796f61",
                             TwoFactorEnabled = false,
                             UserName = "mainadmin"
                         });
@@ -237,8 +239,8 @@ namespace DataLayer.Migrations
                     b.Property<int>("FeatureId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("Value")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -388,14 +390,12 @@ namespace DataLayer.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("BusinessFeatureType")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("ValueType")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
 
                     b.HasKey("Id");
 

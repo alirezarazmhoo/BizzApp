@@ -4,14 +4,16 @@ using DataLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210215070323_ChangeTypeOfValueTypeInFeatures")]
+    partial class ChangeTypeOfValueTypeInFeatures
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,8 +122,8 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "18a00df3-44eb-42f3-830f-be2fcb4fa36b",
-                            CreateDate = new DateTime(2021, 2, 15, 12, 21, 39, 182, DateTimeKind.Local).AddTicks(875),
+                            ConcurrencyStamp = "1d31a5a4-20a5-4512-a5ab-a3ed165886fe",
+                            CreateDate = new DateTime(2021, 2, 15, 10, 33, 22, 978, DateTimeKind.Local).AddTicks(5080),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
@@ -130,9 +132,9 @@ namespace DataLayer.Migrations
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOE1mEXu0ThskdD+I6CQ3OloJM4zZ1RRKilf505xc2Xsxe9LxT6JBpMC3zMd1TmKtw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHPQcvdRcOIjMGCtVo0ciMadfxh1wdPnTeQYSJh4YBS4rpzFt4RjzDT2ZFzdRpijXw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2d01d592-1002-49cc-a379-ceac28f2bf27",
+                            SecurityStamp = "2da9eda5-e8e2-4fa6-be44-8a3496a337f9",
                             TwoFactorEnabled = false,
                             UserName = "mainadmin"
                         });
@@ -237,8 +239,8 @@ namespace DataLayer.Migrations
                     b.Property<int>("FeatureId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("Value")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

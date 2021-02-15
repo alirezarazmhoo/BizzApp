@@ -1,68 +1,138 @@
 ﻿@model IEnumerable<DomainClass.Businesses.Queries.AllBusinessFeatureViewModel>
 @{
-    ViewData["Title"] = "BusinessFeature";
-    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+	ViewData["Title"] = "BusinessFeature";
+	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 <section class="content-header">
-    <h1 style="float:right;margin-bottom:10px">
-        اختصاص ویژگی ها به   @ViewBag.BussinessName    </h1>
-    <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-home"></i> خانه</a></li>
-        <li class="active"></li>
-    </ol>
+	<h1 style="float:right;margin-bottom:10px">
+		اختصاص ویژگی ها به   @ViewBag.BussinessName
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-home"></i> خانه</a></li>
+		<li class="active"></li>
+	</ol>
 </section>
 
 
-<div class="row" >
-    <div class="col-xs-12">
-        <div>
-            <a class="btn btn-warning" href="/admin/Businesses/Index" style="margin-top:20px">بازگشت به کسب وکار</a>
-        </div>
-        <div class="box" style="margin-top:20px">
-            <div class="box-body table-responsive no-padding">
-                <table class="table table-hover text-center">
-                    <tr>
-                        <th>
-                            ردیف
-                        </th>
-                        <th>
-                            عنوان ویژگی
-                        </th>
-                        <th>
-                            عملیات
-                        </th>
-                    </tr>
-                    @{ int rowNo = 0; }
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @(rowNo += 1)
-                            </td>
-                            <td>
-                                @item.FeatureName
-                            </td>
+<div class="row">
+	<div class="col-xs-12">
+		<div>
+			<a class="btn btn-warning" href="/admin/Businesses/Index" style="margin-top:20px">بازگشت به کسب وکار</a>
+		</div>
+		<div class="box" style="margin-top:20px">
+			<div class="box-body table-responsive no-padding">
+				<table class="table table-hover text-center">
+					<tr>
+						<th>
+							ردیف
+						</th>
+						<th>
+							عنوان ویژگی
+						</th>
+						<th>
+							مقدار
+						</th>
+						<th>
+							عملیات
+						</th>
+					</tr>
+					@{ int rowNo = 0; }
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>
+								@(rowNo += 1)
+							</td>
+							<td>
+								@item.FeatureName
+							</td>
+							<td>
+								@if (item.Value != null)
+								{
+									<span>@item.Value</span>
+								}
+								else
+								{
+									<span>---</span>
+								}
+							</td>
 
-                            <td>
-                                @{
-                                    if (item.IsInFeature)
-                                    {
+							<td>
+								@{
+									if (item.IsInFeature)
+									{
 
-                                        <a href="/admin/Businesses/RemoveBusinessFeature?Id=@ViewBag.BussinessId&FeatureId=@item.FeatureId" class="btn btn-danger">حذف ویژگی</a>
+										<a href="/admin/Businesses/RemoveBusinessFeature?Id=@ViewBag.BussinessId&FeatureId=@item.FeatureId" class="btn btn-danger">حذف ویژگی</a>
 
-                                    }
-                                    else
-                                    {
-                                        <a href="/admin/Businesses/AssingBusinessFeature?Id=@ViewBag.BussinessId&FeatureId=@item.FeatureId" class="btn btn-success">اختصاص ویژگی</a>
-                                    }
-                                }
+									}
+									else
+									{
+										if (item.ValueType == DomainClass.Enums.BusinessFeatureType.Boolean)
+										{
+											<a href="/admin/Businesses/AssingBusinessFeature?Id=@ViewBag.BussinessId&FeatureId=@item.FeatureId" class="btn btn-success">اختصاص ویژگی</a>
+										}
+										else
+										{
+											<a href="" class="btn btn-success" data-target="#setValueModal" data-toggle="modal" onclick="setFeauterId(@item.FeatureId)">اختصاص ویژگی</a>
+										}
+									}
+								}
 
-                            </td>
-                        </tr>
-                    }
-                </table>
-            </div>
-        </div>
-    </div>
+							</td>
+						</tr>
+					}
+				</table>
+			</div>
+		</div>
+	</div>
 
 </div>
+
+<div class="modal fade" id="setValueModal" role="dialog" style="height:auto;overflow-y:visible">
+	<div class="modal-dialog modal-sm" style="width:400px">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">تخصیص مقدار</h4>
+			</div>
+			<div class="modal-body" style="height:auto">
+				<form id="setValueForm" method="post" action="/admin/businesses/assingBusinessFeatureWithValue">
+					<input id="BusinessId" name="BusinessId" value="@ViewBag.BussinessId" hidden />
+					<input id="FeatureId" name="FeatureId" hidden />
+					<div class="form-group" style="margin-right:5px">
+						<label for="Value"> مقدار </label>
+						<input display="مقدار" id="Value" name="Value" placeholder="مقدار را وارد کنید" class="form-control" style="width:70%" required>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+				<button type="button" class="btn btn-success" onclick="setValue()">ثبت</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	function setFeauterId(featureId) {
+		$('#FeatureId').attr('value', featureId);
+	}
+
+	function setValue() {
+		var url = "/admin/businesses/assingBusinessFeatureWithValue";
+		var businessId = $('#BusinessId').val();
+		var featureId = $('#FeatureId').val();
+		var value = $('#Value').val();
+
+		var data = {
+			businessId: businessId,
+			featureId: featureId,
+			value: value
+		};
+
+		$.post(url, data, function (result) { location.reload(); })
+
+		
+	}
+
+</script>

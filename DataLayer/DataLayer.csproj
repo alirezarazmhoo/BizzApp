@@ -31,6 +31,12 @@
     <Compile Remove="Migrations\20210201060359_AddUserDisableFeature.Designer.cs" />
     <Compile Remove="Migrations\20210206060259_AlterGetHierarchyCategoriesSp.cs" />
     <Compile Remove="Migrations\20210206060259_AlterGetHierarchyCategoriesSp.Designer.cs" />
+    <Compile Remove="Migrations\20210214073100_ChangeTypeOfValueInBusinessFeature.cs" />
+    <Compile Remove="Migrations\20210214073100_ChangeTypeOfValueInBusinessFeature.Designer.cs" />
+    <Compile Remove="Migrations\20210215070036_ChangeTypeOfValueTypeInFeatures.cs" />
+    <Compile Remove="Migrations\20210215070036_ChangeTypeOfValueTypeInFeatures.Designer.cs" />
+    <Compile Remove="Migrations\20210215073602_ChangeBusinessFeatureTypeToDouble.cs" />
+    <Compile Remove="Migrations\20210215073602_ChangeBusinessFeatureTypeToDouble.Designer.cs" />
 
   </ItemGroup>
 

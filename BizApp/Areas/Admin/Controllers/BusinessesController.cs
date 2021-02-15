@@ -163,9 +163,24 @@ namespace BizApp.Areas.Admin.Controllers
 			else
 			{
 				return RedirectToAction("BusinessFeature", "Businesses", new { Id = Id.Value });
-
 			}
 		}
+
+		[HttpPost, ActionName("AssingBusinessFeatureWithValue")]
+		public async Task<IActionResult> AssingBusinessFeatureWithValue(SetBusinessFeatureValueViewModel model) 
+		{
+			try
+			{
+				await _unitOfWork.BusinessRepo.AssignFeature(model.BusinessId, model.FeatureId, model.Value);
+				await _unitOfWork.SaveAsync();
+				return RedirectToAction("BusinessFeature", "Businesses", new { Id = model.BusinessId });
+			}
+			catch //(Exception ex)
+			{
+				return RedirectToAction("BusinessFeature", "Businesses", new { Id = model.BusinessId });
+			}
+		}
+		
 
 		[HttpGet, ActionName("RemoveBusinessFeature")]
 		public async Task<IActionResult> RemoveBusinessFeature(Guid? Id, int FeatureId)

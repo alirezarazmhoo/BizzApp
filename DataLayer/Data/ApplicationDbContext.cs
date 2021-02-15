@@ -1,5 +1,6 @@
 ﻿using DomainClass;
 using DomainClass.Businesses;
+using DomainClass.Enums;
 using DomainClass.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -38,7 +39,7 @@ namespace DataLayer.Data
 			base.OnModelCreating(builder);
 
 			builder.Entity<Feature>()
-				.Property(b => b.ValueType).HasDefaultValue("bool");
+				.Property(b => b.ValueType).HasDefaultValue(BusinessFeatureType.Boolean);
 
 			// default value for IsEnabled in users
 			builder.Entity<BizAppUser>()

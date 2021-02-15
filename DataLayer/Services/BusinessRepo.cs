@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataLayer.Services
@@ -212,23 +211,34 @@ namespace DataLayer.Services
 		}
 		public async Task<IEnumerable<AllBusinessFeatureViewModel>> GetBusinessFature(Guid? id)
 		{
-			List<AllBusinessFeatureViewModel> MainList = new List<AllBusinessFeatureViewModel>();
-
+			var MainList = new List<AllBusinessFeatureViewModel>();
 
 			if (id.HasValue)
 			{
 
-				var CurrentFeatures = await DbContext.BusinessFeatures.Include(s => s.Feature).Where(s => s.BusinessId.Equals(id)).ToListAsync();
+				var currentFeatures = await DbContext.BusinessFeatures.Include(s => s.Feature).Where(s => s.BusinessId.Equals(id)).ToListAsync();
 				var AllFeatures = await DbContext.Features.ToListAsync();
-				foreach (var item in CurrentFeatures)
+				foreach (var item in currentFeatures)
 				{
-					MainList.Add(new AllBusinessFeatureViewModel() { FeatureId = item.FeatureId, IsInFeature = true, FeatureName = item.Feature.Name });
+					MainList.Add(new AllBusinessFeatureViewModel
+					{ 
+						FeatureId = item.FeatureId,
+						Value = item.Value,
+						IsInFeature = true,
+						FeatureName = item.Feature.Name
+					});
 				}
 				foreach (var item in AllFeatures)
 				{
-					if (!CurrentFeatures.Any(s => s.FeatureId == item.Id))
+					if (!currentFeatures.Any(s => s.FeatureId == item.Id))
 					{
-						MainList.Add(new AllBusinessFeatureViewModel() { FeatureId = item.Id, FeatureName = item.Name, IsInFeature = false });
+						MainList.Add(new AllBusinessFeatureViewModel
+						{ 
+							FeatureId = item.Id,
+							FeatureName = item.Name,
+							IsInFeature = false,
+							ValueType = item.ValueType
+						});
 					}
 				}
 				return MainList.OrderByDescending(s => s.Id);
@@ -238,11 +248,15 @@ namespace DataLayer.Services
 				return null;
 			}
 		}
-		public async Task AssignFeature(Guid? id, int FeatureId)
+		public async Task AssignFeature(Guid? id, int FeatureId, string value = null)
 		{
-			BusinessFeature businessFeature = new BusinessFeature();
-			businessFeature.FeatureId = FeatureId;
-			businessFeature.BusinessId = id.Value;
+			var businessFeature = new BusinessFeature
+			{
+				FeatureId = FeatureId,
+				BusinessId = id.Value,
+				Value = value
+			};
+
 			await DbContext.BusinessFeatures.AddAsync(businessFeature);
 		}
 		public async Task RemoveFeature(Guid? id, int FeatureId)

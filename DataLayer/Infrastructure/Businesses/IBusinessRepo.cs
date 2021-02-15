@@ -16,7 +16,7 @@ namespace DataLayer.Infrastructure
 		void Create(Business model, IFormFile mainimage, IFormFile[] otherimages);
 		Task Update(Business model, IFormFile mainimage, IFormFile[] gallery);
 		Task<IEnumerable<AllBusinessFeatureViewModel>> GetBusinessFature(Guid? id);
-		Task AssignFeature(Guid? id, int FeatureId);
+		Task AssignFeature(Guid? id, int FeatureId, string value = null);
 		Task RemoveFeature(Guid? id, int FeatureId);
 		Task Remove(Business model);
 		bool DeleteFeatureImage(Guid id, string filePath);

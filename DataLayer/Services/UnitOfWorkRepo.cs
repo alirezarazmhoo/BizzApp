@@ -1,9 +1,5 @@
 ﻿using DataLayer.Data;
 using DataLayer.Infrastructure;
-using DomainClass;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -39,6 +35,7 @@ namespace DataLayer.Services
 		public IFeatureRepo FeatureRepo =>  featureRepo ?? new FeatureRepo(_DbContext);
 		public ICategoryFeatureRepo CategoryFeaturesRepo => categoryFeaturesRepo ?? new CategoryFeatureRepo(_DbContext);
 		public IBusinessRepo BusinessRepo => businessRepo ?? new BusinessRepo(_DbContext, _currentUser);
+		
 		public async Task SaveAsync()
 		{
 			await _DbContext.SaveChangesAsync();

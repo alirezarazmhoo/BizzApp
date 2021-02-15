@@ -22,7 +22,7 @@ namespace DataLayer.Services
 				if(Item != null)
 				{
 					Item.Name = model.Name;
-					Item.BusinessFeatureType = model.BusinessFeatureType; 				
+					Item.ValueType = model.ValueType; 				
 				}
 			}
 		}
