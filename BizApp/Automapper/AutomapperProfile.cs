@@ -3,6 +3,7 @@ using BizApp.Areas.Admin.Models;
 using BizApp.Utility;
 using DomainClass;
 using DomainClass.Businesses;
+using DomainClass.Businesses.Commands;
 using DomainClass.Businesses.Queries;
 
 namespace BizApp.Automapper
@@ -56,6 +57,7 @@ namespace BizApp.Automapper
 
 			// Business Create
 			CreateMap<Business, CreateBusinessViewModel>().ReverseMap();
+			CreateMap<CreateBusinessCommand, CreateBusinessViewModel>().ReverseMap();
 
 		}
 	}

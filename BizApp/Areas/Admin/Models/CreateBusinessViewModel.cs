@@ -17,7 +17,6 @@ namespace BizApp.Areas.Admin.Models
 		[MaxLength(100, ErrorMessage = "نام بسیار طولانی است")]
 		[MinLength(3, ErrorMessage = "نام بسیار کوتاه است")]
 		public string Name { get; set; }
-
 		public string Description { get; set; }
 		//public int provinceId { get; set; }
 		//public int cityId { get; set; }
@@ -38,10 +37,10 @@ namespace BizApp.Areas.Admin.Models
 		[DataType(DataType.EmailAddress)]
 		public string Email { get; set; }
 		[Required(ErrorMessage = "شماره تماس را وارد نمایید")]
-		[DataType(DataType.PhoneNumber, ErrorMessage = "شماره تماس نا معتبر است")]
-		[RegularExpression(@"^([0-9]{11})$", ErrorMessage = "شماره تماس نامعتبر است")]
+		[RegularExpression(@"^([0-9]{11})|([0-9]{10})$", ErrorMessage = "شماره تماس نامعتبر است")]
 		public long CallNumber { get; set; }
-
+		[RegularExpression(@"^([0][9][0-9]{9})|([9][0-9]{9})$", ErrorMessage = "شماره موبایل نامعتبر است")]
+		public long Mobile { get; set; }
 		public double Latitude { get; set; }
 		public double Longitude { get; set; }
 		public string UserCreatorId { get; set; }

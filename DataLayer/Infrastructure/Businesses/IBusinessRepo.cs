@@ -1,4 +1,5 @@
 ﻿using DomainClass.Businesses;
+using DomainClass.Businesses.Commands;
 using DomainClass.Businesses.Queries;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -13,7 +14,7 @@ namespace DataLayer.Infrastructure
 		Task<List<BusinessListQuery>> GetAll(string userId);
 		Task<List<BusinessListQuery>> GetAll(string searchString, string userId = null);
 		Task<Business> GetById(Guid id);
-		void Create(Business model, IFormFile mainimage, IFormFile[] otherimages);
+		Task Create(CreateBusinessCommand model, IFormFile mainimage, IFormFile[] otherimages);
 		Task Update(Business model, IFormFile mainimage, IFormFile[] gallery);
 		Task<IEnumerable<AllBusinessFeatureViewModel>> GetBusinessFature(Guid? id);
 		Task AssignFeature(Guid? id, int FeatureId, string value = null);

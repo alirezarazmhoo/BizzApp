@@ -33,28 +33,22 @@ namespace DomainClass.Businesses
 		public string FeatureImage { get; set; }
 		[Required]
 		public long CallNumber { get; set; }
-		public virtual District District { get; set; }
-		public virtual Category Category { get; set; }
-
+		public string OwnerId { get; set; }
 		[AllowNull]
 		public string UserCreatorId { get; set; }
-		public BizAppUser UserCreator { get; set;  }
 		[Required]
 		public DateTime CreatedDate { get; set; } = DateTime.Now;
-
-		//public int?  CityId { get; set; }
-		//public virtual City City { get; set; }
-		//public int? ProvinceId { get; set; }
-		//public virtual Province Province { get; set; }
-
 		public double Latitude { get; set; }
 		public double Longitude { get; set; }
 
+		// Relations
+		public virtual District District { get; set; }
+		public virtual Category Category { get; set; }
 		public virtual ICollection<BusinessCallNumber> CallNumbers { get; set; }
 		public virtual ICollection<BusinessGallery> Galleries { get; set; }
 		public virtual ICollection<BusinessFeature> Features { get; set; }
 		public virtual ICollection<BusinessTime> BusinessTimes{ get; set; }
-
-
+		public virtual BizAppUser Owner { get; set; }
+		public virtual BizAppUser UserCreator { get; set;  }
 	}
 }

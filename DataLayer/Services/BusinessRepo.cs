@@ -1,9 +1,13 @@
 ﻿using DataLayer.Data;
 using DataLayer.Extensions;
 using DataLayer.Infrastructure;
+using DomainClass;
 using DomainClass.Businesses;
+using DomainClass.Businesses.Commands;
 using DomainClass.Businesses.Queries;
+using DomainClass.Infrastructure;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,16 +15,19 @@ using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace DataLayer.Services
 {
 	public class BusinessRepo : RepositoryBase<Business>, IBusinessRepo
 	{
 		private readonly ClaimsPrincipal _currentUser;
+		private readonly UserManager<BizAppUser> _userManager;
 
-		public BusinessRepo(ApplicationDbContext dbContext, ClaimsPrincipal currentUser) : base(dbContext)
+		public BusinessRepo(ApplicationDbContext dbContext, ClaimsPrincipal currentUser, UserManager<BizAppUser> userManager) : base(dbContext)
 		{
 			_currentUser = currentUser;
+			_userManager = userManager;
 		}
 
 		private string UploadFeutreImage(IFormFile image)
@@ -43,32 +50,98 @@ namespace DataLayer.Services
 			return null;
 		}
 
-		public void Create(Business model, IFormFile mainimage, IFormFile[] otherimages)
+		private async Task<string> CreateOwner(long? mobile, long callNumber)
 		{
-			// upload feature image
-			model.FeatureImage = UploadFeutreImage(mainimage);
-
-			// save business in database
-			var entity = new Business
+			// set username and mobile number
+			string username;
+			if (mobile == null) mobile = 0;
+			// if owner have mobile number
+			if (mobile > 0)
 			{
-				Name = model.Name,
-				Address = model.Address,
-				Biography = model.Biography,
-				CallNumber = model.CallNumber,
-				CategoryId = model.CategoryId,
-				Description = model.Description,
-				DistrictId = model.DistrictId,
-				Email = model.Email,
-				FeatureImage = model.FeatureImage,
-				Latitude = model.Latitude,
-				Longitude = model.Longitude,
-				PostalCode = model.PostalCode,
-				WebsiteUrl = model.WebsiteUrl,
-				UserCreatorId = model.UserCreatorId
+				username = mobile.ToString();
+			}
+			else // if owner not have mobile number
+			{
+				// user CallNumber for username
+				username = callNumber.ToString();
+			}
+
+			// Create owner password with Mobile Number or Call Number
+			var fourDigit = username.ToString().Substring(4, 6);
+			var owner = new BizAppUser
+			{
+				UserName = username,
+				NormalizedUserName = username.Normalize().ToUpper(),
+				LockoutEnabled = false,
+				SecurityStamp = Guid.NewGuid().ToString(),
+				Mobile = (long)mobile,
+				FullName = "مالک کسب و کار",
+				Password = fourDigit
 			};
 
-			DbContext.Businesses.Add(entity);
-			DbContext.SaveChanges();
+			// Create New User with his/him role
+			var result = await _userManager.CreateAsync(owner, owner.Password);
+			if (result.Succeeded)
+			{
+				var result2 = await _userManager.AddToRoleAsync(owner, UserConfiguration.OwnerRoleName);
+			}
+			else
+			{
+				throw new Exception("User Exists");
+			}
+			return owner.Id;
+		}
+
+		public async Task Create(CreateBusinessCommand model, IFormFile mainimage, IFormFile[] otherimages)
+		{
+			string ownerId = null;
+			Business entity;
+
+			// Create New User with his/him role
+			using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+			{
+				// create owner
+				try
+				{
+					ownerId = await CreateOwner(model.Mobile, model.CallNumber);
+				}
+				catch (Exception ex)
+				{
+					var owner = DbContext.Users.FirstOrDefault(f => f.UserName == model.Mobile.ToString() || f.UserName == model.CallNumber.ToString());
+					if (owner != null)
+						ownerId = owner.Id;
+					else
+						throw ex;
+				}
+
+				// upload feature image
+				model.FeatureImage = UploadFeutreImage(mainimage);
+
+				// save business in database
+				entity = new Business
+				{
+					Name = model.Name,
+					Address = model.Address,
+					Biography = model.Biography,
+					CallNumber = model.CallNumber,
+					CategoryId = model.CategoryId,
+					Description = model.Description,
+					DistrictId = model.DistrictId,
+					Email = model.Email,
+					FeatureImage = model.FeatureImage,
+					Latitude = model.Latitude,
+					Longitude = model.Longitude,
+					PostalCode = model.PostalCode,
+					WebsiteUrl = model.WebsiteUrl,
+					UserCreatorId = model.UserCreatorId,
+					OwnerId = ownerId
+				};
+
+				DbContext.Businesses.Add(entity);
+				await DbContext.SaveChangesAsync();
+
+				scope.Complete();
+			}
 
 			// upload image gallery
 			string fileName, filePath;
@@ -96,16 +169,16 @@ namespace DataLayer.Services
 		public async Task Update(Business model, IFormFile mainImage, IFormFile[] gallery)
 		{
 			// Upload new feature image
-			var newFeatureImage = UploadFeutreImage(mainImage);
+			model.FeatureImage = UploadFeutreImage(mainImage);
 
 			// Delete old feature iamge
 			var oldEntity = await DbContext.Businesses.FirstOrDefaultAsync(f => f.Id == model.Id);
 			// if business has imiage and user select new featrue image
-			if (!string.IsNullOrEmpty(oldEntity.FeatureImage) && !string.IsNullOrEmpty(newFeatureImage))
+			if (!string.IsNullOrEmpty(oldEntity.FeatureImage) && !string.IsNullOrEmpty(model.FeatureImage))
 			{
 				// delete old feature image
 				File.Delete($"wwwroot/{oldEntity.FeatureImage}");
-				model.FeatureImage = newFeatureImage;
+				model.FeatureImage = model.FeatureImage;
 			}
 
 			if (!string.IsNullOrEmpty(model.FeatureImage))
@@ -129,6 +202,7 @@ namespace DataLayer.Services
 			//Update(model);
 			//await DbContext.SaveChangesAsync();
 		}
+
 		public async Task<List<BusinessListQuery>> GetAll()
 		{
 			return
@@ -215,13 +289,12 @@ namespace DataLayer.Services
 
 			if (id.HasValue)
 			{
-
 				var currentFeatures = await DbContext.BusinessFeatures.Include(s => s.Feature).Where(s => s.BusinessId.Equals(id)).ToListAsync();
 				var AllFeatures = await DbContext.Features.ToListAsync();
 				foreach (var item in currentFeatures)
 				{
 					MainList.Add(new AllBusinessFeatureViewModel
-					{ 
+					{
 						FeatureId = item.FeatureId,
 						Value = item.Value,
 						IsInFeature = true,
@@ -233,7 +306,7 @@ namespace DataLayer.Services
 					if (!currentFeatures.Any(s => s.FeatureId == item.Id))
 					{
 						MainList.Add(new AllBusinessFeatureViewModel
-						{ 
+						{
 							FeatureId = item.Id,
 							FeatureName = item.Name,
 							IsInFeature = false,

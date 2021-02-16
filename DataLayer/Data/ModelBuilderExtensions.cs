@@ -3,14 +3,12 @@ using DomainClass.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DataLayer.Data
 {
 	public static class ModelBuilderExtensions
 	{
-		public static void Seed(this ModelBuilder builder)
+		public static void SeedMainAdmin(this ModelBuilder builder)
 		{
 			var userId = UserConfiguration.MainAdminId;
 			var adminUser = new BizAppUser
@@ -43,6 +41,23 @@ namespace DataLayer.Data
 				RoleId = adminRoleId,
 				UserId = userId
 			});
+		}
+
+		public static void SeedOwnerRole(this ModelBuilder builder)
+		{
+			var roleId = UserConfiguration.OwnerRoleId;
+
+			// create owner role entity
+			var ownerRole = new IdentityRole 
+			{
+				Name = UserConfiguration.OwnerRoleName,
+				Id = roleId,
+				ConcurrencyStamp = roleId
+			};
+
+			ownerRole.NormalizedName = ownerRole.Name.Normalize().ToUpper();
+
+			builder.Entity<IdentityRole>().HasData(ownerRole);
 		}
 	}
 }

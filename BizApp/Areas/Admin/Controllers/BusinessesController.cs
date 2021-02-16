@@ -9,6 +9,7 @@ using BizApp.Utility;
 using DataLayer.Infrastructure;
 using DomainClass;
 using DomainClass.Businesses;
+using DomainClass.Businesses.Commands;
 using DomainClass.Businesses.Queries;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -104,18 +105,19 @@ namespace BizApp.Areas.Admin.Controllers
 
 			try
 			{
-				var entity = _mapper.Map<Business>(model);
+				var entity = _mapper.Map<CreateBusinessCommand>(model);
 
 				// if checked 
 				if (model.Id == default)
 				{
 					// create business
 					entity.UserCreatorId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-					_unitOfWork.BusinessRepo.Create(entity, file, BussinessFiles);
+					await _unitOfWork.BusinessRepo.Create(entity, file, BussinessFiles);
 				}
 				else
 				{
-					await _unitOfWork.BusinessRepo.Update(entity, file, BussinessFiles);
+					var updateModel = _mapper.Map<Business>(model);
+					await _unitOfWork.BusinessRepo.Update(updateModel, file, BussinessFiles);
 				}
 
 				await _unitOfWork.SaveAsync();
