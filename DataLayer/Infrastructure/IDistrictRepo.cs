@@ -11,8 +11,8 @@ namespace DataLayer.Infrastructure
 		Task<List<District>> GetAll(int cityId);
 		Task<List<District>> GetAll(string searchString);
 		Task<District> GetById(int id);
-		Task<List<DistrictWithParentsName>> GetAllWithParentNames(string searchString);
-		Task<DistrictWithParentsName> GetAllWithParentNamesById(int id);
+		Task<List<DistrictWithParentsNameQuery>> GetAllWithParentNames(string searchString);
+		Task<DistrictWithParentsNameQuery> GetAllWithParentNamesById(int id);
 		Task AddOrUpdate(District district);
 		void Remove(District district);
 	}

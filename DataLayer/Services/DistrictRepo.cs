@@ -40,30 +40,36 @@ namespace DataLayer.Services
 								.ToListAsync();
 		}
 
-		public async Task<List<DistrictWithParentsName>> GetAllWithParentNames(string searchString)
+		public async Task<List<DistrictWithParentsNameQuery>> GetAllWithParentNames(string searchString)
 		{
 			if (string.IsNullOrEmpty(searchString))
 			{
-				return new List<DistrictWithParentsName>();
+				return new List<DistrictWithParentsNameQuery>();
 			}
 
-			var resutlt = await DbContext.Districts
-				.Select(s => new DistrictWithParentsName
-				{
-					Id = s.Id,
-					ListName = s.City.Province.Name + " - " + s.City.Name + " - " + s.Name
-				})
-				.Where(w => w.ListName.Contains(searchString))
-				.ToListAsync();
+			var query = from city in DbContext.Cities
+						join district in DbContext.Districts
+						   on city.Id equals district.CityId into joined
+						from j in joined.DefaultIfEmpty()
+						join province in DbContext.Provinces
+						   on city.ProvinceId equals province.Id
+						select new DistrictWithParentsNameQuery
+						{
+							Id = j.Id == null ? city.Id : j.Id,
+							ListName = province.Name + " - " + city.Name + " - " + (j.Name ?? "بدون ناحیه"),
+							IsCity = j.Id == null ? true : false
+						};
 
-			return resutlt;
+			var result = await query.Where(w => w.ListName.Contains(searchString)).ToListAsync();
+
+			return result;
 		}
 
-		public async Task<DistrictWithParentsName> GetAllWithParentNamesById(int id)
+		public async Task<DistrictWithParentsNameQuery> GetAllWithParentNamesById(int id)
 		{
 
 			var resutlt = await DbContext.Districts
-					.Select(s => new DistrictWithParentsName
+					.Select(s => new DistrictWithParentsNameQuery
 					{
 						Id = s.Id,
 						ListName = s.City.Province.Name + " - " + s.City.Name + " - " + s.Name

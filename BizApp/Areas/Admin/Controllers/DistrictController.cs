@@ -160,7 +160,9 @@ namespace BizApp.Areas.Admin.Models
 			try
 			{
 				var items = await _unitOfWork.DistrictRepo.GetAllWithParentNames(searchString);
-				return Json(new SelectList(items, "Id", "ListName"));
+				//var data = items.Cast<DistrictsWithParentNamesViewModel>().ToList();
+
+				return Json(items);
 			}
 			catch (Exception ex)
 			{

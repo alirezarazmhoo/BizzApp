@@ -50,7 +50,7 @@ namespace DataLayer.Services
 			return null;
 		}
 
-		private async Task<string> CreateOwner(long? mobile, long callNumber)
+		private async Task<string> CreateOwner(long? mobile, long callNumber, string businessName)
 		{
 			// set username and mobile number
 			string username;
@@ -75,7 +75,7 @@ namespace DataLayer.Services
 				LockoutEnabled = false,
 				SecurityStamp = Guid.NewGuid().ToString(),
 				Mobile = (long)mobile,
-				FullName = "مالک کسب و کار",
+				FullName = "مالک " + businessName,
 				Password = fourDigit
 			};
 
@@ -103,7 +103,7 @@ namespace DataLayer.Services
 				// create owner
 				try
 				{
-					ownerId = await CreateOwner(model.Mobile, model.CallNumber);
+					ownerId = await CreateOwner(model.Mobile, model.CallNumber, model.Name);
 				}
 				catch (Exception ex)
 				{

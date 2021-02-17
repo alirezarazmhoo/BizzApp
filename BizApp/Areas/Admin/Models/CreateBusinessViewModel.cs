@@ -23,6 +23,7 @@ namespace BizApp.Areas.Admin.Models
 		[Required(ErrorMessage = "منطقه را انتخاب نمایید")]
 		[Range(1, int.MaxValue, ErrorMessage = "لطفا منطقه را انتخاب کنید")]
 		public int DistrictId { get; set; }
+		public bool IsCity { get; set; }
 		[Required(ErrorMessage = "منطقه را انتخاب نمایید")]
 		public int CategoryId { get; set; }
 		public string Biography { get; set; }
@@ -40,7 +41,7 @@ namespace BizApp.Areas.Admin.Models
 		[RegularExpression(@"^([0-9]{11})|([0-9]{10})$", ErrorMessage = "شماره تماس نامعتبر است")]
 		public long CallNumber { get; set; }
 		[RegularExpression(@"^([0][9][0-9]{9})|([9][0-9]{9})$", ErrorMessage = "شماره موبایل نامعتبر است")]
-		public long Mobile { get; set; }
+		public long? Mobile { get; set; }
 		public double Latitude { get; set; }
 		public double Longitude { get; set; }
 		public string UserCreatorId { get; set; }

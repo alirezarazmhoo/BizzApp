@@ -72,6 +72,7 @@
 									<input type="text" placeholder="حداقل 3 کاراکتر تایپ کنید" value="@Model.DistrictName" id="autocomplete-district" class="form-control" />
 									<div id="districtSelection">ناحیه انتخاب شده: هیچ</div>
 									<input asp-for="DistrictId" style="display:none" />
+									<input id="IsCity" name="IsCity" type="hidden" />
 								</div>
 							</div>
 
@@ -126,7 +127,7 @@
 
 								<div class="form-group col-md-6">
 									<label for="websiteurl">موبایل</label>
-									<input asp-for="Mobile" type="tel" value="0@(Model.Mobile)" maxlength="11" placeholder="شماره موبایل را وارد کنید" class="form-control" required>
+									<input asp-for="Mobile" type="tel" value="0@(Model.Mobile)" maxlength="11" placeholder="شماره موبایل را وارد کنید" class="form-control">
 									<span asp-validation-for="Mobile" class="text-danger"></span>
 								</div>
 							}

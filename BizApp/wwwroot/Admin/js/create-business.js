@@ -125,7 +125,6 @@ $('#autocomplete-ajax').autocomplete({
 	},
 	showNoSuggestionNotice: true,
 	noSuggestionNotice: "متاسفانه موردی پیدا نشد"
-
 });
 
 // Initailize ajax autocomplete for districts
@@ -137,13 +136,14 @@ $('#autocomplete-district').autocomplete({
 		var result = JSON.parse(response);
 		return {
 			suggestions: $.map(result, function (dataItem) {
-				return { data: dataItem.value, value: dataItem.text };
+				return { data: dataItem.id, value: dataItem.listName, isCity: dataItem.isCity };
 			})
 		};
 	},
 	type: "get",
 	onSelect: function (suggestion) {
 		$('#districtSelection').html('<b>ناحیه انتخاب شده: </b><i>' + suggestion.value + '</i>');
+		$('#IsCity').attr('value', suggestion.isCity);
 		$('#DistrictId').attr('value', suggestion.data);
 	},
 	onInvalidateSelection: function () {
@@ -152,7 +152,6 @@ $('#autocomplete-district').autocomplete({
 	},
 	showNoSuggestionNotice: true,
 	noSuggestionNotice: "متاسفانه موردی پیدا نشد"
-
 });
 
 
