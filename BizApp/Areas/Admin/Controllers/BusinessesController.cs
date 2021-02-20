@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Transactions;
 using AutoMapper;
 using BizApp.Areas.Admin.Models;
 using BizApp.Utility;
@@ -108,19 +109,23 @@ namespace BizApp.Areas.Admin.Controllers
 				var entity = _mapper.Map<CreateBusinessCommand>(model);
 
 				// if checked 
-				if (model.Id == default)
+				using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
 				{
-					// create business
-					entity.UserCreatorId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-					await _unitOfWork.BusinessRepo.Create(entity, file, BussinessFiles);
-				}
-				else
-				{
-					var updateModel = _mapper.Map<Business>(model);
-					await _unitOfWork.BusinessRepo.Update(updateModel, file, BussinessFiles);
-				}
+					if (model.Id == default)
+					{
+						// create business
+						entity.UserCreatorId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+						await _unitOfWork.BusinessRepo.Create(entity, model.IsCity, file, BussinessFiles);
+					}
+					else
+					{
+						var updateModel = _mapper.Map<Business>(model);
+						await _unitOfWork.BusinessRepo.Update(updateModel, model.IsCity, file, BussinessFiles);
+					}
 
-				await _unitOfWork.SaveAsync();
+					await _unitOfWork.SaveAsync();
+					scope.Complete();
+				}
 			}
 			catch (Exception ex)
 			{
@@ -169,7 +174,7 @@ namespace BizApp.Areas.Admin.Controllers
 		}
 
 		[HttpPost, ActionName("AssingBusinessFeatureWithValue")]
-		public async Task<IActionResult> AssingBusinessFeatureWithValue(SetBusinessFeatureValueViewModel model) 
+		public async Task<IActionResult> AssingBusinessFeatureWithValue(SetBusinessFeatureValueViewModel model)
 		{
 			try
 			{
@@ -182,7 +187,7 @@ namespace BizApp.Areas.Admin.Controllers
 				return RedirectToAction("BusinessFeature", "Businesses", new { Id = model.BusinessId });
 			}
 		}
-		
+
 
 		[HttpGet, ActionName("RemoveBusinessFeature")]
 		public async Task<IActionResult> RemoveBusinessFeature(Guid? Id, int FeatureId)
