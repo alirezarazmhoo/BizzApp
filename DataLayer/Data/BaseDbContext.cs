@@ -11,7 +11,6 @@ namespace DataLayer.Data
 		{
 		}
 
-
 		#region Tables
 		public DbSet<Province> Provinces { get; set; }
 		public DbSet<City> Cities { get; set; }

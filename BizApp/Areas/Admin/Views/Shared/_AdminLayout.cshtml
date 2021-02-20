@@ -33,12 +33,12 @@
 	<script src='https://kit.fontawesome.com/a076d05399.js'></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-          crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-            crossorigin=""></script>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+		  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+		  crossorigin="" />
+	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+			integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+			crossorigin=""></script>
 	@RenderSection("head", false)
 </head>
 
@@ -63,79 +63,81 @@
 					</div>
 				</div>
 				<ul class="sidebar-menu" data-widget="tree">
+					@if (User.IsInRole("admin"))
+					{
+						<li class="treeview">
+							<a>
+								<i class="fa fa-globe"></i> <span>مدیریت مناطق</span>
+								<span class="pull-left-container">
+									<i class="fa fa-angle-right pull-left"></i>
+								</span>
+							</a>
+							<ul class="treeview-menu">
+								<li><a href="/admin/Province/Index"><i class="fa fa-bank"></i>استان</a></li>
+								<li><a href="/admin/City"><i class="fa fa-building"></i>شهر</a></li>
+								<li><a href="/admin/district"><i class="fa fa-crosshairs"></i>محدوده کسب و کار</a></li>
+							</ul>
+						</li>
 
-					<li class="treeview">
-						<a>
-							<i class="fa fa-globe"></i> <span>مدیریت مناطق</span>
-							<span class="pull-left-container">
-								<i class="fa fa-angle-right pull-left"></i>
-							</span>
-						</a>
-						<ul class="treeview-menu">
-							<li><a href="/admin/Province/Index"><i class="fa fa-bank"></i>استان</a></li>
-							<li><a href="/admin/City"><i class="fa fa-building"></i>شهر</a></li>
-							<li><a href="/admin/district"><i class="fa fa-crosshairs"></i>محدوده کسب و کار</a></li>
-						</ul>
-					</li>
+						<li class="treeview">
+							<a>
+								<i class="fa fa-pie-chart"></i> <span>دسته بندی ها</span>
+								<span class="pull-left-container">
+									<i class="fa fa-angle-right pull-left"></i>
+								</span>
+							</a>
+							<ul class="treeview-menu">
+								<li><a href="/admin/Categories/Index"><i class="fa fa-plus-square-o"></i>دسته بندی</a></li>
 
-					<li class="treeview">
-						<a>
-							<i class="fa fa-pie-chart"></i> <span>دسته بندی ها</span>
-							<span class="pull-left-container">
-								<i class="fa fa-angle-right pull-left"></i>
-							</span>
-						</a>
-						<ul class="treeview-menu">
-							<li><a href="/admin/Categories/Index"><i class="fa fa-plus-square-o"></i>دسته بندی</a></li>
+							</ul>
+						</li>
 
-						</ul>
-					</li>
-
-					<li class="treeview">
-						<a>
-							<i class="fa fa-globe"></i> <span>کاربران</span>
-							<span class="pull-left-container">
-								<i class="fa fa-angle-right pull-left"></i>
-							</span>
-						</a>
-						<ul class="treeview-menu">
-							<li><a href="/admin/operator/"><i class="fa fa-bank"></i>لیست متصدیان</a></li>
-							@*<li><a href="/admin/City"><i class="fa fa-building"></i>ثبت متصدی</a></li>*@
-						</ul>
-					</li>
-
-
-					<li class="treeview">
-						<a>
-							<i class="fa fa-gears"></i> <span>کسب و کارها</span>
-							<span class="pull-left-container">
-								<i class="fa fa-angle-right pull-left"></i>
-							</span>
-						</a>
-						<ul class="treeview-menu">
-							<li><a href="/admin/businesses/Index"><i class="fa fa-id-card"></i>مدیریت کسب و کار</a></li>
-							<li><a href="/admin/Feature/Index"><i class="fa fa-id-card"></i>مدیریت ویژگی کسب و کار</a></li>
-						</ul>
-					</li>
-					<li class="nav-item">
-						<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-							<button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-						</form>
-					</li>
-				
-
-
-
+						<li class="treeview">
+							<a>
+								<i class="fa fa-globe"></i> <span>کاربران</span>
+								<span class="pull-left-container">
+									<i class="fa fa-angle-right pull-left"></i>
+								</span>
+							</a>
+							<ul class="treeview-menu">
+								<li><a href="/admin/operator/"><i class="fa fa-bank"></i>لیست متصدیان</a></li>
+								@*<li><a href="/admin/City"><i class="fa fa-building"></i>ثبت متصدی</a></li>*@
+							</ul>
+						</li>
+					}
+					@if (User.IsInRole("admin") || User.IsInRole("operator"))
+					{
+						<li class="treeview">
+							<a>
+								<i class="fa fa-gears"></i> <span>کسب و کارها</span>
+								<span class="pull-left-container">
+									<i class="fa fa-angle-right pull-left"></i>
+								</span>
+							</a>
+							<ul class="treeview-menu">
+								<li><a href="/admin/businesses/Index"><i class="fa fa-id-card"></i>مدیریت کسب و کار</a></li>
+								@if (User.IsInRole("admin"))
+								{
+									<li><a href="/admin/Feature/Index"><i class="fa fa-id-card"></i>مدیریت ویژگی کسب و کار</a></li>
+								}
+								</ul>
+						</li>
+						<li class="nav-item">
+							<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+								<button type="submit" class="nav-link btn btn-link text-dark">خروج</button>
+							</form>
+						</li>
+					}
 
 					@*<li class="active">
-			<a href="/SchoolName/Index"><i class="fas fa-school"></i> <span>مدیریت مناطق</span></a>
+							<a href="/SchoolName/Index"><i class="fas fa-school"></i> <span>مدیریت مناطق</span></a>
 
-		</li>
-		<li class="active"><a href="/Grades/Index"><i class="fas fa-graduation-cap"></i> <span>مقاطع تحصیلی</span></a></li>
-		<li class="active"><a href="/Majors/Index"><i class="fas fa-book-open"></i> <span>رشته تحصیلی</span></a></li>
-		<li class="active"><a href="/Teachers/Index"><i class="fas fa-chalkboard-teacher"></i> <span>مدیریت معلمان </span></a></li>
-		<li class="active"><a href="/Students/Index"><i class="fas fa-book-reader"></i> <span>مدیریت دانش آموزان </span></a></li>
-		<li class="active"><a href="/ClassRooms/Index"><i class="fas fa-chalkboard"></i> <span>کلاس بندی </span></a></li>*@
+						</li>
+						<li class="active"><a href="/Grades/Index"><i class="fas fa-graduation-cap"></i> <span>مقاطع تحصیلی</span></a></li>
+						<li class="active"><a href="/Majors/Index"><i class="fas fa-book-open"></i> <span>رشته تحصیلی</span></a></li>
+						<li class="active"><a href="/Teachers/Index"><i class="fas fa-chalkboard-teacher"></i> <span>مدیریت معلمان </span></a></li>
+						<li class="active"><a href="/Students/Index"><i class="fas fa-book-reader"></i> <span>مدیریت دانش آموزان </span></a></li>
+						<li class="active"><a href="/ClassRooms/Index"><i class="fas fa-chalkboard"></i> <span>کلاس بندی </span></a></li>*@
 
 					@*<li class="active"><a href="#"><i class="fa fa-sign-out"></i> <span>خروج</span></a></li>*@
 				</ul>
@@ -173,5 +175,8 @@
 	<script src="~/Admin/dist/js/adminlte.min.js"></script>
 	@*<script src="../Scripts/Common.js"></script>*@
 	<script src="~/Scripts/Common.js"></script>
+
+	@RenderSection("scripts", false)
+
 </body>
 </html>

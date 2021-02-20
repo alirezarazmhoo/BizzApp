@@ -1,6 +1,8 @@
 ﻿using DataLayer.Data;
+using DataLayer.Extensions;
 using DataLayer.Infrastructure;
 using DomainClass;
+using DomainClass.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;

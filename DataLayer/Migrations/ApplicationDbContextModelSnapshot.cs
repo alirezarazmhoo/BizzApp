@@ -53,6 +53,11 @@ namespace DataLayer.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsEnabled")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -115,20 +120,21 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1c40342a-0af3-4268-a4a5-87af1611077a",
-                            CreateDate = new DateTime(2021, 1, 26, 15, 20, 55, 491, DateTimeKind.Local).AddTicks(5299),
+                            ConcurrencyStamp = "6fd24e66-f68b-4a1d-b9ef-42a36b31829a",
+                            CreateDate = new DateTime(2021, 2, 16, 10, 51, 55, 922, DateTimeKind.Local).AddTicks(9629),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
+                            IsEnabled = false,
                             LockoutEnabled = false,
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEP9Qh6kgt38RRioQ0/pDmwQF4HhRFJ3qf8MBnZW4jDqpeGTk2B3g9VvO6ImEb4PVxQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHhwVgIOSSRv/KqBHqz6r4fygAAWJYIsjpNsa27faet35VAGaj8OaoHRk3Xp4y6cEw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0d503c40-f437-4835-a0e8-1fe32d7e7295",
+                            SecurityStamp = "143c7863-65a4-4ae3-ab8c-dfaada1f4dcc",
                             TwoFactorEnabled = false,
-                            UserName = "mianadmin"
+                            UserName = "mainadmin"
                         });
                 });
 
@@ -144,17 +150,25 @@ namespace DataLayer.Migrations
                     b.Property<string>("Biography")
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<long>("CallNumber")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValue(0L);
+
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CityId")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("DistrictId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("FeatureImage")
                         .HasColumnType("nvarchar(255)");
@@ -169,8 +183,11 @@ namespace DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("ProvinceId")
-                        .HasColumnType("int");
+                    b.Property<string>("OwnerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PostalCode")
+                        .HasColumnType("nvarchar(11)");
 
                     b.Property<string>("UserCreatorId")
                         .HasColumnType("nvarchar(450)");
@@ -182,11 +199,9 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("CityId");
-
                     b.HasIndex("DistrictId");
 
-                    b.HasIndex("ProvinceId");
+                    b.HasIndex("OwnerId");
 
                     b.HasIndex("UserCreatorId");
 
@@ -221,17 +236,14 @@ namespace DataLayer.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BusinessFeatureType")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("BusinessId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("FeatureId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Value")
-                        .HasColumnType("int");
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -381,22 +393,33 @@ namespace DataLayer.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BusinessFeatureType")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("ValueType")
-                        .IsRequired()
+                    b.Property<int>("ValueType")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("bool");
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.HasKey("Id");
 
                     b.ToTable("Features");
+                });
+
+            modelBuilder.Entity("DomainClass.HierarchyNamesCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ListName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CategoryHierarchyNames");
                 });
 
             modelBuilder.Entity("DomainClass.Province", b =>
@@ -579,19 +602,15 @@ namespace DataLayer.Migrations
                         .WithMany()
                         .HasForeignKey("CategoryId");
 
-                    b.HasOne("DomainClass.City", "City")
-                        .WithMany()
-                        .HasForeignKey("CityId");
-
                     b.HasOne("DomainClass.District", "District")
                         .WithMany()
                         .HasForeignKey("DistrictId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DomainClass.Province", "Province")
+                    b.HasOne("DomainClass.BizAppUser", "Owner")
                         .WithMany()
-                        .HasForeignKey("ProvinceId");
+                        .HasForeignKey("OwnerId");
 
                     b.HasOne("DomainClass.BizAppUser", "UserCreator")
                         .WithMany()

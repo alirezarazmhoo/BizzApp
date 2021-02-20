@@ -1,11 +1,9 @@
 ﻿using DomainClass;
 using DomainClass.Businesses;
+using DomainClass.Enums;
 using DomainClass.Infrastructure;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,6 +28,7 @@ namespace DataLayer.Data
 		public DbSet<City> Cities { get; set; }
 		public DbSet<District> Districts { get; set; }
 		public DbSet<Feature> Features { get; set; }
+		public DbSet<HierarchyNamesCategory> CategoryHierarchyNames { get; set; }
 		#endregion
 
 		protected override void OnModelCreating(ModelBuilder builder)
@@ -37,12 +36,27 @@ namespace DataLayer.Data
 			base.OnModelCreating(builder);
 
 			builder.Entity<Feature>()
-				.Property(b => b.ValueType).HasDefaultValue("bool");
+				.Property(b => b.ValueType).HasDefaultValue(BusinessFeatureType.Boolean);
 
-			builder.Seed();
+			// default value for IsEnabled in users
+			builder.Entity<BizAppUser>()
+				.Property(b => b.IsEnabled).HasDefaultValue(true);
+			
+			// default value for Call Number in business
+			builder.Entity<Business>()
+				.Property(b => b.CallNumber).HasDefaultValue(0);
+
+			// Seed data
+			builder.SeedMainAdmin();
+			builder.SeedOwnerRole();
+
 			builder.Entity<City>().Property(p => p.Id).ValueGeneratedOnAdd();
 
 			builder.Entity<BizAppUser>().HasQueryFilter(m => EF.Property<bool>(m, "IsDeleted") == false);
+
+			// relation between user and business owner
+			//builder.Entity<Business>().HasOne(b => b.Owner).WithMany(u => u.)
+
 
 			// User Id Auto Generator 
 			//builder.Entity<BizAppUser>().Property(p => p.Id).HasDefaultValueSql("NEWID()");

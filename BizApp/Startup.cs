@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,6 +11,7 @@ using DataLayer.Services;
 using DataLayer.Infrastructure;
 using AutoMapper;
 using BizApp.Automapper;
+using Microsoft.AspNetCore.Http;
 
 namespace BizApp
 {
@@ -32,27 +27,26 @@ namespace BizApp
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Data Source=45.159.113.39,2014;Initial Catalog=BizAppTestDatabase;User ID=BizzApp;Password=BizzApp2021;MultipleActiveResultSets=true"));
 
-			//services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=BizApp;Trusted_Connection=True;MultipleActiveResultSets=true"));
-			//services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=BizApp;Trusted_Connection=True;MultipleActiveResultSets=true"));
+			//services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Data Source=45.159.113.39,2014;Initial Catalog=BizApp;User ID=BizzApp;Password=BizzApp2021;MultipleActiveResultSets=true"));
 
-			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Data Source=45.159.113.39,2014;Initial Catalog=BizApp;User ID=BizzApp;Password=BizzApp2021;MultipleActiveResultSets=true"));
+			//services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Data Source=(LocalDb)\\.;Initial Catalog=BizApp;Integrated Security=SSPI;"));
 
-			//services.AddDbContext<ApplicationDbContext>(options =>
-			//	options.UseSqlServer(
-			//		Configuration.GetConnectionString("DefaultConnection")));
+			services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+
 			services.AddDefaultIdentity<BizAppUser>(options =>
 			{
 				options.SignIn.RequireConfirmedAccount = false;
 				options.Password.RequireUppercase = false;
 				options.Password.RequireNonAlphanumeric = false;
 				options.Password.RequireLowercase = false;
+			})
+				.AddRoles<IdentityRole>()
+			    .AddEntityFrameworkStores<ApplicationDbContext>();
 
-			}).AddRoles<IdentityRole>()
-			   .AddEntityFrameworkStores<ApplicationDbContext>();
-
+			services.AddTransient(s => s.GetService<IHttpContextAccessor>().HttpContext.User);
 			//services.AddIdentity<BizAppUser, CustomRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
-
 
 			services.AddTransient<IUnitOfWorkRepo, UnitOfWorkRepo>();
 

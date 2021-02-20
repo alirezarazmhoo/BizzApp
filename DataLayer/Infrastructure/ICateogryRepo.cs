@@ -18,6 +18,8 @@ namespace DataLayer.Infrastructure
 		Task<List<Category>> GetChilds(int Id);
 		Task<int> GetChildCount(int Id);
 		Task<ChildsCategoryResponse> AdminGetChildsCateogry(int Id);
-		Task<ChildsCategoryResponse> GetBackCategories(int Id); 
+		Task<ChildsCategoryResponse> GetBackCategories(int Id);
+		List<HierarchyNamesCategory> GetCategoriesHierarchyNames(string searchString);
+		HierarchyNamesCategory GetCategoryHierarchyNamesById(int id);
 	}
 }

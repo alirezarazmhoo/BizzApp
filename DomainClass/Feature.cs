@@ -23,8 +23,7 @@ namespace DomainClass
 		[Column(TypeName = "nvarchar(100)")]
 		public string Name { get; set; }
 		[Required]
-		public string ValueType { get; set; }
-		public BusinessFeatureType BusinessFeatureType { get; set; }
+		public BusinessFeatureType ValueType { get; set; }
 
 		public virtual ICollection<BusinessFeature> Businesses { get; set; }
 	}
