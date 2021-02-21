@@ -32,10 +32,8 @@
 
 
   <ItemGroup>
-    <Folder Include="Areas\AdminControllPanel\Controllers\" />
     <Folder Include="Areas\AdminControllPanel\Data\" />
     <Folder Include="Areas\AdminControllPanel\Models\" />
-    <Folder Include="Areas\AdminControllPanel\Views\" />
     <Folder Include="Areas\BusinessProfile\Controllers\" />
     <Folder Include="Areas\BusinessProfile\Data\" />
     <Folder Include="Areas\BusinessProfile\Models\" />
