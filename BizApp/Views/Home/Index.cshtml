@@ -1,7 +1,1357 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    Layout = "_MainWebSiteLayout";
+
 }
 
-<div>
-    <img src="~/ProjectImage/Updating.jpg" />
-</div>
+<header class="main-header">
+    <div class="main-header__background">
+        <img src="~/Designs/MainWebSite/assets/img/backgrund.jpg">
+    </div>
+    <div class="container">
+        <div class="main-header__nav">
+            <div class="main-header__nav__right">
+                <ul>
+                    <li><a href="#">نوشتن نظر</a></li>
+                    <li><a href="#">مناسبت ها</a></li>
+                    <li><a href="#">تماس با ما</a></li>
+                </ul>
+            </div>
+            <div class="main-header__nav__left">
+                <ul>
+                    <li><a href="#">ورود به سیستم</a></li>
+                    <li class="colored"><a href="#">ثبت نام کنید</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="main-header__logo">
+            <img src="~/Designs/MainWebSite/assets/img/logo.png">
+        </div>
+        <div class="main-header__search">
+            <div class="main-header__search__right">
+                <label>جستجو</label>
+                <input type="text" name="" placeholder="همبرگر ، آرایشگر ، اسپا ، لوله کش ...">
+                <div class="main-header__search__right__menu-bottom">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <svg id="18x18_food" height="18" viewBox="0 0 18 18" width="18">
+                                    <path d="M13.188 17a1.56 1.56 0 0 1-1.55-1.55V9.62h1.426c-1.255-.96-1.993-2.805-1.92-4.724 0-1.18.517-2.362 1.477-3.543a.912.912 0 0 1 1.038-.295c.37.147.59.516.59.885V9.62h.494v5.83c0 .886-.664 1.55-1.55 1.55zM5.993 8.438v1.108h.996v5.83c0 .83-.59 1.46-1.396 1.535a.5.5 0 0 1-.122.02l-.016-.002-.02.002c-.888 0-1.55-.665-1.55-1.55V9.55h.994V8.44C4 8.217 3.263 7.33 3.263 6.224v-4.28c0-.296.295-.59.59-.59s.517.294.517.59V5.56h.59V1.943c0-.295.22-.59.513-.59.295 0 .517.295.517.59V5.56h.59V1.943c0-.295.22-.59.518-.59.294 0 .515.295.515.59v4.355c0 1.033-.664 1.92-1.623 2.14z"></path>
+                                </svg>رستوران ها
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <svg id="18x18_home_services" height="18" viewBox="0 0 18 18" width="18">
+                                    <path d="M16.7 16H13v-4.7a.3.3 0 0 0-.3-.3h-2.4a.3.3 0 0 0-.3.3V16H2.3a.3.3 0 0 1-.3-.3V9.25l6-2.182V3.735a.3.3 0 0 1 .434-.268l8.4 4.2a.3.3 0 0 1 .166.268V15.7a.3.3 0 0 1-.3.3zM8 11.3a.3.3 0 0 0-.3-.3H4.3a.3.3 0 0 0-.3.3v2.4a.3.3 0 0 0 .3.3h3.4a.3.3 0 0 0 .3-.3v-2.4zm4-9a.3.3 0 0 1 .3-.3h3.4a.3.3 0 0 1 .3.3v3.005L12 3.5V2.3zM1 7.17l6-2.354V6.37L1 8.72V7.17z"></path>
+                                </svg>ندگی شبانه
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <svg id="24x24_plumbers" height="24" viewBox="0 0 24 24" width="24">
+                                    <path d="M13 16.5a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1-.5-.5v-5.17c0-.2.12-.38.303-.46l6-2.57a.5.5 0 0 1 .697.458v.838l6.964-2.834a1 1 0 0 1 1.302.552l.765 1.893L13 12.84v3.66zm0-9.83a.5.5 0 0 1-.303.46l-6 2.57A.5.5 0 0 1 6 9.243V5.5a.5.5 0 0 1 .5-.5h6.456l3.978-1.607.374.927L13 6.06v.61zM17 19v2H2v-2a1 1 0 0 1 1-1h13a1 1 0 0 1 1 1zm5.03-5.5a1.5 1.5 0 0 1-3 0c0-.828 1.5-2.5 1.5-2.5s1.5 1.672 1.5 2.5z"></path>
+                                </svg>خدمات
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <svg id="18x18_delivery" height="18" viewBox="0 0 18 18" width="18">
+                                    <path d="M15.5 10c-1.93 0-3.5 1.57-3.5 3.5v.5H5.95a2.504 2.504 0 0 1-2.45 2 2.502 2.502 0 0 1-2.45-2H0v-2a5 5 0 0 1 5-5h3v2H7a1.5 1.5 0 0 0 0 3h2l2-4V5h1.94l-1-2H9V2h3.56l3.52 7.04c.653.085 1.28.308 1.838.665l-.537.842A3.502 3.502 0 0 0 15.5 10zM2.092 14c.207.58.757 1 1.408 1 .65 0 1.2-.42 1.408-1H2.092zM15.5 11c1.38 0 2.5 1.122 2.5 2.5S16.88 16 15.5 16 13 14.878 13 13.5s1.12-2.5 2.5-2.5zm0 4c.827 0 1.5-.673 1.5-1.5s-.673-1.5-1.5-1.5-1.5.673-1.5 1.5.673 1.5 1.5 1.5z"></path>
+                                </svg>تحویل
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="main-header__search__left">
+                <label>جنب</label>
+                <input type="" name="" placeholder="بازار کنزینگتون ، تورنتو ، ON">
+                <div class="main-header__search__left__menu-bottom">
+                    <ul>
+                        <li><a href="#"><svg id="24x24_marker" height="24" viewBox="0 0 24 24" width="24"><path d="M12 2C8.13 2 5 5.13 5 9c0 2.61 1.43 4.88 3.54 6.08L12 22l3.46-6.92A6.987 6.987 0 0 0 19 9c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"></path></svg>لوکیشین</a></li>
+                        <li><a href="#"><svg id="24x24_marker" height="24" viewBox="0 0 24 24" width="24"><path d="M12 2C8.13 2 5 5.13 5 9c0 2.61 1.43 4.88 3.54 6.08L12 22l3.46-6.92A6.987 6.987 0 0 0 19 9c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"></path></svg>لوکیشین</a></li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="main-header__search__button">
+                <button class="submit" title="search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="icon_svg">
+                        <path d="M21.853 20.355l-3.444-3.443a9.428 9.428 0 10-16.761-6.171 9.428 9.428 0 0015.348 7.586l3.443 3.442a1 1 0 101.414-1.414zM5.82 16.245a7.429 7.429 0 115.253 2.175 7.38 7.38 0 01-5.253-2.176z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="main-header__menu-bottom">
+            <ul>
+                <li>
+                    <a href="#">
+                        <svg id="18x18_food" height="18" viewBox="0 0 18 18" width="18">
+                            <path d="M13.188 17a1.56 1.56 0 0 1-1.55-1.55V9.62h1.426c-1.255-.96-1.993-2.805-1.92-4.724 0-1.18.517-2.362 1.477-3.543a.912.912 0 0 1 1.038-.295c.37.147.59.516.59.885V9.62h.494v5.83c0 .886-.664 1.55-1.55 1.55zM5.993 8.438v1.108h.996v5.83c0 .83-.59 1.46-1.396 1.535a.5.5 0 0 1-.122.02l-.016-.002-.02.002c-.888 0-1.55-.665-1.55-1.55V9.55h.994V8.44C4 8.217 3.263 7.33 3.263 6.224v-4.28c0-.296.295-.59.59-.59s.517.294.517.59V5.56h.59V1.943c0-.295.22-.59.513-.59.295 0 .517.295.517.59V5.56h.59V1.943c0-.295.22-.59.518-.59.294 0 .515.295.515.59v4.355c0 1.033-.664 1.92-1.623 2.14z"></path>
+                        </svg>رستوران ها
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <svg id="18x18_home_services" height="18" viewBox="0 0 18 18" width="18">
+                            <path d="M16.7 16H13v-4.7a.3.3 0 0 0-.3-.3h-2.4a.3.3 0 0 0-.3.3V16H2.3a.3.3 0 0 1-.3-.3V9.25l6-2.182V3.735a.3.3 0 0 1 .434-.268l8.4 4.2a.3.3 0 0 1 .166.268V15.7a.3.3 0 0 1-.3.3zM8 11.3a.3.3 0 0 0-.3-.3H4.3a.3.3 0 0 0-.3.3v2.4a.3.3 0 0 0 .3.3h3.4a.3.3 0 0 0 .3-.3v-2.4zm4-9a.3.3 0 0 1 .3-.3h3.4a.3.3 0 0 1 .3.3v3.005L12 3.5V2.3zM1 7.17l6-2.354V6.37L1 8.72V7.17z"></path>
+                        </svg>ندگی شبانه
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <svg id="24x24_plumbers" height="24" viewBox="0 0 24 24" width="24">
+                            <path d="M13 16.5a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1-.5-.5v-5.17c0-.2.12-.38.303-.46l6-2.57a.5.5 0 0 1 .697.458v.838l6.964-2.834a1 1 0 0 1 1.302.552l.765 1.893L13 12.84v3.66zm0-9.83a.5.5 0 0 1-.303.46l-6 2.57A.5.5 0 0 1 6 9.243V5.5a.5.5 0 0 1 .5-.5h6.456l3.978-1.607.374.927L13 6.06v.61zM17 19v2H2v-2a1 1 0 0 1 1-1h13a1 1 0 0 1 1 1zm5.03-5.5a1.5 1.5 0 0 1-3 0c0-.828 1.5-2.5 1.5-2.5s1.5 1.672 1.5 2.5z"></path>
+                        </svg>خدمات <svg id="14x14_triangle_down" height="14" viewBox="0 0 14 14" width="14">
+                            <path d="M7 9L3.5 5h7L7 9z"></path>
+                        </svg>
+                    </a>
+                    <ul>
+                        <li><a href="#">رستوران</a></li>
+                        <li><a href="#">رستوران</a></li>
+                        <li><a href="#">رستوران</a></li>
+                        <li><a href="#">رستوران</a></li>
+                        <li><a href="#">رستوران</a></li>
+                        <li><a href="#">رستوران</a></li>
+                        <li><a href="#">رستوران</a></li>
+                        <li><a href="#">رستوران</a></li>
+                        <li><a href="#">رستوران</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <svg id="18x18_delivery" height="18" viewBox="0 0 18 18" width="18">
+                            <path d="M15.5 10c-1.93 0-3.5 1.57-3.5 3.5v.5H5.95a2.504 2.504 0 0 1-2.45 2 2.502 2.502 0 0 1-2.45-2H0v-2a5 5 0 0 1 5-5h3v2H7a1.5 1.5 0 0 0 0 3h2l2-4V5h1.94l-1-2H9V2h3.56l3.52 7.04c.653.085 1.28.308 1.838.665l-.537.842A3.502 3.502 0 0 0 15.5 10zM2.092 14c.207.58.757 1 1.408 1 .65 0 1.2-.42 1.408-1H2.092zM15.5 11c1.38 0 2.5 1.122 2.5 2.5S16.88 16 15.5 16 13 14.878 13 13.5s1.12-2.5 2.5-2.5zm0 4c.827 0 1.5-.673 1.5-1.5s-.673-1.5-1.5-1.5-1.5.673-1.5 1.5.673 1.5 1.5 1.5z"></path>
+                        </svg>تحویل
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="main-header__text">
+            <a href="#">دونات داوینچی</a>
+            <span>عکس از <a href="#">دانیل</a></span>
+        </div>
+    </div>
+
+</header>
+<main>
+    <header class="header-mobile3">
+        <div class="header-mobile3__menu-mobail">
+            <div class="header-mobile3__menu-mobail__top">
+                <div class="header-mobile3__menu-mobail__top__icon">
+                    <svg width="24" height="24" class="icon_svg"><path d="M3 18v-2h18v2H3zm0-7h18v2H3v-2zm0-5h18v2H3V6z"></path></svg>
+                    <svg width="24" height="24" class="icon_svg"><path d="M17.657 19.071L12 13.414l-5.657 5.657-1.414-1.414L10.586 12 4.929 6.343l1.414-1.414L12 10.586l5.657-5.657 1.414 1.414L13.414 12l5.657 5.657-1.414 1.414z"></path></svg>
+                </div>
+                <div class="header-mobile3__menu-mobail__top__logo">
+                    <img src="~/Designs/MainWebSite/assets/img/logo.png">
+                </div>
+                <div class="header-mobile3__menu-mobail__top__open-app">
+                    <a href="#">
+                        <svg width="18" height="18" class="icon_svg">
+                            <path d="M13 17H5a1 1 0 01-1-1V2a1 1 0 011-1h8a1 1 0 011 1v14a1 1 0 01-1 1zm0-13.537A.463.463 0 0012.537 3H5.463A.463.463 0 005 3.463v11.074c0 .256.207.463.463.463h7.074a.463.463 0 00.463-.463V3.463zM9 14.499a1.15 1.15 0 11-.001-2.299A1.15 1.15 0 019 14.499z"></path>
+                        </svg>در برنامه باز کنید
+                    </a>
+                </div>
+            </div>
+            <div class="header-mobile3__menu-mobail__bottom">
+                <div class="header-mobile3__menu-mobail__bottom__search">
+                    <label for=""><svg id="18x18_search_small" height="18" viewBox="0 0 18 18" width="18"><path d="M15.913 14.224a1.324 1.324 0 0 0-.3-.466h.01l-3.378-3.376a5.49 5.49 0 0 0 .802-2.857 5.523 5.523 0 1 0-5.522 5.52 5.49 5.49 0 0 0 2.856-.8l3.37 3.368.006.003a1.364 1.364 0 0 0 .93.384C15.41 16 16 15.41 16 14.684c0-.163-.032-.317-.086-.46zM7.525 10.94a3.422 3.422 0 0 1-3.418-3.416 3.422 3.422 0 0 1 3.418-3.417 3.422 3.422 0 0 1 3.416 3.417 3.42 3.42 0 0 1-3.413 3.416z"></path></svg></label>
+                    <input type="text" placeholder="کاریوریست ، بوفه صبحانه ، ایتالیایی">
+                </div>
+            </div>
+        </div>
+        <div class="header-mobile3__menu">
+            <ul>
+                <li class="active"><a href="#"><svg width="24" height="24" class="icon_svg"><path d="M19.043 15.504l-3.339-1.085 3.375-.967a1.895 1.895 0 001.214-2.576 8.627 8.627 0 00-2.226-3.061 1.892 1.892 0 00-2.819.363l-1.965 2.912.001-.06V2.893a1.893 1.893 0 00-2.038-1.887 13.511 13.511 0 00-4.739 1.27 1.894 1.894 0 00-.822 2.653l4.068 7.047.031.052-3.157-1.54a1.89 1.89 0 00-2.623 1.095 8.62 8.62 0 00-.396 3.764 1.893 1.893 0 002.338 1.623l3.407-.849-2.349 2.609a1.893 1.893 0 00.334 2.826 8.823 8.823 0 003.503 1.418 1.886 1.886 0 002.206-1.801l.123-3.51 1.861 2.979c.348.557.948.889 1.606.889.438 0 .866-.154 1.205-.433a8.818 8.818 0 002.324-2.979 1.89 1.89 0 00-1.123-2.615zm-5.388-3.177l2.422-3.59a.893.893 0 011.329-.172 7.676 7.676 0 011.969 2.709.894.894 0 01-.572 1.216l-4.162 1.194a.923.923 0 01-.255.036c-.675 0-1.146-.778-.731-1.393zM6.551 4.429a.893.893 0 01.387-1.251A12.475 12.475 0 0111.395 2c.487 0 .889.397.889.893v8.137c0 .556-.448.893-.902.893a.867.867 0 01-.763-.447L6.551 4.429zM5.704 16a.895.895 0 01-1.103-.767 7.681 7.681 0 01.351-3.331.89.89 0 011.237-.515l3.892 1.898c.749.365.633 1.466-.175 1.668L5.704 16zm6.344 5.138a.894.894 0 01-1.041.849 7.758 7.758 0 01-3.103-1.255.893.893 0 01-.157-1.333l2.897-3.218a.891.891 0 011.555.628l-.151 4.329zm1.244-6.747v-.028c.006.004.01.01.016.015-.005.004-.01.01-.016.013zm5.972 3.297a7.762 7.762 0 01-2.059 2.639.891.891 0 01-1.326-.215l-2.296-3.674c-.387-.62.09-1.367.749-1.367.091 0 .187.014.284.046l4.118 1.338a.893.893 0 01.53 1.233z"></path></svg>ثبت نام</a></li>
+                <li><a href="#"><svg width="24" height="24" class="icon_svg"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-19c-4.963 0-9 4.037-9 9 0 3.057 1.535 5.759 3.872 7.387.499-2.77 2.594-4.415 5.128-4.415 2.534 0 4.63 1.645 5.128 4.415C19.465 17.759 21 15.057 21 12c0-4.963-4.037-9-9-9zm0 10.007a3.273 3.273 0 11-.001-6.547A3.273 3.273 0 0112 13.007z"></path></svg>ورود</a></li>
+                <li><a href="#"><svg width="24" height="24" class="icon_svg"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-19c-4.963 0-9 4.037-9 9s4.037 9 9 9 9-4.037 9-9-4.037-9-9-9zm-1.034 10.084l-3.96-.364 8.888-4.564-4.564 8.888-.364-3.96z"></path></svg>نزدیک ها</a></li>
+                <li><a href="#"><svg width="24" height="24" class="icon_svg"><path d="M12 17l-7 5V5a3 3 0 013-3h8a3 3 0 013 3v17l-7-5zm6-12c0-1.103-.897-2-2-2H8c-1.103 0-2 .897-2 2v15.057l5.419-3.871.581-.415.581.415L18 20.057V5zm-6.027 6.093L9.837 12.5l.413-2.42L8.5 8.367l2.42-.353L11.973 5.5l1.107 2.514 2.42.353-1.75 1.713.433 2.37-2.21-1.357z"></path></svg>ذخیره شده ها</a></li>
+                <li><a href="#"><svg width="24" height="24" class="icon_svg"><path d="M22 22v2h-1v-2h-2v-1h2v-2h1v2h2v1h-2zM0 5a2 2 0 012-2h6a2 2 0 012 2v12h2V9a2 2 0 012-2h2a2 2 0 012 2v12H0V5zm1 15h16V9c0-.551-.449-1-1-1h-2c-.551 0-1 .449-1 1v9H9V5c0-.551-.449-1-1-1H2c-.551 0-1 .449-1 1v15zM4 8H2V6h2v2zm0 4H2v-2h2v2zm0 4H2v-2h2v2zm4-8H6V6h2v2zm0 4H6v-2h2v2zm0 4H6v-2h2v2zm8-4h-2v-2h2v2zm0 4h-2v-2h2v2z"></path></svg>ارتبار با یلپ</a></li>
+            </ul>
+            <div class="header-mobile3__menu__links">
+                <ul>
+                    <li><a href="#">تبلیغات</a></li>
+                    <li><a href="#">درباره ما</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+    <header class="sub-header-mobile3">
+        <div class="sub-header-mobile3__menu-mobail__bottom">
+            <div class="row " data-space="0">
+                <div class="col-3">
+                    <div class="sub-header-mobile3__menu-mobail__bottom__item">
+                        <a href="#">
+                            <img src="~/Designs/MainWebSite/assets/img/restoran.png">
+                            <span>رستوران ها</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="sub-header-mobile3__menu-mobail__bottom__item">
+                        <a href="#">
+                            <img src="~/Designs/MainWebSite/assets/img/Delivery.png">
+                            <span>تحویل</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="sub-header-mobile3__menu-mobail__bottom__item">
+                        <a href="#">
+                            <img src="~/Designs/MainWebSite/assets/img/takeout.png">
+                            <span>بیرون بردن</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="sub-header-mobile3__menu-mobail__bottom__item">
+                        <a href="#">
+                            <img src="~/Designs/MainWebSite/assets/img/accountants.png">
+                            <span>حسابداران</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row" data-space="0">
+                <div class="col-3">
+                    <div class="sub-header-mobile3__menu-mobail__bottom__item">
+                        <a href="#">
+                            <img src="~/Designs/MainWebSite/assets/img/plumbers.png">
+                            <span>لوله کش</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="sub-header-mobile3__menu-mobail__bottom__item">
+                        <a href="#">
+                            <img src="~/Designs/MainWebSite/assets/img/auto.png">
+                            <span>تعمیر خودکار</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="sub-header-mobile3__menu-mobail__bottom__item">
+                        <a href="#">
+                            <img src="~/Designs/MainWebSite/assets/img/mover.png">
+                            <span>متحرک</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="sub-header-mobile3__menu-mobail__bottom__item">
+                        <a href="#">
+                            <img src="~/Designs/MainWebSite/assets/img/more.png">
+                            <span>بیش تر</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="recent-collections">
+        <div class="container">
+            <div class="recent-collections__title">
+                <h2>مجموعه های اخیر</h2>
+            </div>
+            <div class="recent-collections__content">
+                <ul>
+                    <li>
+                        <div class="recent-collections__content__wrapper">
+                            <div class="recent-collections__content__wrapper__image">
+                                <a href="#"> <img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                <div class="recent-collections__content__wrapper__image__icon-save">
+                                    <a href="#">
+                                        <svg id="14x14_save" height="14" viewBox="0 0 14 14" width="14">
+                                            <path d="M9 1H5a2 2 0 0 0-2 2v10l4-3 4 3V3a2 2 0 0 0-2-2z"></path>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="recent-collections__content__wrapper__text">
+                                <a href="#">152</a>
+                                <p>ببینید چه چیز نخبگان این هفته در پاریس را به هیجان می آورد. این مجموعه براساس مرورهای اخیر کاربران است و به طور خودکار به روز می شود.</p>
+                                <span>16 مکان توسط <a href="#">دنیل</a></span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="recent-collections__content__wrapper">
+                            <div class="recent-collections__content__wrapper__image">
+                                <a href="#"> <img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                <div class="recent-collections__content__wrapper__image__icon-save">
+                                    <a href="#">
+                                        <svg id="14x14_save" height="14" viewBox="0 0 14 14" width="14">
+                                            <path d="M9 1H5a2 2 0 0 0-2 2v10l4-3 4 3V3a2 2 0 0 0-2-2z"></path>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="recent-collections__content__wrapper__text">
+                                <a href="#">152</a>
+                                <p>ببینید چه چیز نخبگان این هفته در پاریس را به هیجان می آورد. این مجموعه براساس مرورهای اخیر کاربران است و به طور خودکار به روز می شود.</p>
+                                <span>16 مکان توسط <a href="#">دنیل</a></span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="recent-collections__content__wrapper">
+                            <div class="recent-collections__content__wrapper__image">
+                                <a href="#"> <img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                <div class="recent-collections__content__wrapper__image__icon-save">
+                                    <a href="#">
+                                        <svg id="14x14_save" height="14" viewBox="0 0 14 14" width="14">
+                                            <path d="M9 1H5a2 2 0 0 0-2 2v10l4-3 4 3V3a2 2 0 0 0-2-2z"></path>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="recent-collections__content__wrapper__text">
+                                <a href="#">152</a>
+                                <p>ببینید چه چیز نخبگان این هفته در پاریس را به هیجان می آورد. این مجموعه براساس مرورهای اخیر کاربران است و به طور خودکار به روز می شود.</p>
+                                <span>16 مکان توسط <a href="#">دنیل</a></span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="recent-collections__content__wrapper">
+                            <div class="recent-collections__content__wrapper__image">
+                                <a href="#"> <img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                <div class="recent-collections__content__wrapper__image__icon-save">
+                                    <a href="#">
+                                        <svg id="14x14_save" height="14" viewBox="0 0 14 14" width="14">
+                                            <path d="M9 1H5a2 2 0 0 0-2 2v10l4-3 4 3V3a2 2 0 0 0-2-2z"></path>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="recent-collections__content__wrapper__text">
+                                <a href="#">152</a>
+                                <p>ببینید چه چیز نخبگان این هفته در پاریس را به هیجان می آورد. این مجموعه براساس مرورهای اخیر کاربران است و به طور خودکار به روز می شود.</p>
+                                <span>16 مکان توسط <a href="#">دنیل</a></span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="recent-collections__content__wrapper">
+                            <div class="recent-collections__content__wrapper__image">
+                                <a href="#"> <img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                <div class="recent-collections__content__wrapper__image__icon-save">
+                                    <a href="#">
+                                        <svg id="14x14_save" height="14" viewBox="0 0 14 14" width="14">
+                                            <path d="M9 1H5a2 2 0 0 0-2 2v10l4-3 4 3V3a2 2 0 0 0-2-2z"></path>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="recent-collections__content__wrapper__text">
+                                <a href="#">152</a>
+                                <p>ببینید چه چیز نخبگان این هفته در پاریس را به هیجان می آورد. این مجموعه براساس مرورهای اخیر کاربران است و به طور خودکار به روز می شود.</p>
+                                <span>16 مکان توسط <a href="#">دنیل</a></span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="recent-collections__content__wrapper">
+                            <div class="recent-collections__content__wrapper__image">
+                                <a href="#"> <img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                <div class="recent-collections__content__wrapper__image__icon-save">
+                                    <a href="#">
+                                        <svg id="14x14_save" height="14" viewBox="0 0 14 14" width="14">
+                                            <path d="M9 1H5a2 2 0 0 0-2 2v10l4-3 4 3V3a2 2 0 0 0-2-2z"></path>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="recent-collections__content__wrapper__text">
+                                <a href="#">152</a>
+                                <p>ببینید چه چیز نخبگان این هفته در پاریس را به هیجان می آورد. این مجموعه براساس مرورهای اخیر کاربران است و به طور خودکار به روز می شود.</p>
+                                <span>16 مکان توسط <a href="#">دنیل</a></span>
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="recent-collections__title-bottom">
+                <a href="#">مجموعه های بیشتری را کشف کنید</a>
+            </div>
+        </div>
+    </section>
+    <section class="recent-activities">
+        <div class="container">
+            <div class="recent-activities__title">
+                <h2>فعالیت اخیر</h2>
+            </div>
+            <div class="recent-activities__list">
+
+                <div class="recent-activities__col">
+                    <div class="recent-activities__item">
+                        <div class="recent-activities__item__title">
+                            <div class="recent-activities__item__title__image">
+                                <a href="#"> <img src="~/Designs/MainWebSite/assets/img/person.jpg"></a>
+                            </div>
+                            <div class="recent-activities__item__title__text">
+                                <a href="#">پارکر</a>
+                                <span>3 عکس اضافه کرد</span>
+                            </div>
+                        </div>
+
+                        <div class="recent-activities__item__image">
+                            <div class="recent-activities__item__image__item recent-activities__item__image__item--big">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+
+
+
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="recent-activities__item__show-all">
+                            <a href="#">نمایش 10 عکس</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="recent-activities__col">
+                    <div class="recent-activities__item1">
+                        <div class="recent-activities__item1__title">
+                            <div class="recent-activities__item1__title__image">
+                                <a href="#"> <img src="~/Designs/MainWebSite/assets/img/person1.jpg"></a>
+                            </div>
+                            <div class="recent-activities__item1__title__text">
+                                <a href="#">پارکر</a>
+                                <span>3 عکس اضافه کرد</span>
+                            </div>
+                        </div>
+                        <div class="recent-activities__item1__content">
+                            <div class="recent-activities__item1__content__image">
+                                <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                            </div>
+                            <div class="recent-activities__item1__content__title1">
+                                <a href="#"> <span>شیر روی سنگ ها</span></a>
+                            </div>
+                        </div>
+                        <div class="recent-activities__item1__comment">
+                            <div class="recent-activities__item1__comment__icon-star">
+                                <div class="recent-activities__item1__comment__icon-star__star" data-star="5">
+                                </div>
+                            </div>
+                            <div class="recent-activities__item1__comment__paragraph">
+                                <p>غذا عالی است ، پیشخدمت ما عالی بود ، ساعت 20:00 وارد شد و بلافاصله میز تهیه کرد. اسکارگوت درخشان و بسیار خوش طعم است. پاهای قورباغه باید باشد. شما فقط می خواهید آنجا بنشینید و همه آنها را بمکید </p>
+                                <a href="#">ادامه مطلب</a>
+                            </div>
+                        </div>
+                        <div class="recent-activities__item1__icon">
+                            <div class="recent-activities__item1__icon__right">
+                                <a href="#">
+                                    <svg id="24x24_compliment" height="24" viewBox="0 0 24 24" width="24">
+                                        <path d="M19 9A7 7 0 0 0 5 9a6.995 6.995 0 0 0 3.957 6.297L8 21.992 12.005 19 16 21.992l-.957-6.695A6.995 6.995 0 0 0 19 9zm-7 5c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                            <div class="recent-activities__item1__icon__left">
+                                <a href="#">
+                                    <svg id="24x24_cool_outline" height="24" viewBox="0 0 24 24" width="24">
+                                        <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-19c-4.963 0-9 4.037-9 9s4.037 9 9 9 9-4.037 9-9-4.037-9-9-9zm7.994 6.765C19.647 11.612 17.97 13 15.96 13h-.002c-1.617 0-3.028-.9-3.67-2.224a.32.32 0 0 0-.575 0C11.07 12.1 9.66 13 8.043 13H8.04c-2.01 0-3.74-1.15-4.035-3.018l-.124-.734c-.07-.305.257-.25.634-.248h14.972c.39 0 .673-.04.632.248l-.124.517zM17 15.143a5.405 5.405 0 0 1-5 3.357 5.405 5.405 0 0 1-5-3.357 8.6 8.6 0 0 0 5 1.6 8.6 8.6 0 0 0 5-1.6z"></path>
+                                    </svg>
+                                </a>
+                                <a href="#">
+                                    <svg id="24x24_funny_outline" height="24" viewBox="0 0 24 24" width="24">
+                                        <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-19c-4.963 0-9 4.037-9 9s4.037 9 9 9 9-4.037 9-9-4.037-9-9-9zm0 15a5.5 5.5 0 0 1-5.288-4h10.576A5.5 5.5 0 0 1 12 18zm3.5-7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm-7 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"></path>
+                                    </svg>
+                                </a>
+                                <a href="#">
+                                    <svg id="24x24_useful_outline" height="24" viewBox="0 0 24 24" width="24">
+                                        <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-19c-4.963 0-9 4.037-9 9s4.037 9 9 9 9-4.037 9-9-4.037-9-9-9zm2 10.704V15h-4v-1.296c-1.35-.72-2.278-2.124-2.278-3.76a4.278 4.278 0 0 1 8.556 0c0 1.636-.93 3.04-2.278 3.76zM11 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 6.5a2 2 0 0 1-4 0V16h4v.5z"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="recent-activities__col">
+                    <div class="recent-activities__item2">
+                        <div class="recent-activities__item2__title">
+                            <div class="recent-activities__item2__title__image">
+                                <a href="#"> <img src="~/Designs/MainWebSite/assets/img/person.jpg"></a>
+                            </div>
+                            <div class="recent-activities__item2__title__text">
+                                <a href="#">پارکر</a>
+                                <span>3 عکس اضافه کرد</span>
+                            </div>
+                        </div>
+                        <div class="recent-activities__item2__content">
+                            <div class="recent-activities__item2__content__title">
+                                <a href="#"> <span>شیر روی سنگ ها</span></a>
+                            </div>
+                            <div class="recent-activities__item2__content__image">
+                                <a href="#"><img src="~/Designs/MainWebSite/assets/img/food.jpg"></a>
+                            </div>
+                            <div class="recent-activities__item2__content__like">
+                                <a href="#">
+                                    <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                        <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                    </svg>
+                                    لایک
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-activities__col">
+                    <div class="recent-activities__item">
+                        <div class="recent-activities__item__title">
+                            <div class="recent-activities__item__title__image">
+                                <a href="#"> <img src="~/Designs/MainWebSite/assets/img/person.jpg"></a>
+                            </div>
+                            <div class="recent-activities__item__title__text">
+                                <a href="#">پارکر</a>
+                                <span>3 عکس اضافه کرد</span>
+                            </div>
+                        </div>
+
+                        <div class="recent-activities__item__image">
+                            <div class="recent-activities__item__image__item recent-activities__item__image__item--big">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+
+
+
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="recent-activities__item__show-all">
+                            <a href="#">نمایش 10 عکس</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="recent-activities__col">
+                    <div class="recent-activities__item1">
+                        <div class="recent-activities__item1__title">
+                            <div class="recent-activities__item1__title__image">
+                                <a href="#"> <img src="~/Designs/MainWebSite/assets/img/person1.jpg"></a>
+                            </div>
+                            <div class="recent-activities__item1__title__text">
+                                <a href="#">پارکر</a>
+                                <span>3 عکس اضافه کرد</span>
+                            </div>
+                        </div>
+                        <div class="recent-activities__item1__content">
+                            <div class="recent-activities__item1__content__image">
+                                <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                            </div>
+                            <div class="recent-activities__item1__content__title1">
+                                <a href="#"> <span>شیر روی سنگ ها</span></a>
+                            </div>
+                        </div>
+                        <div class="recent-activities__item1__comment">
+                            <div class="recent-activities__item1__comment__icon-star">
+                                <div class="recent-activities__item1__comment__icon-star__star" data-star="5">
+                                </div>
+                            </div>
+                            <div class="recent-activities__item1__comment__paragraph">
+                                <p>غذا عالی است ، پیشخدمت ما عالی بود ، ساعت 20:00 وارد شد و بلافاصله میز تهیه کرد. اسکارگوت درخشان و بسیار خوش طعم است. پاهای قورباغه باید باشد. شما فقط می خواهید آنجا بنشینید و همه آنها را بمکید </p>
+                                <a href="#">ادامه مطلب</a>
+                            </div>
+                        </div>
+                        <div class="recent-activities__item1__icon">
+                            <div class="recent-activities__item1__icon__right">
+                                <a href="#">
+                                    <svg id="24x24_compliment" height="24" viewBox="0 0 24 24" width="24">
+                                        <path d="M19 9A7 7 0 0 0 5 9a6.995 6.995 0 0 0 3.957 6.297L8 21.992 12.005 19 16 21.992l-.957-6.695A6.995 6.995 0 0 0 19 9zm-7 5c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                            <div class="recent-activities__item1__icon__left">
+                                <a href="#">
+                                    <svg id="24x24_cool_outline" height="24" viewBox="0 0 24 24" width="24">
+                                        <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-19c-4.963 0-9 4.037-9 9s4.037 9 9 9 9-4.037 9-9-4.037-9-9-9zm7.994 6.765C19.647 11.612 17.97 13 15.96 13h-.002c-1.617 0-3.028-.9-3.67-2.224a.32.32 0 0 0-.575 0C11.07 12.1 9.66 13 8.043 13H8.04c-2.01 0-3.74-1.15-4.035-3.018l-.124-.734c-.07-.305.257-.25.634-.248h14.972c.39 0 .673-.04.632.248l-.124.517zM17 15.143a5.405 5.405 0 0 1-5 3.357 5.405 5.405 0 0 1-5-3.357 8.6 8.6 0 0 0 5 1.6 8.6 8.6 0 0 0 5-1.6z"></path>
+                                    </svg>
+                                </a>
+                                <a href="#">
+                                    <svg id="24x24_funny_outline" height="24" viewBox="0 0 24 24" width="24">
+                                        <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-19c-4.963 0-9 4.037-9 9s4.037 9 9 9 9-4.037 9-9-4.037-9-9-9zm0 15a5.5 5.5 0 0 1-5.288-4h10.576A5.5 5.5 0 0 1 12 18zm3.5-7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm-7 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"></path>
+                                    </svg>
+                                </a>
+                                <a href="#">
+                                    <svg id="24x24_useful_outline" height="24" viewBox="0 0 24 24" width="24">
+                                        <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-19c-4.963 0-9 4.037-9 9s4.037 9 9 9 9-4.037 9-9-4.037-9-9-9zm2 10.704V15h-4v-1.296c-1.35-.72-2.278-2.124-2.278-3.76a4.278 4.278 0 0 1 8.556 0c0 1.636-.93 3.04-2.278 3.76zM11 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 6.5a2 2 0 0 1-4 0V16h4v.5z"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="recent-activities__col">
+                    <div class="recent-activities__item2">
+                        <div class="recent-activities__item2__title">
+                            <div class="recent-activities__item2__title__image">
+                                <a href="#"> <img src="~/Designs/MainWebSite/assets/img/person.jpg"></a>
+                            </div>
+                            <div class="recent-activities__item2__title__text">
+                                <a href="#">پارکر</a>
+                                <span>3 عکس اضافه کرد</span>
+                            </div>
+                        </div>
+                        <div class="recent-activities__item2__content">
+                            <div class="recent-activities__item2__content__title">
+                                <a href="#"> <span>شیر روی سنگ ها</span></a>
+                            </div>
+                            <div class="recent-activities__item2__content__image">
+                                <a href="#"><img src="~/Designs/MainWebSite/assets/img/food.jpg"></a>
+                            </div>
+                            <div class="recent-activities__item2__content__like">
+                                <a href="#">
+                                    <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                        <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                    </svg>
+                                    لایک
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-activities__col">
+                    <div class="recent-activities__item">
+                        <div class="recent-activities__item__title">
+                            <div class="recent-activities__item__title__image">
+                                <a href="#"> <img src="~/Designs/MainWebSite/assets/img/person.jpg"></a>
+                            </div>
+                            <div class="recent-activities__item__title__text">
+                                <a href="#">پارکر</a>
+                                <span>3 عکس اضافه کرد</span>
+                            </div>
+                        </div>
+
+                        <div class="recent-activities__item__image">
+                            <div class="recent-activities__item__image__item recent-activities__item__image__item--big">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+
+
+
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="recent-activities__item__image__item">
+                                <div class="recent-activities__item__image__item__img">
+                                    <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                                </div>
+                                <div class="recent-activities__item__image__item__like">
+                                    <a href="#">
+                                        <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                        </svg>
+                                        لایک
+                                    </a>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="recent-activities__item__show-all">
+                            <a href="#">نمایش 10 عکس</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="recent-activities__col">
+                    <div class="recent-activities__item1">
+                        <div class="recent-activities__item1__title">
+                            <div class="recent-activities__item1__title__image">
+                                <a href="#"> <img src="~/Designs/MainWebSite/assets/img/person1.jpg"></a>
+                            </div>
+                            <div class="recent-activities__item1__title__text">
+                                <a href="#">پارکر</a>
+                                <span>3 عکس اضافه کرد</span>
+                            </div>
+                        </div>
+                        <div class="recent-activities__item1__content">
+                            <div class="recent-activities__item1__content__image">
+                                <a href="#"><img src="~/Designs/MainWebSite/assets/img/hamber.jpg"></a>
+                            </div>
+                            <div class="recent-activities__item1__content__title1">
+                                <a href="#"> <span>شیر روی سنگ ها</span></a>
+                            </div>
+                        </div>
+                        <div class="recent-activities__item1__comment">
+                            <div class="recent-activities__item1__comment__icon-star">
+                                <div class="recent-activities__item1__comment__icon-star__star" data-star="5">
+                                </div>
+                            </div>
+                            <div class="recent-activities__item1__comment__paragraph">
+                                <p>غذا عالی است ، پیشخدمت ما عالی بود ، ساعت 20:00 وارد شد و بلافاصله میز تهیه کرد. اسکارگوت درخشان و بسیار خوش طعم است. پاهای قورباغه باید باشد. شما فقط می خواهید آنجا بنشینید و همه آنها را بمکید </p>
+                                <a href="#">ادامه مطلب</a>
+                            </div>
+                        </div>
+                        <div class="recent-activities__item1__icon">
+                            <div class="recent-activities__item1__icon__right">
+                                <a href="#">
+                                    <svg id="24x24_compliment" height="24" viewBox="0 0 24 24" width="24">
+                                        <path d="M19 9A7 7 0 0 0 5 9a6.995 6.995 0 0 0 3.957 6.297L8 21.992 12.005 19 16 21.992l-.957-6.695A6.995 6.995 0 0 0 19 9zm-7 5c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                            <div class="recent-activities__item1__icon__left">
+                                <a href="#">
+                                    <svg id="24x24_cool_outline" height="24" viewBox="0 0 24 24" width="24">
+                                        <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-19c-4.963 0-9 4.037-9 9s4.037 9 9 9 9-4.037 9-9-4.037-9-9-9zm7.994 6.765C19.647 11.612 17.97 13 15.96 13h-.002c-1.617 0-3.028-.9-3.67-2.224a.32.32 0 0 0-.575 0C11.07 12.1 9.66 13 8.043 13H8.04c-2.01 0-3.74-1.15-4.035-3.018l-.124-.734c-.07-.305.257-.25.634-.248h14.972c.39 0 .673-.04.632.248l-.124.517zM17 15.143a5.405 5.405 0 0 1-5 3.357 5.405 5.405 0 0 1-5-3.357 8.6 8.6 0 0 0 5 1.6 8.6 8.6 0 0 0 5-1.6z"></path>
+                                    </svg>
+                                </a>
+                                <a href="#">
+                                    <svg id="24x24_funny_outline" height="24" viewBox="0 0 24 24" width="24">
+                                        <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-19c-4.963 0-9 4.037-9 9s4.037 9 9 9 9-4.037 9-9-4.037-9-9-9zm0 15a5.5 5.5 0 0 1-5.288-4h10.576A5.5 5.5 0 0 1 12 18zm3.5-7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm-7 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"></path>
+                                    </svg>
+                                </a>
+                                <a href="#">
+                                    <svg id="24x24_useful_outline" height="24" viewBox="0 0 24 24" width="24">
+                                        <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-19c-4.963 0-9 4.037-9 9s4.037 9 9 9 9-4.037 9-9-4.037-9-9-9zm2 10.704V15h-4v-1.296c-1.35-.72-2.278-2.124-2.278-3.76a4.278 4.278 0 0 1 8.556 0c0 1.636-.93 3.04-2.278 3.76zM11 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 6.5a2 2 0 0 1-4 0V16h4v.5z"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="recent-activities__col">
+                    <div class="recent-activities__item2">
+                        <div class="recent-activities__item2__title">
+                            <div class="recent-activities__item2__title__image">
+                                <a href="#"> <img src="~/Designs/MainWebSite/assets/img/person.jpg"></a>
+                            </div>
+                            <div class="recent-activities__item2__title__text">
+                                <a href="#">پارکر</a>
+                                <span>3 عکس اضافه کرد</span>
+                            </div>
+                        </div>
+                        <div class="recent-activities__item2__content">
+                            <div class="recent-activities__item2__content__title">
+                                <a href="#"> <span>شیر روی سنگ ها</span></a>
+                            </div>
+                            <div class="recent-activities__item2__content__image">
+                                <a href="#"><img src="~/Designs/MainWebSite/assets/img/food.jpg"></a>
+                            </div>
+                            <div class="recent-activities__item2__content__like">
+                                <a href="#">
+                                    <svg id="24x24_like_outline" height="24" viewBox="0 0 24 24" width="24">
+                                        <path d="M21.164 12.236c.05.164.086.334.086.514 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723 0 .66-.37 1.23-.91 1.527.1.22.16.464.16.723A1.75 1.75 0 0 1 18 19H7v-9h1c.37 0 1.257-2.37 2.104-3.345.89-1.017 1.234-1.782 1.457-2.513C11.785 3.412 12 2 12 2s2.388.11 2.388 2.9c0 1.39-.758 3.1-.388 4.1h6.25c.966 0 1.75.784 1.75 1.75 0 .63-.336 1.178-.836 1.486zM20.25 10h-6.946l-.242-.653c-.316-.855-.11-1.862.09-2.835.117-.56.236-1.14.236-1.61 0-.844-.283-1.314-.608-1.577-.076.387-.168.797-.262 1.107-.228.748-.604 1.673-1.66 2.88-.336.386-.744 1.166-1.072 1.794C9.146 10.326 8.796 11 8 11v7h10a.75.75 0 0 0 .75-.75.75.75 0 0 0-.07-.308l-.385-.843.812-.45A.74.74 0 0 0 19.5 15a.75.75 0 0 0-.07-.308l-.385-.843.812-.45a.74.74 0 0 0 .393-.65.793.793 0 0 0-.04-.22l-.23-.74.66-.406A.746.746 0 0 0 20.25 10zM2 10h4v10H2V10z"></path>
+                                    </svg>
+                                    لایک
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="recent-activities__text-link">
+                <a href="#">
+                    <i></i>
+                    فعالیت بیشتری را در پاریس نشان دهید
+                </a>
+            </div>
+        </div>
+    </section>
+    <section class="yelp-paris">
+        <div class="container">
+            <div class="yelp-paris__title">
+                <h2>یلپ پاریس</h2>
+            </div>
+            <div class="yelp-paris__menu">
+                <ul>
+                    <li><a href="#">الو آلتو </a></li>
+                    <li><a href="#">شیکاگو </a></li>
+                    <li><a href="#">لس آنجلس</a></li>
+                    <li><a href="#">سن خوزه</a></li>
+                    <li><a href="#">نیویورک</a></li>
+                    <li><a href="#">سانفرانسیسکو</a></li>
+                    <li>
+                        <a href="#">
+                            <svg id="18x18_search_small" height="18" viewBox="0 0 18 18" width="18">
+                                <path d="M15.913 14.224a1.324 1.324 0 0 0-.3-.466h.01l-3.378-3.376a5.49 5.49 0 0 0 .802-2.857 5.523 5.523 0 1 0-5.522 5.52 5.49 5.49 0 0 0 2.856-.8l3.37 3.368.006.003a1.364 1.364 0 0 0 .93.384C15.41 16 16 15.41 16 14.684c0-.163-.032-.317-.086-.46zM7.525 10.94a3.422 3.422 0 0 1-3.418-3.416 3.422 3.422 0 0 1 3.418-3.417 3.422 3.422 0 0 1 3.416 3.417 3.42 3.42 0 0 1-3.413 3.416z"></path>
+                            </svg>شهرهای بیشتر
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="yelp-paris__content">
+                <div class="row">
+                    <div class="col-lg-3 col-6">
+                        <div class="yelp-paris__content__item">
+                            <a href="#">
+                                <img src="~/Designs/MainWebSite/assets/img/restaurants.png">
+                                <h3>رستوران ها</h3>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="yelp-paris__content__item">
+                            <a href="#">
+                                <img src="~/Designs/MainWebSite/assets/img/shopping.png">
+                                <h3>خريد كردن</h3>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="yelp-paris__content__item">
+                            <a href="#">
+                                <img src="~/Designs/MainWebSite/assets/img/nightlife.png">
+                                <h3>زندگی شبانه</h3>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="yelp-paris__content__item">
+                            <a href="#">
+                                <img src="~/Designs/MainWebSite/assets/img/ball.png">
+                                <h3>زندگی فعال</h3>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="yelp-paris__content__item">
+                            <a href="#">
+                                <img src="~/Designs/MainWebSite/assets/img/beauty.png">
+                                <h3>زیبایی و اسپا</h3>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="yelp-paris__content__item">
+                            <a href="#">
+                                <img src="~/Designs/MainWebSite/assets/img/automotive.png">
+                                <h3>خودرو</h3>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="yelp-paris__content__item">
+                            <a href="#">
+                                <img src="~/Designs/MainWebSite/assets/img/home_services.png">
+                                <h3>خدمات خانه</h3>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="yelp-paris__content__item">
+                            <a href="#">
+                                <img src="~/Designs/MainWebSite/assets/img/more.png">
+                                <h3>بیشتر</h3>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="services">
+        <div class="services__title">
+            <h3>خدمات و حرفه ای ها</h3>
+        </div>
+        <div class="services__slider">
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <a href="#">
+                            <img src="~/Designs/MainWebSite/assets/img/img-slide1.png">
+                            <span>لباسشویی</span>
+                        </a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="#">
+                            <img src="~/Designs/MainWebSite/assets/img/img-slide2.png">
+                            <span>متحرک</span>
+                        </a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="#">
+                            <img src="~/Designs/MainWebSite/assets/img/img-slide3.png">
+                            <span>تعمیر تلفن همراه</span>
+                        </a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="#">
+                            <img src="~/Designs/MainWebSite/assets/img/img-slide4.png">
+                            <span>لوله کشی</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="app-mobail">
+        <div class="container">
+            <div class="app-mobail__title">
+                <h2>برنامه های تلفن همراه</h2>
+            </div>
+            <div class="row">
+
+                <div class="col-6">
+                    <div class="app-mobail__item">
+                        <a href="#">
+                            <div class="app-mobail__item__title">
+                                <h4>iphone,ipad</h4>
+                            </div>
+                            <div class="app-mobail__item__image">
+                                <img src="~/Designs/MainWebSite/assets/img/iphone.png">
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="app-mobail__item">
+                        <a href="#">
+                            <div class="app-mobail__item__title">
+                                <h4>android</h4>
+                            </div>
+                            <div class="app-mobail__item__image">
+                                <img src="~/Designs/MainWebSite/assets/img/android.png">
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="app-mobail__button">
+            <a href="#">در برنامه Yelp باز کنید</a>
+        </div>
+    </section>
+</main>
+
