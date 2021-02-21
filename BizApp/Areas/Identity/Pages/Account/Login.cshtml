@@ -1,71 +1,100 @@
-﻿
-@page
+﻿@page
 @model LoginModel
 
 @{
-	ViewData["Title"] = "Log in";
-	Layout = null;
+	ViewData["Title"] = "ورود";
+	Layout = "_MainWebSiteLayout";
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>ورود - BizApp</title>
-	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-	<link href="~/css/login.css" rel="stylesheet" />
-	<link rel="stylesheet" href="~/css/site.css" />
-</head>
-<body>
-	<div class="login-page">
-		<div class="form">
-			@*<form id="account" method="post" class="register-form">
-
-					<input asp-for="Input.Email" placeholder="ایمیل" />
-					<span asp-validation-for="Input.Email" class="text-danger"></span>
-
-					<input asp-for="Input.Password" placeholder="رمز عبور" />
-					<span asp-validation-for="Input.Password" class="text-danger"></span>
-
-					<input type="text" placeholder="email address" />
-					<button>create</button>
-					<p class="message">Already registered? <a href="#">Sign In</a></p>
-				</form>*@
-			<form id="account" method="post" class="login-form">
-
-				<input asp-for="Input.Username" placeholder="نام کاربری" />
-				<span asp-validation-for="Input.Username" class="text-danger"></span>
-
-				<input asp-for="Input.Password" placeholder="رمز عبور" />
-				<span asp-validation-for="Input.Password" class="text-danger"></span>
-
-				<button type="submit">ورود</button>
-
-				<div class="form-check" style="margin-top:10px">
-					<input class="form-check-input" asp-for="Input.RememberMe">
-					<label class="form-check-label" asp-for="Input.RememberMe">
-						@*@Html.DisplayNameFor(m => m.Input.RememberMe)*@
-
-						مرا به خاطر بسپار
-					</label>
-				</div>
-				
-				@*<p class="message">رمز خود را فراموش کرده اید؟ <a id="forgot-password" asp-page="./ForgotPassword">بازیابی رمز عبور</a></p>*@
-				<div asp-validation-summary="All" class="text-danger"></div>
-
-			</form>
+<header class="header-type2">
+	<div class="container">
+		<div class="header-type2__logo">
+			<a href="@Url.Content("~/")"><img src="~/Designs/MainWebSite/assets/img/logo.png" /></a>
 		</div>
 	</div>
+</header>
 
-	<script type="text/javascript">
-		$('.message a').click(function () {
-			$('form').animate({ height: "toggle", opacity: "toggle" }, "slow");
-		});
-	</script>
-	<partial name="_ValidationScriptsPartial" />
-</body>
-</html>
+<main>
+	<section class="login">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 col-sm-7">
+					<div class="login__item">
+						<div class="login__item__title">
+							<h2>وارد BizApp شوید</h2>
+						</div>
+						<div class="login__item__subtitle">
+							<p>تازه وارد BizApp هستید؟</p>
+							<a href="#"><span>ثبت نام</span></a>
+						</div>
+						<div class="form-check">
+							<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+							<label class="form-check-label" for="flexCheckChecked">
+								با ادامه ، من با <a herf="#">شرایط خدمات</a>BizApp موافقت می کنم و <a herf="#">سیاست حفظ حریم خصوصی</a> BizApp ، از جمله سیاست کوکی BizApp را تأیید می کنم.
+							</label>
+						</div>
+						<div class="login__item__form">
+							<div class="login__item__form__google">
+								<a href="#">با Google ادامه دهید</a>
+							</div>
+						</div>
+						<div class="login__item__title-or">
+							<span>یا</span>
+						</div>
+
+						<form id="account" method="post" class="login-form">
+							<div class="form-group">
+								<input class="form-control" asp-for="Input.Username" placeholder="نام کاربری" />
+								<span asp-validation-for="Input.Username" class="text-danger"></span>
+							</div>
+							<div class="form-group">
+								<input class="form-control" asp-for="Input.Password" placeholder="رمز عبور" />
+								<span asp-validation-for="Input.Password" class="text-danger"></span>
+							</div>
+							<div class="Forgot-password">
+								<a href="#">رمز عبور خود را فراموش کرده اید؟</a>
+							</div>
+
+							<div asp-validation-summary="All" class="text-danger"></div>
+							
+							<button type="submit" class="btn btn-primary">ورود</button>
+
+							<div class="form-check" style="margin-top:10px">
+								<input class="form-check-input" asp-for="Input.RememberMe">
+								<label class="form-check-label" asp-for="Input.RememberMe">
+									@*@Html.DisplayNameFor(m => m.Input.RememberMe)*@
+
+									مرا به خاطر بسپار
+								</label>
+							</div>
+
+							@*<p class="message">رمز خود را فراموش کرده اید؟ <a id="forgot-password" asp-page="./ForgotPassword">بازیابی رمز عبور</a></p>*@
+
+						</form>
+						<div class="login__item__sub-form">
+							<p>تازه وارد BizApp هستید؟</p>
+							<a href="/identity/account/register"><span>ثبت نام</span></a>
+						</div>
+
+					</div>
+				</div>
+				<div class="col-md-6 col-sm-5  d-none d-sm-block  ">
+					<div class="login__image">
+						<img src="~/Designs/MainWebSite/assets/img/img-login.png" />
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
+</main>
+
+<script type="text/javascript">
+	$('.message a').click(function () {
+		$('form').animate({ height: "toggle", opacity: "toggle" }, "slow");
+	});
+</script>
+<partial name="_ValidationScriptsPartial" />
 
 @*<h1>@ViewData["Title"]</h1>
 	<div class="row">

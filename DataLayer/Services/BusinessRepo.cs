@@ -105,7 +105,6 @@ namespace DataLayer.Services
 			return district.Id;
 		}
 
-
 		public async Task Create(CreateBusinessCommand model, bool hasCity, IFormFile mainimage, IFormFile[] otherimages)
 		{
 			string ownerId = null;
