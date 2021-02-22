@@ -120,8 +120,8 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8897cbfc-a6dc-4ab6-bad5-5cddaa9b893b",
-                            CreateDate = new DateTime(2021, 2, 22, 9, 52, 23, 467, DateTimeKind.Local).AddTicks(9917),
+                            ConcurrencyStamp = "d0d6240d-1a7b-461e-84e3-b1ea9ad6d4ba",
+                            CreateDate = new DateTime(2021, 2, 22, 14, 16, 1, 264, DateTimeKind.Local).AddTicks(8716),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
@@ -130,9 +130,9 @@ namespace DataLayer.Migrations
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFca1l5u3l2WzmFuM6wiNDzvHyed8gzjskJxpvC6S86+jKJn9eAgqARDKpe3aw3PUQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENJwg+XYLWSRmnyeS+756/1jsHgq/JrqY7OebUTl1bSoD3ZWL1DSxv+I0n9aXPWGrQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1cb71d62-a79e-4405-89eb-7aa592baf75a",
+                            SecurityStamp = "4cbdb240-9f74-4b5c-bda1-52ff6aec1b21",
                             TwoFactorEnabled = false,
                             UserName = "mainadmin"
                         });
@@ -308,9 +308,6 @@ namespace DataLayer.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Icon")
-                        .HasColumnType("varchar(50)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
@@ -345,6 +342,31 @@ namespace DataLayer.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("CategoryFeatures");
+                });
+
+            modelBuilder.Entity("DomainClass.CategoryTerm", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("CategoryTerm");
                 });
 
             modelBuilder.Entity("DomainClass.City", b =>
@@ -680,6 +702,15 @@ namespace DataLayer.Migrations
                 {
                     b.HasOne("DomainClass.Category", "Category")
                         .WithMany("CategoryFeatures")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DomainClass.CategoryTerm", b =>
+                {
+                    b.HasOne("DomainClass.Category", "Category")
+                        .WithMany("Trems")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
