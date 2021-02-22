@@ -1,4 +1,5 @@
 ﻿using BizApp.Models;
+using BizApp.Models.Basic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
@@ -16,7 +17,8 @@ namespace BizApp.Controllers
 
 		public IActionResult Index()
 		{
-			return View();
+			MainPageViewModel MainPageViewModel = new MainPageViewModel();
+			return View(MainPageViewModel);
 		}
 
 
