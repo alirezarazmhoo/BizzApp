@@ -16,8 +16,11 @@
     <link href="~/Designs/AdminControllPanel/css/bootstrap.min.css" rel="stylesheet">
     <link href="~/Designs/AdminControllPanel/css/mouldifi-core.css" rel="stylesheet">
     <link href="~/Designs/AdminControllPanel/css/mouldifi-forms.css" rel="stylesheet">
+    <link href="~/Designs/AdminControllPanel/css/plugins/datatables/jquery.dataTables.css" rel="stylesheet">
+    <link href="~/Designs/AdminControllPanel/js/plugins/datatables/extensions/Buttons/css/buttons.dataTables.css" rel="stylesheet">
     <link href="~/Designs/AdminControllPanel/css/bootstrap-rtl.min.css" rel="stylesheet">
     <link href="~/Designs/AdminControllPanel/css/mouldifi-rtl-core.css" rel="stylesheet">
+
 </head>
 <body>
 
@@ -29,7 +32,7 @@
                 <div class="sidebar-mobile-menu visible-xs"><a data-target="#side-nav" data-toggle="collapse" class="mobile-menu-icon" href="#"><i class="icon-menu"></i></a></div>
             </header>
             <ul id="side-nav" class="main-menu navbar-collapse collapse">
-                
+
                 <li class="has-sub">
                     <a href="#/"><i class="icon-flow-tree"></i><span class="title"> منو چند سطحی</span></a>
                     <ul class="nav collapse">
@@ -54,6 +57,12 @@
                                 <li><a href="#/"><span class="title">سطح منو 2.3</span></a></li>
                             </ul>
                         </li>
+                    </ul>
+                </li>
+                <li class="has-sub">
+                    <a href="login.html"><i class="icon-users"></i><span class="title">کاربران </span></a>
+                    <ul class="nav collapse">
+                        <li><a href="/adminControllPanel/operator/"><span class="title"> کاربران</span></a></li>
                     </ul>
                 </li>
             </ul>
@@ -178,12 +187,13 @@
                     </div>
                 </div>
             </div>
-            
-
+            @RenderBody()
         </div>
 
+
+
     </div>
-    @RenderBody()
+
     <script src="~/Designs/AdminControllPanel/js/jquery.min.js"></script>
     <script src="~/Designs/AdminControllPanel/js/plugins/css3-animate-it-plugin/css3-animate-it.js"></script>
     <script src="~/Designs/AdminControllPanel/js/bootstrap.min.js"></script>
@@ -201,6 +211,16 @@
 
 
     <script src="~/Designs/AdminControllPanel/js/plugins/chartjs/Chart.min.js"></script>
+    <script src="~/Designs/AdminControllPanel/js/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Designs/AdminControllPanel/js/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/Designs/AdminControllPanel/js/plugins/datatables/extensions/Buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Designs/AdminControllPanel/js/plugins/datatables/jszip.min.js"></script>
+    <script src="~/Designs/AdminControllPanel/js/plugins/datatables/pdfmake.min.js"></script>
+    <script src="~/Designs/AdminControllPanel/js/plugins/datatables/vfs_fonts.js"></script>
+    <script src="~/Designs/AdminControllPanel/js/plugins/datatables/extensions/Buttons/js/buttons.html5.js"></script>
+    <script src="~/Designs/AdminControllPanel/js/plugins/datatables/extensions/Buttons/js/buttons.colVis.js"></script>
+    <script src="~/Scripts/Common.js"></script>
+
     <script>
         $(document).ready(function () {
             var $checkbox = $('.todo-list .checkbox input[type=checkbox]');
@@ -567,6 +587,30 @@
                 moduleDoughnut.draw();
             });
             canvas.parentNode.parentNode.appendChild(legendHolder.firstChild);
+            $('.dataTables-example').DataTable({
+                dom: '<"html5buttons" B>lTfgitp',
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        exportOptions: {
+                            columns: [0, ':visible']
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4]
+                        }
+                    },
+                    'colvis'
+                ]
+            });
         });
     </script>
 </body>
