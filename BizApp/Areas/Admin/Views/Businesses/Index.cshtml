@@ -1,179 +1,193 @@
-﻿@model BizApp.Utility.PaginatedList<BizApp.Areas.Admin.Models.BusinessListViewModel>
+﻿@model PagedList.Core.IPagedList<BizApp.Areas.Admin.Models.BusinessListViewModel>
 
 @{
-	ViewData["Title"] = "Index";
+    ViewData["Title"] = "Index";
 }
 
+<div class="header-secondary row gray-bg">
+    <div class="col-lg-12">
+        <div class="page-heading clearfix">
+            <h1 class="page-title pull-left"> مدیریت کسب و کار ها </h1><a href="/admin/businesses/create" class="btn btn-primary btn-sm btn-add openmodal">کسب و کار جدید</a>
+        </div>
+        <!-- Breadcrumb -->
+        <ol class="breadcrumb breadcrumb-2">
+            <li><a href="#"><i class="fa fa-home"></i> خانه</a></li>
+            <li class="active"><strong>کسب و کار ها</strong></li>
+        </ol>
 
-<section class="content-header">
-	<h1 style="float:right">
-		مدیریت کسب و کارها
-	</h1>
-	<ol class="breadcrumb">
-		<li><a href="#"><i class="fa fa-home"></i> خانه</a></li>
-		<li class="active">کسب و کارها</li>
-	</ol>
-</section>
-
-<div style="margin-top: 50px;margin-bottom:3px">
-	<a href="/admin/businesses/create" class="btn btn-success">ثبت جدید</a>
+    </div>
 </div>
-
-<div class="row">
-	<div class="col-sm-12">
-		<div class="text-center" style="border-style: solid;border-color:dimgray">
-			<h2 style="font-size:medium">جستجو</h2>
-		</div>
-		@using (Html.BeginForm("Index", "Businesses", FormMethod.Get))
-		{
-			<div class="box zmdi-border-color" style="height:auto">
-				<div class="box-body table-responsive no-padding row ">
-					<div style="width:90%;margin-right:40px;margin-top:10px">
-						<div class="row">
-							<label for="searchString">عنوان جستجو:</label>
-							<input name="searchString" placeholder="متن را وارد کنید" class="" style="width:260px">
-						</div>
-					</div>
-				</div>
-				<div style="margin-top:20px" dir="rtl">
-					<button style="margin-right:20px;" type="submit" class="btn btn-primary">جستجو یا بارگزاری مجدد</button>
-				</div>
-			</div>
-		}
-	</div>
+<div class="row filter-wrapper visible-box" id="filter-box">
+    <div class="col-lg-12">
+        <div class="filter-header">
+            <h3 class="title">جستجو</h3>
+        </div>
+        @using (Html.BeginForm("Index", "Businesses", FormMethod.Get))
+        {
+            <div class="form-inline">
+                <div class="form-group">
+                    <input name="searchString" placeholder="نام کسب و کار را وارد کنید" class="form-control">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-default">جستجو</button>
+                </div>
+                <div class="form-group">
+                    <a href="/admin/Businesses/" class="btn btn-default">مشاهده همه</a>
+                </div>
+            </div>
+        }
+    </div>
 </div>
 
 
-<div class="row">
-	<div class="col-xs-12">
-		<div class="box">
-			<div class="box-body table-responsive no-padding">
-				@if (!string.IsNullOrEmpty(Context.Request.Query["userId"]))
-				{
-					<div class="text-right">
-						<h3 style="font-size:medium">تعداد کسب و کارهای ثبت شده توسط این کاربر: @Model.Count عدد</h3>
-					</div>
-				}
 
-				<table class="table table-hover text-center">
-					<tr>
-						<th>
-							ردیف
-						</th>
-						<th>
-							نام
-						</th>
-						<th>
-							استان
-						</th>
-						<th>
-							منطقه
-						</th>
-						<th>
-							دسته
-						</th>
-						<th>
-							متصدی
-						</th>
-						<th>
-							تاریخ ثبت
-						</th>
-						<th>
-							عملیات
-						</th>
-					</tr>
-					@{ int rowNo = 0; }
-					@foreach (var item in Model)
-					{
-						<tr>
-							<td>
-								@(++rowNo)
-							</td>
-							<td>
-								@item.Name
-							</td>
-							<td>
-								@item.CityName
-							</td>
-							<td>
-								@item.DistrictName
-							</td>
-							<td>
-								@item.CategoryName
-							</td>
-							<td>
-								@item.Creator
-							</td>
-							<td>
 
-								@item.CreatedDate
 
-							</td>
-							<td>
-								<a type="button" class="btn btn-dark" href="/admin/Businesses/BusinessFeature?Id=@item.Id">تخصیص ویژگی های کسب و کار</a> |
-								@*<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.Id">تخصیص ویژگی دسته بندی</button> |*@
-								<a type="button" class="btn btn-warning" href="/admin/Businesses/edit?Id=@item.Id">ویرایش</a>
-								<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.Id">حذف</button>
-								@*<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.Id"> ویرایش</button>*@
-							</td>
-						</tr>
-					}
-				</table>
-			</div>
-		</div>
+<div class="main-content">
+    <div class="row">
+        <div class="col-lg-12 animatedParent animateOnce z-index-50">
+            <div class="panel panel-default animated fadeInUp">
+                <div class="panel-heading clearfix">
+                    <h3 class="panel-title">کسب و کارها</h3>
+                    <ul class="panel-tool-options">
+                        <li><a data-rel="collapse" href="#"><i class="icon-down-open"></i></a></li>
+                    </ul>
+                </div>
+                @if (!string.IsNullOrEmpty(Context.Request.Query["userId"]))
+                {
+                    <div class="text-right">
+                        <h3 style="font-size:medium">تعداد کسب و کارهای ثبت شده توسط این کاربر: @Model.Count عدد</h3>
+                    </div>
+                }
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-border table-hover dataTables-example">
+                            <thead>
 
-		@{
-			var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-			var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-		}
-		
-		<a asp-action="Index"
-		   asp-route-pageNumber="@(Model.PageIndex - 1)"
-		   class="btn btn-default @prevDisabled">
-			صفحه قبل
-		</a>
-		<a asp-action="Index"
-		   asp-route-pageNumber="@(Model.PageIndex + 1)"
-		   class="btn btn-default @nextDisabled">
-			صفحه بعد
-		</a>
 
-	</div>
+
+                                <tr>
+                                    <th>
+                                        ردیف
+                                    </th>
+                                    <th>
+                                        نام
+                                    </th>
+                                    <th>
+                                        استان
+                                    </th>
+                                    <th>
+                                        منطقه
+                                    </th>
+                                    <th>
+                                        دسته
+                                    </th>
+                                    <th>
+                                        متصدی
+                                    </th>
+                                    <th>
+                                        تاریخ ثبت
+                                    </th>
+                                    <th>
+                                        عملیات
+                                    </th>
+                                </tr>
+                                @{ int rowNo = 0; }
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @(++rowNo)
+                                        </td>
+                                        <td>
+                                            @item.Name
+                                        </td>
+                                        <td>
+                                            @item.CityName
+                                        </td>
+                                        <td>
+                                            @item.DistrictName
+                                        </td>
+                                        <td>
+                                            @item.CategoryName
+                                        </td>
+                                        <td>
+                                            @item.Creator
+                                        </td>
+                                        <td>
+
+                                            @item.CreatedDate
+
+                                        </td>
+                                        <td>
+                                            <a type="button" class="btn btn-dark" href="/admin/Businesses/BusinessFeature?Id=@item.Id">تخصیص ویژگی های کسب و کار</a> |
+                                            @*<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.Id">تخصیص ویژگی دسته بندی</button> |*@
+                                            <a type="button" class="btn btn-warning" href="/admin/Businesses/edit?Id=@item.Id">ویرایش</a>
+                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.Id">حذف</button>
+                                            @*<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.Id"> ویرایش</button>*@
+                                        </td>
+                                    </tr>
+                                }
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                        </div>
+                        <div class="col-sm-7">
+                            <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+                                <ul class="pagination">
+
+                                    <li>
+                                        <pager list="@Model" asp-controller="Businesses" asp-action="Index" asp-area="admin" />
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+            </div>
+        </div>
+    </div>
 </div>
 <input id="BusinessId" name="BusinessId" hidden />
 <div id="Error"></div>
 <div id="Success"></div>
 <div id="Question"></div>
 <script>
-	window.onload = Load;
-	function Load() {
-		CreateAllModals();
-		$(".openmodal").click(function () {
-			clear('register', ["input"]);
-		});
-		$(".btn-warning").click(function () {
-			EditAjax("/admin/Province/GetById", this.id);
-			var bodyStyle = document.body.style;
-			bodyStyle.removeProperty('padding-right');
-		});
-	}
-	function Save() {
-		if (checkvalidity('register') === 0) {
-			return;
-		}
-		else {
-			$("#myModal").modal('toggle');
-			var Parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "Id", htmlname: "Id", special: "" }];
-			PostAjax('/admin/Province/CreateOrUpdate', Parameters, "/admin/Province/Index");
-		}
-	}
-	function AssignButtonClicked(elem) {
-		$('#BusinessId').val($(elem).data('assigned-id'));
-	}
-	function Remove() {
-		var Parameters = [{ id: "BusinessId", htmlname: "BusinessId", special: "" }];
-		PostAjax('/admin/Businesses/Remove', Parameters, "/admin/Businesses/Index");
-	}
+    window.onload = Load;
+    function Load() {
+        CreateAllModals();
+        $(".openmodal").click(function () {
+            clear('register', ["input"]);
+        });
+        $(".btn-warning").click(function () {
+            EditAjax("/admin/Province/GetById", this.id);
+            var bodyStyle = document.body.style;
+            bodyStyle.removeProperty('padding-right');
+        });
+    }
+    function Save() {
+        if (checkvalidity('register') === 0) {
+            return;
+        }
+        else {
+            $("#myModal").modal('toggle');
+            var Parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "Id", htmlname: "Id", special: "" }];
+            PostAjax('/admin/Province/CreateOrUpdate', Parameters, "/admin/Province/Index");
+        }
+    }
+    function AssignButtonClicked(elem) {
+        $('#BusinessId').val($(elem).data('assigned-id'));
+    }
+    function Remove() {
+        var Parameters = [{ id: "BusinessId", htmlname: "BusinessId", special: "" }];
+        PostAjax('/admin/Businesses/Remove', Parameters, "/admin/Businesses/Index");
+    }
 
 
 </script>

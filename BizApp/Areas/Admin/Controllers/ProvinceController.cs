@@ -9,6 +9,7 @@ using BizApp.Utility;
 using DataLayer.Infrastructure;
 using DomainClass;
 using Microsoft.AspNetCore.Mvc;
+using PagedList.Core;
 
 namespace BizApp.Areas.Admin.Controllers
 {
@@ -25,7 +26,7 @@ namespace BizApp.Areas.Admin.Controllers
 			_mapper = mapper;
 		}
 
-		public async Task<IActionResult> Index(string searchString, int? pageNumber)
+		public async Task<IActionResult> Index(string searchString, int? page)
 		{
 			bool shouldSearch = false;
 			try
@@ -39,8 +40,8 @@ namespace BizApp.Areas.Admin.Controllers
 
 				var provinces = items.Select(s => new ProvinceViewModel { ProvinceId = s.Id, Name = s.Name })
 									.OrderByDescending(o => o.ProvinceId);
-
-				return View(PaginatedList<ProvinceViewModel>.CreateAsync(provinces.AsQueryable(), pageNumber ?? 1, pageSize));
+				PagedList<ProvinceViewModel> res = new PagedList<ProvinceViewModel>(provinces.AsQueryable(), page ?? 1, pageSize);
+                return View(res);
 			}
 			catch (Exception)
 			{

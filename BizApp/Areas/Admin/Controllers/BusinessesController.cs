@@ -14,6 +14,7 @@ using DomainClass.Businesses.Commands;
 using DomainClass.Businesses.Queries;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PagedList.Core;
 
 namespace BizApp.Areas.Admin.Controllers
 {
@@ -30,7 +31,7 @@ namespace BizApp.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Index(string searchString, int? pageNumber, string userId = null)
+		public async Task<IActionResult> Index(string searchString, int? page, string userId = null)
 		{
 			bool shouldSearch = false;
 			try
@@ -53,8 +54,8 @@ namespace BizApp.Areas.Admin.Controllers
 
 				var businesses = items.Select(s => _mapper.Map<BusinessListQuery, BusinessListViewModel>(s))
 									.OrderByDescending(o => o.Id);
-
-				return View(PaginatedList<BusinessListViewModel>.CreateAsync(businesses.AsQueryable(), pageNumber ?? 1, pageSize));
+				PagedList<BusinessListViewModel> res = new PagedList<BusinessListViewModel>(businesses.AsQueryable(), page ?? 1, pageSize);
+                return View(res);
 			}
 			catch //(Exception ex)
 			{

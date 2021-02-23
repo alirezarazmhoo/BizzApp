@@ -11,6 +11,7 @@ using DataLayer.Infrastructure;
 using DomainClass;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using PagedList.Core;
 
 namespace BizApp.Areas.Admin.Controllers
 {
@@ -24,7 +25,7 @@ namespace BizApp.Areas.Admin.Controllers
             _mapper = mapper;
             _UnitOfWork = unitOfWork;
         }
-		public async Task<IActionResult> Index(string searchString, int? pageNumber)
+		public async Task<IActionResult> Index(string searchString, int? page)
 		{
 			bool shouldSearch = false;
 			List<CategoryViewModel> categoryViewModel = new List<CategoryViewModel>();
@@ -41,8 +42,8 @@ namespace BizApp.Areas.Admin.Controllers
 				{
 					categoryViewModel.Add(new CategoryViewModel() { CategoryId = item.Id, HasChild =await _UnitOfWork.CategoryRepo.HasChild(item.Id) , Name = item.Name , ParentCategoryId = item.ParentCategoryId , ChildCount = await _UnitOfWork.CategoryRepo.GetChildCount(item.Id) });
 				}
-
-				return View(PaginatedList<CategoryViewModel>.CreateAsync(categoryViewModel.AsQueryable(), pageNumber ?? 1, pageSize));
+				PagedList<CategoryViewModel> res = new PagedList<CategoryViewModel>(categoryViewModel.AsQueryable(), page ?? 1, pageSize);
+                return View(res);
 			}
 			catch (Exception)
 			{
@@ -107,7 +108,7 @@ namespace BizApp.Areas.Admin.Controllers
 
 			return Json(new { success = true, listItem = edit.ToList(), majoritem = ItemId });
 		}
-		public async Task<IActionResult> ShowSubCateogries(int Id)
+		public async Task<IActionResult> ShowSubCateogries(int Id,int? page)
 		{
 			List<CategoryViewModel> categoryViewModel = new List<CategoryViewModel>();
 
@@ -126,7 +127,8 @@ namespace BizApp.Areas.Admin.Controllers
 				{
 					categoryViewModel.Add(new CategoryViewModel() { CategoryId = item.CategoryId, HasChild = await _UnitOfWork.CategoryRepo.HasChild(item.CategoryId), Name = item.Name, ParentCategoryId = item.ParentCategoryId, ChildCount = await _UnitOfWork.CategoryRepo.GetChildCount(item.CategoryId) });
 				}
-				return View(categoryViewModel);
+				PagedList<CategoryViewModel> res = new PagedList<CategoryViewModel>(categoryViewModel.AsQueryable(), page ?? 1, 10);
+                return View(res);
 			}
 		}
 

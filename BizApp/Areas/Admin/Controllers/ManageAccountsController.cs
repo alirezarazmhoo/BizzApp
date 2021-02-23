@@ -12,6 +12,7 @@ using DomainClass;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PagedList.Core;
 
 namespace BizApp.Areas.Admin.Controllers
 {
@@ -32,7 +33,7 @@ namespace BizApp.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Index(string searchString, int? pageNumber)
+		public async Task<IActionResult> Index(string searchString, int? page)
 		{
 			bool shouldSearch = false;
 			_userId = _userManager.GetUserId(User);
@@ -54,8 +55,10 @@ namespace BizApp.Areas.Admin.Controllers
 
 				var users = items.Select(s => _mapper.Map<BizAppUser, UserViewModel>(s))
 									.OrderByDescending(o => o.Id);
+                PagedList<UserViewModel> res = new PagedList<UserViewModel>(users.AsQueryable(), page ?? 1, pageSize);
+                return View(res);
 
-				return View(PaginatedList<UserViewModel>.CreateAsync(users.AsQueryable(), pageNumber ?? 1, pageSize));
+				//return View(PaginatedList<UserViewModel>.CreateAsync(users.AsQueryable(), pageNumber ?? 1, pageSize));
 			}
 			catch // (Exception ex)
 			{
