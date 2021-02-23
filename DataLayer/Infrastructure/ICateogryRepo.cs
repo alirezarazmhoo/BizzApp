@@ -1,8 +1,7 @@
 ﻿using DomainClass;
 using DomainClass.Businesses.Queries;
-using System;
+using DomainClass.Commands;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataLayer.Infrastructure
@@ -12,6 +11,7 @@ namespace DataLayer.Infrastructure
 		Task<IEnumerable<Category>> GetAll();
 		Task<List<Category>> GetAll(string searchString);
 		Task<Category> GetById(int id);
+		Task Add(CreateCategoryCommand model);
 		Task AddOrUpdate(Category city);
 		void Remove(Category city);
 	    Task<bool> HasChild(int Id);

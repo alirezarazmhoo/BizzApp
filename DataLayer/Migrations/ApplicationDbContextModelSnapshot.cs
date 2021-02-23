@@ -120,8 +120,8 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c5018acb-0856-437b-a265-9efe853449a3",
-                            CreateDate = new DateTime(2021, 2, 23, 10, 37, 23, 780, DateTimeKind.Local).AddTicks(4820),
+                            ConcurrencyStamp = "450bc192-ced7-42e8-9b7f-9f232aab9a8d",
+                            CreateDate = new DateTime(2021, 2, 23, 14, 33, 0, 490, DateTimeKind.Local).AddTicks(2680),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
@@ -130,9 +130,9 @@ namespace DataLayer.Migrations
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJpikmjGcxss9HkAjahwDB6hbDp2NI6HEvmpgr788dJSni3XNUqYE16GQUxwrYWXpQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEP0CKMv3T33p67tgrKuna7P09vi4twNQrQ9YHnoj2HzdzyMgaXVyiJ1F/PhhhH0aoA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "72a4239b-cc80-47d4-9571-2f5e9195188a",
+                            SecurityStamp = "32db1469-9881-4214-9098-35934e425b8b",
                             TwoFactorEnabled = false,
                             UserName = "mainadmin"
                         });
@@ -313,6 +313,9 @@ namespace DataLayer.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
                     b.Property<int?>("ParentCategoryId")
                         .HasColumnType("int");
 
@@ -360,7 +363,7 @@ namespace DataLayer.Migrations
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(MAX)");
 
                     b.HasKey("Id");
 

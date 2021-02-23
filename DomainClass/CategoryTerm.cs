@@ -13,7 +13,7 @@ namespace DomainClass
 		[Column(TypeName = "varchar(50)")]
 		public string Key { get; set; }
 		[Required]
-		[Column(TypeName = "varchar(255)")]
+		[Column(TypeName = "nvarchar(MAX)")]
 		public string Value { get; set; }
 
 		public virtual Category Category { get; set; }

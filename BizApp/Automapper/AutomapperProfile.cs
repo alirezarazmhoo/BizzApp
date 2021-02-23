@@ -5,6 +5,7 @@ using DomainClass;
 using DomainClass.Businesses;
 using DomainClass.Businesses.Commands;
 using DomainClass.Businesses.Queries;
+using DomainClass.Commands;
 
 namespace BizApp.Automapper
 {
@@ -34,6 +35,8 @@ namespace BizApp.Automapper
 				.ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.Id))
 				.ForMember(dest => dest.ParentCategoryId, opt => opt.MapFrom(src => src.ParentCategoryId))
 				.ReverseMap();
+
+			CreateMap<CreateUpdateMainCategory, CreateCategoryCommand>();
 
 			// Category Features
 			CreateMap<CategoryFeature, CategoryFeaturesViewModel>()

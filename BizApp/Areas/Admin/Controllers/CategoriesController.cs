@@ -51,9 +51,10 @@ namespace BizApp.Areas.Admin.Controllers
 			}
 		}
 		[HttpPost]
-		public async Task<IActionResult> CreateOrUpdate(CategoryViewModel model)
+		public async Task<IActionResult> CreateOrUpdate(CreateUpdateMainCategory model)
 		{
 			ModelState.Remove("CategoryId");
+
 			if (ModelState.IsValid)
 			{
 				var entity = _mapper.Map<Category>(model);
@@ -134,7 +135,7 @@ namespace BizApp.Areas.Admin.Controllers
 
 		[HttpGet]
 		[ActionName("getHierarchyNames")]
-		public JsonResult GetHierarcyNames(string searchString) 
+		public JsonResult GetHierarchyNames(string searchString) 
 		{
 			if (string.IsNullOrEmpty(searchString))
 				return Json(new { });

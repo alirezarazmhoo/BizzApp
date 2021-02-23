@@ -2,12 +2,14 @@
 using DataLayer.Infrastructure;
 using DomainClass;
 using DomainClass.Businesses.Queries;
+using DomainClass.Commands;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace DataLayer.Services
 {
@@ -19,13 +21,46 @@ namespace DataLayer.Services
 		public async Task AddOrUpdate(Category model)
 		{
 			if (model.Id == 0)
+			{
 				await CreateAsync(model);
+			}
 			else
+			{
 				Update(model);
+			}
+		}
+		public async Task Add(CreateCategoryCommand model)
+		{
+			using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+			{
+				// create new category
+				var category = new Category
+				{
+					Name = model.Name,
+					Order = model.Order
+				};
+
+				// add new category to database
+				await DbContext.Categories.AddAsync(category);
+
+				if (!string.IsNullOrEmpty(model.Icon))
+				{
+					var categoryTerm = new CategoryTerm
+					{
+						Key = "icon",
+						Value = model.Icon,
+						CategoryId = category.Id
+					};
+
+					await DbContext.CategoryTerms.AddAsync(categoryTerm);
+				}
+
+				scope.Complete();
+			}
 		}
 		public async Task<IEnumerable<Category>> GetAll()
 		{
-			return await FindByCondition(f=>f.ParentCategoryId == null).ToListAsync();
+			return await FindByCondition(f => f.ParentCategoryId == null).ToListAsync();
 		}
 		public async Task<List<Category>> GetAll(string searchString)
 		{
@@ -48,12 +83,10 @@ namespace DataLayer.Services
 		{
 			return await FindByCondition(f => f.ParentCategoryId == Id).ToListAsync();
 		}
-
-		public async Task<int> GetChildCount (int Id)
+		public async Task<int> GetChildCount(int Id)
 		{
 			return await FindByCondition(f => f.ParentCategoryId == Id).CountAsync();
 		}
-
 		public async Task<ChildsCategoryResponse> AdminGetChildsCateogry(int Id)
 		{
 			List<ComboBoxViewModel> items = new List<ComboBoxViewModel>();
@@ -63,19 +96,19 @@ namespace DataLayer.Services
 			{
 				foreach (var item in categoryitems)
 				{
-					items.Add(new ComboBoxViewModel() {  id = item.Id,  name = item.Name,   havenext = DbContext.Categories.Any(s => s.ParentCategoryId == item.Id) });
+					items.Add(new ComboBoxViewModel() { id = item.Id, name = item.Name, havenext = DbContext.Categories.Any(s => s.ParentCategoryId == item.Id) });
 				}
 				childsCategoryResponse.items = items;
 				childsCategoryResponse.Isfinal = false;
 				childsCategoryResponse.Parentid = Id;
-				return childsCategoryResponse; 
+				return childsCategoryResponse;
 			}
 			else
 			{
 				var catitem = await DbContext.Categories.Where(s => s.Id == Id).FirstOrDefaultAsync();
 				if (catitem != null)
 				{
-					items.Add(new ComboBoxViewModel() {   id = catitem.Id,   name = catitem.Name  });
+					items.Add(new ComboBoxViewModel() { id = catitem.Id, name = catitem.Name });
 				}
 				childsCategoryResponse.items = items;
 				childsCategoryResponse.Isfinal = true;
@@ -83,7 +116,6 @@ namespace DataLayer.Services
 				return childsCategoryResponse;
 			}
 		}
-
 		public async Task<ChildsCategoryResponse> GetBackCategories(int Id)
 		{
 			bool isfinal = true;
@@ -98,7 +130,7 @@ namespace DataLayer.Services
 				{
 					foreach (var item in previouscategores)
 					{
-						items.Add(new ComboBoxViewModel() {  id = item.Id,  name = item.Name,   havenext = DbContext.Categories.Any(s => s.ParentCategoryId == item.Id) });
+						items.Add(new ComboBoxViewModel() { id = item.Id, name = item.Name, havenext = DbContext.Categories.Any(s => s.ParentCategoryId == item.Id) });
 					}
 					foreach (var item2 in previouscategores)
 					{
@@ -116,25 +148,23 @@ namespace DataLayer.Services
 					}
 					else
 					{
-						childsCategoryResponse.Parentid = null; 
+						childsCategoryResponse.Parentid = null;
 					}
 				}
-				return childsCategoryResponse; 
+				return childsCategoryResponse;
 			}
 
-			return null; 
+			return null;
 
 
 		}
-
-		public List<HierarchyNamesCategory> GetCategoriesHierarchyNames(string searchString) 
+		public List<HierarchyNamesCategory> GetCategoriesHierarchyNames(string searchString)
 		{
-			var result = 
+			var result =
 				DbContext.CategoryHierarchyNames.FromSqlRaw("EXEC [dbo].[sp_GetCategoriesForAutoComplete] @SERACHKEY = {0}", searchString).ToList();
 
 			return result;
 		}
-
 		public HierarchyNamesCategory GetCategoryHierarchyNamesById(int id)
 		{
 			var result =
@@ -142,5 +172,6 @@ namespace DataLayer.Services
 
 			return result.FirstOrDefault();
 		}
+
 	}
 }

@@ -129,40 +129,40 @@
     </div>
 </div>
 <div class="modal fade" id="myModal" role="dialog" style="height:auto;overflow-y:visible">
-    <div class="modal-dialog modal-sm" style="width:400px">
-        <div class="modal-content">
-            <div class="modal-header text-center">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">ثبت جدید</h4>
-            </div>
-            <div class="modal-body" style="height:auto">
-                <form id="register">
-                    <div class="col-md-8">
-                        <input id="CategoryId" name="CategoryId" hidden />
-                        <div class="form-group" style="margin-right:5px">
-                            <label for="Name"> نام :</label>
-                            <input display="نام" id="Name" name="Name" placeholder="نام دسته بندی را وارد کنید" class="form-control" style="width:70%" required>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="btn-group">
-                            <button data-selected="graduation-cap" type="button" class="icp demo btn btn-default dropdown-toggle iconpicker-component" data-toggle="dropdown">
-                                &nbsp; <i id="iconResult" class="fa fa-fw"></i>
-                                <span class=""></span>
-                            </button>
-                            <div class="dropdown-menu"></div>
-                        </div>
-                    </div>
-                    <input name="icon" id="icon" value="" type="hidden">
-
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
-                <button type="button" class="btn btn-success" onclick="Save();">ثبت</button>
-            </div>
-        </div>
-    </div>
+	<div class="modal-dialog modal-sm" style="width:400px">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">ثبت جدید</h4>
+			</div>
+			<div class="modal-body" style="height:auto">
+				<form id="register">
+					<input id="CategoryId" name="CategoryId" hidden />
+					<div class="form-group" style="margin-right:5px">
+						<label for="Name"> نام :</label>
+						<input display="نام" id="Name" name="Name" placeholder="نام دسته بندی را وارد کنید" class="form-control" style="width:70%" required>
+					</div>
+					<div class="btn-group">
+						<label for="Name" class="form-label"> آیکن</label><br />
+						<button data-selected="graduation-cap" type="button" class="icp demo btn btn-default dropdown-toggle iconpicker-component" data-toggle="dropdown">
+							<i id="iconResult" class="fa fa-fw"></i> &nbsp;<b>˅</b>
+							<span class=""></span>
+						</button>
+						<div class="dropdown-menu"></div>
+					</div>
+					<input name="Icon" id="Icon" value="" type="hidden">
+					<div class="form-group">
+						<label for="">ترتیب</label>
+						<input type="number" class="form-control" name="Order" id="Order" />
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+				<button type="button" class="btn btn-success" onclick="Save();">ثبت</button>
+			</div>
+		</div>
+	</div>
 </div>
 <div class="modal fade" id="SubcategoryModal" role="dialog" style="height:auto;overflow-y:visible">
     <div class="modal-dialog modal-sm" style="width:400px">
@@ -193,38 +193,63 @@
 
 @section scripts
 {
-    <script src="~/lib/fontawesome-iconpicker-master/dist/js/fontawesome-iconpicker.js"></script>
-    <script>
-        window.onload = Load;
-        function Load() {
-            CreateAllModals();
-            $(".openmodal").click(function () {
-                clear('register', ["input"]);
-            });
-            $(".btn-warning").click(function () {
-                EditAjax("/admin/Categories/GetById", this.id);
-                var bodyStyle = document.body.style;
-                bodyStyle.removeProperty('padding-right');
-            });
-        }
-        function Save() {
-            if (checkvalidity('register') === 0) {
-                return;
-            }
-            else {
-                $("#myModal").modal('toggle');
+	<script src="~/lib/fontawesome-iconpicker-master/dist/js/fontawesome-iconpicker.js"></script>
+	<script type="text/javascript">
+		// Notice how this gets configured before we load Font Awesome
+		window.FontAwesomeConfig = { autoReplaceSvg: false }
+	</script>
+	<script src="~/lib/fontawesome-free/js/all.js"></script>
 
-                // set icon in input
-                var icon = $("#iconResult").attr('class');
-                $("#icon").attr('value', icon);
+	<script>
+		$(document).ready(function () {
 
-                var Parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "CategoryId", htmlname: "CategoryId", special: "" }, { id: "icon", htmlname: "icon", special: "" }];
-                PostAjax('/admin/Categories/CreateOrUpdate', Parameters, "/admin/Categories/Index");
-            }
-        }
-        function AssignButtonClicked(elem) {
-            $('#CategoryId').val($(elem).data('assigned-id'));
-        }
+		});
+		window.onload = Load;
+		function Load() {
+			CreateAllModals();
+			$(".openmodal").click(function () {
+				clear('register', ["input"]);
+			});
+			$(".btn-warning").click(function () {
+				EditAjax("/admin/Categories/GetById", this.id);
+				var bodyStyle = document.body.style;
+				bodyStyle.removeProperty('padding-right');
+			});
+		}
+		function Save() {
+			if (checkvalidity('register') === 0) {
+				return;
+			}
+			else {
+				$("#myModal").modal('toggle');
+
+				// get icon
+				// get selected icon
+				var classList = $('#iconResult').attr('class').split(/\s+/);
+				//console.log(classList);
+
+				// get icon name
+				var str = classList[1];
+				var iconName = str.substring(3, str.length);
+				// sample: var camera = window.FontAwesome.icon({ prefix: 'fas', iconName: 'camera' })
+				// help: https://fontawesome.com/how-to-use/javascript-api/setup/getting-started
+				var selectedIcon = window.FontAwesome.icon({ prefix: classList[0], iconName: iconName });
+
+				//console.log(selectedIcon);
+
+				// set icon in input
+				if (selectedIcon != undefined)
+					$("#Icon").attr('value', selectedIcon.icon[4]);
+				else
+					$("#Icon").attr('value', '');
+
+				var Parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "CategoryId", htmlname: "CategoryId", special: "" }, { id: "Icon", htmlname: "Icon", special: "" }, { id: "Order", htmlname: "Order", special: "" }];
+				PostAjax('/admin/Categories/CreateOrUpdate', Parameters, "/admin/Categories/Index");
+			}
+		}
+		function AssignButtonClicked(elem) {
+			$('#CategoryId').val($(elem).data('assigned-id'));
+		}
 
         function SubCategoryAssignButtonClicked(elem) {
 
