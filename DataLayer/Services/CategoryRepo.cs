@@ -33,6 +33,12 @@ namespace DataLayer.Services
 		{
 			using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
 			{
+				//// check if 
+				//if (model.Id > 0) 
+				//{
+
+				//}
+
 				// create new category
 				var category = new Category
 				{
@@ -42,6 +48,7 @@ namespace DataLayer.Services
 
 				// add new category to database
 				await DbContext.Categories.AddAsync(category);
+				await DbContext.SaveChangesAsync();
 
 				if (!string.IsNullOrEmpty(model.Icon))
 				{
@@ -53,6 +60,7 @@ namespace DataLayer.Services
 					};
 
 					await DbContext.CategoryTerms.AddAsync(categoryTerm);
+					await DbContext.SaveChangesAsync();
 				}
 
 				scope.Complete();

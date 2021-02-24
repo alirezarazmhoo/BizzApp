@@ -4,11 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BizApp.Areas.Admin.Models;
-using BizApp.Models;
 using BizApp.Models.Basic;
 using BizApp.Utility;
 using DataLayer.Infrastructure;
-using DomainClass;
+using DomainClass.Commands;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PagedList.Core;
@@ -51,20 +50,19 @@ namespace BizApp.Areas.Admin.Controllers
 			}
 		}
 		[HttpPost]
-		public async Task<IActionResult> CreateOrUpdate(CreateUpdateMainCategory model)
+		public async Task<IActionResult> CreateOrUpdate(CreateUpdateMainCategoryViewModel model)
 		{
 			ModelState.Remove("CategoryId");
 
 			if (ModelState.IsValid)
 			{
-				var entity = _mapper.Map<Category>(model);
+				var entity = _mapper.Map<CreateCategoryCommand>(model);
 				try
 				{
-					await _UnitOfWork.CategoryRepo.AddOrUpdate(entity);
-					await _UnitOfWork.SaveAsync();
+					await _UnitOfWork.CategoryRepo.Add(entity);
 					return Json(new { success = true, responseText = CustomeMessages.Succcess });
 				}
-				catch 
+				catch (Exception ex)
 				{
 					return Json(new { success = false, responseText = CustomeMessages.Fail });
 				}

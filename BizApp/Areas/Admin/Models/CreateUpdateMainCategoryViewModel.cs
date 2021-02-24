@@ -2,7 +2,7 @@
 
 namespace BizApp.Areas.Admin.Models
 {
-	public class CreateUpdateMainCategory
+	public class CreateUpdateMainCategoryViewModel
 	{
 		public int CategoryId { get; set; }
 		[Required]
