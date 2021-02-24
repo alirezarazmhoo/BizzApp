@@ -21,16 +21,16 @@
     <link href="~/Designs/AdminControllPanel/css/bootstrap-rtl.min.css" rel="stylesheet">
     <link href="~/Designs/AdminControllPanel/css/mouldifi-rtl-core.css" rel="stylesheet">
 
-    <link rel="stylesheet"
+    <!--<link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
     @*<link href="~/Paging/MyPagerStyle.css" rel="stylesheet" />*@
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">-->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
           integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
           crossorigin="" />
@@ -44,7 +44,7 @@
     <div class="page-container">
         <div class="page-sidebar">
             <header class="site-header">
-                <div class="site-logo"><a href="index.html"><img src="images/logo.png" alt="Mouldifi" title="Mouldifi"></a></div>
+                <div class="site-logo"><a href="index.html"><img @*src="images/logo.png"*@ alt="Mouldifi" title="Mouldifi"></a></div>
                 <div class="sidebar-collapse hidden-xs"><a class="sidebar-collapse-icon" href="#"><i class="icon-menu"></i></a></div>
                 <div class="sidebar-mobile-menu visible-xs"><a data-target="#side-nav" data-toggle="collapse" class="mobile-menu-icon" href="#"><i class="icon-menu"></i></a></div>
             </header>
@@ -115,7 +115,7 @@
                 <div class="col-sm-6 col-xs-7">
                     <ul class="user-info pull-left">
                         <li class="profile-info dropdown">
-                            <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false"> <img width="44" class="img-circle avatar" alt="" src="images/man-3.jpg">علی احمدی <span class="caret"></span></a>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false"> <img width="44" class="img-circle avatar" alt="" @*src="images/man-3.jpg"*@>علی احمدی <span class="caret"></span></a>
 
                             <ul class="dropdown-menu">
 
@@ -156,75 +156,9 @@
                                     <li class="external-last"> <a href="#" class="danger">مشاهده تمام اطلاعیه ها</a> </li>
                                 </ul>
                             </li>
-                            <!-- /notifications -->
-                            <!--پیام ها -->
-                            <li class="notifications dropdown">
-                                <a data-close-others="true" data-hover="dropdown" data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="icon-mail"></i><span class="badge badge-secondary">12</span></a>
-                                <ul class="dropdown-menu pull-right">
-                                    <li class="first">
-                                        <div class="dropdown-content-header"><i class="fa fa-pencil-square-o pull-right"></i>پیام ها</div>
-                                    </li>
-                                    <li>
-                                        <ul class="media-list">
-                                            <li class="media">
-                                                <div class="media-left"><img alt="" class="img-circle img-sm" src="images/domnic-brown.png"></div>
-                                                <div class="media-body">
-                                                    <a class="media-heading" href="#">
-                                                        <span class="text-semibold">علی احمدی</span>
-                                                        <span class="media-annotation pull-right">Tue</span>
-                                                    </a>
-                                                    <span class="text-muted">پروژه شما برای تلفن های موبایل جالب است من دوست دارم این را بررسی کنم...</span>
-                                                </div>
-                                            </li>
-                                            <li class="media">
-                                                <div class="media-left"><img alt="" class="img-circle img-sm" src="images/john-smith.png"></div>
-                                                <div class="media-body">
-                                                    <a class="media-heading" href="#">
-                                                        <span class="text-semibold">رضا حسینی</span>
-                                                        <span class="media-annotation pull-right">12:30</span>
-                                                    </a>
-                                                    <span class="text-muted">با تشکر از شما برای ارسال چنین محتوایی فوق العاده. نوشتن برجسته بود...</span>
-                                                </div>
-                                            </li>
-                                            <li class="media">
-                                                <div class="media-left"><img alt="" class="img-circle img-sm" src="images/stella-johnson.png"></div>
-                                                <div class="media-body">
-                                                    <a class="media-heading" href="#">
-                                                        <span class="text-semibold">محمد محمدی</span>
-                                                        <span class="media-annotation pull-right">2 روز قبل</span>
-                                                    </a>
-                                                    <span class="text-muted">از شما متشکریم که به ما اعتماد کردید که منبع شما برای محصولات ورزشی با کیفیت بالا باشد...</span>
-                                                </div>
-                                            </li>
-                                            <li class="media">
-                                                <div class="media-left"><img alt="" class="img-circle img-sm" src="images/alex-dolgove.png"></div>
-                                                <div class="media-body">
-                                                    <a class="media-heading" href="#">
-                                                        <span class="text-semibold">محمد نوری</span>
-                                                        <span class="media-annotation pull-right">10:45</span>
-                                                    </a>
-                                                    <span class="text-muted">پس از جلسه جمعه ما در مورد رابطه کسب و کار ما و چقدر خوش شانس بود...</span>
-                                                </div>
-                                            </li>
-                                            <li class="media">
-                                                <div class="media-left"><img alt="" class="img-circle img-sm" src="images/domnic-brown.png"></div>
-                                                <div class="media-body">
-                                                    <a class="media-heading" href="#">
-                                                        <span class="text-semibold">علی احمدی</span>
-                                                        <span class="media-annotation pull-right">4:00</span>
-                                                    </a>
-                                                    <span class="text-muted">من می خواهم از این فرصت برای تشکر از شما برای همکاری شما در اخطار کامل استفاده کنید...</span>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="external-last"> <a class="danger" href="#">تمام پیام ها</a> </li>
-                                </ul>
-                            </li>
-                            <!-- /messages -->
+                           
 
                         </ul>
-                        <!-- /user alerts -->
 
                     </div>
                 </div>
@@ -243,12 +177,12 @@
     <script src="~/Designs/AdminControllPanel/js/plugins/blockui-master/jquery-ui.js"></script>
     <script src="~/Designs/AdminControllPanel/js/plugins/blockui-master/jquery.blockUI.js"></script>
 
-    <script src="~/Designs/AdminControllPanel/js/plugins/flot/jquery.flot.min.js"></script>
-    <script src="~/Designs/AdminControllPanel/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
-    <script src="~/Designs/AdminControllPanel/js/plugins/flot/jquery.flot.resize.min.js"></script>
-    <script src="~/Designs/AdminControllPanel/js/plugins/flot/jquery.flot.selection.min.js"></script>
-    <script src="~/Designs/AdminControllPanel/js/plugins/flot/jquery.flot.pie.min.js"></script>
-    <script src="~/Designs/AdminControllPanel/js/plugins/flot/jquery.flot.time.min.js"></script>
+    @*<script src="~/Designs/AdminControllPanel/js/plugins/flot/jquery.flot.min.js"></script>*@
+    @*<script src="~/Designs/AdminControllPanel/js/plugins/flot/jquery.flot.tooltip.min.js"></script>*@
+    @*<script src="~/Designs/AdminControllPanel/js/plugins/flot/jquery.flot.resize.min.js"></script>*@
+    @*<script src="~/Designs/AdminControllPanel/js/plugins/flot/jquery.flot.selection.min.js"></script>*@
+    @*<script src="~/Designs/AdminControllPanel/js/plugins/flot/jquery.flot.pie.min.js"></script>*@
+    @*<script src="~/Designs/AdminControllPanel/js/plugins/flot/jquery.flot.time.min.js"></script>*@
     <script src="~/Designs/AdminControllPanel/js/functions.js"></script>
 
 
@@ -256,14 +190,14 @@
     <script src="~/Designs/AdminControllPanel/js/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Designs/AdminControllPanel/js/plugins/datatables/dataTables.bootstrap.min.js"></script>
     <script src="~/Designs/AdminControllPanel/js/plugins/datatables/extensions/Buttons/js/dataTables.buttons.min.js"></script>
-    <script src="~/Designs/AdminControllPanel/js/plugins/datatables/jszip.min.js"></script>
-    <script src="~/Designs/AdminControllPanel/js/plugins/datatables/pdfmake.min.js"></script>
+    @*<script src="~/Designs/AdminControllPanel/js/plugins/datatables/jszip.min.js"></script>*@
+    @*<script src="~/Designs/AdminControllPanel/js/plugins/datatables/pdfmake.min.js"></script>*@
     <script src="~/Designs/AdminControllPanel/js/plugins/datatables/vfs_fonts.js"></script>
     <script src="~/Designs/AdminControllPanel/js/plugins/datatables/extensions/Buttons/js/buttons.html5.js"></script>
     <script src="~/Designs/AdminControllPanel/js/plugins/datatables/extensions/Buttons/js/buttons.colVis.js"></script>
     <script src="~/Scripts/Common.js"></script>
     
-    <script>
+    @*<script>
         $(document).ready(function () {
             var $checkbox = $('.todo-list .checkbox input[type=checkbox]');
 
@@ -654,7 +588,7 @@
                 ]
             });
         });
-    </script>
+    </script>*@
     @RenderSection("scripts", false)
 </body>
 </html>
