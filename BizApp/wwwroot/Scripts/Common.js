@@ -154,7 +154,7 @@ function FillComboBox(ActionName, Target) {
     });
 }
 function EditAjax(ActionName, id) {
-
+    
     var fd = new FormData();
     fd.append('ItemId', id);
     $.ajax({
@@ -168,14 +168,17 @@ function EditAjax(ActionName, id) {
         //    $("#LoadingModal").modal('show');
         //},
         success: function (response) {
+            
             if (response.success) {
                 $.each(response.listItem, function () {                 
                     $('#' + this.key + '').val(this.value);
                 });   
+                if (response.statusitem != null) {
 
-                $.each(response.statusitem, function () {
-                    $("#IsEnabled option[value=" + this.key + "]").attr("selected", true);
-                });
+                    $.each(response.statusitem, function () {
+                        $("#IsEnabled option[value=" + this.key + "]").attr("selected", true);
+                    });
+                }
 
                 if (response.featuretype != null) {
                     
