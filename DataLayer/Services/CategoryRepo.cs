@@ -3,11 +3,10 @@ using DataLayer.Infrastructure;
 using DomainClass;
 using DomainClass.Businesses.Queries;
 using DomainClass.Commands;
+using DomainClass.Queries;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 
@@ -15,8 +14,14 @@ namespace DataLayer.Services
 {
 	public class CategoryRepo : RepositoryBase<Category>, ICateogryRepo
 	{
+		private readonly string CategoryIconType;
+		private readonly string CategoryFeatureImageType;
+		private readonly string CategoryPngIconType;
 		public CategoryRepo(ApplicationDbContext DbContext) : base(DbContext)
 		{
+			CategoryIconType = "icon";
+			CategoryFeatureImageType = "feature_image";
+			CategoryPngIconType = "png_icon";
 		}
 		public async Task AddOrUpdate(Category model)
 		{
@@ -29,16 +34,25 @@ namespace DataLayer.Services
 				Update(model);
 			}
 		}
+		private async Task CreateIcon(int categoryId, string icon)
+		{
+			if (!string.IsNullOrEmpty(icon))
+			{
+				var categoryTerm = new CategoryTerm
+				{
+					Key = CategoryIconType,
+					Value = icon,
+					CategoryId = categoryId
+				};
+
+				await DbContext.CategoryTerms.AddAsync(categoryTerm);
+				await DbContext.SaveChangesAsync();
+			}
+		}
 		public async Task Add(CreateCategoryCommand model)
 		{
 			using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
 			{
-				//// check if 
-				//if (model.Id > 0) 
-				//{
-
-				//}
-
 				// create new category
 				var category = new Category
 				{
@@ -46,24 +60,38 @@ namespace DataLayer.Services
 					Order = model.Order
 				};
 
-				// add new category to database
+				// add new category to database and get new category id
 				await DbContext.Categories.AddAsync(category);
 				await DbContext.SaveChangesAsync();
 
-				if (!string.IsNullOrEmpty(model.Icon))
-				{
-					var categoryTerm = new CategoryTerm
-					{
-						Key = "icon",
-						Value = model.Icon,
-						CategoryId = category.Id
-					};
-
-					await DbContext.CategoryTerms.AddAsync(categoryTerm);
-					await DbContext.SaveChangesAsync();
-				}
+				// create Icon 
+				await CreateIcon(category.Id, model.Icon);
 
 				scope.Complete();
+			}
+		}
+		public async Task UpdateMainCategory(UpdateCategoryCommand command)
+		{
+			// update category
+			var category = await DbContext.Categories.FirstOrDefaultAsync(f => f.Id == command.Id);
+			using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+			{
+				category.Name = command.Name;
+				category.Order = command.Order;
+
+				// get category items to edit
+				var categoryTerms = await DbContext.CategoryTerms.Where(w => w.CategoryId == category.Id).ToListAsync();
+
+				// delete category icon
+				var categoryIcon = categoryTerms.FirstOrDefault(f => f.Key == CategoryIconType);
+				if (categoryIcon != null) DbContext.CategoryTerms.Remove(categoryIcon);
+
+				// add new category icon if is exists
+				await CreateIcon(category.Id, command.Icon);
+
+				scope.Complete();
+
+				await DbContext.SaveChangesAsync();
 			}
 		}
 		public async Task<IEnumerable<Category>> GetAll()
@@ -73,6 +101,24 @@ namespace DataLayer.Services
 		public async Task<List<Category>> GetAll(string searchString)
 		{
 			return await FindByCondition(f => f.Name.Contains(searchString)).ToListAsync();
+		}
+		public async Task<GetCategoryByIdQuery> GetWithTermsById(int id)
+		{
+			var category = await DbContext.CategoryTerms
+				.Where(w => w.CategoryId == id)
+				.Select(s => new GetCategoryByIdQuery
+				{
+					Id = s.Category.Id,
+					Name = s.Category.Name,
+					Order = s.Category.Order,
+					Icon = (s.Key == CategoryIconType) ? s.Value : null,
+					FeatureImagePath = (s.Key == CategoryFeatureImageType) ? s.Value : null,
+					PngIconPath = (s.Key == CategoryPngIconType) ? s.Value : null
+				})
+				.FirstOrDefaultAsync();
+
+			//return await FindByCondition(f => f.Id == id).FirstOrDefaultAsync();
+			return category;
 		}
 		public async Task<Category> GetById(int id)
 		{

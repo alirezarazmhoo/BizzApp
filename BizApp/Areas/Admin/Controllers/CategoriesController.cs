@@ -56,13 +56,13 @@ namespace BizApp.Areas.Admin.Controllers
 
 			if (ModelState.IsValid)
 			{
-				var entity = _mapper.Map<CreateCategoryCommand>(model);
+				var command = _mapper.Map<CreateCategoryCommand>(model);
 				try
 				{
-					await _UnitOfWork.CategoryRepo.Add(entity);
+					await _UnitOfWork.CategoryRepo.Add(command);
 					return Json(new { success = true, responseText = CustomeMessages.Succcess });
 				}
-				catch (Exception ex)
+				catch // (Exception ex)
 				{
 					return Json(new { success = false, responseText = CustomeMessages.Fail });
 				}
@@ -93,17 +93,18 @@ namespace BizApp.Areas.Admin.Controllers
 				return NotFound();
 			}
 
-			var category = await _UnitOfWork.CategoryRepo.GetById(ItemId);
+			var category = await _UnitOfWork.CategoryRepo.GetWithTermsById(ItemId);
 			if (category == null)
 			{
 				return NotFound();
 			}
-			var model = _mapper.Map<CategoryViewModel>(category);
+			//var model = _mapper.Map<CategoryViewModel>(category);
 			var edit = new List<EditViewModels>
 			{
-				new EditViewModels { key = "Name", value = model.Name },
-				new EditViewModels { key = "CategoryId", value = model.CategoryId.ToString() },
-				new EditViewModels { key = "ParentCategoryId", value = model.ParentCategoryId.ToString() }
+				new EditViewModels { key = "Name", value = category.Name },
+				new EditViewModels { key = "CategoryId", value = category.Id.ToString() },
+				new EditViewModels { key = "ParentCategoryId", value = category.ParentCategoryId.ToString() },
+				new EditViewModels { key = "Icon", value = category.Icon }
 			};
 
 			return Json(new { success = true, listItem = edit.ToList(), majoritem = ItemId });
