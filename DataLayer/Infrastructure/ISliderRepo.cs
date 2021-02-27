@@ -9,9 +9,11 @@ namespace DataLayer.Infrastructure
 {
 	public interface ISliderRepo
 	{
-		Task<IEnumerable<Slider>> GetAll(); 
+		Task<List<Slider>> GetAll();
+		Task<List<Slider>> GetAll(string searchString);
+
 		Task AddOrUpdate(Slider model , IFormFile File);
-		Task Remove(int Id);
+		Task Remove(Slider model);
 		Task<Slider> GetById(int Id);
 		Task<Slider> GetRandom(); 
 	}

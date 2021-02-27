@@ -57,7 +57,8 @@ namespace DataLayer.Services
 				var category = new Category
 				{
 					Name = model.Name,
-					Order = model.Order
+					Order = model.Order,
+					ParentCategoryId = model.ParentCategoryId
 				};
 
 				// add new category to database and get new category id

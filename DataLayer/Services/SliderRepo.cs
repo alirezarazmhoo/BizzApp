@@ -21,11 +21,15 @@ namespace DataLayer.Services
 		{
 			return await FindByCondition(s => s.Id.Equals(Id)).FirstOrDefaultAsync();
 		}
-		public async Task<IEnumerable<Slider>> GetAll()
+		public async Task<List<Slider>> GetAll()
 		{
-			return await FindAll(null)
+			return await FindAll()
 		  .OrderByDescending(s => s.Id)
 		  .ToListAsync();
+		}
+		public async Task<List<Slider>> GetAll(string searchString)
+		{
+			return await FindByCondition(f => f.Title.Contains(searchString)).ToListAsync();
 		}
 		public async Task<Slider> GetRandom()
 		{
@@ -56,6 +60,8 @@ namespace DataLayer.Services
 					}
 					model.Image = "/Upload/Slider/Files/" + fileName;
 				}
+				  DbContext.Sliders.Add(model);
+
 			}
 			else
 			{
@@ -85,9 +91,9 @@ namespace DataLayer.Services
 				}
 			}
 		}
-		public async Task Remove(int Id)
+		public async Task Remove(Slider sliderItem)
 		{
-			Slider sliderItem = await DbContext.Sliders.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+			//Slider sliderItem = await DbContext.Sliders.FirstOrDefaultAsync(s => s.Id.Equals(Id));
 			if(sliderItem != null)
 			{
 			if (!string.IsNullOrEmpty(sliderItem.Image))

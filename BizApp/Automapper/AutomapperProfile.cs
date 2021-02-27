@@ -17,7 +17,9 @@ namespace BizApp.Automapper
 			CreateMap<Province, ProvinceViewModel>()
 				.ForMember(dest => dest.ProvinceId, opt => opt.MapFrom(src => src.Id))
 				.ReverseMap();
-
+			CreateMap<Slider, SliderViewModel>()
+				.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+				.ReverseMap();
 			// City
 			CreateMap<City, CityViewModel>()
 				.ForMember(dest => dest.CityId, opt => opt.MapFrom(src => src.Id))
