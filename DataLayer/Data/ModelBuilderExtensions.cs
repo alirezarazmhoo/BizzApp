@@ -27,12 +27,12 @@ namespace DataLayer.Data
 			adminUser.PasswordHash = ph.HashPassword(adminUser, "123456");
 
 			builder.Entity<BizAppUser>().HasData(adminUser);
-			
+
 			var adminRoleId = UserConfiguration.AdminRoleId;
 			var operatorRoleId = "467ffd0e-d5f1-4301-b9c1-bf08f8d351d2";
 
 			builder.Entity<IdentityRole>().HasData(
-				new IdentityRole { Name = "admin", NormalizedName = "admin", Id = adminRoleId, ConcurrencyStamp = adminRoleId},
+				new IdentityRole { Name = "admin", NormalizedName = "admin", Id = adminRoleId, ConcurrencyStamp = adminRoleId },
 				new IdentityRole { Name = "operator", NormalizedName = "operator", Id = operatorRoleId, ConcurrencyStamp = operatorRoleId }
 			);
 
@@ -41,6 +41,34 @@ namespace DataLayer.Data
 				RoleId = adminRoleId,
 				UserId = userId
 			});
+
+			builder.Entity<Slider>().HasData(
+ new Slider
+ {
+	 Id = 1,
+	 Title = "Title1",
+	 Image = "/Upload/Slider/Files/1.jpg",
+	 Status = DomainClass.Enums.SlideStatusEnum.Publish,
+	 Text = "Text1"
+ },
+  new Slider
+  {
+	  Id = 2,
+	  Title = "Title2",
+	  Image = "/Upload/Slider/Files/2.jpg",
+	  Status = DomainClass.Enums.SlideStatusEnum.Publish,
+	  Text = "Text2"
+  },
+   new Slider
+   {
+	   Id = 3,
+	   Title = "Title3",
+	   Image = "/Upload/Slider/Files/3.jpg",
+	   Status = DomainClass.Enums.SlideStatusEnum.Publish,
+	   Text = "Text3"
+   }
+ );
+
 		}
 
 		public static void SeedOwnerRole(this ModelBuilder builder)
@@ -48,7 +76,7 @@ namespace DataLayer.Data
 			var roleId = UserConfiguration.OwnerRoleId;
 
 			// create owner role entity
-			var ownerRole = new IdentityRole 
+			var ownerRole = new IdentityRole
 			{
 				Name = UserConfiguration.OwnerRoleName,
 				Id = roleId,

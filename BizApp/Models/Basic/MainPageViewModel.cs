@@ -11,16 +11,17 @@ namespace BizApp.Models.Basic
 		public MainPage_SliderViewModel  MainPage_SliderViewModel { get; set;  }
 		public MainPage_ReviewAwaitsViewModel   MainPage_ReviewAwaitsViewModel {get;set;}
 		public ICollection<MainPage_RecentActivity>  MainPage_RecentActivity { get; set; }
-		public ICollection<MainPage_BusinessesByCategoryViewModel> MainPage_BusinessesByCategoryViewModels { get; set;  }
+		public List<MainPage_BusinessesByCategoryViewModel> MainPage_BusinessesByCategoryViewModels { get; set;  }
 	}
 	#endregion
 	#region Slider
 	public class MainPage_SliderViewModel
 	{
 		public string Image { get; set; }
-		public MainPage_PhotoBusinessOwner MainPage_PhotoBusinessOwner { get; set;  }
-		public MainPage_PhotoCreator  MainPage_PhotoCreator { get; set; }
-		public MainPage_Category MainPage_Category { get; set; }
+		public string Title { get; set; }
+		//public MainPage_PhotoBusinessOwner MainPage_PhotoBusinessOwner { get; set;  }
+		//public MainPage_PhotoCreator  MainPage_PhotoCreator { get; set; }
+		public List<MainPage_Category>  MainPage_Category { get; set; }
 	}
 	public class MainPage_PhotoBusinessOwner
 	{
@@ -37,9 +38,12 @@ namespace BizApp.Models.Basic
 	}
 	public class MainPage_Category
 	{
+		public int Id { get; set; }
 		public string Image { get; set; }
 		public string Name { get; set; }
-		public ICollection<Dictionary<int, string>>  CategoryChilds { get; set; }
+		public string PngIcon { get; set; }
+		public List<Tuple<string , string , int >> MoreCategories { get; set; }
+		public Dictionary<int, string>  CategoryChilds { get; set; }
 	}
 	#endregion
 	#region ReviewAwaits

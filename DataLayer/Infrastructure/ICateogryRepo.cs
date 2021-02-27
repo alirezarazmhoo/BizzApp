@@ -23,5 +23,6 @@ namespace DataLayer.Infrastructure
 		Task<ChildsCategoryResponse> GetBackCategories(int Id);
 		List<HierarchyNamesCategory> GetCategoriesHierarchyNames(string searchString);
 		HierarchyNamesCategory GetCategoryHierarchyNamesById(int id);
+		Task<CategoryTerm> GetCategoryTerm(int id); 
 	}
 }

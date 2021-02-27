@@ -1,34 +1,37 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" id="top">
 <head>
-    <meta charset="utf-8">
-    <meta name="author" content="Luan Gjokaj, and GoPablo contributors">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-15" />
-    <title>GoPablo</title>
-    <meta name="description" content="GoPablo is a static site generator with a modern development workflow, integrated web server, auto-reload, CSS preprocessors, and ES6 ready." />
-    <link rel="manifest" href="./manifest.json" />
-    <link rel="shortcut icon" href="~/Designs/MainWebSite/assets/img/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon" sizes="512x512" href="~/Designs/MainWebSite/assets/img/icon-512.png" />
-    <link rel="apple-touch-icon" sizes="192x192" href="~/Designs/MainWebSite/assets/img/icon-192.png" />
-    <link rel="apple-touch-icon-precomposed" href="~/Designs/MainWebSite/assets/img/icon-192.png" />
-    <link rel="icon" sizes="192x192" href="~/Designs/MainWebSite/assets/img/icon-192.png" />
-    <meta property="og:site_name" content="GoPablo" />
-    <meta property="og:title" content="GoPablo" />
-    <meta property="og:image" content="" />
-    <meta property="og:url" content="https://www.gopablo.co" />
-    <meta property="article:author" content="http://facebook.com/luangjokaj" />
-    <!-- Main Style -->
-    <link href="~/Designs/MainWebSite/assets/css/styles.css" async defer rel="stylesheet">
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <script src="~/Designs/MainWebSite/assets/js/header-bundle.js"></script>
+	<meta charset="utf-8">
+	<meta name="author" content="Luan Gjokaj, and GoPablo contributors">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-15" />
+	<title>GoPablo</title>
+	<meta name="description" content="GoPablo is a static site generator with a modern development workflow, integrated web server, auto-reload, CSS preprocessors, and ES6 ready." />
+	<link rel="manifest" href="./manifest.json" />
+	<link rel="shortcut icon" href="~/Designs/MainWebSite/assets/img/favicon.ico" type="image/x-icon" />
+	<link rel="apple-touch-icon" sizes="512x512" href="~/Designs/MainWebSite/assets/img/icon-512.png" />
+	<link rel="apple-touch-icon" sizes="192x192" href="~/Designs/MainWebSite/assets/img/icon-192.png" />
+	<link rel="apple-touch-icon-precomposed" href="~/Designs/MainWebSite/assets/img/icon-192.png" />
+	<link rel="icon" sizes="192x192" href="~/Designs/MainWebSite/assets/img/icon-192.png" />
+	<meta property="og:site_name" content="GoPablo" />
+	<meta property="og:title" content="GoPablo" />
+	<meta property="og:image" content="" />
+	<meta property="og:url" content="https://www.gopablo.co" />
+	<meta property="article:author" content="http://facebook.com/luangjokaj" />
+	<!-- Main Style -->
+	<link href="~/Designs/MainWebSite/assets/css/styles.css" async defer rel="stylesheet">
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
 
-    @RenderSection("Head", required: false)
+
+	<script src="~/Designs/MainWebSite/assets/js/header-bundle.js"></script>
+	<link href="~/lib/fontawesome-free/css/all.css" rel="stylesheet" />
+
+	@RenderSection("Head", required: false)
 </head>
 <body>
 
@@ -189,6 +192,7 @@
 	</footer>
 	<script src="~/Designs/MainWebSite/assets/js/footer-bundle.js"></script>
 	<script src="~/Designs/MainWebSite/assets/js/scripts.js"></script>
+	<script src="~/lib/fontawesome-free/js/all.js"></script>
 
 	@RenderSection("Scripts", required: false)
 </body>

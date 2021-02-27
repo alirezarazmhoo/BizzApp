@@ -226,6 +226,9 @@ namespace DataLayer.Services
 
 			return result.FirstOrDefault();
 		}
-
+		public async Task<CategoryTerm> GetCategoryTerm(int id)
+		{
+			return await DbContext.CategoryTerms.FirstOrDefaultAsync(s=>s.CategoryId.Equals(id));
+		}
 	}
 }

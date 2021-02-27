@@ -15,7 +15,6 @@ namespace DataLayer.Data
 				: base(options)
 		{
 		}
-
 		#region Tables
 		public virtual DbSet<Business> Businesses { get; set; }
 		public virtual DbSet<BusinessCallNumber> BusinessCallNumbers { get; set; }
@@ -30,8 +29,8 @@ namespace DataLayer.Data
 		public virtual DbSet<Feature> Features { get; set; }
 		public virtual DbSet<HierarchyNamesCategory> CategoryHierarchyNames { get; set; }
 		public virtual DbSet<CategoryTerm> CategoryTerms { get; set; }
+		public DbSet<Slider> Sliders { get; set; }
 		#endregion
-
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			base.OnModelCreating(builder);
