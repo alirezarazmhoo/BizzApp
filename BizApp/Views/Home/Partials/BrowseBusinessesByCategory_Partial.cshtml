@@ -1,69 +1,28 @@
-﻿@*@model BizApp.Models.Basic.MainPage_SliderViewModel*@
-
+﻿@model BizApp.Models.Basic.MainPage_SliderViewModel
 <div class="yelp-paris__content">
 	<div class="row">
-
-		@*@foreach (var item in Model.MainPage_Category)
+		@foreach (var item in Model.MainPage_Category)
 		{
 			<div class="col-lg-3 col-6">
 				<div class="yelp-paris__content__item">
 					<a href="#">
-						<img src="@item.PngIcon">
-						<img src="~/Designs/MainWebSite/assets/img/restaurants.png">
+						@*<a href="@item.Id">*@
+						@*<img src="@item.PngIcon">*@
+						@if (string.IsNullOrEmpty(item.PngIcon))
+						{
+							<img src="~/Designs/MainWebSite/assets/img/restaurants.png">
+						}
+						else
+						{
+							<img src="@item.PngIcon">
+
+						}
+
 						<h3>@item.Name</h3>
 					</a>
 				</div>
 			</div>
-		}*@
-
-		<div class="col-lg-3 col-6">
-			<div class="yelp-paris__content__item">
-				<a href="#">
-					<img src="~/Designs/MainWebSite/assets/img/shopping.png">
-					<h3>خريد كردن</h3>
-				</a>
-			</div>
-		</div>
-		<div class="col-lg-3 col-6">
-			<div class="yelp-paris__content__item">
-				<a href="#">
-					<img src="~/Designs/MainWebSite/assets/img/nightlife.png">
-					<h3>زندگی شبانه</h3>
-				</a>
-			</div>
-		</div>
-		<div class="col-lg-3 col-6">
-			<div class="yelp-paris__content__item">
-				<a href="#">
-					<img src="~/Designs/MainWebSite/assets/img/ball.png">
-					<h3>زندگی فعال</h3>
-				</a>
-			</div>
-		</div>
-		<div class="col-lg-3 col-6">
-			<div class="yelp-paris__content__item">
-				<a href="#">
-					<img src="~/Designs/MainWebSite/assets/img/beauty.png">
-					<h3>زیبایی و اسپا</h3>
-				</a>
-			</div>
-		</div>
-		<div class="col-lg-3 col-6">
-			<div class="yelp-paris__content__item">
-				<a href="#">
-					<img src="~/Designs/MainWebSite/assets/img/automotive.png">
-					<h3>خودرو</h3>
-				</a>
-			</div>
-		</div>
-		<div class="col-lg-3 col-6">
-			<div class="yelp-paris__content__item">
-				<a href="#">
-					<img src="~/Designs/MainWebSite/assets/img/home_services.png">
-					<h3>خدمات خانه</h3>
-				</a>
-			</div>
-		</div>
+		}
 		<div class="col-lg-3 col-6">
 			<div class="yelp-paris__content__item">
 				<a href="#">

@@ -124,9 +124,9 @@
 	<section class="yelp-paris">
 		<div class="container">
 			<div class="yelp-paris__title">
-				<h2>بیزآپ</h2>
+				<h2>به جستجوی مشاغل براساس دسته بپردازید</h2>
 			</div>
-			<div class="yelp-paris__menu">
+			@*<div class="yelp-paris__menu">
 				<ul>
 					<li><a href="#">تهران</a></li>
 					<li><a href="#">اصفهان</a></li>
@@ -142,8 +142,8 @@
 						</a>
 					</li>
 				</ul>
-			</div>
-			@await Html.PartialAsync("/Views/Home/Partials/BrowseBusinessesByCategory_Partial.cshtml")
+			</div>*@
+			@await Html.PartialAsync("/Views/Home/Partials/BrowseBusinessesByCategory_Partial.cshtml", Model.MainPage_SliderViewModel)
 		</div>
 	</section>
 	<section class="recent-activities">
@@ -1026,9 +1026,35 @@
 				</div>
 			</div>
 		</div>
-		<div class="app-mobail__button">
+		<div class="app-mobail__button" >
 			<a href="#">در برنامه Yelp باز کنید</a>
 		</div>
 	</section>
 </main>
-
+<script>
+	function AutoComplete(parameter) {
+		var input = document.getElementById('idTxtCategorySearch');
+		if (input.value.length == 0) {
+			$('#cmbSearchCategoryAlternative').css("display", "none");
+			$('#cmbSearchCategoryPrimary').css("display", "block");
+		}
+		else {
+			$('#cmbSearchCategoryPrimary').css("display", "none");
+			$('#cmbSearchCategoryAlternative').empty();
+			$('#cmbSearchCategoryAlternative').css("display", "block");
+			$.ajax({
+				type: "GET",
+				url: '/Home/SearchCategory?txtSearch=' + parameter + '',
+				dataType: "json",
+				contentType: false,
+				processData: false,
+				success: function (response) {
+					$.each(response.categories, function () {
+						$('#cmbSearchCategoryAlternative').append($("<li><a href=#this.id style='margin-right:15px'>" + this.name + "<a><li>"));
+					});
+					$('#idTxtCategorySearch').click();
+				},
+			});
+		}
+	}
+</script>

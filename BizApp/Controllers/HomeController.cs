@@ -1,4 +1,5 @@
-﻿using BizApp.Models;
+﻿using BizApp.Areas.Admin.Models;
+using BizApp.Models;
 using BizApp.Models.Basic;
 using DataLayer.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
@@ -34,20 +35,20 @@ namespace BizApp.Controllers
 			MainPageViewModel_Slider.Title = SliderItem.Title;
 			#endregion
 			#region Category
-			var CategoryItems = await _UnitOfWork.CategoryRepo.GetAll();
+			var CategoryItems = await _UnitOfWork.CategoryRepo.GetChosens();
+
 			foreach (var item in CategoryItems)
 			{
 				MainPage_Categories.Add(new MainPage_Category() { Id = item.Id, Name = item.Name, CategoryChilds = await GetCategoyChilds(item.Id), Image = await GetCategoryTerm(item.Id), PngIcon = string.Empty, MoreCategories = await GetMoreCategoies() }); ; 
 			}
 			MainPageViewModel_Slider.MainPage_Category = MainPage_Categories;
 			MainPageViewModel.MainPage_SliderViewModel = MainPageViewModel_Slider;
-			#endregion
-			
+			#endregion			
 			return View(MainPageViewModel);
 		}
 		private async Task<List<Tuple<string, string, int>>> GetMoreCategoies()
 		{
-			var Items = await _UnitOfWork.CategoryRepo.GetAll();
+			var Items = await _UnitOfWork.CategoryRepo.GetUnChosens();
 			List<Tuple<string, string, int>> tuples = new List<Tuple<string, string, int>>();
 			foreach (var item in Items)
 			{
@@ -73,6 +74,21 @@ namespace BizApp.Controllers
 				keyValuePairs.Add(item.Id, item.Name);
 			}
 			return keyValuePairs; 
+		}
+		public async Task<JsonResult> SearchCategory(string txtSearch)
+		{
+			var Items = await _UnitOfWork.CategoryRepo.GetAll(txtSearch);
+			List<CategorySearchViewModel> categories = new List<CategorySearchViewModel>();
+			foreach (var item in Items)
+			{
+				categories.Add(new CategorySearchViewModel() {  name = item.Name , categoryId  = item.Id });
+			}
+			return Json(new { success = true, categories = categories }) ;
+		}
+		private class CategorySearchViewModel
+		{
+			public string name { get; set; }
+			public int categoryId { get; set; }
 		}
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
