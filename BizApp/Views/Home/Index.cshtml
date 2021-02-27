@@ -1035,6 +1035,7 @@
 	function AutoComplete(parameter) {
 		var input = document.getElementById('idTxtCategorySearch');
 		if (input.value.length == 0) {
+			$('#cmbSearchCategoryAlternative').empty();
 			$('#cmbSearchCategoryAlternative').css("display", "none");
 			$('#cmbSearchCategoryPrimary').css("display", "block");
 		}
@@ -1052,7 +1053,7 @@
 					$.each(response.categories, function () {
 						$('#cmbSearchCategoryAlternative').append($("<li><a href=#this.id style='margin-right:15px'>" + this.name + "<a><li>"));
 					});
-					$('#idTxtCategorySearch').click();
+				
 				},
 			});
 		}
