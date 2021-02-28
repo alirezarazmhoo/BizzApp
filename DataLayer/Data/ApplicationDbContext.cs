@@ -30,6 +30,8 @@ namespace DataLayer.Data
 		public virtual DbSet<HierarchyNamesCategory> CategoryHierarchyNames { get; set; }
 		public virtual DbSet<CategoryTerm> CategoryTerms { get; set; }
 		public DbSet<Slider> Sliders { get; set; }
+		public virtual DbSet<ApplicationUserMedia>  ApplicationUserMedias { get; set; }
+		
 		#endregion
 		protected override void OnModelCreating(ModelBuilder builder)
 		{

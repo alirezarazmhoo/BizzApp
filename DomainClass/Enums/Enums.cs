@@ -11,4 +11,9 @@
 		Publish = 1,
 		Draft = 0
 	}
+	public enum StatusEnum
+	{
+		Accepted = 1,
+		Rejected = 0
+	}
 }
