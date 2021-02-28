@@ -162,6 +162,9 @@
             var bodyStyle = document.body.style;
             bodyStyle.removeProperty('padding-right');
         });
+        $('.pagination > li:first-child > a, .pagination > li:first-child > span').html('قبلی')
+        $('.pagination>li:last-child>a, .pagination>li:last-child>span').html('بعدی')
+
     }
     function Save() {
         if (checkvalidity('register') === 0) {

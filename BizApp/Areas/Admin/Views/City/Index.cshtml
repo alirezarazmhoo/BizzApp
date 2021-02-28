@@ -54,7 +54,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
-                        <table class="table table-striped table-border table-hover dataTables-example">
+                        <table class="table table-striped table-border table-hover dataTables-example" id="example">
                             <thead>
                                 <tr>
                                     <th>
@@ -163,6 +163,10 @@
             var bodyStyle = document.body.style;
             bodyStyle.removeProperty('padding-right');
         });
+        $('.pagination > li:first-child > a, .pagination > li:first-child > span').html('قبلی')
+        $('.pagination>li:last-child>a, .pagination>li:last-child>span').html('بعدی')
+       
+        
     }
     function Save() {
         if (checkvalidity('register') === 0) {
@@ -182,6 +186,6 @@
         PostAjax('/admin/City/Remove', Parameters, "/admin/City/Index");
     }
 
-
+    
 </script>
 

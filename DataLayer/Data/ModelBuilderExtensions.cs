@@ -30,10 +30,12 @@ namespace DataLayer.Data
 
 			var adminRoleId = UserConfiguration.AdminRoleId;
 			var operatorRoleId = "467ffd0e-d5f1-4301-b9c1-bf08f8d351d2";
+			var memberRoleId = "447ffd0e-d5f1-4301-b9c1-bf08f8d351d2";
 
 			builder.Entity<IdentityRole>().HasData(
 				new IdentityRole { Name = "admin", NormalizedName = "admin", Id = adminRoleId, ConcurrencyStamp = adminRoleId },
-				new IdentityRole { Name = "operator", NormalizedName = "operator", Id = operatorRoleId, ConcurrencyStamp = operatorRoleId }
+				new IdentityRole { Name = "operator", NormalizedName = "operator", Id = operatorRoleId, ConcurrencyStamp = operatorRoleId },
+				new IdentityRole { Name = "member", NormalizedName = "member", Id = memberRoleId, ConcurrencyStamp = memberRoleId }
 			);
 
 			builder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
@@ -42,32 +44,32 @@ namespace DataLayer.Data
 				UserId = userId
 			});
 
-			builder.Entity<Slider>().HasData(
- new Slider
- {
-	 Id = 1,
-	 Title = "Title1",
-	 Image = "/Upload/Slider/Files/1.jpg",
-	 Status = DomainClass.Enums.SlideStatusEnum.Publish,
-	 Text = "Text1"
- },
-  new Slider
-  {
-	  Id = 2,
-	  Title = "Title2",
-	  Image = "/Upload/Slider/Files/2.jpg",
-	  Status = DomainClass.Enums.SlideStatusEnum.Publish,
-	  Text = "Text2"
-  },
-   new Slider
-   {
-	   Id = 3,
-	   Title = "Title3",
-	   Image = "/Upload/Slider/Files/3.jpg",
-	   Status = DomainClass.Enums.SlideStatusEnum.Publish,
-	   Text = "Text3"
-   }
- );
+	//		builder.Entity<Slider>().HasData(
+ //new Slider
+ //{
+	// Id = 1,
+	// Title = "Title1",
+	// Image = "/Upload/Slider/Files/1.jpg",
+	// Status = DomainClass.Enums.SlideStatusEnum.Publish,
+	// Text = "Text1"
+ //},
+ // new Slider
+ // {
+	//  Id = 2,
+	//  Title = "Title2",
+	//  Image = "/Upload/Slider/Files/2.jpg",
+	//  Status = DomainClass.Enums.SlideStatusEnum.Publish,
+	//  Text = "Text2"
+ // },
+ //  new Slider
+ //  {
+	//   Id = 3,
+	//   Title = "Title3",
+	//   Image = "/Upload/Slider/Files/3.jpg",
+	//   Status = DomainClass.Enums.SlideStatusEnum.Publish,
+	//   Text = "Text3"
+ //  }
+ //);
 
 		}
 
