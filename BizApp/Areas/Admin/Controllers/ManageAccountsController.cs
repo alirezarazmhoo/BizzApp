@@ -33,7 +33,7 @@ namespace BizApp.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Index(string searchString, int? page)
+		public async Task<IActionResult> Index(string searchString,string roleId, int? page)
 		{
 			bool shouldSearch = false;
 			_userId = _userManager.GetUserId(User);
@@ -42,16 +42,21 @@ namespace BizApp.Areas.Admin.Controllers
 			{
 				if (!string.IsNullOrEmpty(searchString)) shouldSearch = true;
 
-				var query = _userManager.Users.Where(w => w.Id != _userId);
-				
-				int pageSize = 5;
+                //var query = _userManager.Users.Where(w => w.Id != _userId ) ;				
+
+                //var query =  _unitOfWork.UserRepo.GetAll(roleId);
+
+                int pageSize = 5;
+				//var items = (shouldSearch == false) ?
+				//		await query.ToListAsync()
+				//		: await query.Where(w => w.UserName.Contains(searchString) ||
+				//								 w.Mobile.ToString().Contains(searchString) ||
+				//								 w.Email.Contains(searchString) ||
+				//								 w.FullName.Contains(searchString))
+				//					.ToListAsync();
 				var items = (shouldSearch == false) ?
-						await query.ToListAsync()
-						: await query.Where(w => w.UserName.Contains(searchString) ||
-												 w.Mobile.ToString().Contains(searchString) ||
-												 w.Email.Contains(searchString) ||
-												 w.FullName.Contains(searchString))
-									.ToListAsync();
+						await _unitOfWork.UserRepo.GetAll(roleId)
+						: await _unitOfWork.UserRepo.GetAll(roleId,searchString);
 
 				var users = items.Select(s => _mapper.Map<BizAppUser, UserViewModel>(s))
 									.OrderByDescending(o => o.Id);
