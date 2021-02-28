@@ -15,11 +15,13 @@ namespace DataLayer.Services
 	public class CategoryRepo : RepositoryBase<Category>, ICateogryRepo
 	{
 		private readonly string CategoryIconType;
+		private readonly string CategoryIconWebType;
 		private readonly string CategoryFeatureImageType;
 		private readonly string CategoryPngIconType;
 		public CategoryRepo(ApplicationDbContext DbContext) : base(DbContext)
 		{
 			CategoryIconType = "icon";
+			CategoryIconWebType = "icon-web";
 			CategoryFeatureImageType = "feature_image";
 			CategoryPngIconType = "png_icon";
 		}
@@ -34,7 +36,7 @@ namespace DataLayer.Services
 				Update(model);
 			}
 		}
-		private async Task CreateIcon(int categoryId, string icon)
+		private async Task CreateIcon(int categoryId, string icon, string iconWebClassName)
 		{
 			if (!string.IsNullOrEmpty(icon))
 			{
@@ -45,7 +47,15 @@ namespace DataLayer.Services
 					CategoryId = categoryId
 				};
 
+				var categoryTermIconWeb = new CategoryTerm
+				{
+					Key = CategoryIconWebType,
+					Value = iconWebClassName,
+					CategoryId = categoryId
+				};
+
 				await DbContext.CategoryTerms.AddAsync(categoryTerm);
+				await DbContext.CategoryTerms.AddAsync(categoryTermIconWeb);
 				await DbContext.SaveChangesAsync();
 			}
 		}
@@ -66,10 +76,23 @@ namespace DataLayer.Services
 				await DbContext.SaveChangesAsync();
 
 				// create Icon 
-				await CreateIcon(category.Id, model.Icon);
+				await CreateIcon(category.Id, model.Icon, model.IconWeb);
 
 				scope.Complete();
 			}
+		}
+		private async Task DeleteIcons(int id)
+		{
+			// get category items to edit
+			var categoryTerms = await DbContext.CategoryTerms.Where(w => w.CategoryId == id).ToListAsync();
+
+			// delete category icon
+			var categoryIcon = categoryTerms.FirstOrDefault(f => f.Key == CategoryIconType);
+			if (categoryIcon != null) DbContext.CategoryTerms.Remove(categoryIcon);
+
+			// delete category icon web value
+			var categoryIconWeb = categoryTerms.FirstOrDefault(f => f.Key == CategoryIconWebType);
+			if (categoryIconWeb != null) DbContext.CategoryTerms.Remove(categoryIconWeb);
 		}
 		public async Task UpdateMainCategory(UpdateCategoryCommand command)
 		{
@@ -80,15 +103,11 @@ namespace DataLayer.Services
 				category.Name = command.Name;
 				category.Order = command.Order;
 
-				// get category items to edit
-				var categoryTerms = await DbContext.CategoryTerms.Where(w => w.CategoryId == category.Id).ToListAsync();
-
 				// delete category icon
-				var categoryIcon = categoryTerms.FirstOrDefault(f => f.Key == CategoryIconType);
-				if (categoryIcon != null) DbContext.CategoryTerms.Remove(categoryIcon);
+				await DeleteIcons(command.Id);
 
 				// add new category icon if is exists
-				await CreateIcon(category.Id, command.Icon);
+				await CreateIcon(category.Id, command.Icon, command.IconWeb);
 
 				scope.Complete();
 
@@ -105,21 +124,23 @@ namespace DataLayer.Services
 		}
 		public async Task<GetCategoryByIdQuery> GetWithTermsById(int id)
 		{
-			var category = await DbContext.CategoryTerms
-				.Where(w => w.CategoryId == id)
-				.Select(s => new GetCategoryByIdQuery
-				{
-					Id = s.Category.Id,
-					Name = s.Category.Name,
-					Order = s.Category.Order,
-					Icon = (s.Key == CategoryIconType) ? s.Value : null,
-					FeatureImagePath = (s.Key == CategoryFeatureImageType) ? s.Value : null,
-					PngIconPath = (s.Key == CategoryPngIconType) ? s.Value : null
-				})
-				.FirstOrDefaultAsync();
+			var result = await
+				(from c in DbContext.Categories
+				 where c.Id == id
+				 select new GetCategoryByIdQuery
+				 {
+					 Id = c.Id,
+					 Name = c.Name,
+					 Order = c.Order,
+					 ParentCategoryId = c.ParentCategoryId,
+					 Icon = c.Trems.FirstOrDefault(f => f.Key == CategoryIconType).Value,
+					 IconWeb = c.Trems.FirstOrDefault(f => f.Key == CategoryIconWebType).Value,
+					 FeatureImagePath = c.Trems.FirstOrDefault(f => f.Key == CategoryFeatureImageType).Value
+				 }).FirstOrDefaultAsync();
+
 
 			//return await FindByCondition(f => f.Id == id).FirstOrDefaultAsync();
-			return category;
+			return result;
 		}
 		public async Task<Category> GetById(int id)
 		{
@@ -229,13 +250,13 @@ namespace DataLayer.Services
 		}
 		public async Task<CategoryTerm> GetCategoryTerm(int id)
 		{
-			return await DbContext.CategoryTerms.FirstOrDefaultAsync(s=>s.CategoryId.Equals(id));
+			return await DbContext.CategoryTerms.FirstOrDefaultAsync(s => s.CategoryId.Equals(id));
 		}
 		public async Task<List<Category>> GetChosens()
 		{
-			var Items = await DbContext.Categories.Where(s=>s.Order !=0 && !s.ParentCategoryId.HasValue).ToListAsync();
-			Items = Items.TakeWhile(s => s.Order <= 10 ).ToList(); 
-			return Items; 
+			var Items = await DbContext.Categories.Where(s => s.Order != 0 && !s.ParentCategoryId.HasValue).ToListAsync();
+			Items = Items.TakeWhile(s => s.Order <= 10).ToList();
+			return Items;
 		}
 		public async Task<List<Category>> GetUnChosens()
 		{

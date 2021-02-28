@@ -153,7 +153,8 @@ function FillComboBox(ActionName, Target) {
         }
     });
 }
-function EditAjax(ActionName, id) {
+
+function EditAjax(ActionName, id, onSuccess = null) {
     
     var fd = new FormData();
     fd.append('ItemId', id);
@@ -187,6 +188,12 @@ function EditAjax(ActionName, id) {
                         $("#FeatureType option[value=" + this.key + "]").attr("selected", true);
                     });
                 }
+
+                // 
+                if (onSuccess !== null) {
+                    onSuccess();
+                }
+
                 $('#myModal').modal('show');
             }
             else {

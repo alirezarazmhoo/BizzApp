@@ -104,7 +104,8 @@ namespace BizApp.Areas.Admin.Controllers
 				new EditViewModels { key = "Name", value = category.Name },
 				new EditViewModels { key = "CategoryId", value = category.Id.ToString() },
 				new EditViewModels { key = "ParentCategoryId", value = category.ParentCategoryId.ToString() },
-				new EditViewModels { key = "Icon", value = category.Icon }
+				new EditViewModels { key = "Icon", value = category.Icon },
+				new EditViewModels { key = "IconWeb", value = category.IconWeb }
 			};
 
 			return Json(new { success = true, listItem = edit.ToList(), majoritem = ItemId });
