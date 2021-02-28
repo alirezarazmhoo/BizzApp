@@ -38,8 +38,16 @@ namespace DataLayer.Services
 			var Item = await DbContext.Sliders.Where(s=>s.Status == DomainClass.Enums.SlideStatusEnum.Publish).ToListAsync();
 			if (Item != null)
 			{
+				if (Item.Count == 1)
+				{
+					SelectedSlider = Item[0];
+					return SelectedSlider;
+				}
+				else
+				{
 				SelectedSlider = Item.ElementAt(random.Next(1, Item.Count()));
 				return SelectedSlider;
+				}
 			}
 			else
 			{

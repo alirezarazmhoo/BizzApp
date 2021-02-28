@@ -127,23 +127,23 @@
 				<h2>به جستجوی مشاغل براساس دسته بپردازید</h2>
 			</div>
 			@*<div class="yelp-paris__menu">
-				<ul>
-					<li><a href="#">تهران</a></li>
-					<li><a href="#">اصفهان</a></li>
-					<li><a href="#">مشهد</a></li>
-					<li><a href="#">یزد</a></li>
-					<li><a href="#">مازندران</a></li>
-					<li><a href="#">شیراز</a></li>
-					<li>
-						<a href="#">
-							<svg id="18x18_search_small" height="18" viewBox="0 0 18 18" width="18">
-								<path d="M15.913 14.224a1.324 1.324 0 0 0-.3-.466h.01l-3.378-3.376a5.49 5.49 0 0 0 .802-2.857 5.523 5.523 0 1 0-5.522 5.52 5.49 5.49 0 0 0 2.856-.8l3.37 3.368.006.003a1.364 1.364 0 0 0 .93.384C15.41 16 16 15.41 16 14.684c0-.163-.032-.317-.086-.46zM7.525 10.94a3.422 3.422 0 0 1-3.418-3.416 3.422 3.422 0 0 1 3.418-3.417 3.422 3.422 0 0 1 3.416 3.417 3.42 3.42 0 0 1-3.413 3.416z"></path>
-							</svg>شهرهای بیشتر
-						</a>
-					</li>
-				</ul>
-			</div>*@
-			@await Html.PartialAsync("/Views/Home/Partials/BrowseBusinessesByCategory_Partial.cshtml", Model.MainPage_SliderViewModel)
+			<ul>
+				<li><a href="#">تهران</a></li>
+				<li><a href="#">اصفهان</a></li>
+				<li><a href="#">مشهد</a></li>
+				<li><a href="#">یزد</a></li>
+				<li><a href="#">مازندران</a></li>
+				<li><a href="#">شیراز</a></li>
+				<li>
+					<a href="#">
+						<svg id="18x18_search_small" height="18" viewBox="0 0 18 18" width="18">
+							<path d="M15.913 14.224a1.324 1.324 0 0 0-.3-.466h.01l-3.378-3.376a5.49 5.49 0 0 0 .802-2.857 5.523 5.523 0 1 0-5.522 5.52 5.49 5.49 0 0 0 2.856-.8l3.37 3.368.006.003a1.364 1.364 0 0 0 .93.384C15.41 16 16 15.41 16 14.684c0-.163-.032-.317-.086-.46zM7.525 10.94a3.422 3.422 0 0 1-3.418-3.416 3.422 3.422 0 0 1 3.418-3.417 3.422 3.422 0 0 1 3.416 3.417 3.42 3.42 0 0 1-3.413 3.416z"></path>
+						</svg>شهرهای بیشتر
+					</a>
+				</li>
+			</ul>
+		</div>*@
+			@await Html.PartialAsync("/Views/Home/Partials/BrowseBusinessesByCategory_Partial.cshtml", Model.MainPage_BusinessesByCategoryMain)
 		</div>
 	</section>
 	<section class="recent-activities">

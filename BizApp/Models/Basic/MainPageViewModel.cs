@@ -11,7 +11,10 @@ namespace BizApp.Models.Basic
 		public MainPage_SliderViewModel  MainPage_SliderViewModel { get; set;  }
 		public MainPage_ReviewAwaitsViewModel   MainPage_ReviewAwaitsViewModel {get;set;}
 		public ICollection<MainPage_RecentActivity>  MainPage_RecentActivity { get; set; }
-		public List<MainPage_BusinessesByCategoryViewModel> MainPage_BusinessesByCategoryViewModels { get; set;  }
+		//public List<MainPage_BusinessesByCategory> MainPage_BusinessesByCategory { get; set;  }
+		//public MainPage_BusinessesByCategoryMoreCategories  MainPage_BusinessesByCategoryMoreCategories { get; set; }
+		public MainPage_BusinessesByCategoryMain  MainPage_BusinessesByCategoryMain { get; set; }
+
 	}
 	#endregion
 	#region Slider
@@ -92,11 +95,22 @@ namespace BizApp.Models.Basic
 	}
 	#endregion
 	#region BusinessesByCategory
-	public class MainPage_BusinessesByCategoryViewModel
+	public class MainPage_BusinessesByCategoryMain
+	{
+		public ICollection<MainPage_BusinessesByCategory>  MainPage_BusinessesByCategories { get; set; }
+		public MainPage_BusinessesByCategoryMoreCategories MainPage_BusinessesByCategoryMoreCategories { get; set; }
+	}
+	public class MainPage_BusinessesByCategory
 	{
 		public int Id { get; set; }
 		public string Image { get; set; }
 		public string Name { get; set; }
+		public string PngIcon { get; set; }
+
 	}
-	#endregion
-}
+	public class MainPage_BusinessesByCategoryMoreCategories
+	{
+	public List<Tuple<string, string, int>> MoreCategories { get; set; }
+	}
+		#endregion
+	}

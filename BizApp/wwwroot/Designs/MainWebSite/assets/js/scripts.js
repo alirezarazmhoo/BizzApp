@@ -86,6 +86,12 @@ $(window).on('load', () => {
         })
     }
 
+    $('.yelp-paris__content__item--more').on('click',function() {
+        $(".yelp-paris__more").slideToggle()
+    })
+    
+
+
     if($('#mapid').length > 0)
     {
         var mymap = L.map('mapid').setView([32.6538472, 51.6724925], 18);
