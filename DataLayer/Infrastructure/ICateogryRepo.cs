@@ -14,6 +14,7 @@ namespace DataLayer.Infrastructure
 		Task<Category> GetById(int id);
 		Task<GetCategoryByIdQuery> GetWithTermsById(int id);
 		Task Add(CreateCategoryCommand model);
+		Task Update(UpdateCategoryCommand command);
 		Task AddOrUpdate(Category city);
 		void Remove(Category city);
 	    Task<bool> HasChild(int Id);

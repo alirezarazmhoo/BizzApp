@@ -93,8 +93,10 @@ namespace DataLayer.Services
 			// delete category icon web value
 			var categoryIconWeb = categoryTerms.FirstOrDefault(f => f.Key == CategoryIconWebType);
 			if (categoryIconWeb != null) DbContext.CategoryTerms.Remove(categoryIconWeb);
+
+			await DbContext.SaveChangesAsync();
 		}
-		public async Task UpdateMainCategory(UpdateCategoryCommand command)
+		public async Task Update(UpdateCategoryCommand command)
 		{
 			// update category
 			var category = await DbContext.Categories.FirstOrDefaultAsync(f => f.Id == command.Id);

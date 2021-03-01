@@ -145,16 +145,17 @@
 					<div class="btn-group">
 						<label for="Name"> آیکن</label>
 						<button data-selected="graduation-cap" type="button" class="icp demo btn btn-default dropdown-toggle iconpicker-component form-control" data-toggle="dropdown" id="selectIconButton">
-							<i id="iconResult" class="fa fa-fw"></i> &nbsp;<b>˅</b>
+							<i id="iconResult" class="fa fa-fw"></i>
 							<span class=""></span>
 						</button>
 						<div class="dropdown-menu"></div>
+						<button id="removeIcon" type="button" onclick="ClearIcon()"><i class="fas fa-undo"></i></button>
 					</div>
 					<input name="Icon" id="Icon" value="" type="hidden">
 					<input name="IconWeb" id="IconWeb" value="" type="hidden">
 					<div class="form-group">
 						<label for="">ترتیب</label>
-						<input type="number" class="form-control" name="Order" id="Order" />
+						<input type="number" min="0" max="10" class="form-control" name="Order" id="Order" />
 					</div>
 				</form>
 			</div>
@@ -195,11 +196,13 @@
 @section scripts
 {
 	<script src="~/lib/fontawesome-iconpicker-master/dist/js/fontawesome-iconpicker.js"></script>
-	<script src="~/lib/fontawesome-free/js/all.js"></script>
+	<script src="~/lib/fontawesome-free/js/all.js" data-auto-replace-svg="nest"></script>
 
 	<script>
 		window.onload = Load;
-		function Load() {
+        function Load() {
+			FontAwesomeConfig = { autoReplaceSvg: false }
+
 			CreateAllModals();
 			$(".openmodal").click(function () {
                 clear('register', ["input"]);
@@ -209,7 +212,6 @@
 
                 EditAjax("/admin/Categories/GetById", this.id, function () {
 					// set selected icon
-					//var svgValue = $("#Icon").attr('value');
 					var iconClassNames = $("#IconWeb").attr('value');
 					var svgTag = '<i id="iconResult" class="' + iconClassNames + '"></i>';
 
@@ -241,14 +243,16 @@
 				// get icon
 				// get selected icon
 				var classList = $('#iconResult').attr('class').split(/\s+/);
-
 				// get icon name
-				var str = classList[1];
-				var iconName = str.substring(3, str.length);
-				// sample: var camera = window.FontAwesome.icon({ prefix: 'fas', iconName: 'camera' })
-				// help: https://fontawesome.com/how-to-use/javascript-api/setup/getting-started
-                var selectedIcon = window.FontAwesome.icon({ prefix: classList[0], iconName: iconName });
+                var str = classList[1];
 
+                var selectedIcon;
+                if (str != undefined) {
+                    var iconName = str.substring(3, str.length);
+                    // sample: var camera = window.FontAwesome.icon({ prefix: 'fas', iconName: 'camera' })
+                    // help: https://fontawesome.com/how-to-use/javascript-api/setup/getting-started
+                    selectedIcon = window.FontAwesome.icon({ prefix: classList[0], iconName: iconName });
+                }
 				//console.log(selectedIcon);
 
 				// set icon in input
@@ -261,7 +265,8 @@
 					$("#IconWeb").attr('value', '');
                 }
 
-				var Parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "CategoryId", htmlname: "CategoryId", special: "" }, { id: "Icon", htmlname: "Icon", special: "" }, { id: "Order", htmlname: "Order", special: "" }, { id: "IconWeb", htmlname: "IconWeb", special: "" }];
+                var Parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "CategoryId", htmlname: "CategoryId", special: "" }, { id: "Icon", htmlname: "Icon", special: "" }, { id: "Order", htmlname: "Order", special: "" }, { id: "IconWeb", htmlname: "IconWeb", special: "" }];
+
 				PostAjax('/admin/Categories/CreateOrUpdate', Parameters, "/admin/Categories/Index");
 			}
         }
@@ -271,10 +276,7 @@
 		}
 
         function SubCategoryAssignButtonClicked(elem) {
-            
-
             $('#ParentCategoryId').val($(elem).data('assigned-id'));
-
         }
         function Remove() {
             var Parameters = [{ id: "CategoryId", htmlname: "CategoryId", special: "" }];
@@ -288,6 +290,13 @@
                 var Parameters = [{ id: "Name", htmlname: "SubcategoryName", special: "" }, { id: "ParentCategoryId", htmlname: "ParentCategoryId", special: "" }];
                 PostAjax('/admin/Categories/CreateOrUpdate', Parameters, "/admin/Categories/Index");
             }
+        }
+
+        function ClearIcon() {
+            $("#Icon").val('');
+            $("#IconWeb").val('');
+            $("#iconResult").attr('class', '');
+            $('#iconResult').html('');
         }
 
 		//$("#Icon").onchange(function () { alert('sss')});

@@ -39,6 +39,8 @@ namespace BizApp.Automapper
 				.ReverseMap();
 
 			CreateMap<CreateUpdateMainCategoryViewModel, CreateCategoryCommand>();
+			CreateMap<CreateUpdateMainCategoryViewModel, UpdateCategoryCommand>()
+				.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CategoryId));
 
 			// Category Features
 			CreateMap<CategoryFeature, CategoryFeaturesViewModel>()

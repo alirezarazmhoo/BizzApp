@@ -16,14 +16,14 @@ namespace BizApp.Areas.Admin.Controllers
 {
 	[Area("admin")]
 	public class CategoriesController : Controller
-    {
-        private readonly IMapper _mapper;
-        private readonly IUnitOfWorkRepo _UnitOfWork;
-        public CategoriesController(IUnitOfWorkRepo unitOfWork, IMapper mapper)
-        {
-            _mapper = mapper;
-            _UnitOfWork = unitOfWork;
-        }
+	{
+		private readonly IMapper _mapper;
+		private readonly IUnitOfWorkRepo _UnitOfWork;
+		public CategoriesController(IUnitOfWorkRepo unitOfWork, IMapper mapper)
+		{
+			_mapper = mapper;
+			_UnitOfWork = unitOfWork;
+		}
 		public async Task<IActionResult> Index(string searchString, int? page)
 		{
 			bool shouldSearch = false;
@@ -37,14 +37,14 @@ namespace BizApp.Areas.Admin.Controllers
 						await _UnitOfWork.CategoryRepo.GetAll()
 						: await _UnitOfWork.CategoryRepo.GetAll(searchString);
 
-				foreach (var item in items.OrderByDescending(s=>s.Id))
+				foreach (var item in items.OrderByDescending(s => s.Id))
 				{
-					categoryViewModel.Add(new CategoryViewModel() { CategoryId = item.Id, HasChild =await _UnitOfWork.CategoryRepo.HasChild(item.Id) , Name = item.Name , ParentCategoryId = item.ParentCategoryId , ChildCount = await _UnitOfWork.CategoryRepo.GetChildCount(item.Id) });
+					categoryViewModel.Add(new CategoryViewModel() { CategoryId = item.Id, HasChild = await _UnitOfWork.CategoryRepo.HasChild(item.Id), Name = item.Name, ParentCategoryId = item.ParentCategoryId, ChildCount = await _UnitOfWork.CategoryRepo.GetChildCount(item.Id) });
 				}
 				PagedList<CategoryViewModel> res = new PagedList<CategoryViewModel>(categoryViewModel.AsQueryable(), page ?? 1, pageSize);
-                return View(res);
+				return View(res);
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
 				return Content(CustomeMessages.Try);
 			}
@@ -56,15 +56,32 @@ namespace BizApp.Areas.Admin.Controllers
 
 			if (ModelState.IsValid)
 			{
-				var command = _mapper.Map<CreateCategoryCommand>(model);
-				try
+				if (model.CategoryId == 0)
 				{
-					await _UnitOfWork.CategoryRepo.Add(command);
-					return Json(new { success = true, responseText = CustomeMessages.Succcess });
+					var command = _mapper.Map<CreateCategoryCommand>(model);
+					try
+					{
+						await _UnitOfWork.CategoryRepo.Add(command);
+						return Json(new { success = true, responseText = CustomeMessages.Succcess });
+					}
+					catch // (Exception ex)
+					{
+						return Json(new { success = false, responseText = CustomeMessages.Fail });
+					}
 				}
-				catch // (Exception ex)
+				else 
 				{
-					return Json(new { success = false, responseText = CustomeMessages.Fail });
+					var command = _mapper.Map<UpdateCategoryCommand>(model);
+
+					try
+					{
+						await _UnitOfWork.CategoryRepo.Update(command);
+						return Json(new { success = true, responseText = CustomeMessages.Succcess });
+					}
+					catch// (Exception ex)
+					{
+						return Json(new { success = false, responseText = CustomeMessages.Fail });
+					}
 				}
 			}
 			return Json(new { success = false, responseText = CustomeMessages.Empty });
@@ -105,12 +122,13 @@ namespace BizApp.Areas.Admin.Controllers
 				new EditViewModels { key = "CategoryId", value = category.Id.ToString() },
 				new EditViewModels { key = "ParentCategoryId", value = category.ParentCategoryId.ToString() },
 				new EditViewModels { key = "Icon", value = category.Icon },
+				new EditViewModels { key = "Order", value = category.Order.ToString() },
 				new EditViewModels { key = "IconWeb", value = category.IconWeb }
 			};
 
 			return Json(new { success = true, listItem = edit.ToList(), majoritem = ItemId });
 		}
-		public async Task<IActionResult> ShowSubCateogries(int Id,int? page)
+		public async Task<IActionResult> ShowSubCateogries(int Id, int? page)
 		{
 			List<CategoryViewModel> categoryViewModel = new List<CategoryViewModel>();
 
@@ -120,23 +138,23 @@ namespace BizApp.Areas.Admin.Controllers
 			}
 			else
 			{
-				var items =await _UnitOfWork.CategoryRepo.GetChilds(Id);
+				var items = await _UnitOfWork.CategoryRepo.GetChilds(Id);
 				var CategoryItem = await _UnitOfWork.CategoryRepo.GetById(Id);
 				ViewBag.ParentCategoryId = Id;
-				ViewBag.ParentCategoryName = CategoryItem.Name; 
-				var Categoires = items.Select(s => new CategoryViewModel {  CategoryId = s.Id,  Name = s.Name , ParentCategoryId = s.ParentCategoryId   }).OrderByDescending(o => o.CategoryId);
-				foreach (var item in Categoires.OrderByDescending(S=>S.CategoryId))
+				ViewBag.ParentCategoryName = CategoryItem.Name;
+				var Categoires = items.Select(s => new CategoryViewModel { CategoryId = s.Id, Name = s.Name, ParentCategoryId = s.ParentCategoryId }).OrderByDescending(o => o.CategoryId);
+				foreach (var item in Categoires.OrderByDescending(S => S.CategoryId))
 				{
 					categoryViewModel.Add(new CategoryViewModel() { CategoryId = item.CategoryId, HasChild = await _UnitOfWork.CategoryRepo.HasChild(item.CategoryId), Name = item.Name, ParentCategoryId = item.ParentCategoryId, ChildCount = await _UnitOfWork.CategoryRepo.GetChildCount(item.CategoryId) });
 				}
 				PagedList<CategoryViewModel> res = new PagedList<CategoryViewModel>(categoryViewModel.AsQueryable(), page ?? 1, 10);
-                return View(res);
+				return View(res);
 			}
 		}
 
 		[HttpGet]
 		[ActionName("getHierarchyNames")]
-		public JsonResult GetHierarchyNames(string searchString) 
+		public JsonResult GetHierarchyNames(string searchString)
 		{
 			if (string.IsNullOrEmpty(searchString))
 				return Json(new { });
@@ -150,7 +168,7 @@ namespace BizApp.Areas.Admin.Controllers
 			{
 				return Json(ex.Message);
 			}
-			
+
 		}
 
 	}
