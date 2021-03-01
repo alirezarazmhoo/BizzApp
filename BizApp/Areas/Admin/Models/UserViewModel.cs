@@ -15,6 +15,7 @@ namespace BizApp.Areas.Admin.Models
 		[MinLength(6, ErrorMessage = "نام عبور حداقل باید دارای 6 کاراکتر باشد")]
 		[DisplayName("رمز عبور")]
 		public string Password { get; set; }
+		public string roleId { get; set; }
 
 	}
 }

@@ -13,7 +13,7 @@
             <li><a href="#"><i class="fa fa-home"></i> خانه</a></li>
             <li class="active"><strong>کاربران</strong></li>
         </ol>
-        
+
     </div>
 </div>
 
@@ -24,17 +24,17 @@
         </div>
         @using (Html.BeginForm("Index", "operator", FormMethod.Get))
         {
-    <div class="form-inline">
-        <div class="form-group">
-            <input name="searchString"  placeholder="نام کاربر را وارد کنید" class="form-control">
-        </div>
-        <div class="form-group">
-            <button class="btn btn-default">جستجو</button>
-        </div>
-        <div class="form-group">
-            <a href="/admin/operator/" class="btn btn-default">مشاهده همه</a>
-        </div>
-    </div>
+            <div class="form-inline">
+                <div class="form-group">
+                    <input name="searchString" placeholder="نام کاربر را وارد کنید" class="form-control">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-default">جستجو</button>
+                </div>
+                <div class="form-group">
+                    <a href="/admin/operator/" class="btn btn-default">مشاهده همه</a>
+                </div>
+            </div>
         }
     </div>
 </div>
@@ -42,7 +42,7 @@
 
 
 <div class="main-content">
-    
+
     <div class="row">
         <div class="col-lg-12 animatedParent animateOnce z-index-50">
             <div class="panel panel-default animated fadeInUp">
@@ -74,15 +74,23 @@
                                         ایمیل
                                     </th>
                                     <th>
+                                        وضعیت
+                                    </th>
+                                    <th>
                                         عملیات
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @{ int rowNo = 0; }
+                                @{ int rowNo = 0; var color = "#f5f5f5"; }
                                 @foreach (var item in Model)
                                 {
-                                    <tr>
+                                    @if (!item.IsEnabled)
+                                    {
+                                        color = "#ff6b81";
+                                    }
+                                    <tr style="background-color:@color">
+
                                         <td>
                                             @(++rowNo)
                                         </td>
@@ -98,11 +106,29 @@
                                         <td>
                                             @item.Email
                                         </td>
-                                        <td>
-                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.Id">حذف</button> |
-                                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.Id"> ویرایش</button>
+                                        @if (!item.IsEnabled)
+                                        {
+                                            <td>
+                                                غیر فعال
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>فعال</td>
+                                        }
+                                    <td>
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.Id">حذف</button> |
+                                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.Id"> ویرایش</button>
+                                        @if (ViewBag.roleId == "467ffd0e-d5f1-4301-b9c1-bf08f8d351d2")
+                                        {
                                             <a href="/admin/businesses/index?userId=@item.Id" class="btn btn-success"> کسب و کارهای ثبت شده</a>
-                                        </td>
+                                        }
+                                        else
+                                        @if (ViewBag.roleId == "447ffd0e-d5f1-4301-b9c1-bf08f8d351d2")
+                                        {
+                                            <a href="/admin/oprator/otherInfo?userId=@item.Id" class="btn btn-success"> اطلاعات تکمیلی کاربر</a>
+                                        }
+                                    </td>
                                     </tr>
                                 }
 
@@ -118,7 +144,7 @@
                                 <ul class="pagination">
 
                                     <li>
-                                        <pager list="@Model" asp-controller="operator" asp-action="Index" asp-area="admin" />
+                                        <pager list="@Model" asp-controller="operator" asp-action="Index" asp-area="admin" asp-route-roleId=@ViewBag.roleId />
                                     </li>
                                 </ul>
                             </div>
@@ -132,8 +158,8 @@
 
 
 </div>
-<div class="modal fade" id="myModal" role="dialog" style="height:auto;overflow-y:visible">
-    <div class="modal-dialog modal-sm" style="width:400px">
+<div class="modal fade " id="myModal" role="dialog" style="height:auto;overflow-y:visible">
+    <div class="modal-dialog modal-lg" >
         <div class="modal-content">
             <div class="modal-header text-center">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -156,7 +182,10 @@
 
                         <div class="form-group col-md-6">
                             @*<label for="Username">نام کاربری</label>*@
-                            <input display="نام کاربری" id="Username" name="Username" placeholder="نام کاربری *" class="form-control" required>
+                            <input display="نام کاربری" id="Username" name="Username" placeholder=" نام کاربری (کاراکتر انگلیسی و عدد) *" class="form-control " data-val-regex="نام کاربری از حروف انگلیسی و عدد استفاده کنید" data-val-regex-pattern="^[a-zA-Z0-9_.-]*$" data-val-required="لطفا نام کاربری را وارد کنید" required data-val="true">
+                            @*<span asp-validation-for="Username" class="text-danger"></span>*@
+                            <span class="text-danger field-validation-error" data-valmsg-for="Username" data-valmsg-replace="true"></span>
+                            @*<span id="Username-error" class=""> </span>*@
                         </div>
                     </div>
 
@@ -200,6 +229,7 @@
 <div id="Error"></div>
 <div id="Success"></div>
 <div id="Question"></div>
+<input name="roleId" id="roleId" hidden value="@ViewBag.roleId" />
 
 
 <script>
@@ -243,7 +273,8 @@
                 { id: "FullName", htmlname: "FullName", special: "" },
                 { id: "Mobile", htmlname: "Mobile", special: "" },
                 { id: "Email", htmlname: "Email", special: "" },
-                { id: "IsEnabled", htmlname: "IsEnabled", special: "" },
+                    { id: "IsEnabled", htmlname: "IsEnabled", special: "" },
+                    { id: "roleId", htmlname: "roleId", special: "" },
                 { id: "Address", htmlname: "Address", special: "" }
                 ];
 
@@ -257,7 +288,7 @@
                 url = '/admin/operator/Create';
             }
 
-            PostAjax(url, Parameters, "/admin/operator");
+            PostAjax(url, Parameters, "/admin/operator?roleId=@ViewBag.roleId&&page=@Model.PageNumber");
         }
     }
 
@@ -265,6 +296,7 @@
 
     function AssignButtonClicked(elem) {
         $('#Id').val($(elem).data('assigned-id'));
+        
     }
     function Remove() {
         var Parameters = [{ id: "Id", htmlname: "Id", special: "" }];

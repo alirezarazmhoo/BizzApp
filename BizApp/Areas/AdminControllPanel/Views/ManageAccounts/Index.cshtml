@@ -111,6 +111,7 @@
                 <form id="register" method="post">
                     <input name="Id" id="Id" hidden />
                     <input name="operation" id="operation" hidden />
+                    <input name="roleId" id="roleId" hidden value="@ViewBag.roleId"/>
                     <div class="form-group" style="margin-right:5px">
                         @*<label for="FullName">نام و نام خانوادگی :</label>*@
                         <input display="نام" id="FullName" name="FullName" placeholder="نام و نام خانوادگی *" class="form-control" required>
@@ -185,7 +186,7 @@
 
         });
         $(".btn-warning").click(function () {
-            EditAjax("/adminControllPanel/operator/GetById", this.id);
+            EditAjax("/admin/operator/GetById", this.id);
 
             // hdie username and password
             $("#createInputs").css("display", "none");
@@ -209,20 +210,21 @@
                 { id: "Mobile", htmlname: "Mobile", special: "" },
                 { id: "Email", htmlname: "Email", special: "" },
                 { id: "IsEnabled", htmlname: "IsEnabled", special: "" },
+                { id: "roleId", htmlname: "roleId", special: "" },
                 { id: "Address", htmlname: "Address", special: "" }
                 ];
 
             var operation = $("#operation").val();
-            var url = '/adminControllPanel/operator/Update';
+            var url = '/admin/operator/Update';
 
             if (operation == 'addNew') {
                 Parameters.push({ id: "Username", htmlname: "Username", special: "" },
                     { id: "Password", htmlname: "Password", special: "" });
 
-                url = '/adminControllPanel/operator/Create';
+                url = '/admin/operator/Create';
             }
 
-            PostAjax(url, Parameters, "/adminControllPanel/operator");
+            PostAjax(url, Parameters, "/admin/operator");
         }
     }
 
@@ -233,7 +235,7 @@
     }
     function Remove() {
         var Parameters = [{ id: "Id", htmlname: "Id", special: "" }];
-        PostAjax('/adminControllPanel/operator/Remove', Parameters, "/adminControllPanel/operator/");
+        PostAjax('/admin/operator/Remove', Parameters, "/admin/operator/");
     }
 
 
