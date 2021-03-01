@@ -11,6 +11,12 @@
 		Publish = 1,
 		Draft = 0
 	}
+	public enum GenderEnum
+	{
+		Male = 1,
+		Female = 0
+	}
+
 	public enum StatusEnum
 	{
 		Accepted = 1,

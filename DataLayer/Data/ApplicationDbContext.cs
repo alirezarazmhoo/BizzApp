@@ -56,6 +56,9 @@ namespace DataLayer.Data
 
 			builder.Entity<BizAppUser>().HasQueryFilter(m => EF.Property<bool>(m, "IsDeleted") == false);
 
+			// Gender default value
+			builder.Entity<BizAppUser>().Property(p => p.Gender).HasDefaultValue(GenderEnum.Male);
+
 			// relation between user and business owner
 			//builder.Entity<Business>().HasOne(b => b.Owner).WithMany(u => u.)
 
