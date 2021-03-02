@@ -37,6 +37,8 @@
     <Compile Remove="Migrations\20210215070036_ChangeTypeOfValueTypeInFeatures.Designer.cs" />
     <Compile Remove="Migrations\20210215073602_ChangeBusinessFeatureTypeToDouble.cs" />
     <Compile Remove="Migrations\20210215073602_ChangeBusinessFeatureTypeToDouble.Designer.cs" />
+    <Compile Remove="Migrations\20210302094835_ChangerUserMediaAndAddUsername.cs" />
+    <Compile Remove="Migrations\20210302094835_ChangerUserMediaAndAddUsername.Designer.cs" />
 
   </ItemGroup>
 
