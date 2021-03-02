@@ -2,218 +2,214 @@
 @model RegisterModel
 @using BizApp.Utility;
 
-	@{
-		ViewData["Title"] = "ثبت نام";
-		Layout = "_MainWebSiteLayout";
-	}
+@{
+	ViewData["Title"] = "ثبت نام";
+	Layout = "_MainWebSiteLayout";
+}
 
-	<header class="header-type2">
-		<div class="container">
-			<div class="header-type2__logo">
-				<a href="@Url.Content("~/")"><img src="~/Designs/MainWebSite/assets/img/logo.png" /></a>
-			</div>
-		</div>
-	</header>
-
-
-	<main>
-		<section class="sign-up">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-6  col-sm-7">
-						<div class="sign-up__item">
-							<div class="sign-up__item__title">
-								<h2>برای BizzAp ثبت نام کنید</h2>
-								<p>با مشاغل محلی عالی ارتباط برقرار کنید</p>
-							</div>
-							<div class="form-check">
-								<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-								<label class="form-check-label" for="flexCheckChecked">
-									با ادامه ، من با <a herf="#">شرایط خدمات</a>BizzAp موافقت می کنم و <a herf="#">سیاست حفظ حریم خصوصی</a> Yelp ، از جمله سیاست کوکی Yelp را تأیید می کنم.
-								</label>
-							</div>
-
-							<form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-								<h4>Create a new account.</h4>
-								<hr />
-								<div asp-validation-summary="All" class="text-danger"></div>
-								<div class="form-group">
-									<label asp-for="Input.Email"></label>
-									<input asp-for="Input.Email" class="form-control" />
-									<span asp-validation-for="Input.Email" class="text-danger"></span>
-								</div>
-								<div class="form-group">
-									<label asp-for="Input.Password"></label>
-									<input asp-for="Input.Password" class="form-control" />
-									<span asp-validation-for="Input.Password" class="text-danger"></span>
-								</div>
-								@*<div class="form-group">
-									<label asp-for="Input.ConfirmPassword"></label>
-									<input asp-for="Input.ConfirmPassword" class="form-control" />
-									<span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-								</div>*@
-								<button type="submit" class="btn btn-primary">Register</button>
-							</form>
-
-							<form>
-								<div class="form-row">
-									<div class="form-group">
-										<input asp-for="Input.FullName" type="text" class="form-control" />
-										<span asp-validation-for="Input.FullName" class="text-danger"></span>
-									</div>
-								</div>
-								<div class="form-group">
-									<input asp-for="Input.Mobile" type="text" class="form-control" />
-									<span asp-validation-for="Input.Mobile" class="text-danger"></span>
-								</div>
-								<div class="form-group">
-									<input asp-for="Input.Email" class="form-control">
-									<span asp-validation-for="Input.Email" class="text-danger"></span>
-								</div>
-								<div class="form-group">
-									<input asp-for="Input.Email" class="form-control">
-									<span asp-validation-for="Input.Email" class="text-danger"></span>
-								</div>
-								<div class="form-group">
-									<input asp-for="Input.Password" class="form-control">
-									<span asp-validation-for="Input.Password" class="text-danger"></span>
-								</div>
-								<div class="form-group">
-									<span>اختیاری</span>
-									<input asp-for="Input.PostalCode" class="form-control" />
-									<span asp-validation-for="Input.PostalCode" class="text-danger"></span>
-								</div>
-								<div class="sign-up__item__lable">
-									<p>تاریخ تولد</p>
-									<span>اختیاری</span>
-								</div>
-								<div class="sign-up__item__birthday">
-									<div class="row" data-space="10">
-
-										<div class="col-4">
-											<select class="form-control">
-												<option selected>روز</option>
-												@for (int i = 0; i < 31; i++)
-												{
-													<option value="@(i+1)">@(i+1)</option>
-												}
-											</select>
-										</div>
-										<div class="col-4">
-											<select class="form-control">
-												<option selected>ماه</option>
-												@for (int i = 0; i < 12; i++)
-												{
-													<option value="@(i+1)">@(i+1)</option>
-												}
-											</select>
-										</div>
-										<div class="col-4">
-											<select class="form-control">
-												<option selected>سال</option>
-												@{
-													var currentDate = DateTime.Now.ToPersianDateString();
-													var currentYear = Convert.ToInt32(currentDate.Substring(0, 3));
-													for (int i = currentYear - 200; i < currentYear; i++)
-													{
-														<option value="@i">@i</option>
-													}
-												}
-											</select>
-										</div>
-									</div>
-								</div>
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked1">
-									<label class="form-check-label" for="flexCheckChecked1">
-										بله ، من می خواهم BizzAp در مورد محصولات ، خدمات و رویدادهای محلی BizzAp برای من ایمیل بازاریابی ارسال کند. در هر زمان می توانم اشتراک خود را لغو کنم.
-									</label>
-								</div>
-								<div class="sign-up__item__login">
-									<button type="submit" class="btn btn-primary">وارد شدن</button>
-								</div>
-
-							</form>
-							<div class="sign-up__item__form">
-								<div class="login__item__form__google">
-									<a href="#">با Google ادامه دهید</a>
-								</div>
-							</div>
-							<div class="sign-up__item__wory">
-								<p>نگران نباشید ، ما هرگز بدون اجازه شما پست نمی گذاریم.</p>
-							</div>
-							<div class="sign-up__item__sub-form">
-								<p>قبلاً در BizzAp هستید؟</p>
-								<a href="#"><span>وارد شدن</span></a>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-6  col-sm-5  d-none d-sm-block  ">
-						<div class="sign-up__image">
-							<img src="./assets/img/signup.png" alt="">
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-	</main>
-
-	<div class="row">
-		<div class="col-md-4">
-			<form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-				<h4>Create a new account.</h4>
-				<hr />
-				<div asp-validation-summary="All" class="text-danger"></div>
-				<div class="form-group">
-					<label asp-for="Input.Email"></label>
-					<input asp-for="Input.Email" class="form-control" />
-					<span asp-validation-for="Input.Email" class="text-danger"></span>
-				</div>
-				<div class="form-group">
-					<label asp-for="Input.Password"></label>
-					<input asp-for="Input.Password" class="form-control" />
-					<span asp-validation-for="Input.Password" class="text-danger"></span>
-				</div>
-				@*<div class="form-group">
-					<label asp-for="Input.ConfirmPassword"></label>
-					<input asp-for="Input.ConfirmPassword" class="form-control" />
-					<span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-				</div>*@
-				<button type="submit" class="btn btn-primary">Register</button>
-			</form>
-		</div>
-		<div class="col-md-6 col-md-offset-2">
-			<section>
-				<h4>Use another service to register.</h4>
-				<hr />
-				@{
-					if ((Model.ExternalLogins?.Count ?? 0) == 0)
-					{
-						<div>
-							<p>
-								There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-								for details on setting up this ASP.NET application to support logging in via external services.
-							</p>
-						</div>
-					}
-					else
-					{
-						<form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-							<div>
-								<p>
-									@foreach (var provider in Model.ExternalLogins)
-									{
-										<button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-									}
-								</p>
-							</div>
-						</form>
-					}
-				}
-			</section>
+<header class="header-type2">
+	<div class="container">
+		<div class="header-type2__logo">
+			<a href="@Url.Content("~/")"><img src="~/Designs/MainWebSite/assets/img/logo.png" /></a>
 		</div>
 	</div>
+</header>
 
-	@section Scripts {
-		<partial name="_ValidationScriptsPartial" />
-	}
+
+<main>
+	<section class="sign-up">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6  col-sm-7">
+					<div class="sign-up__item">
+						<div class="sign-up__item__title">
+							<h2>برای BizzAp ثبت نام کنید</h2>
+							<p>با مشاغل محلی عالی ارتباط برقرار کنید</p>
+						</div>
+						<div class="form-check">
+							<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+							<label class="form-check-label" for="flexCheckChecked">
+								با ادامه ، من با <a herf="#">شرایط خدمات</a>BizzAp موافقت می کنم و <a herf="#">سیاست حفظ حریم خصوصی</a> Yelp ، از جمله سیاست کوکی Yelp را تأیید می کنم.
+							</label>
+						</div>
+
+						<!--<form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+							<h4>Create a new account.</h4>
+							<hr />
+							<div asp-validation-summary="All" class="text-danger"></div>
+							<div class="form-group">
+								<label asp-for="Input.Email"></label>
+								<input asp-for="Input.Email" class="form-control" />
+								<span asp-validation-for="Input.Email" class="text-danger"></span>
+							</div>
+							<div class="form-group">
+								<label asp-for="Input.Password"></label>
+								<input asp-for="Input.Password" class="form-control" />
+								<span asp-validation-for="Input.Password" class="text-danger"></span>
+							</div>-->
+						@*<div class="form-group">
+								<label asp-for="Input.ConfirmPassword"></label>
+								<input asp-for="Input.ConfirmPassword" class="form-control" />
+								<span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+							</div>*@
+						<!--<button type="submit" class="btn btn-primary">Register</button>
+						</form>-->
+
+					<form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+						<div class="form-group">
+							<input asp-for="Input.FullName" type="text" class="form-control" />
+							<span asp-validation-for="Input.FullName" class="text-danger"></span>
+						</div>
+						<div class="row" style="margin-bottom: 9px">
+							<div class="col">
+								<input asp-for="Input.UserName" class="form-control" />
+								<span asp-validation-for="Input.UserName" class="text-danger"></span>
+							</div>
+							<div class="col">
+								<input asp-for="Input.Mobile" type="text" class="form-control" />
+								<span asp-validation-for="Input.Mobile" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<input asp-for="Input.Password" class="form-control">
+							<span asp-validation-for="Input.Password" class="text-danger"></span>
+						</div>
+						<div class="form-group">
+							<input asp-for="Input.Email" class="form-control">
+							<span asp-validation-for="Input.Email" class="text-danger"></span>
+						</div>
+						<div class="form-group">
+							<input asp-for="Input.PostalCode" class="form-control" />
+							<span asp-validation-for="Input.PostalCode" class="text-danger"></span>
+						</div>
+						<div class="sign-up__item__lable">
+							<p>تاریخ تولد</p>
+							<span>اختیاری</span>
+						</div>
+						<div class="sign-up__item__birthday">
+							<div class="row" data-space="10">
+
+								<div class="col-4">
+									<select class="form-control" asp-for="Input.Day">
+										<option selected>روز</option>
+										@for (int i = 0; i < 31; i++)
+										{
+											<option value="@(i+1)">@(i+1)</option>
+										}
+									</select>
+								</div>
+								<div class="col-4">
+									<select class="form-control" asp-for="Input.Month">
+										<option selected>ماه</option>
+										@for (int i = 0; i < 12; i++)
+										{
+											<option value="@(i+1)">@(i+1)</option>
+										}
+									</select>
+								</div>
+								<div class="col-4">
+									<select class="form-control" asp-for="Input.Year">
+										<option selected>سال</option>
+										@{
+											var currentDate = DateTime.Now.ToPersianDateString();
+											var currentYear = Convert.ToInt32(currentDate.Substring(0, 4)) - 5;
+											for (int i = currentYear; i > currentYear - 140; i--)
+											{
+												<option value="@i">@i</option>
+											}
+										}
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="form-check">
+							<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked1">
+							<label class="form-check-label" for="flexCheckChecked1">
+								بله ، من می خواهم BizzAp در مورد محصولات ، خدمات و رویدادهای محلی BizzAp برای من ایمیل بازاریابی ارسال کند. در هر زمان می توانم اشتراک خود را لغو کنم.
+							</label>
+						</div>
+						<div class="sign-up__item__login">
+							<button type="submit" class="btn btn-primary">ثبت نام</button>
+						</div>
+
+					</form>
+						<div class="sign-up__item__form">
+							<div class="login__item__form__google">
+								<a href="#">با Google ادامه دهید</a>
+							</div>
+						</div>
+						<div class="sign-up__item__sub-form">
+							<p>قبلاً در BizzAp هستید؟</p>
+							<a href="#"><span>وارد شدن</span></a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6  col-sm-5  d-none d-sm-block  ">
+					<div class="sign-up__image">
+						<img src="./assets/img/signup.png" alt="">
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</main>
+
+<div class="row">
+	<!--<div class="col-md-4">
+		<form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+			<h4>Create a new account.</h4>
+			<hr />
+			<div asp-validation-summary="All" class="text-danger"></div>
+			<div class="form-group">
+				<label asp-for="Input.Email"></label>
+				<input asp-for="Input.Email" class="form-control" />
+				<span asp-validation-for="Input.Email" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Input.Password"></label>
+				<input asp-for="Input.Password" class="form-control" />
+				<span asp-validation-for="Input.Password" class="text-danger"></span>
+			</div>-->
+	@*<div class="form-group">
+			<label asp-for="Input.ConfirmPassword"></label>
+			<input asp-for="Input.ConfirmPassword" class="form-control" />
+			<span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+		</div>*@
+	<!--<button type="submit" class="btn btn-primary">Register</button>
+		</form>
+	</div>-->
+	<div class="col-md-6 col-md-offset-2">
+		<section>
+			<h4>Use another service to register.</h4>
+			<hr />
+			@{
+				if ((Model.ExternalLogins?.Count ?? 0) == 0)
+				{
+					<div>
+						<p>
+							There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+							for details on setting up this ASP.NET application to support logging in via external services.
+						</p>
+					</div>
+				}
+				else
+				{
+					<form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+						<div>
+							<p>
+								@foreach (var provider in Model.ExternalLogins)
+								{
+									<button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+								}
+							</p>
+						</div>
+					</form>
+				}
+			}
+		</section>
+	</div>
+</div>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}
