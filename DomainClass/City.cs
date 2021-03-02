@@ -30,6 +30,7 @@ namespace DomainClass
 
 		public virtual Province Province { get; set; }
 		public virtual ICollection<District> Districts { get; set; }
+		public virtual ICollection<BizAppUser> Users { get; set; }
 		
 		#endregion
 	}
