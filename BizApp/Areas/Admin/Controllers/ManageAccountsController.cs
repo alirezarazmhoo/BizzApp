@@ -33,6 +33,7 @@ namespace BizApp.Areas.Admin.Controllers
         }
 
         [HttpGet]
+
         public async Task<IActionResult> Index(string searchString, string roleId, int? page)
         {
             bool shouldSearch = false;
@@ -204,6 +205,9 @@ namespace BizApp.Areas.Admin.Controllers
                 return Json(new { success = false, responseText = CustomeMessages.Fail });
             }
         }
+
+        
+
 
     }
 }
