@@ -19,6 +19,7 @@ namespace DomainClass
 		public string Webstie { get; set; }
 		public string LongDescription { get; set; }
 		public bool PhotoChanged { get; set; }
+		public string PostalCode { get; set; }
 
 		public virtual City City { get; set; }
 	}
