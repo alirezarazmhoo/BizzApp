@@ -1,126 +1,162 @@
-﻿@model IEnumerable<BizApp.Areas.Admin.Models.CategoryViewModel>
+﻿@model PagedList.Core.IPagedList<BizApp.Areas.Admin.Models.CategoryViewModel>
+
 @{
-	ViewData["Title"] = "ShowSubCateogries";
-	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "ShowSubCateogries";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
-<section class="content-header">
-	<h1 style="float:right" dir="rtl">
-		@ViewBag.ParentCategoryName  مدیریت زیردسته
-	</h1>
-	<ol class="breadcrumb">
-		<li><a href="#"><i class="fa fa-home"></i> خانه</a></li>
-		<li class="active">دسته ها</li>
-	</ol>
-</section>
-<div style="margin-top: 50px;margin-bottom:3px">
-	<button type="button" class="btn btn-warning" onclick="window.history.back();" >بازگشت به سطح قبل</button>
-</div>
-<div class="row">
-	<div class="col-xs-12">
-		<div class="box">
-			<div class="box-body table-responsive no-padding">
-				<table class="table table-hover text-center">
-					<tr>
-						<th>
-							ردیف
-						</th>
-						<th>
-							نام
-						</th>
-						<th>
-							تعدادزیردسته
-						</th>
-						<th>
-							عملیات
-						</th>
-					</tr>
-					@{ int rowNo = 0; }
-					@foreach (var item in Model)
-					{
-				<tr>
-					<td>
-						@(++rowNo)
-					</td>
-					<td>
-						@item.Name
-					</td>
-					<td>
-						@item.ChildCount عدد
-					</td>
-					<td>
-						<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.CategoryId">حذف</button> |
-						<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.CategoryId"> ویرایش</button>
+<div class="header-secondary row gray-bg">
+    <div class="col-lg-12">
+        <div class="page-heading clearfix">
+            <h1 class="page-title pull-left"> @ViewBag.ParentCategoryName  مدیریت زیردسته</h1>
 
-						@if (item.HasChild)
-						{
-							<a href="/admin/Categories/ShowSubCateogries?Id=@item.CategoryId" class="btn btn-flickr">مشاهده زیر دسته</a>
-						}
-						<button type="button" class="btn btn-bitbucket" data-toggle="modal" data-target="#SubcategoryModal" onclick="SubCategoryAssignButtonClicked(this)" data-assigned-id="@item.CategoryId"> ایجاد زیردسته</button>
-						@if (!item.HasChild)
-						{
-							<a href="/admin/category/@item.CategoryId/features" class="btn btn-adn">ثبت خصوصیات</a>
-						}
-					</td>
-				</tr>
-					}
-				</table>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="modal fade" id="myModal" role="dialog" style="height:auto;overflow-y:visible">
-	<div class="modal-dialog modal-sm" style="width:400px">
-		<div class="modal-content">
-			<div class="modal-header text-center">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">ویرایش دسته بندی</h4>
-			</div>
-			<div class="modal-body" style="height:auto">
-				<form id="register">
-					<input id="CategoryId" name="CategoryId" hidden />
-					<input id="ParentCategoryId" name="ParentCategoryId" value="3" hidden />
+        </div>
 
-					<div class="form-group" style="margin-right:5px">
-						<label for="Name"> نام :</label>
-						<input display="نام" id="Name" name="Name" placeholder="نام دسته بندی را وارد کنید" class="form-control" style="width:70%" required>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
-				<button type="button" class="btn btn-success" onclick="Save();">ثبت</button>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="modal fade" id="SubcategoryModal" role="dialog" style="height:auto;overflow-y:visible">
-	<div class="modal-dialog modal-sm" style="width:400px">
-		<div class="modal-content">
-			<div class="modal-header text-center">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">ثبت زیر دسته</h4>
-			</div>
-			<div class="modal-body" style="height:auto">
-				<form id="SubCategoryregister">
-					<input id="ParentCategoryId" name="ParentCategoryId" hidden />
-					<div class="form-group" style="margin-right:5px">
-						<label for="SubcategoryName"> نام :</label>
-						<input display="نام" id="SubcategoryName" name="SubcategoryName" placeholder="نام زیر دسته بندی را وارد کنید" class="form-control" style="width:70%" required>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
-				<button type="button" class="btn btn-success" onclick="SubCategorySave();">ثبت</button>
-			</div>
-		</div>
-	</div>
+        <!-- Breadcrumb -->
+        <ol class="breadcrumb breadcrumb-2">
+            <li><a href="#"><i class="fa fa-home"></i> خانه</a></li>
+            <li class="active"><strong>دسته بندی ها</strong></li>
+        </ol>
+
+    </div>
+    <div class="col-lg-12">
+        <button type="button" class="btn btn-warning" onclick="window.history.back();">بازگشت به سطح قبل</button>
+
+    </div>
 </div>
 
-<div id="Error"></div>
-<div id="Success"></div>
-<div id="Question"></div>
-<script>
+
+<div class="main-content">
+    <div class="row">
+        <div class="col-lg-12 animatedParent animateOnce z-index-50">
+            <div class="panel panel-default animated fadeInUp">
+                <div class="panel-heading clearfix">
+                    <h3 class="panel-title">زیر دسته ها</h3>
+                    <ul class="panel-tool-options">
+                        <li><a data-rel="collapse" href="#"><i class="icon-down-open"></i></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-border table-hover dataTables-example">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        ردیف
+                                    </th>
+                                    <th>
+                                        نام
+                                    </th>
+                                    <th>
+                                        تعدادزیردسته
+                                    </th>
+                                    <th>
+                                        عملیات
+                                    </th>
+                                </tr>
+                            </thead>
+                            @{ int rowNo = 0; }
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @(++rowNo)
+                                    </td>
+                                    <td>
+                                        @item.Name
+                                    </td>
+                                    <td>
+                                        @item.ChildCount عدد
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.CategoryId">حذف</button> |
+                                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.CategoryId"> ویرایش</button>
+
+                                        @if (item.HasChild)
+                                        {
+                                            <a href="/admin/Categories/ShowSubCateogries?Id=@item.CategoryId" class="btn btn-flickr">مشاهده زیر دسته</a>
+                                        }
+                                        <button type="button" class="btn btn-bitbucket" data-toggle="modal" data-target="#SubcategoryModal" onclick="SubCategoryAssignButtonClicked(this)" data-assigned-id="@item.CategoryId"> ایجاد زیردسته</button>
+                                        @if (!item.HasChild)
+                                        {
+                                            <a href="/admin/category/@item.CategoryId/features" class="btn btn-adn">ثبت خصوصیات</a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                        </div>
+                        <div class="col-sm-7">
+                            <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+                                <ul class="pagination">
+
+                                    <li>
+                                        <pager list="@Model" asp-controller="Categories" asp-action="ShowSubCategories" asp-area="admin" />
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+        <div class="modal fade" id="myModal" role="dialog" style="height:auto;overflow-y:visible">
+            <div class="modal-dialog modal-sm" style="width:400px">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">ویرایش دسته بندی</h4>
+                    </div>
+                    <div class="modal-body" style="height:auto">
+                        <form id="register">
+                            <input id="CategoryId" name="CategoryId" hidden />
+                            <input id="ParentCategoryId" name="ParentCategoryId" value="" hidden />
+
+                            <div class="form-group" style="margin-right:5px">
+                                <label for="Name"> نام :</label>
+                                <input display="نام" id="Name" name="Name" placeholder="نام دسته بندی را وارد کنید" class="form-control" style="width:70%" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+                        <button type="button" class="btn btn-success" onclick="Save();">ثبت</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="SubcategoryModal" role="dialog" style="height:auto;overflow-y:visible">
+            <div class="modal-dialog modal-sm" style="width:400px">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">ثبت زیر دسته</h4>
+                    </div>
+                    <div class="modal-body" style="height:auto">
+                        <form id="SubCategoryregister">
+                            <input id="ParentCategoryId" name="ParentCategoryId" hidden />
+                            <div class="form-group" style="margin-right:5px">
+                                <label for="SubcategoryName"> نام :</label>
+                                <input display="نام" id="SubcategoryName" name="SubcategoryName" placeholder="نام زیر دسته بندی را وارد کنید" class="form-control" style="width:70%" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+                        <button type="button" class="btn btn-success" onclick="SubCategorySave();">ثبت</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="Error"></div>
+        <div id="Success"></div>
+        <div id="Question"></div>
+        <script>
     window.onload = Load;
     function Load() {
         CreateAllModals();
@@ -163,4 +199,4 @@
         PostAjax('/admin/Categories/CreateOrUpdate', Parameters,  "/admin/Categories/ShowSubCateogries?Id="+@ViewBag.ParentCategoryId+"");
 		}
 	}
-</script>
+        </script>

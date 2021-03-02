@@ -10,6 +10,7 @@ using DataLayer.Infrastructure;
 using DomainClass;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using PagedList.Core;
 
 namespace BizApp.Areas.Admin.Controllers
 {
@@ -26,7 +27,7 @@ namespace BizApp.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Index(string searchString, int? pageNumber)
+		public async Task<IActionResult> Index(string searchString, int? page)
 		{
 			bool shouldSearch = false;
 			try
@@ -41,7 +42,9 @@ namespace BizApp.Areas.Admin.Controllers
 				var cities = items.Select(city => _mapper.Map<City, CityViewModel>(city))
 									.OrderByDescending(o => o.CityId);
 
-				return View(PaginatedList<CityViewModel>.CreateAsync(cities.AsQueryable(), pageNumber ?? 1, pageSize));
+				//return View(PaginatedList<CityViewModel>.CreateAsync(cities.AsQueryable(), pageNumber ?? 1, pageSize));
+				PagedList<CityViewModel> res = new PagedList<CityViewModel>(cities.AsQueryable(), page ?? 1, pageSize);
+                return View(res);
 			}
 			catch //(Exception ex)
 			{

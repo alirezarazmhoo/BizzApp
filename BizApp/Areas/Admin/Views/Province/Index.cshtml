@@ -1,103 +1,111 @@
-﻿@model BizApp.Utility.PaginatedList<BizApp.Areas.Admin.Models.ProvinceViewModel>
+﻿@model PagedList.Core.IPagedList<BizApp.Areas.Admin.Models.ProvinceViewModel>
 
 @{
     ViewData["Title"] = "Index";
 }
 
 
-<section class="content-header">
-    <h1 style="float:right">
-        مدیریت شهرها
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-home"></i> خانه</a></li>
-        <li class="active">شهرها</li>
-    </ol>
-</section>
+<div class="header-secondary row gray-bg">
+    <div class="col-lg-12">
+        <div class="page-heading clearfix">
+            <h1 class="page-title pull-left">استان ها</h1><a class="btn btn-primary btn-sm btn-add openmodal" href="#" data-toggle="modal" data-target="#myModal">استان جدید</a>
+        </div>
+        <!-- Breadcrumb -->
+        <ol class="breadcrumb breadcrumb-2">
+            <li><a href="#"><i class="fa fa-home"></i> خانه</a></li>
+            <li class="active"><strong>استان ها</strong></li>
+        </ol>
 
-<div style="margin-top: 50px;margin-bottom:3px">
-    <a class="btn btn-success openmodal" href="#" data-toggle="modal" data-target="#myModal">ثبت جدید</a>
+    </div>
 </div>
 
-<div class="row">
-    <div class="col-sm-12">
-        <div class="text-center" style="border-style: solid;border-color:dimgray">
-            <h2 style="font-size:medium">جستجو</h2>
+<div class="row filter-wrapper visible-box" id="filter-box">
+    <div class="col-lg-12">
+        <div class="filter-header">
+            <h3 class="title">جستجو</h3>
         </div>
-        @using (Html.BeginForm("Index", "Province", FormMethod.Post))
+        @using (Html.BeginForm("Index", "Province", FormMethod.Get))
         {
-            <div class="box zmdi-border-color" style="height:auto">
-                <div class="box-body table-responsive no-padding row ">
-                    <div style="width:90%;margin-right:40px;margin-top:10px">
-                        <div class="row">
-                            <label for="searchString">عنوان جستجو:</label>
-                            <input name="searchString" placeholder="متن را وارد کنید" class="" style="width:260px">
+            <div class="form-inline">
+                <div class="form-group">
+                    <input name="searchString" placeholder="نام استان را وارد کنید" class="form-control">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-default">جستجو</button>
+                </div>
+                <div class="form-group">
+                    <a href="/admin/Province/" class="btn btn-default">مشاهده همه</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="main-content">
+
+    <div class="row">
+        <div class="col-lg-12 animatedParent animateOnce z-index-50">
+            <div class="panel panel-default animated fadeInUp">
+                <div class="panel-heading clearfix">
+                    <h3 class="panel-title">استان ها</h3>
+                    <ul class="panel-tool-options">
+                        <li><a data-rel="collapse" href="#"><i class="icon-down-open"></i></a></li>
+
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-border table-hover dataTables-example">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        ردیف
+                                    </th>
+                                    <th>
+                                        نام
+                                    </th>
+                                    <th>
+                                        عملیات
+                                    </th>
+                                </tr>
+                                @{ int rowNo = 0; }
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @(++rowNo)
+                                        </td>
+                                        <td>
+                                            @item.Name
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.ProvinceId">حذف</button> |
+                                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.ProvinceId"> ویرایش</button>
+                                        </td>
+                                    </tr>
+                                }
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                        </div>
+                        <div class="col-sm-7">
+                            <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+                                <ul class="pagination">
+
+                                    <li>
+                                        <pager list="@Model" asp-controller="Province" asp-action="Index" asp-area="admin" />
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div style="margin-top:20px" dir="rtl">
-                    <button style="margin-right:20px;" type="submit" class="btn btn-primary">جتسجو یا بارگزاری مجدد</button>
-                </div>
-            </div>
-        }
-    </div>
-</div>
-
-
-<div class="row">
-    <div class="col-xs-12">
-        <div class="box">
-            <div class="box-body table-responsive no-padding">
-                <table class="table table-hover text-center">
-                    <tr>
-                        <th>
-                            ردیف
-                        </th>
-                        <th>
-                            نام
-                        </th>
-                        <th>
-                            عملیات
-                        </th>
-                    </tr>
-                    @{ int rowNo = 0; }
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @(++rowNo)
-                            </td>
-                            <td>
-                                @item.Name
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.ProvinceId">حذف</button> |
-                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.ProvinceId"> ویرایش</button>
-                            </td>
-                        </tr>
-                    }
-                </table>
             </div>
         </div>
-
-        @{
-            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-        }
-
-        <a asp-action="Index"
-           asp-route-pageNumber="@(Model.PageIndex - 1)"
-           class="btn btn-default @prevDisabled">
-            صفحه قبل
-        </a>
-        <a asp-action="Index"
-           asp-route-pageNumber="@(Model.PageIndex + 1)"
-           class="btn btn-default @nextDisabled">
-            صفحه بعد
-        </a>
-
     </div>
 </div>
+
 
 <div class="modal fade" id="myModal" role="dialog" style="height:auto;overflow-y:visible">
     <div class="modal-dialog modal-sm" style="width:400px">
@@ -140,6 +148,9 @@
             var bodyStyle = document.body.style;
             bodyStyle.removeProperty('padding-right');
         });
+        $('.pagination > li:first-child > a, .pagination > li:first-child > span').html('قبلی')
+        $('.pagination>li:last-child>a, .pagination>li:last-child>span').html('بعدی')
+
     }
     function Save() {
         if (checkvalidity('register') === 0) {

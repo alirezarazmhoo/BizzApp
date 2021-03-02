@@ -10,13 +10,22 @@
 @section head {
 	<link href="~/css/autocomplete.css" rel="stylesheet" />
 	<style>
+        #galleryImageItems
+        {
+            display:flex;
+        }
+        .close
+        {
+            float:unset;
+            position:static;
+        }
 
-		#Description, #Biography {
-			min-width: 100%;
-			min-height: 100px;
-			max-width: 100%;
-			max-height: 200px;
-		}
+        #Description, #Biography {
+            min-width: 100%;
+            min-height: 100px;
+            max-width: 100%;
+            max-height: 200px;
+        }
 
 		.img-wrap {
 			position: relative;
@@ -37,183 +46,200 @@
 			}
 	</style>
 }
+<div class="header-secondary row gray-bg">
+    <div class="col-lg-12">
+        <div class="page-heading clearfix">
+            <h1 class="page-title pull-left"> مدیریت کسب و کارها</h1>
+        </div>
+        <!-- Breadcrumb -->
+        <ol class="breadcrumb breadcrumb-2">
+            <li><a href="#"><i class="fa fa-home"></i> خانه</a></li>
+            <li class="active"><a href="/admin/businesses">کسب و کارها</a></li>
+            <li class="active">جدید</li>
+        </ol>
 
-<div class="content-header">
-	<h1 style="float:right">
-		مدیریت کسب و کارها
-	</h1>
-	<ol class="breadcrumb">
-		<li><a href="/admin"><i class="fa fa-home"></i> خانه</a></li>
-		<li class="active"><a href="/admin/businesses">کسب و کارها</a></li>
-		<li class="active">جدید</li>
-	</ol>
+    </div>
 </div>
 
+<div class="main-content">
+    <div class="row">
+        <div class="col-lg-12 animatedParent animateOnce z-index-50">
+            <div class="panel panel-default animated fadeInUp">
+                <div class="panel-heading clearfix">
+                    <h3 class="panel-title">کسب و کار</h3>
+                    <ul class="panel-tool-options">
+                        <li><a data-rel="collapse" href="#"><i class="icon-down-open"></i></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body">
 
-<div class="row">
-	<div class="col-sm-12">
-		@using (Html.BeginForm("create", "Businesses", FormMethod.Post, new { enctype = "multipart/form-data" }))
-		{
-			<div class="box zmdi-border-color" style="height:auto; padding:5px; margin: 5px;">
-				<div class="box-body table-responsive no-padding row ">
-					<div style="width:90%;margin-right:40px;margin-top:10px">
-						<div class="form-row">
-							<div class="form-group col-md-12">
-								<label for="Name">نام کسب و کار</label>
-								<input asp-for="Name" placeholder="نام کسب و کار را وارد کنید" class="form-control" aria-describedby="namelHelp" required>
-								<small id="nameHelp" class="form-text text-muted">نام مناسب با کسب و کار خود را تا حداکثر 50 کاراکتر وارد کنید</small>
-								<span asp-validation-for="Name" class="text-danger"></span>
-							</div>
+                    
+                            @using (Html.BeginForm("create", "Businesses", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            {
+                                <div class="box zmdi-border-color" style="height:auto; padding:5px; margin: 5px;">
+                                    <div class="box-body table-responsive no-padding row ">
+                                        <div style="width:90%;margin-right:40px;margin-top:10px">
+                                            <div class="form-row">
+                                                <div class="form-group col-md-12">
+                                                    <label for="Name">نام کسب و کار</label>
+                                                    <input asp-for="Name" placeholder="نام کسب و کار را وارد کنید" class="form-control" aria-describedby="namelHelp" required>
+                                                    <small id="nameHelp" class="form-text text-muted">نام مناسب با کسب و کار خود را تا حداکثر 50 کاراکتر وارد کنید</small>
+                                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                                </div>
 
-							<div class="form-group col-md-6">
-								<label for="autocomplete-district">ناحیه</label>
+                                                <div class="form-group col-md-6">
+                                                    <label for="autocomplete-district">ناحیه</label>
 
-								<div style="position: relative; height: 80px;">
-									<input type="text" placeholder="حداقل 3 کاراکتر تایپ کنید" value="@Model.DistrictName" id="autocomplete-district" class="form-control" />
-									<div id="districtSelection">ناحیه انتخاب شده: هیچ</div>
-									<input asp-for="DistrictId" style="display:none" />
-									<input id="IsCity" name="IsCity" type="hidden" />
-								</div>
-							</div>
+                                                    <div style="position: relative; height: 80px;">
+                                                        <input type="text" placeholder="حداقل 3 کاراکتر تایپ کنید" value="@Model.DistrictName" id="autocomplete-district" class="form-control" />
+                                                        <div id="districtSelection">ناحیه انتخاب شده: هیچ</div>
+                                                        <input asp-for="DistrictId" style="display:none" />
+                                                        <input id="IsCity" name="IsCity" type="hidden" />
+                                                    </div>
+                                                </div>
 
-							<div class="form-group col-md-6">
-								<label for="autocomplete-ajax">دسته</label>
+                                                <div class="form-group col-md-6">
+                                                    <label for="autocomplete-ajax">دسته</label>
 
-								<div style="position: relative; height: 80px;">
-									<input type="text" placeholder="حداقل 3 کاراکتر تایپ کنید" value="@Model.CategoryName" id="autocomplete-ajax" class="form-control" />
+                                                    <div style="position: relative; height: 80px;">
+                                                        <input type="text" placeholder="حداقل 3 کاراکتر تایپ کنید" value="@Model.CategoryName" id="autocomplete-ajax" class="form-control" />
 
-									<div id="categorySelection">دسته انتخاب شده: هیچ</div>
+                                                        <div id="categorySelection">دسته انتخاب شده: هیچ</div>
 
-									<input asp-for="CategoryId" style="display:none" />
+                                                        <input asp-for="CategoryId" style="display:none" />
 
-								</div>
+                                                    </div>
 
-							</div>
-
-
-							<div class="form-group">
-								<textarea asp-for="Description" class="form-control" placeholder="توضیحات"></textarea>
-							</div>
-							<div class="form-group">
-								<textarea asp-for="Biography" class="form-control" placeholder="بیوگرافی کسب و کار"></textarea>
-								<input asp-for="Id" hidden />
-							</div>
-							<div class="form-group col-md-12">
-								<label>انتخاب موقعیت</label>
-								<div id="mapid" style="height:300px"></div>
-								<input id="latitude" name="latitude" hidden />
-								<input id="longitude" name="longitude" hidden />
-							</div>
-
-							<div class="form-group col-md-12">
-								<label for="address">نشانی کسب و کار</label>
-								<input asp-for="Address" placeholder="نشانی کسب و کار را وارد کنید" class="form-control" required>
-								<span asp-validation-for="Address" class="text-danger"></span>
-							</div>
-
-							@if (Model.Id == default)
-							{
-								<div class="form-group col-md-12">
-									<label for="websiteurl">کد پستی</label>
-									<input asp-for="PostalCode" placeholder="کد پستی را وارد کنید" class="form-control">
-									<span asp-validation-for="PostalCode" class="text-danger"></span>
-								</div>
-
-								<div class="form-group col-md-6">
-									<label for="websiteurl">شماره تماس</label>
-									<input asp-for="CallNumber" type="tel" value="0@(Model.CallNumber)" maxlength="11" placeholder="شماره تماس را وارد کنید" class="form-control" required>
-									<span asp-validation-for="CallNumber" class="text-danger"></span>
-								</div>
-
-								<div class="form-group col-md-6">
-									<label for="websiteurl">موبایل</label>
-									<input asp-for="Mobile" type="tel" value="0@(Model.Mobile)" maxlength="11" placeholder="شماره موبایل را وارد کنید" class="form-control">
-									<span asp-validation-for="Mobile" class="text-danger"></span>
-								</div>
-							}
-							else
-							{
-								<div class="form-group col-md-6">
-									<label for="websiteurl">کد پستی</label>
-									<input asp-for="PostalCode" placeholder="کد پستی را وارد کنید" class="form-control">
-									<span asp-validation-for="PostalCode" class="text-danger"></span>
-								</div>
-
-								<div class="form-group col-md-6">
-									<label for="websiteurl">شماره تماس</label>
-									<input asp-for="CallNumber" type="tel" value="0@(Model.CallNumber)" maxlength="11" placeholder="شماره تماس را وارد کنید" class="form-control" required>
-									<span asp-validation-for="CallNumber" class="text-danger"></span>
-								</div>
-
-							}
-
-							<div class="form-group col-md-6">
-								<label for="websiteurl">آدرس وبسایت</label>
-								<input asp-for="WebsiteUrl" placeholder="آدرس وبسایت را وارد کنید" class="form-control" aria-describedby="websiteurlHelp">
-								<small id="websiteurlHelp" class="form-text text-muted">مثال: sitename.com</small>
-							</div>
-							<div class="form-group col-md-6">
-								<label for="websiteurl">ایمیل</label>
-								<input asp-for="Email" placeholder="ایمیل را وارد کنید" class="form-control">
-							</div>
-
-							<div class="form-group col-md-6" style="margin-right:5px" id="featureImageMainElement">
-								<label for="exampleInputEmail1">تصویر اصلی کسب و کار:</label>
-								<div id="main-container">
-									<input display="Image" id="file" name="file" class="TheFile" style="display:none" type="file">
-									<button type="button" style="height:20%;margin-left:15px;top:0;" class="btn btn-primary" onclick="file.click()"><i class="fa fa-camera"></i>انتخاب کنید</button>
-									@*<div id="ImageItems" style="width:400px;height:auto;margin-left:5px;margin-top:15px">
-				</div>
-				<div id="RemoveImageItems" style="width:auto;height:auto;margin-left:5px;">
-				</div>*@
-								</div>
-								@if (Model.FeatureImage != null)
-								{
-									<div class="img-wrap" id="featureImageDiv">
-										<span class="close" onclick="deleteFeatureImageButton_click()">&times;</span>
-										<input type="hidden" id="deletedFromServer" value="0" />
-										<img id="featureImage" src="@Model.FeatureImage" width="200">
-									</div>
-								}
-							</div>
-							<div class="form-group" style="margin-right:5px">
-								<label for="exampleInputEmail1">تصاویر دیگر کسب و کار:</label>
-								<div id="main-container">
-									<input display="BussinessFiles" id="BussinessFiles" name="BussinessFiles" class="BussinessFiles" style="display:none" multiple type="file">
-									<button type="button" style="height:20%;margin-left:15px;top:0;" class="btn btn-primary" onclick="BussinessFiles.click()"><i class="fa fa-camera"></i>انتخاب کنید </button>
-									<div id="galleryImageItems" class="img-wrap" style="width:400px;height:auto;margin-left:5px;margin-top:15px">
-										@if (Model.GalleryImages != null)
-										{
-											foreach (var image in Model.GalleryImages)
-											{
-												<span class="close" onclick="deleteGalleryImageButton_click(@image)">&times;</span>
-												<input type="hidden" id="deletedFromServer" value="0" />
-												<img id="featureImage" src="@image" width="100">
-											}
-										}
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div style="margin-top:20px">
-					<button id="saveButton" style="margin-right:20px;" type="submit" class="btn btn-primary">ذخیره کسب و کار</button>
-				</div>
-			</div>
-		}
-	</div>
-</div>
+                                                </div>
 
 
-@section scripts {
-	<script src="~/lib/autocomplete/jquery.autocomplete.js"></script>
-	<script src="~/Admin/js/create-business.js"></script>
+                                                <div class="form-group">
+                                                    <textarea asp-for="Description" class="form-control" placeholder="توضیحات"></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <textarea asp-for="Biography" class="form-control" placeholder="بیوگرافی کسب و کار"></textarea>
+                                                    <input asp-for="Id" hidden />
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    <label>انتخاب موقعیت</label>
+                                                    <div id="mapid" style="height:300px"></div>
+                                                    <input id="latitude" name="latitude" hidden />
+                                                    <input id="longitude" name="longitude" hidden />
+                                                </div>
 
-	<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+                                                <div class="form-group col-md-12">
+                                                    <label for="address">نشانی کسب و کار</label>
+                                                    <input asp-for="Address" placeholder="نشانی کسب و کار را وارد کنید" class="form-control" required>
+                                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                                </div>
 
-	<script type="text/javascript">
+                                                @if (Model.Id == default)
+                                                {
+                                                    <div class="form-group col-md-12">
+                                                        <label for="websiteurl">کد پستی</label>
+                                                        <input asp-for="PostalCode" placeholder="کد پستی را وارد کنید" class="form-control">
+                                                        <span asp-validation-for="PostalCode" class="text-danger"></span>
+                                                    </div>
+
+                                                    <div class="form-group col-md-6">
+                                                        <label for="websiteurl">شماره تماس</label>
+                                                        <input asp-for="CallNumber" type="tel" value="0@(Model.CallNumber)" maxlength="11" placeholder="شماره تماس را وارد کنید" class="form-control" required>
+                                                        <span asp-validation-for="CallNumber" class="text-danger"></span>
+                                                    </div>
+
+                                                    <div class="form-group col-md-6">
+                                                        <label for="websiteurl">موبایل</label>
+                                                        <input asp-for="Mobile" type="tel" value="0@(Model.Mobile)" maxlength="11" placeholder="شماره موبایل را وارد کنید" class="form-control">
+                                                        <span asp-validation-for="Mobile" class="text-danger"></span>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="form-group col-md-6">
+                                                        <label for="websiteurl">کد پستی</label>
+                                                        <input asp-for="PostalCode" placeholder="کد پستی را وارد کنید" class="form-control">
+                                                        <span asp-validation-for="PostalCode" class="text-danger"></span>
+                                                    </div>
+
+                                                    <div class="form-group col-md-6">
+                                                        <label for="websiteurl">شماره تماس</label>
+                                                        <input asp-for="CallNumber" type="tel" value="0@(Model.CallNumber)" maxlength="11" placeholder="شماره تماس را وارد کنید" class="form-control" required>
+                                                        <span asp-validation-for="CallNumber" class="text-danger"></span>
+                                                    </div>
+
+                                                }
+
+                                                <div class="form-group col-md-6">
+                                                    <label for="websiteurl">آدرس وبسایت</label>
+                                                    <input asp-for="WebsiteUrl" placeholder="آدرس وبسایت را وارد کنید" class="form-control" aria-describedby="websiteurlHelp">
+                                                    <small id="websiteurlHelp" class="form-text text-muted">مثال: sitename.com</small>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="websiteurl">ایمیل</label>
+                                                    <input asp-for="Email" placeholder="ایمیل را وارد کنید" class="form-control">
+                                                </div>
+
+                                                <div class="form-group col-md-6" style="margin-right:5px" id="featureImageMainElement">
+                                                    <label for="exampleInputEmail1">تصویر اصلی کسب و کار:</label>
+                                                    <div id="main-container">
+                                                        <input display="Image" id="file" name="file" class="TheFile" style="display:none" type="file">
+                                                        <button type="button" style="height:20%;margin-left:15px;top:0;" class="btn btn-primary" onclick="file.click()"><i class="fa fa-camera"></i>انتخاب کنید</button>
+                                                        @*<div id="ImageItems" style="width:400px;height:auto;margin-left:5px;margin-top:15px">
+            </div>
+            <div id="RemoveImageItems" style="width:auto;height:auto;margin-left:5px;">
+            </div>*@
+                                                    </div>
+                                                    @if (Model.FeatureImage != null)
+                                                    {
+                                                        <div class="form-group col-md-6">
+                                                            <div class="img-wrap" id="featureImageDiv">
+                                                                <span class="close" onclick="deleteFeatureImageButton_click()">&times;</span>
+                                                                <input type="hidden" id="deletedFromServer" value="0" />
+                                                                <img id="featureImage" src="@Model.FeatureImage" width="200">
+                                                            </div>
+                                                            </div>
+                                                            }
+                                                        </div>
+                                                        <div class="form-group" style="margin-right:5px">
+                                                            <label for="exampleInputEmail1">تصاویر دیگر کسب و کار:</label>
+                                                            <div id="main-container">
+                                                                <input display="BussinessFiles" id="BussinessFiles" name="BussinessFiles" class="BussinessFiles" style="display:none" multiple type="file">
+                                                                <button type="button" style="height:20%;margin-left:15px;top:0;" class="btn btn-primary" onclick="BussinessFiles.click()"><i class="fa fa-camera"></i>انتخاب کنید </button>
+                                                                <div id="galleryImageItems" class="img-wrap" style="width:400px;height:auto;margin-left:5px;margin-top:15px">
+                                                                    @if (Model.GalleryImages != null)
+                                                                    {
+                                                                        foreach (var image in Model.GalleryImages)
+                                                                        {
+                                                                            <span class="close" onclick="deleteGalleryImageButton_click(@image)">&times;</span>
+                                                                            <input type="hidden" id="deletedFromServer" value="0" />
+                                                                            <img id="featureImage" src="@image" width="100">
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top:20px">
+                                        <button id="saveButton" style="margin-right:20px;" type="submit" class="btn btn-primary">ذخیره کسب و کار</button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+            </div>
+            </div>
+            </div>
+
+                    @section scripts {
+                        <script src="~/lib/autocomplete/jquery.autocomplete.js"></script>
+                        <script src="~/Admin/js/create-business.js"></script>
+
+                        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+                        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+                        <script type="text/javascript">
 		$(document).ready(function () {
 			var longitude = @Model.Longitude;
 			var latitude = @Model.Latitude;
@@ -224,6 +250,6 @@
 				latitude = 32.650823;
 			LoadMap(longitude, latitude);
 		});
-	</script>
+                        </script>
 
-}
+                    }

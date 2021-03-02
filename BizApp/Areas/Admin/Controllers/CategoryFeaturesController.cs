@@ -9,6 +9,7 @@ using BizApp.Utility;
 using DataLayer.Infrastructure;
 using DomainClass;
 using Microsoft.AspNetCore.Mvc;
+using PagedList.Core;
 
 namespace BizApp.Areas.Admin.Controllers
 {
@@ -50,7 +51,7 @@ namespace BizApp.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Index(int categoryId, int? pageNumber)
+		public async Task<IActionResult> Index(int categoryId, int? page)
 		{
 			try
 			{
@@ -63,8 +64,8 @@ namespace BizApp.Areas.Admin.Controllers
 
 				var categoryFeatures = await GetAll(categoryId);
 
-				int pageSize = 5;
-				return View(PaginatedList<CategoryFeaturesViewModel>.CreateAsync(categoryFeatures, pageNumber ?? 1, pageSize));
+				PagedList<CategoryFeaturesViewModel> res = new PagedList<CategoryFeaturesViewModel>(categoryFeatures, page ?? 1, 10);
+                return View(res);
 			}
 			catch (Exception)
 			{

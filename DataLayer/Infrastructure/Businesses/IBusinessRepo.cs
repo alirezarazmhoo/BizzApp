@@ -14,8 +14,8 @@ namespace DataLayer.Infrastructure
 		Task<List<BusinessListQuery>> GetAll(string userId);
 		Task<List<BusinessListQuery>> GetAll(string searchString, string userId = null);
 		Task<Business> GetById(Guid id);
-		Task Create(CreateBusinessCommand model, IFormFile mainimage, IFormFile[] otherimages);
-		Task Update(Business model, IFormFile mainimage, IFormFile[] gallery);
+		Task Create(CreateBusinessCommand model, bool hasCity, IFormFile mainimage, IFormFile[] otherimages);
+		Task Update(Business model, bool hasCity, IFormFile mainimage, IFormFile[] gallery);
 		Task<IEnumerable<AllBusinessFeatureViewModel>> GetBusinessFature(Guid? id);
 		Task AssignFeature(Guid? id, int FeatureId, string value = null);
 		Task RemoveFeature(Guid? id, int FeatureId);

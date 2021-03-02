@@ -1,0 +1,51 @@
+﻿@model BizApp.Models.Basic.MainPage_BusinessesByCategoryMain
+<div class="yelp-paris__content">
+	<div class="row">
+		@foreach (var item in Model.MainPage_BusinessesByCategories)
+		{
+			<div class="col-lg-3 col-6">
+				<div class="yelp-paris__content__item">
+					<a href="#">
+						@*<a href="@item.Id">*@
+						@*<img src="@item.PngIcon">*@
+						@if (string.IsNullOrEmpty(item.PngIcon))
+						{
+							<img src="~/Designs/MainWebSite/assets/img/restaurants.png">
+						}
+						else
+						{
+							<img src="@item.PngIcon">
+
+						}
+
+						<h3>@item.Name</h3>
+					</a>
+				</div>
+			</div>
+		}
+		<div class="col-lg-3 col-6">
+			<div class="yelp-paris__content__item yelp-paris__content__item--more">
+				<a href="#">
+					<img src="~/Designs/MainWebSite/assets/img/more.png">
+					<h3>بیشتر</h3>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="yelp-paris__more">
+	<div class="row">
+		@foreach (var item in Model.MainPage_BusinessesByCategoryMoreCategories.MoreCategories)
+		{
+				<div class="col-sm-3">
+					<div class="yelp-paris__more__item">
+						<ul>
+							@*<li><a href="#"><svg id="24x24_coffee" height="24" viewBox="0 0 24 24" width="24"><path d="@item2.Item2"></path></svg>@item.Name</a></li>*@
+							<li><a href="#"><svg id="24x24_professional" height="24" viewBox="0 0 24 24" width="24"><path d="M19 20H5a3 3 0 0 1-3-3v-4h8v3h4v-3h8v4a3 3 0 0 1-3 3zM2 7h6V4h8v3h6v5H2V7zm8 0h4V6h-4v1z"></path></svg>@item.Item1</a></li>
+						</ul>
+					</div>
+				</div>
+			
+		}
+			</div>
+</div>

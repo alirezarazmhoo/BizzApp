@@ -49,7 +49,6 @@ namespace DataLayer.Services
 
 			return null;
 		}
-
 		private async Task<string> CreateOwner(long? mobile, long callNumber, string businessName)
 		{
 			// set username and mobile number
@@ -91,57 +90,79 @@ namespace DataLayer.Services
 			}
 			return owner.Id;
 		}
+		private async Task<int?> CreateOrFindDistrict(int cityId)
+		{
+			// Create 'بدون ناحیه' district
+			var district = new District
+			{
+				CityId = cityId,
+				Name = "بدون ناحیه"
+			};
 
-		public async Task Create(CreateBusinessCommand model, IFormFile mainimage, IFormFile[] otherimages)
+			DbContext.Districts.Add(district);
+			await DbContext.SaveChangesAsync();
+
+			return district.Id;
+		}
+
+		public async Task Create(CreateBusinessCommand model, bool hasCity, IFormFile mainimage, IFormFile[] otherimages)
 		{
 			string ownerId = null;
 			Business entity;
 
 			// Create New User with his/him role
-			using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+
+			// create owner
+			try
 			{
-				// create owner
+				ownerId = await CreateOwner(model.Mobile, model.CallNumber, model.Name);
+			}
+			catch (Exception ex)
+			{
+				var owner = DbContext.Users.FirstOrDefault(f => f.UserName == model.Mobile.ToString() || f.UserName == model.CallNumber.ToString());
+				if (owner != null)
+					ownerId = owner.Id;
+				else
+					throw ex;
+			}
+
+			if (hasCity)
+			{
 				try
 				{
-					ownerId = await CreateOwner(model.Mobile, model.CallNumber, model.Name);
+					model.DistrictId = Convert.ToInt32(await CreateOrFindDistrict(model.DistrictId));
 				}
 				catch (Exception ex)
 				{
-					var owner = DbContext.Users.FirstOrDefault(f => f.UserName == model.Mobile.ToString() || f.UserName == model.CallNumber.ToString());
-					if (owner != null)
-						ownerId = owner.Id;
-					else
-						throw ex;
+					throw ex;
 				}
-
-				// upload feature image
-				model.FeatureImage = UploadFeutreImage(mainimage);
-
-				// save business in database
-				entity = new Business
-				{
-					Name = model.Name,
-					Address = model.Address,
-					Biography = model.Biography,
-					CallNumber = model.CallNumber,
-					CategoryId = model.CategoryId,
-					Description = model.Description,
-					DistrictId = model.DistrictId,
-					Email = model.Email,
-					FeatureImage = model.FeatureImage,
-					Latitude = model.Latitude,
-					Longitude = model.Longitude,
-					PostalCode = model.PostalCode,
-					WebsiteUrl = model.WebsiteUrl,
-					UserCreatorId = model.UserCreatorId,
-					OwnerId = ownerId
-				};
-
-				DbContext.Businesses.Add(entity);
-				await DbContext.SaveChangesAsync();
-
-				scope.Complete();
 			}
+
+			// upload feature image
+			model.FeatureImage = UploadFeutreImage(mainimage);
+
+			// save business in database
+			entity = new Business
+			{
+				Name = model.Name,
+				Address = model.Address,
+				Biography = model.Biography,
+				CallNumber = model.CallNumber,
+				CategoryId = model.CategoryId,
+				Description = model.Description,
+				DistrictId = model.DistrictId,
+				Email = model.Email,
+				FeatureImage = model.FeatureImage,
+				Latitude = model.Latitude,
+				Longitude = model.Longitude,
+				PostalCode = model.PostalCode,
+				WebsiteUrl = model.WebsiteUrl,
+				UserCreatorId = model.UserCreatorId,
+				OwnerId = ownerId
+			};
+
+			DbContext.Businesses.Add(entity);
+			await DbContext.SaveChangesAsync();
 
 			// upload image gallery
 			string fileName, filePath;
@@ -166,7 +187,7 @@ namespace DataLayer.Services
 			//DbContext.SaveChanges();
 
 		}
-		public async Task Update(Business model, IFormFile mainImage, IFormFile[] gallery)
+		public async Task Update(Business model, bool hasCity, IFormFile mainImage, IFormFile[] gallery)
 		{
 			// Upload new feature image
 			model.FeatureImage = UploadFeutreImage(mainImage);
@@ -184,6 +205,19 @@ namespace DataLayer.Services
 			if (!string.IsNullOrEmpty(model.FeatureImage))
 			{
 				oldEntity.FeatureImage = model.FeatureImage;
+			}
+
+
+			if (hasCity)
+			{
+				try
+				{
+					model.DistrictId = Convert.ToInt32(await CreateOrFindDistrict(model.DistrictId));
+				}
+				catch (Exception ex)
+				{
+					throw ex;
+				}
 			}
 
 			oldEntity.Name = model.Name;

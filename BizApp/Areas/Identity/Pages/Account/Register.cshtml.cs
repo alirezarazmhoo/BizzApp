@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using DomainClass;
+using BizApp.Extensions;
 
 namespace BizApp.Areas.Identity.Pages.Account
 {
@@ -46,22 +47,38 @@ namespace BizApp.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
-            [Display(Name = "Email")]
+            [Required(ErrorMessage = "نام و نام خانوادگی خود را وارد کنید")]
+            [Display(Name = "نام و نام خانوادگی", Prompt = "نام و نام خانوادگی")]
+			public string FullName { get; set; }
+
+            [Required(ErrorMessage = "موبایل خود را وارد کنید")]
+            [Display(Name = "موبایل", Prompt = "موبایل")]
+            [Mobile(ErrorMessage = "شماره موبایل نامعتبر است")]
+            public long Mobile { get; set; }
+
+			[EmailAddress]
+            [Display(Name = "ایمیل", Prompt = "ایمیل")]
             public string Email { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "رمز عبور باید حداقل دارای {0 کاراکتر باشد}", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "رمز عبور", Prompt = "رمز عبور")]
             public string Password { get; set; }
 
-            [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-            public string ConfirmPassword { get; set; }
-        }
+            [PostalCode(ErrorMessage = "کد پستی نامعتبر است")]
+            [Display(Name = "کد پستی", Prompt = "کد پستی")]
+            public string PostalCode { get; set; }
+
+			public int Year { get; set; }
+			public int Month { get; set; }
+			public int Day { get; set; }
+
+			//[DataType(DataType.Password)]
+			//[Display(Name = "Confirm password")]
+			//[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+			//public string ConfirmPassword { get; set; }
+		}
 
         public async Task OnGetAsync(string returnUrl = null)
         {

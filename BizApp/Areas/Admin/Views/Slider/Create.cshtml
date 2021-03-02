@@ -1,0 +1,131 @@
+﻿@model BizApp.Areas.Admin.Models.SliderViewModel
+
+@{
+    ViewData["Title"] = "Index";
+
+
+}
+
+<div class="header-secondary row gray-bg">
+    <div class="col-lg-12">
+        <div class="page-heading clearfix">
+            <h1 class="page-title pull-left"> مدیریت اسلایدرها</h1>
+        </div>
+        <!-- Breadcrumb -->
+        <ol class="breadcrumb breadcrumb-2">
+            <li><a href="#"><i class="fa fa-home"></i> خانه</a></li>
+            <li class="active"><a href="/admin/Slider">اسلایدرها</a></li>
+            <li class="active">جدید</li>
+        </ol>
+
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="row">
+        <div class="col-lg-12 animatedParent animateOnce z-index-50">
+            <div class="panel panel-default animated fadeInUp">
+                <div class="panel-heading clearfix">
+                    <h3 class="panel-title">اسلایدر</h3>
+                    <ul class="panel-tool-options">
+                        <li><a data-rel="collapse" href="#"><i class="icon-down-open"></i></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+
+
+                    @using (Html.BeginForm("create", "Slider", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <input asp-for="Id" hidden>
+
+                        <div class="box zmdi-border-color" style="height:auto; padding:5px; margin: 5px;">
+                            <div class="box-body table-responsive no-padding row ">
+                                <div style="width:90%;margin-right:40px;margin-top:10px">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <label for="Name">عنوان</label>
+                                            <input asp-for="Title" placeholder="عنوان را وارد کنید" class="form-control">
+                                            <span asp-validation-for="Title" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label>متن</label>
+                                            <input asp-for="Text" placeholder="متن اسلایدر را وارد کنید" class="form-control">
+                                            <span asp-validation-for="Text" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group col-md-6">
+                                            <label class="control-label">وضعیت </label>
+                                            <select class="form-control" asp-for="@Model.Status">
+
+                                                @if (Model.Status == DomainClass.Enums.SlideStatusEnum.Publish)
+                                                {
+                                                    <option selected value=1>منتشر شود</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value=1>منتشر شود</option>
+
+
+                                                }
+                                                @if (Model.Status == DomainClass.Enums.SlideStatusEnum.Draft)
+                                                {
+                                                    <option selected value=0>منتشر نشود</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value=0>منتشر نشود</option>
+                                                }
+
+                                            </select>
+                                            <span asp-validation-for="@Model.Status" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-6" style="margin-right:5px">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label"></label>
+
+                                                    <img id="imgSlider" class="thumbnail imgthumw" src="@Model.Image" />
+                                                    <div class="form-group">
+                                                        <label>انتخاب تصویر</label>
+                                                        <input type="file" asp-for="imageUrl">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin-top:20px">
+                                <button id="saveButton" style="margin-right:20px;" type="submit" class="btn btn-primary">ذخیره اسلایدر</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#imgSlider').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#imageUrl").change(function () {
+            readURL(this);
+        });
+    </script>
+
+}

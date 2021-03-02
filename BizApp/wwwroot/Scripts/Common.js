@@ -53,7 +53,7 @@ function CreateModal(target, mode) {
         document.getElementById(target).innerHTML = modal;
     }
     else {
-        modal = "<div class='modal fade' id='QuestionModal' role='dialog'><div class='modal-dialog modal-sm'><div class='modal-content'><div class='modal-header'><h4 class='modal-title'>پرسش</h4></div><div class='modal-body text-warning'><p> آیا مطمعن هستید?</p></div><div class='modal-footer'><button type='button' class='btn btn-success' onclick='Remove();' data-dismiss='modal'>تایید</button><button  style='margin-left:5px' type='button' class='btn btn-danger' data-dismiss='modal'>انصراف</button>";
+        modal = "<div class='modal fade' id='QuestionModal' role='dialog'><div class='modal-dialog modal-sm'><div class='modal-content'><div class='modal-header'><h4 class='modal-title'>پرسش</h4></div><div class='modal-body text-warning'><p> آیا مطمئن هستید?</p></div><div class='modal-footer'><button type='button' class='btn btn-success' onclick='Remove();' data-dismiss='modal'>تایید</button><button  style='margin-left:5px' type='button' class='btn btn-danger' data-dismiss='modal'>انصراف</button>";
         document.getElementById(target).innerHTML = modal;
     }
 }
@@ -153,8 +153,9 @@ function FillComboBox(ActionName, Target) {
         }
     });
 }
-function EditAjax(ActionName, id) {
 
+function EditAjax(ActionName, id, onSuccess = null) {
+    
     var fd = new FormData();
     fd.append('ItemId', id);
     $.ajax({
@@ -168,14 +169,17 @@ function EditAjax(ActionName, id) {
         //    $("#LoadingModal").modal('show');
         //},
         success: function (response) {
+            
             if (response.success) {
                 $.each(response.listItem, function () {                 
                     $('#' + this.key + '').val(this.value);
                 });   
+                if (response.statusitem != null) {
 
-                $.each(response.statusitem, function () {
-                    $("#IsEnabled option[value=" + this.key + "]").attr("selected", true);
-                });
+                    $.each(response.statusitem, function () {
+                        $("#IsEnabled option[value=" + this.key + "]").attr("selected", true);
+                    });
+                }
 
                 if (response.featuretype != null) {
                     
@@ -184,6 +188,12 @@ function EditAjax(ActionName, id) {
                         $("#FeatureType option[value=" + this.key + "]").attr("selected", true);
                     });
                 }
+
+                // 
+                if (onSuccess !== null) {
+                    onSuccess();
+                }
+
                 $('#myModal').modal('show');
             }
             else {

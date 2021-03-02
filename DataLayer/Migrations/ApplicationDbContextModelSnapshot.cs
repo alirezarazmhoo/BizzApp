@@ -19,6 +19,31 @@ namespace DataLayer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("DomainClass.ApplicationUserMedia", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BizAppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsMainImage")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsNew")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BizAppUserId");
+
+                    b.ToTable("ApplicationUserMedias");
+                });
+
             modelBuilder.Entity("DomainClass.BizAppUser", b =>
                 {
                     b.Property<string>("Id")
@@ -33,12 +58,18 @@ namespace DataLayer.Migrations
                     b.Property<string>("ApiToken")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("BirthDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("DistrictId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(256)")
@@ -47,7 +78,18 @@ namespace DataLayer.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("FindMeIn")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Gender")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<string>("HomeTown")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -63,6 +105,9 @@ namespace DataLayer.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("LongDescription")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("Mobile")
                         .HasColumnType("bigint");
@@ -90,11 +135,20 @@ namespace DataLayer.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("PhotoChanged")
+                        .HasColumnType("bit");
+
                     b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShortDescription")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
+
+                    b.Property<string>("UploadedPhoto")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
@@ -102,6 +156,9 @@ namespace DataLayer.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
+
+                    b.Property<string>("Webstie")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -120,19 +177,21 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6fd24e66-f68b-4a1d-b9ef-42a36b31829a",
-                            CreateDate = new DateTime(2021, 2, 16, 10, 51, 55, 922, DateTimeKind.Local).AddTicks(9629),
+                            ConcurrencyStamp = "71e35f91-5b56-47dc-bb59-96cb711d8313",
+                            CreateDate = new DateTime(2021, 3, 1, 14, 24, 41, 346, DateTimeKind.Local).AddTicks(4541),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
+                            Gender = 0,
                             IsDeleted = false,
                             IsEnabled = false,
                             LockoutEnabled = false,
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHhwVgIOSSRv/KqBHqz6r4fygAAWJYIsjpNsa27faet35VAGaj8OaoHRk3Xp4y6cEw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHAlcGHXzAPRuYDCvfh3ZLUiFhvn8cihIDCTwL2Hmjb05AQGC5f1kDHKVnzrK/pcWA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "143c7863-65a4-4ae3-ab8c-dfaada1f4dcc",
+                            PhotoChanged = false,
+                            SecurityStamp = "33885823-8a8c-4747-9d56-c8e1557856b9",
                             TwoFactorEnabled = false,
                             UserName = "mainadmin"
                         });
@@ -313,6 +372,9 @@ namespace DataLayer.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
                     b.Property<int?>("ParentCategoryId")
                         .HasColumnType("int");
 
@@ -342,6 +404,31 @@ namespace DataLayer.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("CategoryFeatures");
+                });
+
+            modelBuilder.Entity("DomainClass.CategoryTerm", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(MAX)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("CategoryTerms");
                 });
 
             modelBuilder.Entity("DomainClass.City", b =>
@@ -438,6 +525,32 @@ namespace DataLayer.Migrations
                     b.ToTable("Provinces");
                 });
 
+            modelBuilder.Entity("DomainClass.Slider", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sliders");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -478,6 +591,20 @@ namespace DataLayer.Migrations
                             ConcurrencyStamp = "467ffd0e-d5f1-4301-b9c1-bf08f8d351d2",
                             Name = "operator",
                             NormalizedName = "operator"
+                        },
+                        new
+                        {
+                            Id = "447ffd0e-d5f1-4301-b9c1-bf08f8d351d2",
+                            ConcurrencyStamp = "447ffd0e-d5f1-4301-b9c1-bf08f8d351d2",
+                            Name = "member",
+                            NormalizedName = "member"
+                        },
+                        new
+                        {
+                            Id = "20df3014-a5e0-4f94-bf15-11685f5f9a85",
+                            ConcurrencyStamp = "20df3014-a5e0-4f94-bf15-11685f5f9a85",
+                            Name = "Owner",
+                            NormalizedName = "OWNER"
                         });
                 });
 
@@ -596,6 +723,13 @@ namespace DataLayer.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("DomainClass.ApplicationUserMedia", b =>
+                {
+                    b.HasOne("DomainClass.BizAppUser", "BizAppUser")
+                        .WithMany("ApplicationUserMedias")
+                        .HasForeignKey("BizAppUserId");
+                });
+
             modelBuilder.Entity("DomainClass.Businesses.Business", b =>
                 {
                     b.HasOne("DomainClass.Category", "Category")
@@ -670,6 +804,15 @@ namespace DataLayer.Migrations
                 {
                     b.HasOne("DomainClass.Category", "Category")
                         .WithMany("CategoryFeatures")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DomainClass.CategoryTerm", b =>
+                {
+                    b.HasOne("DomainClass.Category", "Category")
+                        .WithMany("Trems")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

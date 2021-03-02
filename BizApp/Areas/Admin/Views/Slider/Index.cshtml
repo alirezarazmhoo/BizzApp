@@ -1,0 +1,155 @@
+﻿@model PagedList.Core.IPagedList<BizApp.Areas.Admin.Models.SliderViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="header-secondary row gray-bg">
+    <div class="col-lg-12">
+        <div class="page-heading clearfix">
+            <h1 class="page-title pull-left">اسلایدر ها</h1><a href="/admin/slider/create" class="btn btn-primary btn-sm btn-add openmodal">اسلایدر جدید</a>
+        </div>
+        <!-- Breadcrumb -->
+        <ol class="breadcrumb breadcrumb-2">
+            <li><a href="#"><i class="fa fa-home"></i> خانه</a></li>
+            <li class="active"><strong>اسلایدرها</strong></li>
+        </ol>
+
+    </div>
+</div>
+
+<div class="row filter-wrapper visible-box" id="filter-box">
+    <div class="col-lg-12">
+        <div class="filter-header">
+            <h3 class="title">جستجو</h3>
+        </div>
+        @using (Html.BeginForm("Index", "Slider", FormMethod.Get))
+        {
+            <div class="form-inline">
+                <div class="form-group">
+                    <input name="searchString" placeholder="نام اسلایدر را وارد کنید" class="form-control">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-default">جستجو</button>
+                </div>
+                <div class="form-group">
+                    <a href="/admin/Slider/" class="btn btn-default">مشاهده همه</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="main-content">
+
+    <div class="row">
+        <div class="col-lg-12 animatedParent animateOnce z-index-50">
+            <div class="panel panel-default animated fadeInUp">
+                <div class="panel-heading clearfix">
+                    <h3 class="panel-title">اسلایدر ها</h3>
+                    <ul class="panel-tool-options">
+                        <li><a data-rel="collapse" href="#"><i class="icon-down-open"></i></a></li>
+
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-border table-hover dataTables-example">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        ردیف
+                                    </th>
+                                    <th>
+                                        عنوان
+                                    </th>
+                                    <th>
+                                        عملیات
+                                    </th>
+                                </tr>
+                                @{ int rowNo = 0; }
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @(++rowNo)
+                                        </td>
+                                        <td>
+                                            @item.Title
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.Id">حذف</button> |
+                                            @*<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.SliderId"> ویرایش</button>*@
+                                            <a type="button" class="btn btn-warning" href="/admin/Slider/edit?Id=@item.Id">ویرایش</a>
+
+                                        </td>
+                                    </tr>
+                                }
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                        </div>
+                        <div class="col-sm-7">
+                            <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+                                <ul class="pagination">
+
+                                    <li>
+                                        <pager list="@Model" asp-controller="Slider" asp-action="Index" asp-area="admin" />
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div id="Error"></div>
+<div id="Success"></div>
+<div id="Question"></div>
+<input hidden id="SliderId">
+
+<script>
+    window.onload = Load;
+    function Load() {
+        CreateAllModals();
+        $(".openmodal").click(function () {
+            clear('register', ["input"]);
+        });
+        $(".btn-warning").click(function () {
+            EditAjax("/admin/Slider/GetById", this.id);
+            var bodyStyle = document.body.style;
+            bodyStyle.removeProperty('padding-right');
+        });
+        $('.pagination > li:first-child > a, .pagination > li:first-child > span').html('قبلی')
+        $('.pagination>li:last-child>a, .pagination>li:last-child>span').html('بعدی')
+
+    }
+    function Save() {
+        if (checkvalidity('register') === 0) {
+            return;
+        }
+        else {
+            $("#myModal").modal('toggle');
+            var Parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "SliderId", htmlname: "SliderId", special: "" }];
+            PostAjax('/admin/Slider/CreateOrUpdate', Parameters, "/admin/Slider/Index");
+        }
+    }
+    function AssignButtonClicked(elem) {
+        $('#SliderId').val($(elem).data('assigned-id'));
+    }
+    function Remove() {
+        var Parameters = [{ id: "Id", htmlname: "SliderId", special: "" }];
+        PostAjax('/admin/Slider/Remove', Parameters, "/admin/Slider/Index");
+    }
+
+
+</script>
+

@@ -15,22 +15,24 @@ namespace DataLayer.Data
 				: base(options)
 		{
 		}
-
 		#region Tables
-		public DbSet<Business> Businesses { get; set; }
-		public DbSet<BusinessCallNumber> BusinessCallNumbers { get; set; }
-		public DbSet<BusinessFeature> BusinessFeatures { get; set; }
-		public DbSet<BusinessGallery> BusinessGalleries { get; set; }
-		public DbSet<BusinessTime> BusinessTimes{ get; set; }		
-		public DbSet<Category> Categories { get; set; }
-		public DbSet<CategoryFeature> CategoryFeatures { get; set; }
-		public DbSet<Province> Provinces { get; set; }
-		public DbSet<City> Cities { get; set; }
-		public DbSet<District> Districts { get; set; }
-		public DbSet<Feature> Features { get; set; }
-		public DbSet<HierarchyNamesCategory> CategoryHierarchyNames { get; set; }
+		public virtual DbSet<Business> Businesses { get; set; }
+		public virtual DbSet<BusinessCallNumber> BusinessCallNumbers { get; set; }
+		public virtual DbSet<BusinessFeature> BusinessFeatures { get; set; }
+		public virtual DbSet<BusinessGallery> BusinessGalleries { get; set; }
+		public virtual DbSet<BusinessTime> BusinessTimes{ get; set; }		
+		public virtual DbSet<Category> Categories { get; set; }
+		public virtual DbSet<CategoryFeature> CategoryFeatures { get; set; }
+		public virtual DbSet<Province> Provinces { get; set; }
+		public virtual DbSet<City> Cities { get; set; }
+		public virtual DbSet<District> Districts { get; set; }
+		public virtual DbSet<Feature> Features { get; set; }
+		public virtual DbSet<HierarchyNamesCategory> CategoryHierarchyNames { get; set; }
+		public virtual DbSet<CategoryTerm> CategoryTerms { get; set; }
+		public DbSet<Slider> Sliders { get; set; }
+		public virtual DbSet<ApplicationUserMedia>  ApplicationUserMedias { get; set; }
+		
 		#endregion
-
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			base.OnModelCreating(builder);
@@ -53,6 +55,9 @@ namespace DataLayer.Data
 			builder.Entity<City>().Property(p => p.Id).ValueGeneratedOnAdd();
 
 			builder.Entity<BizAppUser>().HasQueryFilter(m => EF.Property<bool>(m, "IsDeleted") == false);
+
+			// Gender default value
+			builder.Entity<BizAppUser>().Property(p => p.Gender).HasDefaultValue(GenderEnum.Male);
 
 			// relation between user and business owner
 			//builder.Entity<Business>().HasOne(b => b.Owner).WithMany(u => u.)

@@ -27,13 +27,13 @@ namespace BizApp
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Data Source=45.159.113.39,2014;Initial Catalog=BizAppTestDatabase;User ID=BizzApp;Password=BizzApp2021;MultipleActiveResultSets=true"));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Data Source=45.159.113.39,2014;Initial Catalog=BizAppTestDatabase;User ID=BizzApp;Password=BizzApp2021;MultipleActiveResultSets=true"));
 
-			//services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Data Source=45.159.113.39,2014;Initial Catalog=BizApp;User ID=BizzApp;Password=BizzApp2021;MultipleActiveResultSets=true"));
+            //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Data Source=45.159.113.39,2014;Initial Catalog=BizApp;User ID=BizzApp;Password=BizzApp2021;MultipleActiveResultSets=true"));
 
-			//services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Data Source=(LocalDb)\\.;Initial Catalog=BizApp;Integrated Security=SSPI;"));
+            //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Data Source=(LocalDb)\\.;Initial Catalog=BizApp;Integrated Security=SSPI;"));
 
-			services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
 			services.AddDefaultIdentity<BizAppUser>(options =>
 			{
@@ -101,6 +101,14 @@ namespace BizApp
 					name: "default",
 					pattern: "{controller=Home}/{action=Index}/{id?}");
 				endpoints.MapRazorPages();
+				//endpoints.MapControllerRoute(
+				//	name: "adminControllPanel",
+				//	pattern: "{controller=Home}/{action=Index}/{id?}");
+				//endpoints.MapRazorPages();
+				//endpoints.MapControllerRoute(
+				//	name: "adminControllPanel",
+				//	pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+				
 			});
 		}
 	}

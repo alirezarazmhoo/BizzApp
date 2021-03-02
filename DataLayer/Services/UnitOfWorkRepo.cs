@@ -19,6 +19,9 @@ namespace DataLayer.Services
 		private readonly FeatureRepo featureRepo;
 		private readonly CategoryFeatureRepo categoryFeaturesRepo;
 		private readonly BusinessRepo businessRepo;
+		private readonly SliderRepo sliderRepo;
+		private readonly UserRepo userRepo;
+
 
 		public UnitOfWorkRepo(ApplicationDbContext DbContext, UserManager<BizAppUser> userManager)
 		{
@@ -38,8 +41,11 @@ namespace DataLayer.Services
 		public IFeatureRepo FeatureRepo =>  featureRepo ?? new FeatureRepo(_DbContext);
 		public ICategoryFeatureRepo CategoryFeaturesRepo => categoryFeaturesRepo ?? new CategoryFeatureRepo(_DbContext);
 		public IBusinessRepo BusinessRepo => businessRepo ?? new BusinessRepo(_DbContext, _currentUser, _userManager);
-		
-		public async Task SaveAsync()
+		public ISliderRepo SliderRepo => sliderRepo ?? new SliderRepo(_DbContext);
+
+        public IUserRepo UserRepo => userRepo ?? new UserRepo(_DbContext);
+
+        public async Task SaveAsync()
 		{
 			await _DbContext.SaveChangesAsync();
 		}

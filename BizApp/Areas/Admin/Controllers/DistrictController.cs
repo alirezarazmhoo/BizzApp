@@ -9,6 +9,7 @@ using DataLayer.Infrastructure;
 using DomainClass;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using PagedList.Core;
 
 namespace BizApp.Areas.Admin.Models
 {
@@ -25,7 +26,7 @@ namespace BizApp.Areas.Admin.Models
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Index(string searchString, int? pageNumber)
+		public async Task<IActionResult> Index(string searchString, int? page)
 		{
 			bool shouldSearch = false;
 			try
@@ -40,7 +41,8 @@ namespace BizApp.Areas.Admin.Models
 				var districts = items.Select(s => _mapper.Map<District, DistrictViewModel>(s))
 									.OrderByDescending(o => o.DistrictId);
 
-				return View(PaginatedList<DistrictViewModel>.CreateAsync(districts.AsQueryable(), pageNumber ?? 1, pageSize));
+				PagedList<DistrictViewModel> res = new PagedList<DistrictViewModel>(districts.AsQueryable(), page ?? 1, pageSize);
+                return View(res);
 			}
 			catch //(Exception ex)
 			{

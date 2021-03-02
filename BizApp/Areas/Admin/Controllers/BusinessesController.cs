@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Transactions;
 using AutoMapper;
 using BizApp.Areas.Admin.Models;
 using BizApp.Utility;
@@ -13,6 +14,7 @@ using DomainClass.Businesses.Commands;
 using DomainClass.Businesses.Queries;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PagedList.Core;
 
 namespace BizApp.Areas.Admin.Controllers
 {
@@ -29,7 +31,7 @@ namespace BizApp.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Index(string searchString, int? pageNumber, string userId = null)
+		public async Task<IActionResult> Index(string searchString, int? page, string userId = null)
 		{
 			bool shouldSearch = false;
 			try
@@ -52,8 +54,8 @@ namespace BizApp.Areas.Admin.Controllers
 
 				var businesses = items.Select(s => _mapper.Map<BusinessListQuery, BusinessListViewModel>(s))
 									.OrderByDescending(o => o.Id);
-
-				return View(PaginatedList<BusinessListViewModel>.CreateAsync(businesses.AsQueryable(), pageNumber ?? 1, pageSize));
+				PagedList<BusinessListViewModel> res = new PagedList<BusinessListViewModel>(businesses.AsQueryable(), page ?? 1, pageSize);
+                return View(res);
 			}
 			catch //(Exception ex)
 			{
@@ -108,19 +110,23 @@ namespace BizApp.Areas.Admin.Controllers
 				var entity = _mapper.Map<CreateBusinessCommand>(model);
 
 				// if checked 
-				if (model.Id == default)
+				using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
 				{
-					// create business
-					entity.UserCreatorId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-					await _unitOfWork.BusinessRepo.Create(entity, file, BussinessFiles);
-				}
-				else
-				{
-					var updateModel = _mapper.Map<Business>(model);
-					await _unitOfWork.BusinessRepo.Update(updateModel, file, BussinessFiles);
-				}
+					if (model.Id == default)
+					{
+						// create business
+						entity.UserCreatorId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+						await _unitOfWork.BusinessRepo.Create(entity, model.IsCity, file, BussinessFiles);
+					}
+					else
+					{
+						var updateModel = _mapper.Map<Business>(model);
+						await _unitOfWork.BusinessRepo.Update(updateModel, model.IsCity, file, BussinessFiles);
+					}
 
-				await _unitOfWork.SaveAsync();
+					await _unitOfWork.SaveAsync();
+					scope.Complete();
+				}
 			}
 			catch (Exception ex)
 			{
@@ -169,7 +175,7 @@ namespace BizApp.Areas.Admin.Controllers
 		}
 
 		[HttpPost, ActionName("AssingBusinessFeatureWithValue")]
-		public async Task<IActionResult> AssingBusinessFeatureWithValue(SetBusinessFeatureValueViewModel model) 
+		public async Task<IActionResult> AssingBusinessFeatureWithValue(SetBusinessFeatureValueViewModel model)
 		{
 			try
 			{
@@ -182,7 +188,7 @@ namespace BizApp.Areas.Admin.Controllers
 				return RedirectToAction("BusinessFeature", "Businesses", new { Id = model.BusinessId });
 			}
 		}
-		
+
 
 		[HttpGet, ActionName("RemoveBusinessFeature")]
 		public async Task<IActionResult> RemoveBusinessFeature(Guid? Id, int FeatureId)

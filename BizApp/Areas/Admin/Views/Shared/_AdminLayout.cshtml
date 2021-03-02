@@ -1,182 +1,155 @@
 ﻿@inject UserManager<DomainClass.BizAppUser> UserManager
 
 <!DOCTYPE html>
-@*<script src="~/lib/jquery/dist/jquery.min.js"></script>
-	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="~/js/site.js" asp-append-version="true"></script>
-	@RenderSection("Scripts", required: false)*@
-<html>
+<html lang="en">
 <head>
-	<meta charset="utf-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Mouldifi - A fully responsive, HTML5 based admin theme">
+    <meta name="keywords" content="Responsive, HTML5, admin theme, business, professional, Mouldifi, web design, CSS3">
+    <title>BizzApp | Dashboard</title>
+    <link rel='shortcut icon' type='image/x-icon' href='images/favicon.ico' />
+    <link href="~/Designs/AdminControllPanel/css/entypo.css" rel="stylesheet">
+    <link href="~/Designs/AdminControllPanel/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Designs/AdminControllPanel/css/plugins/css3-animate-it-plugin/animations.css" rel="stylesheet">
+    <link href="~/Designs/AdminControllPanel/css/bootstrap.min.css" rel="stylesheet">
+<link href="~/Designs/AdminControllPanel/css/bootstrap-rtl.min.css" rel="stylesheet" />
+    <link href="~/Designs/AdminControllPanel/css/mouldifi-core.css" rel="stylesheet">
+    <link href="~/Designs/AdminControllPanel/css/mouldifi-forms.css" rel="stylesheet">
+    <link href="~/Designs/AdminControllPanel/css/plugins/datatables/jquery.dataTables.css" rel="stylesheet">
+    <link href="~/Designs/AdminControllPanel/js/plugins/datatables/extensions/Buttons/css/buttons.dataTables.css" rel="stylesheet">
+    <link href="~/Designs/AdminControllPanel/css/bootstrap-rtl.min.css" rel="stylesheet">
+    <link href="~/Designs/AdminControllPanel/css/mouldifi-rtl-core.css" rel="stylesheet">
 
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>کنترل پنل مدیریت</title>
-	<!-- Tell the browser to be responsive to screen width -->
-	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-	<!-- Bootstrap 3.3.7 -->
-	@*<link rel="stylesheet" href="~/Admin/dist/css/bootstrap-theme.css">*@
-	<!-- Bootstrap rtl -->
-	<link rel="stylesheet" href="~/Admin/dist/css/rtl.css">
-	<!-- Font Awesome -->
-	<link rel="stylesheet" href="~/Admin/bower_components/font-awesome/css/font-awesome.min.css">
-	<!-- Ionicons -->
-	<link rel="stylesheet" href="~/Admin/bower_components/Ionicons/css/ionicons.min.css">
-	<!-- Theme style -->
-	<link rel="stylesheet" href="~/Admin/dist/css/AdminLTE.css">
-	<link rel="stylesheet" href="~/Admin/dist/css/skins/skin-blue.min.css">
-	<link rel="stylesheet"
-		  href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-	<link href="~/Paging/MyPagerStyle.css" rel="stylesheet" />
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-	<script src='https://kit.fontawesome.com/a076d05399.js'></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-		  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-		  crossorigin="" />
-	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-			integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-			crossorigin=""></script>
-	@RenderSection("head", false)
+    <!--<link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+    @*<link href="~/Paging/MyPagerStyle.css" rel="stylesheet" />*@
+
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+          crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin=""></script>
+    @RenderSection("head", false)
 </head>
+<body>
 
-<body class="hold-transition skin-blue sidebar-mini" style="font-family:'B Yekan'" dir="rtl">
-	<div class="wrapper">
-		<header class="main-header">
-			<a class="logo">
-				<span class="logo-mini">Panel</span>
-				<span class="logo-lg"><b>کنترل پنل مدیریت</b></span>
-			</a>
-			<nav class="navbar navbar-static-top">
-				<a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-					<span class="sr-only">Toggle navigation</span>
-				</a>
-			</nav>
-		</header>
-		<aside class="main-sidebar">
-			<section class="sidebar">
-				<div class="user-panel" style="height:40px;">
-					<div class="pull-right info">
-						<p style="text-align:right;margin-left:80px">سامانه مدیریت اطلاعات</p>
-					</div>
-				</div>
-				<ul class="sidebar-menu" data-widget="tree">
-					@if (User.IsInRole("admin"))
-					{
-						<li class="treeview">
-							<a>
-								<i class="fa fa-globe"></i> <span>مدیریت مناطق</span>
-								<span class="pull-left-container">
-									<i class="fa fa-angle-right pull-left"></i>
-								</span>
-							</a>
-							<ul class="treeview-menu">
-								<li><a href="/admin/Province/Index"><i class="fa fa-bank"></i>استان</a></li>
-								<li><a href="/admin/City"><i class="fa fa-building"></i>شهر</a></li>
-								<li><a href="/admin/district"><i class="fa fa-crosshairs"></i>محدوده کسب و کار</a></li>
-							</ul>
-						</li>
+    <div class="page-container">
+        <div class="page-sidebar">
+            <header class="site-header">
+                <div class="site-logo"><a href="index.html"><img @*src="images/logo.png"*@ alt="Mouldifi" title="Mouldifi"></a></div>
+                <div class="sidebar-collapse hidden-xs"><a class="sidebar-collapse-icon" href="#"><i class="icon-menu"></i></a></div>
+                <div class="sidebar-mobile-menu visible-xs"><a data-target="#side-nav" data-toggle="collapse" class="mobile-menu-icon" href="#"><i class="icon-menu"></i></a></div>
+            </header>
+            <ul id="side-nav" class="main-menu navbar-collapse collapse">
 
-						<li class="treeview">
-							<a>
-								<i class="fa fa-pie-chart"></i> <span>دسته بندی ها</span>
-								<span class="pull-left-container">
-									<i class="fa fa-angle-right pull-left"></i>
-								</span>
-							</a>
-							<ul class="treeview-menu">
-								<li><a href="/admin/Categories/Index"><i class="fa fa-plus-square-o"></i>دسته بندی</a></li>
 
-							</ul>
-						</li>
 
-						<li class="treeview">
-							<a>
-								<i class="fa fa-globe"></i> <span>کاربران</span>
-								<span class="pull-left-container">
-									<i class="fa fa-angle-right pull-left"></i>
-								</span>
-							</a>
-							<ul class="treeview-menu">
-								<li><a href="/admin/operator/"><i class="fa fa-bank"></i>لیست متصدیان</a></li>
-								@*<li><a href="/admin/City"><i class="fa fa-building"></i>ثبت متصدی</a></li>*@
-							</ul>
-						</li>
-					}
-					@if (User.IsInRole("admin") || User.IsInRole("operator"))
-					{
-						<li class="treeview">
-							<a>
-								<i class="fa fa-gears"></i> <span>کسب و کارها</span>
-								<span class="pull-left-container">
-									<i class="fa fa-angle-right pull-left"></i>
-								</span>
-							</a>
-							<ul class="treeview-menu">
-								<li><a href="/admin/businesses/Index"><i class="fa fa-id-card"></i>مدیریت کسب و کار</a></li>
-								@if (User.IsInRole("admin"))
-								{
-									<li><a href="/admin/Feature/Index"><i class="fa fa-id-card"></i>مدیریت ویژگی کسب و کار</a></li>
-								}
-								</ul>
-						</li>
-						<li class="nav-item">
-							<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-								<button type="submit" class="nav-link btn btn-link text-dark">خروج</button>
-							</form>
-						</li>
-					}
+                @if (User.IsInRole("admin"))
+                {
+                    <li class="has-sub">
+                        <a href="#">
+                            <i class="fa fa-globe"></i> <span class="title">مدیریت مناطق</span>
+                        </a>
+                        <ul class="nav collapse">
+                            <li><a href="/admin/Province/Index"><i class="fa fa-bank"></i>استان</a></li>
+                            <li><a href="/admin/City"><i class="fa fa-building"></i>شهر</a></li>
+                            <li><a href="/admin/district"><i class="fa fa-crosshairs"></i>محدوده کسب و کار</a></li>
+                        </ul>
+                    </li>
 
-					@*<li class="active">
-							<a href="/SchoolName/Index"><i class="fas fa-school"></i> <span>مدیریت مناطق</span></a>
+                    <li class="has-sub">
+                        <a href="#">
+                            <i class="icon-list"></i> <span class="title">دسته بندی ها</span>
 
-						</li>
-						<li class="active"><a href="/Grades/Index"><i class="fas fa-graduation-cap"></i> <span>مقاطع تحصیلی</span></a></li>
-						<li class="active"><a href="/Majors/Index"><i class="fas fa-book-open"></i> <span>رشته تحصیلی</span></a></li>
-						<li class="active"><a href="/Teachers/Index"><i class="fas fa-chalkboard-teacher"></i> <span>مدیریت معلمان </span></a></li>
-						<li class="active"><a href="/Students/Index"><i class="fas fa-book-reader"></i> <span>مدیریت دانش آموزان </span></a></li>
-						<li class="active"><a href="/ClassRooms/Index"><i class="fas fa-chalkboard"></i> <span>کلاس بندی </span></a></li>*@
+                        </a>
+                        <ul class="nav collapse">
+                            <li><a href="/admin/Categories/Index"><i class="icon-list-add"></i>دسته بندی</a></li>
 
-					@*<li class="active"><a href="#"><i class="fa fa-sign-out"></i> <span>خروج</span></a></li>*@
-				</ul>
-			</section>
-		</aside>
-		<div class="content-wrapper" dir="rtl">
+                        </ul>
+                    </li>
 
-			<section class="content container-fluid">
-				<div class="modal fade" id="LoadingModal" role="dialog" style="z-index:2">
-					<div class="modal-dialog modal-sm">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h4 class="modal-title">درحال انجام عملیات </h4>
-							</div>
-							<div class="modal-body">
-								<p class="text text-warning">لطیفا منتظر بمانید<p>
-							</div>
-						</div>
-					</div>
-				</div>
-				@RenderBody()
-			</section>
-			<div class="modal"><!-- Place at bottom of page --></div>
-		</div>
-		<aside class="control-sidebar control-sidebar-dark">
-			<ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-				<li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-				<li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-			</ul>
-		</aside>
-		<div class="control-sidebar-bg"></div>
-	</div>
-	@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>*@
-	@*<script src="../Admin/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>*@
-	<script src="~/Admin/dist/js/adminlte.min.js"></script>
-	@*<script src="../Scripts/Common.js"></script>*@
-	<script src="~/Scripts/Common.js"></script>
+                    <li class="has-sub">
+                        <a href="#">
+                            <i class="icon-users"></i> <span class="title">کاربران</span>
 
-	@RenderSection("scripts", false)
+                        </a>
+                        <ul class="nav collapse">
+                            <li><a href="/admin/operator?roleId=467ffd0e-d5f1-4301-b9c1-bf08f8d351d2"><i class="icon-users"></i>لیست متصدیان</a></li>
+                            <li><a href="/admin/operator?roleId=447ffd0e-d5f1-4301-b9c1-bf08f8d351d2"><i class="icon-users"></i>لیست کاربران</a></li>
+                        </ul>
+                    </li>
+                }
+                @if (User.IsInRole("admin") || User.IsInRole("operator"))
+                {
+                    <li class="has-sub">
+                        <a href="#">
+                            <i class="icon-list"></i> <span class="title">اسلایدر ها</span>
 
+                        </a>
+                        <ul class="nav collapse">
+                            <li><a href="/admin/Slider/Index"><i class="icon-list-add"></i>اسلایدر ها</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="has-sub">
+                        <a href="#">
+                            <i class="fa fa-gears"></i> <span class="title">کسب و کارها</span>
+
+                        </a>
+                        <ul class="nav collapse">
+                            <li><a href="/admin/businesses/Index"><i class="fa fa-tasks"></i>مدیریت کسب و کار</a></li>
+                            @if (User.IsInRole("admin"))
+                            {
+                                <li><a href="/admin/Feature/Index"><i class="fa fa-tags"></i>مدیریت ویژگی کسب و کار</a></li>
+                            }
+                        </ul>
+                    </li>
+                    <li>
+                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <button type="submit" class="nav-link btn btn-link text-dark">خروج</button>
+                        </form>
+                    </li>
+                }
+            </ul>
+            <!-- /main navigation -->
+        </div>
+        <div class="main-container gray-bg">
+
+            @RenderBody()
+        </div>
+
+
+
+    </div>
+
+    <script src="~/Designs/AdminControllPanel/js/jquery.min.js"></script>
+    <script src="~/Designs/AdminControllPanel/js/plugins/css3-animate-it-plugin/css3-animate-it.js"></script>
+    <script src="~/Designs/AdminControllPanel/js/bootstrap.min.js"></script>
+    <script src="~/Designs/AdminControllPanel/js/plugins/metismenu/jquery.metisMenu.js"></script>
+    <script src="~/Designs/AdminControllPanel/js/plugins/blockui-master/jquery.blockUI.js"></script>
+
+    <script src="~/Designs/AdminControllPanel/js/functions.js"></script>
+
+
+    <script src="~/Designs/AdminControllPanel/js/plugins/chartjs/Chart.min.js"></script>
+    <script src="~/Designs/AdminControllPanel/js/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Designs/AdminControllPanel/js/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/Designs/AdminControllPanel/js/plugins/datatables/extensions/Buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Designs/AdminControllPanel/js/plugins/datatables/vfs_fonts.js"></script>
+    <script src="~/Designs/AdminControllPanel/js/plugins/datatables/extensions/Buttons/js/buttons.html5.js"></script>
+    <script src="~/Designs/AdminControllPanel/js/plugins/datatables/extensions/Buttons/js/buttons.colVis.js"></script>
+    <script src="~/Scripts/Common.js"></script>
+
+
+    @RenderSection("scripts", false)
 </body>
 </html>

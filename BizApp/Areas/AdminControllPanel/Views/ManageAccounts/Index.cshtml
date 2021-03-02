@@ -1,0 +1,242 @@
+﻿@model PagedList.Core.IPagedList<BizApp.Areas.Admin.Models.UserViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="main-content">
+    <h1 class="page-title">کاربران</h1>
+    <!-- Breadcrumb -->
+    <ol class="breadcrumb breadcrumb-2">
+        <li><a href="index.html"><i class="fa fa-home"></i> خانه</a></li>
+
+        <li class="active"><strong>کاربران</strong></li>
+    </ol>
+    <div class="row">
+        <div class="col-lg-12 animatedParent animateOnce z-index-50">
+            <div class="panel panel-default animated fadeInUp">
+                <div class="panel-heading clearfix">
+                    <h3 class="panel-title">کاربران</h3>
+                    <ul class="panel-tool-options">
+                        <li><a data-rel="collapse" href="#"><i class="icon-down-open"></i></a></li>
+
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-border table-hover dataTables-example">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        ردیف
+                                    </th>
+                                    <th>
+                                        نام
+                                    </th>
+                                    <th>
+                                        نام کاربری
+                                    </th>
+                                    <th>
+                                        موبایل
+                                    </th>
+                                    <th>
+                                        ایمیل
+                                    </th>
+                                    <th>
+                                        عملیات
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ int rowNo = 0; }
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @(++rowNo)
+                                        </td>
+                                        <td>
+                                            @item.FullName
+                                        </td>
+                                        <td>
+                                            @item.Username
+                                        </td>
+                                        <td>
+                                            @item.Mobile
+                                        </td>
+                                        <td>
+                                            @item.Email
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.Id">حذف</button> |
+                                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.Id"> ویرایش</button>
+                                            <a href="/adminControllPanel/businesses/index?userId=@item.Id" class="btn btn-success"> کسب و کارهای ثبت شده</a>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                        </div>
+                        <div class="col-sm-7">
+                            <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+                                <ul class="pagination">
+
+                                    <li>
+                                        <pager list="@Model" asp-controller="ManageAccounts" asp-action="Index" asp-area="AdminControllPanel" />
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+<div class="modal fade" id="myModal" role="dialog" style="height:auto;overflow-y:visible">
+    <div class="modal-dialog modal-sm" style="width:400px">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">ثبت جدید</h4>
+            </div>
+            <div class="modal-body" style="height:auto">
+                <form id="register" method="post">
+                    <input name="Id" id="Id" hidden />
+                    <input name="operation" id="operation" hidden />
+                    <input name="roleId" id="roleId" hidden value="@ViewBag.roleId"/>
+                    <div class="form-group" style="margin-right:5px">
+                        @*<label for="FullName">نام و نام خانوادگی :</label>*@
+                        <input display="نام" id="FullName" name="FullName" placeholder="نام و نام خانوادگی *" class="form-control" required>
+                    </div>
+
+                    <div id="createInputs">
+                        <div class="form-group col-md-6">
+                            @*<label for="Password">رمز عبور</label>*@
+                            <input display="رمز عبور" id="Password" type="password" name="Password" placeholder="رمز عبور *" class="form-control" required>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            @*<label for="Username">نام کاربری</label>*@
+                            <input display="نام کاربری" id="Username" name="Username" placeholder="نام کاربری *" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        @*<label for="Email">ایمیل</label>*@
+                        <input display="ایمیل" id="Email" name="Email" placeholder="ایمیل" class="form-control">
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        @*<label for="Mobile">موبایل</label>*@
+                        <input display="موبایل" id="Mobile" name="Mobile" placeholder="موبایل *" class="form-control" required>
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <textarea class="form-control" id="Address" name="Address" placeholder="نشانی"></textarea>
+                    </div>
+
+                    <div class="form-group col-md-12">
+
+                        <label for="IsEnabled">وضعیت: </label>
+                        <select class="form-control" name="IsEnabled" id="IsEnabled">
+                            <option value="False">غیرفعال</option>
+                            <option value="True">فعال</option>
+                        </select>
+
+                        @*<div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="IsEnabled" name="IsEnabled">
+                                <label class="form-check-label" for="IsEnabled">فعال</label>
+                            </div>*@
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+                <button type="button" class="btn btn-success" onclick="Save();">ثبت</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="Error"></div>
+<div id="Success"></div>
+<div id="Question"></div>
+
+
+<script>
+    window.onload = Load;
+    function Load() {
+        CreateAllModals();
+        $(".openmodal").click(function () {
+            clear('register', ["input"]);
+
+            // show inputs
+            $("#createInputs").css("display", "");
+            $("#operation").val("addNew");
+            $("#Username").prop('required', true);
+            $("#Password").prop('required', true);
+
+        });
+        $(".btn-warning").click(function () {
+            EditAjax("/admin/operator/GetById", this.id);
+
+            // hdie username and password
+            $("#createInputs").css("display", "none");
+            $("#operation").val("update");
+            $('#Username').removeAttr('required');
+            $('#Password').removeAttr('required');
+
+            var bodyStyle = document.body.style;
+            bodyStyle.removeProperty('padding-right');
+        });
+    }
+    function Save() {
+        if (checkvalidity('register') === 0) {
+            return;
+        }
+        else {
+            $("#myModal").modal('toggle');
+            var Parameters =
+                [{ id: "Id", htmlname: "Id", special: "" },
+                { id: "FullName", htmlname: "FullName", special: "" },
+                { id: "Mobile", htmlname: "Mobile", special: "" },
+                { id: "Email", htmlname: "Email", special: "" },
+                { id: "IsEnabled", htmlname: "IsEnabled", special: "" },
+                { id: "roleId", htmlname: "roleId", special: "" },
+                { id: "Address", htmlname: "Address", special: "" }
+                ];
+
+            var operation = $("#operation").val();
+            var url = '/admin/operator/Update';
+
+            if (operation == 'addNew') {
+                Parameters.push({ id: "Username", htmlname: "Username", special: "" },
+                    { id: "Password", htmlname: "Password", special: "" });
+
+                url = '/admin/operator/Create';
+            }
+
+            PostAjax(url, Parameters, "/admin/operator");
+        }
+    }
+
+
+
+    function AssignButtonClicked(elem) {
+        $('#Id').val($(elem).data('assigned-id'));
+    }
+    function Remove() {
+        var Parameters = [{ id: "Id", htmlname: "Id", special: "" }];
+        PostAjax('/admin/operator/Remove', Parameters, "/admin/operator/");
+    }
+
+
+</script>
