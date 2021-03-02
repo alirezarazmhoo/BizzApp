@@ -4,6 +4,8 @@ using DomainClass;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
+using DomainClass.Queries;
 
 namespace DataLayer.Services
 {
@@ -33,6 +35,21 @@ namespace DataLayer.Services
 		public async Task<List<City>> GetAll(string searchString)
 		{
 			return await FindByCondition(f => f.Name.Contains(searchString)).Include(i => i.Province).ToListAsync();
+		}
+
+		public async Task<List<CityWithProvinceNamesQuery>> GetAllWithProvinces(string searchString)
+		{
+			var result = await
+				DbContext.Cities.Select(s => new CityWithProvinceNamesQuery
+				{
+					Id = s.Id,
+					ListName = s.Province.Name + " - " + s.Name
+				})
+				.Where(w => w.ListName.Contains(searchString))
+				.Take(10)
+				.ToListAsync();
+
+			return result;
 		}
 
 		public async Task<City> GetById(int id)

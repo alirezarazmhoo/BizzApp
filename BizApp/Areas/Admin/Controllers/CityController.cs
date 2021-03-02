@@ -170,5 +170,17 @@ namespace BizApp.Areas.Admin.Controllers
 			}
 		}
 
+		public async Task<JsonResult> GetCitiesWithProviceNames(string searchString) 
+		{
+			try
+			{
+				var items = await _UnitOfWork.CityRepo.GetAllWithProvinces(searchString);
+				return Json(new SelectList(items, "Id", "LisName"));
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			} 
+		}
 	}
 }

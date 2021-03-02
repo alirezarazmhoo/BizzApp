@@ -18,6 +18,7 @@ using BizApp.Extensions;
 using BizApp.Utility;
 using System.Transactions;
 using DomainClass.Infrastructure;
+using DataLayer.Infrastructure;
 
 namespace BizApp.Areas.Identity.Pages.Account
 {
@@ -28,18 +29,20 @@ namespace BizApp.Areas.Identity.Pages.Account
 		private readonly UserManager<BizAppUser> _userManager;
 		private readonly ILogger<RegisterModel> _logger;
 		private readonly IEmailSender _emailSender;
+		private readonly IUnitOfWorkRepo _unitOfWork;
 
 		public RegisterModel(
 			UserManager<BizAppUser> userManager,
 			SignInManager<BizAppUser> signInManager,
 			ILogger<RegisterModel> logger,
-			IEmailSender emailSender
-			)
+			IEmailSender emailSender,
+			IUnitOfWorkRepo unitOfWork)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
 			_logger = logger;
 			_emailSender = emailSender;
+			_unitOfWork = unitOfWork;
 		}
 
 		[BindProperty]
@@ -81,9 +84,12 @@ namespace BizApp.Areas.Identity.Pages.Account
 			[Display(Name = "کد پستی", Prompt = "کد پستی")]
 			public string PostalCode { get; set; }
 
+			// birth date fields
 			public int Year { get; set; }
 			public int Month { get; set; }
 			public int Day { get; set; }
+
+			public int? CityId { get; set; }
 
 			//[DataType(DataType.Password)]
 			//[Display(Name = "Confirm password")]
@@ -94,10 +100,6 @@ namespace BizApp.Areas.Identity.Pages.Account
 		public async Task OnGetAsync(string returnUrl = null)
 		{
 			ReturnUrl = returnUrl;
-
-			var 
-
-
 			ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 		}
 

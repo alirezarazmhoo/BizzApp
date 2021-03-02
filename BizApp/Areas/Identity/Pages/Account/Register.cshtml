@@ -33,106 +33,96 @@
 							</label>
 						</div>
 
-						<!--<form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-							<h4>Create a new account.</h4>
-							<hr />
-							<div asp-validation-summary="All" class="text-danger"></div>
+						<form asp-route-returnUrl="@Model.ReturnUrl" method="post">
 							<div class="form-group">
-								<label asp-for="Input.Email"></label>
-								<input asp-for="Input.Email" class="form-control" />
+								<input asp-for="Input.FullName" type="text" class="form-control" />
+								<span asp-validation-for="Input.FullName" class="text-danger"></span>
+							</div>
+							<div class="row" style="margin-bottom: 9px">
+								<div class="col">
+									<input asp-for="Input.UserName" class="form-control" />
+									<span asp-validation-for="Input.UserName" class="text-danger"></span>
+								</div>
+								<div class="col">
+									<input asp-for="Input.Mobile" type="text" class="form-control" />
+									<span asp-validation-for="Input.Mobile" class="text-danger"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<input asp-for="Input.Password" class="form-control">
+								<span asp-validation-for="Input.Password" class="text-danger"></span>
+							</div>
+							<div class="form-group">
+								<input asp-for="Input.Email" class="form-control">
 								<span asp-validation-for="Input.Email" class="text-danger"></span>
 							</div>
 							<div class="form-group">
-								<label asp-for="Input.Password"></label>
-								<input asp-for="Input.Password" class="form-control" />
-								<span asp-validation-for="Input.Password" class="text-danger"></span>
-							</div>-->
-						@*<div class="form-group">
-								<label asp-for="Input.ConfirmPassword"></label>
-								<input asp-for="Input.ConfirmPassword" class="form-control" />
-								<span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-							</div>*@
-						<!--<button type="submit" class="btn btn-primary">Register</button>
-						</form>-->
-
-					<form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-						<div class="form-group">
-							<input asp-for="Input.FullName" type="text" class="form-control" />
-							<span asp-validation-for="Input.FullName" class="text-danger"></span>
-						</div>
-						<div class="row" style="margin-bottom: 9px">
-							<div class="col">
-								<input asp-for="Input.UserName" class="form-control" />
-								<span asp-validation-for="Input.UserName" class="text-danger"></span>
+								<input asp-for="Input.PostalCode" class="form-control" />
+								<span asp-validation-for="Input.PostalCode" class="text-danger"></span>
 							</div>
-							<div class="col">
-								<input asp-for="Input.Mobile" type="text" class="form-control" />
-								<span asp-validation-for="Input.Mobile" class="text-danger"></span>
+							<div class="sign-up__item__lable">
+								<p>تاریخ تولد</p>
+								<span>اختیاری</span>
 							</div>
-						</div>
-						<div class="form-group">
-							<input asp-for="Input.Password" class="form-control">
-							<span asp-validation-for="Input.Password" class="text-danger"></span>
-						</div>
-						<div class="form-group">
-							<input asp-for="Input.Email" class="form-control">
-							<span asp-validation-for="Input.Email" class="text-danger"></span>
-						</div>
-						<div class="form-group">
-							<input asp-for="Input.PostalCode" class="form-control" />
-							<span asp-validation-for="Input.PostalCode" class="text-danger"></span>
-						</div>
-						<div class="sign-up__item__lable">
-							<p>تاریخ تولد</p>
-							<span>اختیاری</span>
-						</div>
-						<div class="sign-up__item__birthday">
-							<div class="row" data-space="10">
+							<div class="sign-up__item__birthday">
+								<div class="row" data-space="10">
 
-								<div class="col-4">
-									<select class="form-control" asp-for="Input.Day">
-										<option selected>روز</option>
-										@for (int i = 0; i < 31; i++)
-										{
-											<option value="@(i+1)">@(i+1)</option>
-										}
-									</select>
-								</div>
-								<div class="col-4">
-									<select class="form-control" asp-for="Input.Month">
-										<option selected>ماه</option>
-										@for (int i = 0; i < 12; i++)
-										{
-											<option value="@(i+1)">@(i+1)</option>
-										}
-									</select>
-								</div>
-								<div class="col-4">
-									<select class="form-control" asp-for="Input.Year">
-										<option selected>سال</option>
-										@{
-											var currentDate = DateTime.Now.ToPersianDateString();
-											var currentYear = Convert.ToInt32(currentDate.Substring(0, 4)) - 5;
-											for (int i = currentYear; i > currentYear - 140; i--)
+									<div class="col-4">
+										<select class="form-control" asp-for="Input.Day">
+											<option selected>روز</option>
+											@for (int i = 0; i < 31; i++)
 											{
-												<option value="@i">@i</option>
+												<option value="@(i + 1)">@(i + 1)</option>
 											}
-										}
-									</select>
+										</select>
+									</div>
+									<div class="col-4">
+										<select class="form-control" asp-for="Input.Month">
+											<option selected>ماه</option>
+											@for (int i = 0; i < 12; i++)
+											{
+												<option value="@(i + 1)">@(i + 1)</option>
+											}
+										</select>
+									</div>
+									<div class="col-4">
+										<select class="form-control" asp-for="Input.Year">
+											<option selected>سال</option>
+											@{
+												var currentDate = DateTime.Now.ToPersianDateString();
+												var currentYear = Convert.ToInt32(currentDate.Substring(0, 4)) - 5;
+												for (int i = currentYear; i > currentYear - 140; i--)
+												{
+													<option value="@i">@i</option>
+												}
+											}
+										</select>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="form-check">
-							<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked1">
-							<label class="form-check-label" for="flexCheckChecked1">
-								بله ، من می خواهم BizzAp در مورد محصولات ، خدمات و رویدادهای محلی BizzAp برای من ایمیل بازاریابی ارسال کند. در هر زمان می توانم اشتراک خود را لغو کنم.
-							</label>
-						</div>
-						<div class="sign-up__item__login">
-							<button type="submit" class="btn btn-primary">ثبت نام</button>
-						</div>
 
-					</form>
+							<div class="sign-up__item__lable">
+								<p>محل تولد</p>
+								<span>اختیاری</span>
+							</div>
+
+							<div class="sign-up__item__form">
+								<select class="form-control" asp-for="Input.CityId">
+									<option selected>انتخاب کنید</option>
+								</select>
+							</div>
+
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked1">
+								<label class="form-check-label" for="flexCheckChecked1">
+									بله ، من می خواهم BizzAp در مورد محصولات ، خدمات و رویدادهای محلی BizzAp برای من ایمیل بازاریابی ارسال کند. در هر زمان می توانم اشتراک خود را لغو کنم.
+								</label>
+							</div>
+							<div class="sign-up__item__login">
+								<button type="submit" class="btn btn-primary">ثبت نام</button>
+							</div>
+
+						</form>
 						<div class="sign-up__item__form">
 							<div class="login__item__form__google">
 								<a href="#">با Google ادامه دهید</a>
@@ -140,7 +130,7 @@
 						</div>
 						<div class="sign-up__item__sub-form">
 							<p>قبلاً در BizzAp هستید؟</p>
-							<a href="#"><span>وارد شدن</span></a>
+							<a href="/identity/account/register"><span>ورود به پنل</span></a>
 						</div>
 					</div>
 				</div>
@@ -154,7 +144,45 @@
 	</section>
 </main>
 
-<div class="row">
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+
+	<script src="~/lib/autocomplete/jquery.autocomplete.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			// Initialize ajax autocomplete for categories:
+			// HELP: https://www.devbridge.com/sourcery/components/jquery-autocomplete/
+			$('#input_CityId').autocomplete({
+				serviceUrl: '/admin/categories/getHierarchyNames',
+				minChars: 3,
+				paramName: 'searchString',
+				transformResult: function (response) {
+					var result = JSON.parse(response);
+					return {
+						suggestions: $.map(result, function (dataItem) {
+							return { data: dataItem.value, value: dataItem.text };
+						})
+					};
+				},
+				type: "get",
+				onSelect: function (suggestion) {
+					$('#categorySelection').html('<b>دسته انتخاب شده: </b><i>' + suggestion.value + '</i>');
+					$('#CategoryId').attr('value', suggestion.data);
+				},
+				onInvalidateSelection: function () {
+					$('#categorySelection').html('دسته انتخاب شده: هیچ');
+					$('#CategoryId').attr('value', 0);
+				},
+				showNoSuggestionNotice: true,
+				noSuggestionNotice: "متاسفانه موردی پیدا نشد"
+			});
+
+		});
+	</script>
+}
+
+<!--<div class="row">
 	<!--<div class="col-md-4">
 		<form asp-route-returnUrl="@Model.ReturnUrl" method="post">
 			<h4>Create a new account.</h4>
@@ -170,15 +198,16 @@
 				<input asp-for="Input.Password" class="form-control" />
 				<span asp-validation-for="Input.Password" class="text-danger"></span>
 			</div>-->
-	@*<div class="form-group">
-			<label asp-for="Input.ConfirmPassword"></label>
-			<input asp-for="Input.ConfirmPassword" class="form-control" />
-			<span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-		</div>*@
-	<!--<button type="submit" class="btn btn-primary">Register</button>
-		</form>
-	</div>-->
-	<div class="col-md-6 col-md-offset-2">
+-->
+<!--@*<div class="form-group">
+		<label asp-for="Input.ConfirmPassword"></label>
+		<input asp-for="Input.ConfirmPassword" class="form-control" />
+		<span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+	</div>*@-->
+<!--<button type="submit" class="btn btn-primary">Register</button>
+	</form>
+</div>-->
+<!--<div class="col-md-6 col-md-offset-2">
 		<section>
 			<h4>Use another service to register.</h4>
 			<hr />
@@ -208,8 +237,4 @@
 			}
 		</section>
 	</div>
-</div>
-
-@section Scripts {
-	<partial name="_ValidationScriptsPartial" />
-}
+</div>-->
