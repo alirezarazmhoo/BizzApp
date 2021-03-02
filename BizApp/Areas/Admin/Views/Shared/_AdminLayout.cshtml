@@ -87,9 +87,6 @@
                             <li><a href="/admin/operator?roleId=447ffd0e-d5f1-4301-b9c1-bf08f8d351d2"><i class="icon-users"></i>لیست کاربران</a></li>
                         </ul>
                     </li>
-                }
-                @if (User.IsInRole("admin") || User.IsInRole("operator"))
-                {
                     <li class="has-sub">
                         <a href="#">
                             <i class="icon-list"></i> <span class="title">اسلایدر ها</span>
@@ -100,6 +97,10 @@
 
                         </ul>
                     </li>
+                }
+                @if (User.IsInRole("admin") || User.IsInRole("operator"))
+                {
+
                     <li class="has-sub">
                         <a href="#">
                             <i class="fa fa-gears"></i> <span class="title">کسب و کارها</span>
