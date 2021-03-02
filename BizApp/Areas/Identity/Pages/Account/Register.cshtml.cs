@@ -33,7 +33,7 @@ namespace BizApp.Areas.Identity.Pages.Account
 			UserManager<BizAppUser> userManager,
 			SignInManager<BizAppUser> signInManager,
 			ILogger<RegisterModel> logger,
-			IEmailSender emailSender,
+			IEmailSender emailSender
 			)
 		{
 			_userManager = userManager;
