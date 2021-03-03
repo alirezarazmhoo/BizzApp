@@ -85,9 +85,9 @@ namespace BizApp.Areas.Identity.Pages.Account
 			public string PostalCode { get; set; }
 
 			// birth date fields
-			public int Year { get; set; }
-			public int Month { get; set; }
-			public int Day { get; set; }
+			public int? Year { get; set; }
+			public int? Month { get; set; }
+			public int? Day { get; set; }
 
 			public int? CityId { get; set; }
 
@@ -116,7 +116,8 @@ namespace BizApp.Areas.Identity.Pages.Account
 					Mobile = Input.Mobile,
 					UserName = Input.UserName,
 					Email = Input.Email,
-					PostalCode = Input.PostalCode
+					PostalCode = Input.PostalCode,
+					CityId = Input.CityId
 				};
 
 				// validate birth date
