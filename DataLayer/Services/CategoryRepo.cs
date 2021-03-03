@@ -111,9 +111,9 @@ namespace DataLayer.Services
 				// add new category icon if is exists
 				await CreateIcon(category.Id, command.Icon, command.IconWeb);
 
-				scope.Complete();
-
 				await DbContext.SaveChangesAsync();
+
+				scope.Complete();
 			}
 		}
 		public async Task<IEnumerable<Category>> GetAll()

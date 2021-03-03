@@ -142,7 +142,7 @@
 				<h4 class="modal-title">ثبت جدید</h4>
 			</div>
 			<div class="modal-body" style="height:auto">
-				<form id="register">
+				<form id="register" enctype="multipart/form-data">
 					<input id="CategoryId" name="CategoryId" hidden />
 					<div class="form-group" style="margin-right:5px">
 						<label for="Name"> نام :</label>
@@ -163,6 +163,19 @@
 						<label for="">ترتیب</label>
 						<input type="number" min="0" max="10" class="form-control" name="Order" id="Order" />
 					</div>
+
+					<div class="form-group">
+						<label for="exampleInputEmail1">PNG آیکن:</label>
+						<div id="main-container">
+							<input display="Image" id="PngIconInput" name="PngIconInput" class="TheFile" onchange="SetPictures('file','ImageItems');" style="display:none" type="file">
+							<button type="button" style="height:20%;margin-left:15px;top:0;" class="btn btn-primary" onclick="PngIconInput.click()"><i class="fa fa-camera"></i>انتخاب کنید</button>
+							<div id="ImageItems" style="width:400px;height:auto;margin-left:5px;">
+							</div>
+							<div id="RemoveImageItems" style="width:auto;height:auto;margin-left:5px;">
+							</div>
+						</div>
+					</div>
+
 				</form>
 			</div>
 			<div class="modal-footer">
@@ -271,7 +284,7 @@
 					$("#IconWeb").attr('value', '');
 				}
 
-				var Parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "CategoryId", htmlname: "CategoryId", special: "" }, { id: "Icon", htmlname: "Icon", special: "" }, { id: "Order", htmlname: "Order", special: "" }, { id: "IconWeb", htmlname: "IconWeb", special: "" }];
+				var Parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "CategoryId", htmlname: "CategoryId", special: "" }, { id: "Icon", htmlname: "Icon", special: "" }, { id: "Order", htmlname: "Order", special: "" }, { id: "IconWeb", htmlname: "IconWeb", special: "" }, { id: "PngIconInput", htmlname: "PngIconInput", special: "file" }];
 
 				PostAjax('/admin/Categories/CreateOrUpdate', Parameters, "/admin/Categories/Index");
 			}

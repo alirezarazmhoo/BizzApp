@@ -8,6 +8,7 @@ using BizApp.Models.Basic;
 using BizApp.Utility;
 using DataLayer.Infrastructure;
 using DomainClass.Commands;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PagedList.Core;
@@ -69,7 +70,7 @@ namespace BizApp.Areas.Admin.Controllers
 			}
 		}
 		[HttpPost]
-		public async Task<IActionResult> CreateOrUpdate(CreateUpdateMainCategoryViewModel model)
+		public async Task<IActionResult> CreateOrUpdate(CreateUpdateMainCategoryViewModel model, IFormFile pngIcon = null)
 		{
 			ModelState.Remove("CategoryId");
 
@@ -77,7 +78,7 @@ namespace BizApp.Areas.Admin.Controllers
 			{
 				if (model.Order == 0) model.Order = null;
 
-				if (model.CategoryId == 0)
+				if (model.CategoryId < 1)
 				{
 					var command = _mapper.Map<CreateCategoryCommand>(model);
 					try
