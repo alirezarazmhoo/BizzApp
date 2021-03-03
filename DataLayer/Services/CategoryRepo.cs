@@ -118,11 +118,11 @@ namespace DataLayer.Services
 		}
 		public async Task<IEnumerable<Category>> GetAll()
 		{
-			return await FindByCondition(f => f.ParentCategoryId == null).ToListAsync();
+			return await FindByCondition(f => f.ParentCategoryId == null).OrderByDescending(o => o.Id).ToListAsync();
 		}
 		public async Task<List<Category>> GetAll(string searchString)
 		{
-			return await FindByCondition(f => f.Name.Contains(searchString)).ToListAsync();
+			return await FindByCondition(f => f.Name.Contains(searchString)).OrderByDescending(o => o.Id).ToListAsync();
 		}
 		public async Task<GetCategoryByIdQuery> GetWithTermsById(int id)
 		{

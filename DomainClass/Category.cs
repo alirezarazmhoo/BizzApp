@@ -12,7 +12,7 @@ namespace DomainClass
 		[MaxLength(50 , ErrorMessage ="طول نام بیش از حد زیاد است ")]
 		public string Name { get; set; }
 		public int? ParentCategoryId { get; set; }
-		public int Order { get; set; }
+		public int? Order { get; set; }
 
 		public virtual Category ParentCategory { get; set; }
 		public virtual ICollection<CategoryFeature> CategoryFeatures { get; set; }

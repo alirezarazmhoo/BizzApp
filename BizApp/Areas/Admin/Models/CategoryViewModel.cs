@@ -8,7 +8,7 @@ namespace BizApp.Areas.Admin.Models
 		[Required]
 		public string Name { get; set; }
 		public int? ParentCategoryId { get; set; }
-
+		public int? Order { get; set; }
 		public bool HasChild { get; set; }
 		public int ChildCount { get; set; }
 	}

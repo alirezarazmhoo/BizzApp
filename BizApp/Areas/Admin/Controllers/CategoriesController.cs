@@ -37,10 +37,29 @@ namespace BizApp.Areas.Admin.Controllers
 						await _UnitOfWork.CategoryRepo.GetAll()
 						: await _UnitOfWork.CategoryRepo.GetAll(searchString);
 
+				bool hasChild;
+				var childCount = 0;
 				foreach (var item in items.OrderByDescending(s => s.Id))
 				{
-					categoryViewModel.Add(new CategoryViewModel() { CategoryId = item.Id, HasChild = await _UnitOfWork.CategoryRepo.HasChild(item.Id), Name = item.Name, ParentCategoryId = item.ParentCategoryId, ChildCount = await _UnitOfWork.CategoryRepo.GetChildCount(item.Id) });
+					hasChild = await _UnitOfWork.CategoryRepo.HasChild(item.Id);
+					if (hasChild) 
+					{
+						childCount = await _UnitOfWork.CategoryRepo.GetChildCount(item.Id);
+					}
+
+					categoryViewModel.Add(new CategoryViewModel() 
+					{ 
+						CategoryId = item.Id, 
+						HasChild = hasChild, 
+						Name = item.Name,
+						Order = item.Order,
+						ParentCategoryId = item.ParentCategoryId, 
+						ChildCount = childCount
+					});
+
+					childCount = 0;
 				}
+
 				PagedList<CategoryViewModel> res = new PagedList<CategoryViewModel>(categoryViewModel.AsQueryable(), page ?? 1, pageSize);
 				return View(res);
 			}
@@ -56,6 +75,8 @@ namespace BizApp.Areas.Admin.Controllers
 
 			if (ModelState.IsValid)
 			{
+				if (model.Order == 0) model.Order = null;
+
 				if (model.CategoryId == 0)
 				{
 					var command = _mapper.Map<CreateCategoryCommand>(model);

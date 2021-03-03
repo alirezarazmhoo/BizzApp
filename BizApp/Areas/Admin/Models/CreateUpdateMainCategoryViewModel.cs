@@ -11,6 +11,6 @@ namespace BizApp.Areas.Admin.Models
         public string Icon { get; set; }
         public string IconWeb { get; set; }
 		[Range(0, 10, ErrorMessage = "ترتیب باید عددی بین 1 تا 10 باشد")]
-		public int Order { get; set; }
+		public int? Order { get; set; }
 	}
 }
