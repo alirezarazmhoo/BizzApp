@@ -36,7 +36,7 @@ namespace DataLayer.Services
 			Random random = new Random();
 			Slider SelectedSlider = new Slider();
 			var Item = await DbContext.Sliders.Where(s=>s.Status == DomainClass.Enums.SlideStatusEnum.Publish).ToListAsync();
-			if (Item != null)
+			if (Item.Count != 0 )
 			{
 				if (Item.Count == 1)
 				{
