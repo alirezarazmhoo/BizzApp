@@ -77,7 +77,7 @@
 									</th>
 								</tr>
 								@{ int rowNo = 0;
-								   string order = "";
+									string order = "";
 								}
 								@foreach (var item in Model)
 								{
@@ -167,8 +167,8 @@
 					<div class="form-group">
 						<label for="exampleInputEmail1">PNG آیکن:</label>
 						<div id="main-container">
-							<input display="Image" id="PngIconInput" name="PngIconInput" class="TheFile" onchange="SetPictures('file','ImageItems');" style="display:none" type="file">
-							<button type="button" style="height:20%;margin-left:15px;top:0;" class="btn btn-primary" onclick="PngIconInput.click()"><i class="fa fa-camera"></i>انتخاب کنید</button>
+							<input display="Image" id="pngIcon" name="pngIcon" class="TheFile" onchange="SetPictures('pngIcon','ImageItems');" style="display:none" type="file">
+							<button type="button" style="height:20%;margin-left:15px;top:0;" class="btn btn-primary" onclick="pngIcon.click()"><i class="fa fa-camera"></i>انتخاب کنید</button>
 							<div id="ImageItems" style="width:400px;height:auto;margin-left:5px;">
 							</div>
 							<div id="RemoveImageItems" style="width:auto;height:auto;margin-left:5px;">
@@ -215,7 +215,12 @@
 @section scripts
 {
 	<script src="~/lib/fontawesome-iconpicker-master/dist/js/fontawesome-iconpicker.js"></script>
-	<script src="~/lib/fontawesome-free/js/all.js" data-auto-replace-svg="nest"></script>
+	<script>
+		FontAwesomeConfig = {
+			autoReplaceSvg: false
+		}
+	</script>
+	<script src="~/lib/fontawesome-free/js/all.js"></script>
 
 	<script>
 		window.onload = Load;
@@ -233,7 +238,6 @@
 					// set selected icon
 					var iconClassNames = $("#IconWeb").attr('value');
 					var svgTag = '<i id="iconResult" class="' + iconClassNames + '"></i>';
-
 					//var selectedIcon = window.FontAwesome.icon({ svgTag });
 
 					$("#selectIconButton").html(svgTag);
@@ -284,7 +288,7 @@
 					$("#IconWeb").attr('value', '');
 				}
 
-				var Parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "CategoryId", htmlname: "CategoryId", special: "" }, { id: "Icon", htmlname: "Icon", special: "" }, { id: "Order", htmlname: "Order", special: "" }, { id: "IconWeb", htmlname: "IconWeb", special: "" }, { id: "PngIconInput", htmlname: "PngIconInput", special: "file" }];
+				var Parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "CategoryId", htmlname: "CategoryId", special: "" }, { id: "Icon", htmlname: "Icon", special: "" }, { id: "Order", htmlname: "Order", special: "" }, { id: "IconWeb", htmlname: "IconWeb", special: "" }, { id: "pngIcon", htmlname: "pngIcon", special: "file" }];
 
 				PostAjax('/admin/Categories/CreateOrUpdate', Parameters, "/admin/Categories/Index");
 			}

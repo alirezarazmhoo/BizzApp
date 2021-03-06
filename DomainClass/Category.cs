@@ -16,6 +16,6 @@ namespace DomainClass
 
 		public virtual Category ParentCategory { get; set; }
 		public virtual ICollection<CategoryFeature> CategoryFeatures { get; set; }
-		public virtual ICollection<CategoryTerm> Trems { get; set; }
+		public virtual ICollection<CategoryTerm> Terms { get; set; }
 	}
 }

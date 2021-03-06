@@ -49,7 +49,7 @@ namespace BizApp.Areas.Admin.Controllers
 					}
 
 					categoryViewModel.Add(new CategoryViewModel() 
-					{ 
+					{
 						CategoryId = item.Id, 
 						HasChild = hasChild, 
 						Name = item.Name,
@@ -70,7 +70,7 @@ namespace BizApp.Areas.Admin.Controllers
 			}
 		}
 		[HttpPost]
-		public async Task<IActionResult> CreateOrUpdate(CreateUpdateMainCategoryViewModel model, IFormFile pngIcon = null)
+		public async Task<IActionResult> CreateOrUpdate(CreateUpdateMainCategoryViewModel model, IFormFile file)
 		{
 			ModelState.Remove("CategoryId");
 
@@ -83,10 +83,10 @@ namespace BizApp.Areas.Admin.Controllers
 					var command = _mapper.Map<CreateCategoryCommand>(model);
 					try
 					{
-						await _UnitOfWork.CategoryRepo.Add(command);
+						await _UnitOfWork.CategoryRepo.AddAsync(command, file);
 						return Json(new { success = true, responseText = CustomeMessages.Succcess });
 					}
-					catch // (Exception ex)
+					catch (Exception ex)
 					{
 						return Json(new { success = false, responseText = CustomeMessages.Fail });
 					}
@@ -97,7 +97,7 @@ namespace BizApp.Areas.Admin.Controllers
 
 					try
 					{
-						await _UnitOfWork.CategoryRepo.Update(command);
+						await _UnitOfWork.CategoryRepo.UpdateAsync(command, file);
 						return Json(new { success = true, responseText = CustomeMessages.Succcess });
 					}
 					catch// (Exception ex)
@@ -116,8 +116,7 @@ namespace BizApp.Areas.Admin.Controllers
 			if (category == null) return Json(new { success = true, responseText = CustomeMessages.Fail });
 			try
 			{
-				_UnitOfWork.CategoryRepo.Remove(category);
-				await _UnitOfWork.SaveAsync();
+				await _UnitOfWork.CategoryRepo.Remove(category);
 				return Json(new { success = true, responseText = CustomeMessages.Succcess });
 			}
 			catch
@@ -145,7 +144,8 @@ namespace BizApp.Areas.Admin.Controllers
 				new EditViewModels { key = "ParentCategoryId", value = category.ParentCategoryId.ToString() },
 				new EditViewModels { key = "Icon", value = category.Icon },
 				new EditViewModels { key = "Order", value = category.Order.ToString() },
-				new EditViewModels { key = "IconWeb", value = category.IconWeb }
+				new EditViewModels { key = "IconWeb", value = category.IconWeb },
+				new EditViewModels { key = "PngIconPath", value = category.PngIconPath }
 			};
 
 			return Json(new { success = true, listItem = edit.ToList(), majoritem = ItemId });

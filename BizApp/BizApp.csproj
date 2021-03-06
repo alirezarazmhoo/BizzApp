@@ -49,6 +49,7 @@
     <Folder Include="Areas\Profile\Views\" />
     <Folder Include="wwwroot\Admin\bower_components\" />
     <Folder Include="wwwroot\Upload\Bussiness\Files\" />
+    <Folder Include="wwwroot\Upload\Categories\Files\" />
     <Folder Include="wwwroot\Upload\User\" />
   </ItemGroup>
 
