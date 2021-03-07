@@ -13,5 +13,6 @@ namespace BizApp.Areas.Admin.Models
 		[Range(0, 10, ErrorMessage = "ترتیب باید عددی بین 1 تا 10 باشد")]
 		public int? Order { get; set; }
 		public bool ChangedPngIcon { get; set; }
+		public bool ChangedFeatureImage { get; set; }
 	}
 }

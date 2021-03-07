@@ -70,9 +70,11 @@ namespace BizApp.Areas.Admin.Controllers
 			}
 		}
 		[HttpPost]
-		public async Task<IActionResult> CreateOrUpdate(CreateUpdateMainCategoryViewModel model, IFormFile file)
+		public async Task<IActionResult> CreateOrUpdate(CreateUpdateMainCategoryViewModel model, IFormFile file, IFormFile featureImage)
 		{
 			ModelState.Remove("CategoryId");
+			ModelState.Remove("ChangedPngIcon");
+			ModelState.Remove("ChangedFeatureImage");
 
 			if (ModelState.IsValid)
 			{
@@ -83,7 +85,7 @@ namespace BizApp.Areas.Admin.Controllers
 					var command = _mapper.Map<CreateCategoryCommand>(model);
 					try
 					{
-						await _UnitOfWork.CategoryRepo.AddAsync(command, file);
+						await _UnitOfWork.CategoryRepo.AddAsync(command, file, featureImage);
 						return Json(new { success = true, responseText = CustomeMessages.Succcess });
 					}
 					catch (Exception ex)
@@ -97,7 +99,7 @@ namespace BizApp.Areas.Admin.Controllers
 
 					try
 					{
-						await _UnitOfWork.CategoryRepo.UpdateAsync(command, file);
+						await _UnitOfWork.CategoryRepo.UpdateAsync(command, file, featureImage);
 						return Json(new { success = true, responseText = CustomeMessages.Succcess });
 					}
 					catch// (Exception ex)
@@ -145,7 +147,8 @@ namespace BizApp.Areas.Admin.Controllers
 				new EditViewModels { key = "Icon", value = category.Icon },
 				new EditViewModels { key = "Order", value = category.Order.ToString() },
 				new EditViewModels { key = "IconWeb", value = category.IconWeb },
-				new EditViewModels { key = "PngIconPath", value = category.PngIconPath }
+				new EditViewModels { key = "PngIconPath", value = category.PngIconPath },
+				new EditViewModels { key = "FeatureImagePath", value = category.FeatureImagePath }
 			};
 
 			return Json(new { success = true, listItem = edit.ToList(), majoritem = ItemId });

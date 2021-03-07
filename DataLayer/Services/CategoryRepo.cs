@@ -18,16 +18,16 @@ namespace DataLayer.Services
 {
 	public class CategoryRepo : RepositoryBase<Category>, ICateogryRepo
 	{
-		private readonly string CategoryIconType;
-		private readonly string CategoryIconWebType;
-		private readonly string CategoryFeatureImageType;
-		private readonly string CategoryPngIconType;
+		private readonly string IconType;
+		private readonly string IconWebType;
+		private readonly string FeatureImageType;
+		private readonly string PngIconType;
 		public CategoryRepo(ApplicationDbContext DbContext) : base(DbContext)
 		{
-			CategoryIconType = "icon";
-			CategoryIconWebType = "icon-web";
-			CategoryFeatureImageType = "feature-image";
-			CategoryPngIconType = "png-icon";
+			IconType = "icon";
+			IconWebType = "icon-web";
+			FeatureImageType = "feature-image";
+			PngIconType = "png-icon";
 		}
 		public async Task AddOrUpdate(Category model)
 		{
@@ -46,14 +46,14 @@ namespace DataLayer.Services
 			{
 				var categoryTerm = new CategoryTerm
 				{
-					Key = CategoryIconType,
+					Key = IconType,
 					Value = icon,
 					CategoryId = categoryId
 				};
 
 				var categoryTermIconWeb = new CategoryTerm
 				{
-					Key = CategoryIconWebType,
+					Key = IconWebType,
 					Value = iconWebClassName,
 					CategoryId = categoryId
 				};
@@ -82,25 +82,47 @@ namespace DataLayer.Services
 
 			return null;
 		}
-		private async Task CreatePngIconAsync(int categoryId, IFormFile pngIocn)
+		private async Task CreatePngIconAsync(int categoryId, IFormFile file)
 		{
 			// upload image
-			var iconName = UploadFile(pngIocn);
+			var iconName = UploadFile(file);
+
 			// if iconName is null means no selected icon
 			if (iconName == null) return;
 
 			// create png icon in db
 			var iconTerm = new CategoryTerm
 			{
-				Key = CategoryPngIconType,
+				Key = PngIconType,
 				Value = iconName,
 				CategoryId = categoryId
 			};
 
+			// save changes
 			await DbContext.CategoryTerms.AddAsync(iconTerm);
 			await DbContext.SaveChangesAsync();
 		}
-		public async Task AddAsync(CreateCategoryCommand model, IFormFile pngIcon, IFormFile featureImage = null)
+		private async Task CreateFeatureImageAsync(int categoryId, IFormFile file)
+		{
+			// upload image
+			var imageName = UploadFile(file);
+
+			// if iconName is null means no selected icon
+			if (imageName == null) return;
+
+			// create png icon in db
+			var iconTerm = new CategoryTerm
+			{
+				Key = FeatureImageType,
+				Value = imageName,
+				CategoryId = categoryId
+			};
+
+			// save changes
+			await DbContext.CategoryTerms.AddAsync(iconTerm);
+			await DbContext.SaveChangesAsync();
+		}
+		public async Task AddAsync(CreateCategoryCommand model, IFormFile pngIcon, IFormFile featureImage)
 		{
 			using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
 			{
@@ -123,6 +145,7 @@ namespace DataLayer.Services
 				await CreatePngIconAsync(category.Id, pngIcon);
 
 				// save and uplaod feature image
+				await CreateFeatureImageAsync(category.Id, featureImage);
 
 				// save all changes together
 				scope.Complete();
@@ -134,19 +157,19 @@ namespace DataLayer.Services
 			var categoryTerms = await DbContext.CategoryTerms.Where(w => w.CategoryId == id).ToListAsync();
 
 			// delete category icon
-			var categoryIcon = categoryTerms.FirstOrDefault(f => f.Key == CategoryIconType);
+			var categoryIcon = categoryTerms.FirstOrDefault(f => f.Key == IconType);
 			if (categoryIcon != null) DbContext.CategoryTerms.Remove(categoryIcon);
 
 			// delete category icon web value
-			var categoryIconWeb = categoryTerms.FirstOrDefault(f => f.Key == CategoryIconWebType);
+			var categoryIconWeb = categoryTerms.FirstOrDefault(f => f.Key == IconWebType);
 			if (categoryIconWeb != null) DbContext.CategoryTerms.Remove(categoryIconWeb);
 
 			await DbContext.SaveChangesAsync();
 		}
-		private async Task DeletePngIcon(int id) 
+		private async Task DeleteFile(int id, string categoryFileType) 
 		{
 			// get png icon to delete
-			var categoryTerm = await DbContext.CategoryTerms.FirstOrDefaultAsync(w => w.CategoryId == id && w.Key == CategoryPngIconType);
+			var categoryTerm = await DbContext.CategoryTerms.FirstOrDefaultAsync(w => w.CategoryId == id && w.Key == categoryFileType);
 
 			if (categoryTerm != null)
 			{
@@ -158,7 +181,8 @@ namespace DataLayer.Services
 				await DbContext.SaveChangesAsync();
 			}
 		}
-		public async Task UpdateAsync(UpdateCategoryCommand command, IFormFile pngIcon, IFormFile featureImage = null)
+
+		public async Task UpdateAsync(UpdateCategoryCommand command, IFormFile pngIcon, IFormFile featureImage)
 		{
 			using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
 			{
@@ -182,10 +206,20 @@ namespace DataLayer.Services
 				if (command.ChangedPngIcon)
 				{
 					// delete category png icon
-					await DeletePngIcon(category.Id);
+					await DeleteFile(category.Id, PngIconType);
 
 					// add new category png icon if exists
 					await CreatePngIconAsync(category.Id, pngIcon);
+				}
+				
+				// if feature image changed
+				if (command.ChangedFeatureImage)
+				{
+					// delete category feature image
+					await DeleteFile(category.Id, FeatureImageType);
+
+					// add new category feature image if exists
+					await CreateFeatureImageAsync(category.Id, featureImage);
 				}
 
 				// save all chagnes
@@ -213,10 +247,10 @@ namespace DataLayer.Services
 					 Name = c.Name,
 					 Order = c.Order,
 					 ParentCategoryId = c.ParentCategoryId,
-					 Icon = c.Terms.FirstOrDefault(f => f.Key == CategoryIconType).Value,
-					 IconWeb = c.Terms.FirstOrDefault(f => f.Key == CategoryIconWebType).Value,
-					 PngIconPath = c.Terms.FirstOrDefault(f => f.Key == CategoryPngIconType).Value,
-					 FeatureImagePath = c.Terms.FirstOrDefault(f => f.Key == CategoryFeatureImageType).Value
+					 Icon = c.Terms.FirstOrDefault(f => f.Key == IconType).Value,
+					 IconWeb = c.Terms.FirstOrDefault(f => f.Key == IconWebType).Value,
+					 PngIconPath = c.Terms.FirstOrDefault(f => f.Key == PngIconType).Value,
+					 FeatureImagePath = c.Terms.FirstOrDefault(f => f.Key == FeatureImageType).Value
 				 })
 				 .FirstOrDefaultAsync();
 
@@ -236,7 +270,7 @@ namespace DataLayer.Services
 				await DeleteIcons(model.Id);
 
 				// delete png icon
-				await DeletePngIcon(model.Id);
+				await DeleteFile(model.Id, PngIconType);
 
 				// delete category
 				Delete(model);

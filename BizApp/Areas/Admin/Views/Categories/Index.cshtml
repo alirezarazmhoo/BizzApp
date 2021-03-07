@@ -164,15 +164,26 @@
 
 					<div class="form-group">
 						<label for="exampleInputEmail1">PNG آیکن:</label>
-						<input type="hidden" id="PngIconPath" name="PngIconPath" value=""/>
-						<input type="hidden" id="ChangedPngIcon" name="ChangedPngIcon" value=""/>
+						<input type="hidden" id="PngIconPath" name="PngIconPath" value="" />
+						<input type="hidden" id="ChangedPngIcon" name="ChangedPngIcon" value="" />
 
 						<div id="main-container">
 							<input display="Image" id="pngIcon" name="pngIcon" class="TheFile" onchange="overrideSetPictures('pngIcon','ImageItems');" style="display:none" type="file">
 							<button type="button" style="height:20%;margin-left:15px;top:0;" class="btn btn-primary" onclick="pngIcon.click()"><i class="fa fa-camera"></i>انتخاب کنید</button>
 							<div id="ImageItems" style="width:400px;height:auto;margin-left:5px;">
 							</div>
-							<div id="RemoveImageItems" style="width:auto;height:auto;margin-left:5px;">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="exampleInputEmail1">تصویر شاخص:</label>
+						<input type="hidden" id="FeatureImagePath" name="FeatureImagePath" value="" />
+						<input type="hidden" id="ChangedFeatureImage" name="ChangedFeatureImage" value="" />
+
+						<div id="main-container">
+							<input display="Image" id="featureImage" name="featureImage" class="TheFile2" onchange="overrideSetFeaturePictures('featureImage','FeatureImageItems');" style="display:none" type="file">
+							<button type="button" style="height:20%;margin-left:15px;top:0;" class="btn btn-primary" onclick="featureImage.click()"><i class="fa fa-camera"></i>انتخاب کنید</button>
+							<div id="FeatureImageItems" style="width:400px;height:auto;margin-left:5px;">
 							</div>
 						</div>
 					</div>
@@ -225,6 +236,7 @@
 
 	<script>
 		var pngIconRemoveButton = '<span class="close" style="float: right;background: #ccc;padding: 2px 5px;" onclick="removeIconButton_click()">&times;</span>';
+		var featureImageRemoveButton = '<span class="close" style="float: right;background: #ccc;padding: 2px 5px;" onclick="removeFeatureImageButton_click()">&times;</span>';
 		window.onload = Load;
 		function Load() {
 			FontAwesomeConfig = { autoReplaceSvg: false }
@@ -232,6 +244,10 @@
 			CreateAllModals();
 			$(".openmodal").click(function () {
 				clear('register', ["input"]);
+
+				$('#ImageItems').html('');
+				$('#FeatureImageItems').html(''); // reset image show
+
 			});
 			$(".btn-warning").click(function () {
 				$("#Icon").val('');
@@ -245,10 +261,19 @@
 					$("#selectIconButton").html(svgTag);
 
 					// show png icon
+					$('#ImageItems').html('');
 					var pngIconPath = $("#PngIconPath").val();
 					if (pngIconPath || 0 !== pngIconPath.length) {
 						var imgTag = '<img src="' + pngIconPath + '" style="width:80px;height:80px;">';
 						$('#ImageItems').html(imgTag + pngIconRemoveButton);
+					}
+
+					// show feature image
+					$('#FeatureImageItems').html(''); // reset image show
+					var featureImagePath = $('#FeatureImagePath').val();
+					if (featureImagePath || 0 !== featureImagePath.length) {
+						var featureImgTag = '<img src="' + featureImagePath + '" style="width:80px;height:80px;">';
+						$('#FeatureImageItems').html(featureImgTag + featureImageRemoveButton);
 					}
 				});
 
@@ -264,11 +289,29 @@
 			// create image tag
 			SetPictures(inputtarget, target);
 
-			// add remove button 
+			// add remove button
 			$('#ImageItems').append(pngIconRemoveButton);
 
 			$('#ChangedPngIcon').val('true');
 		}
+
+		function overrideSetFeaturePictures(inputtarget, target) {
+			// create image tag
+			SetPictures(inputtarget, target);
+
+			// add remove button 
+			$('#FeatureImageItems').append(featureImageRemoveButton);
+
+			$('#ChangedFeatureImage').val('true');
+		}
+
+		function removeFeatureImageButton_click() {
+			$('#FeatureImageItems').html('');
+			$('#featureImage').val('');
+			$("#FeatureImagePath").val('');
+			$('#ChangedFeatureImage').val('true');
+		}
+
 
 		function removeIconButton_click() {
 			$('#ImageItems').html('');
@@ -309,7 +352,7 @@
 					$("#IconWeb").attr('value', '');
 				}
 
-				var Parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "CategoryId", htmlname: "CategoryId", special: "" }, { id: "Icon", htmlname: "Icon", special: "" }, { id: "Order", htmlname: "Order", special: "" }, { id: "IconWeb", htmlname: "IconWeb", special: "" }, { id: "ChangedPngIcon", htmlname: "ChangedPngIcon", special: "" }, { id: "pngIcon", htmlname: "pngIcon", special: "file" }];
+				var Parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "CategoryId", htmlname: "CategoryId", special: "" }, { id: "Icon", htmlname: "Icon", special: "" }, { id: "Order", htmlname: "Order", special: "" }, { id: "IconWeb", htmlname: "IconWeb", special: "" }, { id: "ChangedPngIcon", htmlname: "ChangedPngIcon", special: "" }, { id: "ChangedFeatureImage", htmlname: "ChangedFeatureImage", special: "" }, { id: "pngIcon", htmlname: "pngIcon", special: "file" }];
 
 				PostAjax('/admin/Categories/CreateOrUpdate', Parameters, "/admin/Categories/Index");
 			}

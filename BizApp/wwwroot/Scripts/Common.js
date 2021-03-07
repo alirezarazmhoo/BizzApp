@@ -77,6 +77,12 @@ function PostAjax(ActionName, Parameters, redirecturl) {
                 });
             });
 
+            $.each($(".TheFile2"), function (i, obj) {
+                $.each(obj.files, function (j, file) {
+                    fd.append("featureImage", file);
+                });
+            });
+
         }
         else if (Parameters[i].special === 'music') {
             $.each($(".MusicUrl"), function (i, obj) {

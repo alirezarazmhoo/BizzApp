@@ -15,8 +15,8 @@ namespace DataLayer.Infrastructure
 		Task<Category> GetById(int id);
 		Task<GetCategoryByIdQuery> GetWithTermsById(int id);
 		//Task<int> Add(CreateCategoryCommand model);
-		Task AddAsync(CreateCategoryCommand model, IFormFile pngIcon, IFormFile featureImage = null);
-		Task UpdateAsync(UpdateCategoryCommand command, IFormFile pngIcon, IFormFile featureImage = null);
+		Task AddAsync(CreateCategoryCommand model, IFormFile pngIcon, IFormFile featureImage);
+		Task UpdateAsync(UpdateCategoryCommand command, IFormFile pngIcon, IFormFile featureImage);
 		Task AddOrUpdate(Category city);
 		Task Remove(Category city);
 	    Task<bool> HasChild(int Id);
