@@ -9,6 +9,7 @@ using DomainClass.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using PagedList.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -159,10 +160,10 @@ namespace DataLayer.Services
 				UserCreatorId = model.UserCreatorId,
 				OwnerId = ownerId
 			};
-
-			DbContext.Businesses.Add(entity);
-			await DbContext.SaveChangesAsync();
-
+			
+				DbContext.Businesses.Add(entity);
+				await DbContext.SaveChangesAsync();
+			
 			// upload image gallery
 			string fileName, filePath;
 			if (otherimages != null && otherimages.Count() > 0)
@@ -398,5 +399,16 @@ namespace DataLayer.Services
 
 			return true;
 		}
+
+		 public PagedList<Business> GetBussiness(int? CategoryId,int page=1)
+        {
+            IQueryable<Business> result = null;
+            if (CategoryId==null)
+                result = DbContext.Businesses.OrderByDescending(x => x.CreatedDate);
+            else
+                result = DbContext.Businesses.Where(x => x.CategoryId==CategoryId).OrderByDescending(x => x.CreatedDate);
+            PagedList<Business> res = new PagedList<Business>(result, page, 2);
+            return res;
+        }
 	}
 }

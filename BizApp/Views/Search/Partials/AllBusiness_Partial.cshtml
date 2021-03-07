@@ -1,0 +1,86 @@
+﻿@model PagedList.Core.IPagedList<DomainClass.Businesses.Business>
+<style>
+    .active {
+        background-color: #f5f5f5;
+    }
+</style>
+
+@foreach (var item in Model)
+{
+    <div class="category-content__item__cat-product" data-assigned-lon="@item.Longitude" data-assigned-lat="@item.Latitude"  data-assigned-datas="<div style='width:80%!important;height;80%!important;align-items: center !important;' ><img src='@item.FeatureImage'  ></div><br/><h6>@item.Name </h6><br/><div class='category-content__item__cat-product__content__text__desc__icon__star' data-star='3.5'></div>">
+
+        <div class="category-content__item__cat-product__image">
+            <img src="@item.FeatureImage">
+        </div>
+        <div class="category-content__item__cat-product__content">
+            <div class="category-content__item__cat-product__content__text">
+                <div class="category-content__item__cat-product__content__text__desc">
+                    <div class="category-content__item__cat-product__content__text__desc__title">
+                        <a href="#">
+                            <h4>@item.Name </h4>
+                        </a>
+                    </div>
+                    <div class="category-content__item__cat-product__content__text__desc__icon">
+                        <div class="category-content__item__cat-product__content__text__desc__icon__star"
+                             data-star="3.5"></div>
+                        <span>1</span>
+                    </div>
+                    <div class="category-content__item__cat-product__content__text__desc__link">
+                        <a href="#">ماشینهای دست دوم</a>
+                    </div>
+                </div>
+                <div class="category-content__item__cat-product__content__text__adress">
+                    <span>104. ایچبورندام</span>
+                    <span>برلین</span>
+                </div>
+            </div>
+        </div>
+        <a href="#"></a>
+    </div>
+}
+<div class="category-content__item__number-page">
+    <div class="category-content__item__number-page__number">
+        <ul>
+            @if (@Model.PageNumber - 1 > 0)
+            {
+
+            <li>
+                <a onclick="ChangePage(@Model.PageNumber - 1)" href="#">
+                    <svg width="24" height="24" class="icon_svg">
+                        <path d="M9.75 17.58a1 1 0 01-.7-.28 1 1 0 010-1.42l3.8-3.88L9 8.12a1 1 0 111.41-1.42L15 11.3a1 1 0 010 1.4l-4.5 4.58a1 1 0 01-.75.3z">
+                        </path>
+                    </svg>
+                </a>
+            </li>
+            }
+            @for (int i = 1; i <= Model.PageCount; i++)
+            {
+                <li class="paginate_button  @((i==Model.PageNumber?"active":""))">
+                    <a onclick="ChangePage(@i)" href="#">@i</a>
+                </li>
+            }
+
+
+            <li>
+                <a onclick="ChangePage(@Model.PageNumber+1)" href="#">
+                    <svg width="24" height="24" class="icon_svg">
+                        <path d="M14.25 17.58a1 1 0 01-.71-.3L9 12.7a1 1 0 010-1.4l4.5-4.58A1 1 0 0115 6.7a1 1 0 010 1.42L11.15 12 15 15.88a1 1 0 010 1.42 1 1 0 01-.75.28z">
+                        </path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="category-content__item__number-page__cunter">
+        <span>@Model.PageNumber از @Model.TotalItemCount</span>
+    </div>
+</div>
+
+<script>
+    function ChangePage(page) {
+        
+        GetData("/Search/AllBussiness?CategoryId=1044&page=" + page + "", "AllBussiness");
+        history.pushState(null, null, "/Search/Index?CategoryId=1044&page=" + page + "");
+
+    }
+</script>
