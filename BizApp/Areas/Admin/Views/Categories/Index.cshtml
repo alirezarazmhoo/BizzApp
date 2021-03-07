@@ -1,132 +1,136 @@
 ﻿@model PagedList.Core.IPagedList<BizApp.Areas.Admin.Models.CategoryViewModel>
 
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+	ViewData["Title"] = "Index";
+	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
 @section head
 {
-    <link href="~/lib/fontawesome-free/css/all.css" rel="stylesheet" />
-    <link href="~/lib/fontawesome-iconpicker-master/dist/css/fontawesome-iconpicker.css" rel="stylesheet" />
+	<link href="~/lib/fontawesome-free/css/all.css" rel="stylesheet" />
+	<link href="~/lib/fontawesome-iconpicker-master/dist/css/fontawesome-iconpicker.css" rel="stylesheet" />
 }
 
 <div class="header-secondary row gray-bg">
-    <div class="col-lg-12">
-        <div class="page-heading clearfix">
-            <h1 class="page-title pull-left"> دسته بندی ها</h1><a class="btn btn-primary btn-sm btn-add openmodal" href="#" data-toggle="modal" data-target="#myModal">دسته جدید</a>
-        </div>
-        <!-- Breadcrumb -->
-        <ol class="breadcrumb breadcrumb-2">
-            <li><a href="#"><i class="fa fa-home"></i> خانه</a></li>
-            <li class="active"><strong>دسته بندی ها</strong></li>
-        </ol>
+	<div class="col-lg-12">
+		<div class="page-heading clearfix">
+			<h1 class="page-title pull-left"> دسته بندی ها</h1><a class="btn btn-primary btn-sm btn-add openmodal" href="#" data-toggle="modal" data-target="#myModal">دسته جدید</a>
+		</div>
+		<!-- Breadcrumb -->
+		<ol class="breadcrumb breadcrumb-2">
+			<li><a href="#"><i class="fa fa-home"></i> خانه</a></li>
+			<li class="active"><strong>دسته بندی ها</strong></li>
+		</ol>
 
-    </div>
+	</div>
 </div>
-
 <div class="row filter-wrapper visible-box" id="filter-box">
-    <div class="col-lg-12">
-        <div class="filter-header">
-            <h3 class="title">جستجو</h3>
-        </div>
-        @using (Html.BeginForm("Index", "Categories", FormMethod.Get))
-        {
-            <div class="form-inline">
-                <div class="form-group">
-                    <input name="searchString" placeholder="نام دسته را وارد کنید" class="form-control">
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-default">جستجو</button>
-                </div>
-                <div class="form-group">
-                    <a href="/admin/Categories/" class="btn btn-default">مشاهده همه</a>
-                </div>
-            </div>
-        }
-    </div>
+	<div class="col-lg-12">
+		<div class="filter-header">
+			<h3 class="title">جستجو</h3>
+		</div>
+		@using (Html.BeginForm("Index", "Categories", FormMethod.Get))
+		{
+			<div class="form-inline">
+				<div class="form-group">
+					<input name="searchString" placeholder="نام دسته را وارد کنید" class="form-control">
+				</div>
+				<div class="form-group">
+					<button class="btn btn-default">جستجو</button>
+				</div>
+				<div class="form-group">
+					<a href="/admin/Categories/" class="btn btn-default">مشاهده همه</a>
+				</div>
+			</div>
+		}
+	</div>
 </div>
-
 <div class="main-content">
-    <div class="row">
-        <div class="col-lg-12 animatedParent animateOnce z-index-50">
-            <div class="panel panel-default animated fadeInUp">
-                <div class="panel-heading clearfix">
-                    <h3 class="panel-title">دسته بندی ها</h3>
-                    <ul class="panel-tool-options">
-                        <li><a data-rel="collapse" href="#"><i class="icon-down-open"></i></a></li>
-                    </ul>
-                </div>
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped table-border table-hover dataTables-example">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        ردیف
-                                    </th>
-                                    <th>
-                                        نام
-                                    </th>
-                                    <th>
-                                        تعداد زیردسته
-                                    </th>
-                                    <th>
-                                        عملیات
-                                    </th>
-                                </tr>
-                                @{ int rowNo = 0; }
-                                @foreach (var item in Model)
-                                {
-                                    <tr>
-                                        <td>
-                                            @(++rowNo)
-                                        </td>
-                                        <td>
-                                            @item.Name
-                                        </td>
-                                        <td>
-                                            @item.ChildCount عدد
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.CategoryId">حذف</button> |
-                                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.CategoryId"> ویرایش</button> |
+	<div class="row">
+		<div class="col-lg-12 animatedParent animateOnce z-index-50">
+			<div class="panel panel-default animated fadeInUp">
+				<div class="panel-heading clearfix">
+					<h3 class="panel-title">دسته بندی ها</h3>
+					<ul class="panel-tool-options">
+						<li><a data-rel="collapse" href="#"><i class="icon-down-open"></i></a></li>
+					</ul>
+				</div>
+				<div class="panel-body">
+					<div class="table-responsive">
+						<table class="table table-striped table-border table-hover dataTables-example">
+							<thead>
+								<tr>
+									<th>
+										ردیف
+									</th>
+									<th>
+										نام
+									</th>
+									<th>
+										تعداد زیردسته
+									</th>
+									<th>
+										ترتیب
+									</th>
+									<th>
+										عملیات
+									</th>
+								</tr>
+								@{ int rowNo = 0;
+									string order = "";
+								}
+								@foreach (var item in Model)
+								{
+									<tr>
+										<td>
+											@(++rowNo)
+										</td>
+										<td>
+											@item.Name
+										</td>
+										<td>
+											@item.ChildCount عدد
+										</td>
+										<td>
+											@(order = item.Order == null || item.Order == 0 ? "---" : @item.Order.ToString())
+										</td>
+										<td>
+											<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.CategoryId">حذف</button> |
+											<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.CategoryId"> ویرایش</button> |
 
-                                            @if (item.HasChild)
-                                            {
-                                                <a href="/admin/Categories/ShowSubCateogries?Id=@item.CategoryId" class="btn btn-flickr">مشاهده زیر دسته</a>
-                                            }
-                                            <button type="button" class="btn btn-bitbucket" data-toggle="modal" data-target="#SubcategoryModal" onclick="SubCategoryAssignButtonClicked(this)" data-assigned-id="@item.CategoryId"> ایجاد زیردسته</button> |
-                                            @if (!item.HasChild)
-                                            {
-                                                <button type="button" class="btn btn-adn" id="@item.CategoryId">ثبت خصوصیات</button>
-                                            }
-                                        </td>
-                                    </tr>
-                                }
-                        </table>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-5">
-                        </div>
-                        <div class="col-sm-7">
-                            <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
-                                <ul class="pagination">
+											@if (item.HasChild)
+											{
+												<a href="/admin/Categories/ShowSubCateogries?Id=@item.CategoryId" class="btn btn-flickr">مشاهده زیر دسته</a>
+											}
+											<button type="button" class="btn btn-bitbucket" data-toggle="modal" data-target="#SubcategoryModal" onclick="SubCategoryAssignButtonClicked(this)" data-assigned-id="@item.CategoryId"> ایجاد زیردسته</button> |
+											@if (!item.HasChild)
+											{
+												<button type="button" class="btn btn-adn" id="@item.CategoryId">ثبت خصوصیات</button>
+											}
+										</td>
+									</tr>
+								}
+						</table>
+					</div>
+					<div class="row">
+						<div class="col-sm-5">
+						</div>
+						<div class="col-sm-7">
+							<div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+								<ul class="pagination">
 
-                                    <li>
-                                        <pager list="@Model" asp-controller="Categories" asp-action="Index" asp-area="admin" />
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+									<li>
+										<pager list="@Model" asp-controller="Categories" asp-action="Index" asp-area="admin" />
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
 
-
-
-            </div>
-        </div>
-    </div>
+			</div>
+		</div>
+	</div>
 </div>
 <div class="modal fade" id="myModal" role="dialog" style="height:auto;overflow-y:visible">
 	<div class="modal-dialog modal-sm" style="width:400px">
@@ -136,7 +140,7 @@
 				<h4 class="modal-title">ثبت جدید</h4>
 			</div>
 			<div class="modal-body" style="height:auto">
-				<form id="register">
+				<form id="register" enctype="multipart/form-data">
 					<input id="CategoryId" name="CategoryId" hidden />
 					<div class="form-group" style="margin-right:5px">
 						<label for="Name"> نام :</label>
@@ -153,10 +157,37 @@
 					</div>
 					<input name="Icon" id="Icon" value="" type="hidden">
 					<input name="IconWeb" id="IconWeb" value="" type="hidden">
-					<div class="form-group">
+					<div class="form-group" id="orderDiv">
 						<label for="">ترتیب</label>
 						<input type="number" min="0" max="10" class="form-control" name="Order" id="Order" />
 					</div>
+
+					<div class="form-group">
+						<label for="exampleInputEmail1">PNG آیکن:</label>
+						<input type="hidden" id="PngIconPath" name="PngIconPath" value="" />
+						<input type="hidden" id="ChangedPngIcon" name="ChangedPngIcon" value="" />
+
+						<div id="main-container">
+							<input display="Image" id="pngIcon" name="pngIcon" class="TheFile" onchange="overrideSetPictures('pngIcon','ImageItems');" style="display:none" type="file">
+							<button type="button" style="height:20%;margin-left:15px;top:0;" class="btn btn-primary" onclick="pngIcon.click()"><i class="fa fa-camera"></i>انتخاب کنید</button>
+							<div id="ImageItems" style="width:400px;height:auto;margin-left:5px;">
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="exampleInputEmail1">تصویر شاخص:</label>
+						<input type="hidden" id="FeatureImagePath" name="FeatureImagePath" value="" />
+						<input type="hidden" id="ChangedFeatureImage" name="ChangedFeatureImage" value="" />
+
+						<div id="main-container">
+							<input display="Image" id="featureImage" name="featureImage" class="TheFile2" onchange="overrideSetFeaturePictures('featureImage','FeatureImageItems');" style="display:none" type="file">
+							<button type="button" style="height:20%;margin-left:15px;top:0;" class="btn btn-primary" onclick="featureImage.click()"><i class="fa fa-camera"></i>انتخاب کنید</button>
+							<div id="FeatureImageItems" style="width:400px;height:auto;margin-left:5px;">
+							</div>
+						</div>
+					</div>
+
 				</form>
 			</div>
 			<div class="modal-footer">
@@ -167,27 +198,27 @@
 	</div>
 </div>
 <div class="modal fade" id="SubcategoryModal" role="dialog" style="height:auto;overflow-y:visible">
-    <div class="modal-dialog modal-sm" style="width:400px">
-        <div class="modal-content">
-            <div class="modal-header text-center">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">ثبت زیر دسته</h4>
-            </div>
-            <div class="modal-body" style="height:auto">
-                <form id="SubCategoryregister">
-                    <input id="ParentCategoryId" name="ParentCategoryId" hidden />
-                    <div class="form-group" style="margin-right:5px">
-                        <label for="SubcategoryName"> نام :</label>
-                        <input display="نام" id="SubcategoryName" name="SubcategoryName" placeholder="نام زیر دسته بندی را وارد کنید" class="form-control" style="width:70%" required>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
-                <button type="button" class="btn btn-success" onclick="SubCategorySave();">ثبت</button>
-            </div>
-        </div>
-    </div>
+	<div class="modal-dialog modal-sm" style="width:400px">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">ثبت زیر دسته</h4>
+			</div>
+			<div class="modal-body" style="height:auto">
+				<form id="SubCategoryregister">
+					<input id="ParentCategoryId" name="ParentCategoryId" hidden />
+					<div class="form-group" style="margin-right:5px">
+						<label for="SubcategoryName"> نام :</label>
+						<input display="نام" id="SubcategoryName" name="SubcategoryName" placeholder="نام زیر دسته بندی را وارد کنید" class="form-control" style="width:70%" required>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+				<button type="button" class="btn btn-success" onclick="SubCategorySave();">ثبت</button>
+			</div>
+		</div>
+	</div>
 </div>
 <div id="Error"></div>
 <div id="Success"></div>
@@ -196,43 +227,99 @@
 @section scripts
 {
 	<script src="~/lib/fontawesome-iconpicker-master/dist/js/fontawesome-iconpicker.js"></script>
-	<script src="~/lib/fontawesome-free/js/all.js" data-auto-replace-svg="nest"></script>
+	<script>
+		FontAwesomeConfig = {
+			autoReplaceSvg: false
+		}
+	</script>
+	<script src="~/lib/fontawesome-free/js/all.js"></script>
 
 	<script>
+		var pngIconRemoveButton = '<span class="close" style="float: right;background: #ccc;padding: 2px 5px;" onclick="removeIconButton_click()">&times;</span>';
+		var featureImageRemoveButton = '<span class="close" style="float: right;background: #ccc;padding: 2px 5px;" onclick="removeFeatureImageButton_click()">&times;</span>';
 		window.onload = Load;
-        function Load() {
+		function Load() {
 			FontAwesomeConfig = { autoReplaceSvg: false }
 
 			CreateAllModals();
 			$(".openmodal").click(function () {
-                clear('register', ["input"]);
-			});
-            $(".btn-warning").click(function () {
-                $("#Icon").val('');
+				clear('register', ["input"]);
 
-                EditAjax("/admin/Categories/GetById", this.id, function () {
+				$('#ImageItems').html('');
+				$('#FeatureImageItems').html(''); // reset image show
+
+			});
+			$(".btn-warning").click(function () {
+				$("#Icon").val('');
+
+				EditAjax("/admin/Categories/GetById", this.id, function () {
 					// set selected icon
 					var iconClassNames = $("#IconWeb").attr('value');
 					var svgTag = '<i id="iconResult" class="' + iconClassNames + '"></i>';
-
 					//var selectedIcon = window.FontAwesome.icon({ svgTag });
 
 					$("#selectIconButton").html(svgTag);
-                });
+
+					// show png icon
+					$('#ImageItems').html('');
+					var pngIconPath = $("#PngIconPath").val();
+					if (pngIconPath || 0 !== pngIconPath.length) {
+						var imgTag = '<img src="' + pngIconPath + '" style="width:80px;height:80px;">';
+						$('#ImageItems').html(imgTag + pngIconRemoveButton);
+					}
+
+					// show feature image
+					$('#FeatureImageItems').html(''); // reset image show
+					var featureImagePath = $('#FeatureImagePath').val();
+					if (featureImagePath || 0 !== featureImagePath.length) {
+						var featureImgTag = '<img src="' + featureImagePath + '" style="width:80px;height:80px;">';
+						$('#FeatureImageItems').html(featureImgTag + featureImageRemoveButton);
+					}
+				});
+
 				var bodyStyle = document.body.style;
-                bodyStyle.removeProperty('padding-right');
+				bodyStyle.removeProperty('padding-right');
 
-
-				//<button data-selected="graduation-cap" type="button" class="icp demo btn btn-default dropdown-toggle iconpicker-component form-control" data-toggle="dropdown" aria-expanded="false">
-				//	<svg id="iconResult" class="svg-inline--fa fa-accusoft fa-w-20" aria-hidden="true" data-prefix="fab" data-icon="accusoft" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg=""><path fill="currentColor" d="M482.2 372.1C476.5 365.2 250 75 242.3 65.5c-13.7-17.2 0-16.8 19.2-16.9 9.7-.1 106.3-.6 116.5-.6 24.1-.1 28.7.6 38.4 12.8 2.1 2.7 205.1 245.8 207.2 248.3 5.5 6.7 15.2 19.1 7.2 23.4-2.4 1.3-114.6 47.7-117.8 48.9-10.1 4-17.5 6.8-30.8-9.3m114.7-5.6s-115 50.4-117.5 51.6c-16 7.3-26.9-3.2-36.7-14.6l-57.1-74c-5.4-.9-60.4-9.6-65.3-9.3-3.1.2-9.6.8-14.4 2.9-4.9 2.1-145.2 52.8-150.2 54.7-5.1 2-11.4 3.6-11.1 7.6.2 2.5 2 2.6 4.6 3.5 2.7.8 300.9 67.6 308 69.1 15.6 3.3 38.5 10.5 53.6 1.7 2.1-1.2 123.8-76.4 125.8-77.8 5.4-4 4.3-6.8-1.7-8.2-2.3-.3-24.6-4.7-38-7.2m-326-181.3s-12 1.6-25 15.1c-9 9.3-242.1 239.1-243.4 240.9-7 10 1.6 6.8 15.7 1.7.8 0 114.5-36.6 114.5-36.6.5-.6-.1-.1.6-.6-.4-5.1-.8-26.2-1-27.7-.6-5.2 2.2-6.9 7-8.9l92.6-33.8c.6-.8 88.5-81.7 90.2-83.3v-1l-51.2-65.8"></path></svg><!-- <i id="iconResult" class="fab fa-accusoft"></i> --> &nbsp;<b>˅</b>
-				//	<span class=""></span>
-				//</button>
-
-            });
-            $('.pagination > li:first-child > a, .pagination > li:first-child > span').html('قبلی')
-            $('.pagination>li:last-child>a, .pagination>li:last-child>span').html('بعدی')
-
+			});
+			$('.pagination > li:first-child > a, .pagination > li:first-child > span').html('قبلی');
+			$('.pagination>li:last-child>a, .pagination>li:last-child>span').html('بعدی');
 		}
+
+		function overrideSetPictures(inputtarget, target) {
+			// create image tag
+			SetPictures(inputtarget, target);
+
+			// add remove button
+			$('#ImageItems').append(pngIconRemoveButton);
+
+			$('#ChangedPngIcon').val('true');
+		}
+
+		function overrideSetFeaturePictures(inputtarget, target) {
+			// create image tag
+			SetPictures(inputtarget, target);
+
+			// add remove button 
+			$('#FeatureImageItems').append(featureImageRemoveButton);
+
+			$('#ChangedFeatureImage').val('true');
+		}
+
+		function removeFeatureImageButton_click() {
+			$('#FeatureImageItems').html('');
+			$('#featureImage').val('');
+			$("#FeatureImagePath").val('');
+			$('#ChangedFeatureImage').val('true');
+		}
+
+
+		function removeIconButton_click() {
+			$('#ImageItems').html('');
+			$('#pngIcon').val('');
+			$("#PngIconPath").val('');
+			$('#ChangedPngIcon').val('true');
+		}
+
 		function Save() {
 			if (checkvalidity('register') === 0) {
 				return;
@@ -244,63 +331,63 @@
 				// get selected icon
 				var classList = $('#iconResult').attr('class').split(/\s+/);
 				// get icon name
-                var str = classList[1];
+				var str = classList[1];
 
-                var selectedIcon;
-                if (str != undefined) {
-                    var iconName = str.substring(3, str.length);
-                    // sample: var camera = window.FontAwesome.icon({ prefix: 'fas', iconName: 'camera' })
-                    // help: https://fontawesome.com/how-to-use/javascript-api/setup/getting-started
-                    selectedIcon = window.FontAwesome.icon({ prefix: classList[0], iconName: iconName });
-                }
+				var selectedIcon;
+				if (str != undefined) {
+					var iconName = str.substring(3, str.length);
+					// sample: var camera = window.FontAwesome.icon({ prefix: 'fas', iconName: 'camera' })
+					// help: https://fontawesome.com/how-to-use/javascript-api/setup/getting-started
+					selectedIcon = window.FontAwesome.icon({ prefix: classList[0], iconName: iconName });
+				}
 				//console.log(selectedIcon);
 
 				// set icon in input
-                if (selectedIcon != undefined) {
-                    $("#Icon").attr('value', selectedIcon.icon[4]);
+				if (selectedIcon != undefined) {
+					$("#Icon").attr('value', selectedIcon.icon[4]);
 					$("#IconWeb").attr('value', $('#iconResult').attr('class'));
-                }
-                else {
-                    $("#Icon").attr('value', '');
+				}
+				else {
+					$("#Icon").attr('value', '');
 					$("#IconWeb").attr('value', '');
-                }
+				}
 
-                var Parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "CategoryId", htmlname: "CategoryId", special: "" }, { id: "Icon", htmlname: "Icon", special: "" }, { id: "Order", htmlname: "Order", special: "" }, { id: "IconWeb", htmlname: "IconWeb", special: "" }];
+				var Parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "CategoryId", htmlname: "CategoryId", special: "" }, { id: "Icon", htmlname: "Icon", special: "" }, { id: "Order", htmlname: "Order", special: "" }, { id: "IconWeb", htmlname: "IconWeb", special: "" }, { id: "ChangedPngIcon", htmlname: "ChangedPngIcon", special: "" }, { id: "ChangedFeatureImage", htmlname: "ChangedFeatureImage", special: "" }, { id: "pngIcon", htmlname: "pngIcon", special: "file" }];
 
 				PostAjax('/admin/Categories/CreateOrUpdate', Parameters, "/admin/Categories/Index");
 			}
-        }
+		}
 
 		function AssignButtonClicked(elem) {
 			$('#CategoryId').val($(elem).data('assigned-id'));
 		}
 
-        function SubCategoryAssignButtonClicked(elem) {
-            $('#ParentCategoryId').val($(elem).data('assigned-id'));
-        }
-        function Remove() {
-            var Parameters = [{ id: "CategoryId", htmlname: "CategoryId", special: "" }];
-            PostAjax('/admin/Categories/Remove', Parameters, "/admin/Categories/Index");
-        }
-        function SubCategorySave() {
-            if (checkvalidity('SubCategoryregister') === 0) {
-                return;
-            }
-            else {
-                var Parameters = [{ id: "Name", htmlname: "SubcategoryName", special: "" }, { id: "ParentCategoryId", htmlname: "ParentCategoryId", special: "" }];
-                PostAjax('/admin/Categories/CreateOrUpdate', Parameters, "/admin/Categories/Index");
-            }
-        }
+		function SubCategoryAssignButtonClicked(elem) {
+			$('#ParentCategoryId').val($(elem).data('assigned-id'));
+		}
+		function Remove() {
+			var Parameters = [{ id: "CategoryId", htmlname: "CategoryId", special: "" }];
+			PostAjax('/admin/Categories/Remove', Parameters, "/admin/Categories/Index");
+		}
+		function SubCategorySave() {
+			if (checkvalidity('SubCategoryregister') === 0) {
+				return;
+			}
+			else {
+				var Parameters = [{ id: "Name", htmlname: "SubcategoryName", special: "" }, { id: "ParentCategoryId", htmlname: "ParentCategoryId", special: "" }];
+				PostAjax('/admin/Categories/CreateOrUpdate', Parameters, "/admin/Categories/Index");
+			}
+		}
 
-        function ClearIcon() {
-            $("#Icon").val('');
-            $("#IconWeb").val('');
-            $("#iconResult").attr('class', '');
-            $('#iconResult').html('');
-        }
+		function ClearIcon() {
+			$("#Icon").val('');
+			$("#IconWeb").val('');
+			$("#iconResult").attr('class', '');
+			$('#iconResult').html('');
+		}
 
 		//$("#Icon").onchange(function () { alert('sss')});
-        // Pack Icon input
-        $('.dropdown-menu').iconpicker();
-    </script>
+		// Pack Icon input
+		$('.dropdown-menu').iconpicker();
+	</script>
 }

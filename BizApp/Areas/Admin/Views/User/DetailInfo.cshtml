@@ -1,0 +1,176 @@
+﻿@model DomainClass.BizAppUser
+@using DomainClass.Enums
+@using BizApp.Utility
+@{
+    ViewData["Title"] = "Index";
+
+
+}
+
+
+<div class="header-secondary row gray-bg">
+    <div class="col-lg-12">
+        <div class="page-heading clearfix">
+            <h1 class="page-title pull-left"> مدیریت اطلاعات تکمیلی کاربر</h1>
+        </div>
+        <!-- Breadcrumb -->
+        <ol class="breadcrumb breadcrumb-2">
+            <li><a href="#"><i class="fa fa-home"></i> خانه</a></li>
+            <li class="active"><a href="/admin/businesses">کاربران</a></li>
+            <li class="active">اطلاعات تکمیلی</li>
+        </ol>
+
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="row">
+        <div class="col-lg-12 animatedParent animateOnce z-index-50">
+            <div class="panel panel-default animated fadeInUp">
+                <div class="panel-heading clearfix">
+                    <h3 class="panel-title">اطلاعات تکمیلی کاربر</h3>
+                    <ul class="panel-tool-options">
+                        <li><a data-rel="collapse" href="#"><i class="icon-down-open"></i></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+
+                    <div class="box zmdi-border-color" style="height:auto; padding:5px; margin: 5px;">
+                        <div class="box-body table-responsive no-padding row ">
+                            <div style="width:90%;margin-right:40px;margin-top:10px">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label>نام و نام خانوادگی</label>
+                                        <input asp-for="FullName" class="form-control" disabled>
+                                        <span asp-validation-for="FullName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>جنسیت</label>
+                                        <br />
+
+                                        @if (Model.Gender == GenderEnum.Female)
+                                        {
+                                            <input value="زن" class="form-control" disabled>
+
+                                        }
+                                        @if (Model.Gender == GenderEnum.Male)
+                                        {
+                                            <input value="مرد" class="form-control" disabled>
+
+                                        }
+
+                                    </div>
+                                    @if (Model.CityId != null)
+                                    {
+                                        <div class="form-group col-md-6">
+                                            <label>شهرستان</label>
+                                            <input asp-for="@Model.City.Name" class="form-control" disabled>
+                                        </div>
+                                    }
+                                    <div class="form-group col-md-6">
+                                        <label>توضیح مختصر</label>
+                                        <input asp-for="ShortDescription" class="form-control" disabled>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>مکانهای مورد علاقه من</label>
+                                        <input asp-for="FindMeIn" class="form-control" disabled>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>شهر محل تولد</label>
+                                        <input asp-for="HomeTown" class="form-control" disabled>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>وب سایت</label>
+                                        <input asp-for="Webstie" class="form-control" disabled>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>توضیحات تکمیلی</label>
+                                        <textarea class="form-control" disabled asp-for="LongDescription"></textarea>
+                                    </div>
+                                    <table class="table table-bordered" id="imageGallery">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">تایید شده</th>
+                                                <th scope="col">عکس</th>
+                                                <th scope="col">آیا عکس اصلی است</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Model.UploadedPhoto != null)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input" id="customCheck1" checked>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <a onclick="OpneImageInModal(this)" data-assigned-img="@Model.UploadedPhoto">
+                                                            <img src="@Model.UploadedPhoto" width="50" data-image-big="url_to_image_big">
+                                                        </a>
+                                                    </td>
+                                                    <td>بلی</td>
+
+                                                </tr>
+                                            }
+                                            @if (Model.ApplicationUserMedias != null)
+                                            {
+                                                foreach (var image in Model.ApplicationUserMedias)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input" checked>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <a onclick="OpneImageInModal(this)" data-assigned-img="@image.UploadedPhoto">
+                                                                <img src="@image.UploadedPhoto" width="100">
+                                                            </a>
+                                                        </td>
+                                                        <td>خیر</td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top:20px">
+                            <button id="saveButton" style="margin-right:20px;" type="submit" class="btn btn-primary">ذخیره کسب و کار</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="img-user">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" style="margin-top: 7px; margin-left: 7px;">
+                </button>
+                <h4 class="modal-title">سامانه مدیریت</h4>
+            </div>
+            <div class="modal-body">
+                <img id="img-userUrl" src=""/>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+@section scripts {
+    <script>
+        function OpneImageInModal(elem) {
+            var img = $(elem).data('assigned-img');
+            $('#img-user').modal('show');
+            $("#img-userUrl").attr("src", img);
+        }
+    </script>
+}

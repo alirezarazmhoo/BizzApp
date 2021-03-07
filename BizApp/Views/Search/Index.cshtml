@@ -1,0 +1,345 @@
+﻿@model BizApp.Models.Basic.SearchViewModel
+
+@{
+    Layout = "_AllPagesLayout";
+}
+<section class="category-content">
+    <div class="category-content__sidebar">
+        <div class="category-content__filter-mobail">
+            <div class="category-content__filter-mobail__button-filter">
+                <a href="#">فیلتر</a>
+            </div>
+            <div class="category-content__filter-mobail__button-list">
+                <div class="category-content__filter-mobail__button-list__list">
+                    <a href="#" class="active">لیست</a>
+                </div>
+                <div class="category-content__filter-mobail__button-list__map">
+                    <a href="#">نقشه</a>
+                </div>
+            </div>
+        </div>
+        <div class="category-content__item-filter">
+            <div class="category-content__item-filter__filter">
+                <h3>فیلتر</h3>
+                <div class="category-content__item-filter__filter__number">
+                    <ul>
+                        <li><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="category-content__item-filter__proposal">
+                <div class="category-content__item-filter__proposal__title">
+                    <h3>پیشنهاد شده</h3>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">اکنون باز شده است</label>
+                    <span class="span">14:18</span>
+                </div>
+            </div>
+            <div class="category-content__item-filter__property">
+                <div class="category-content__item-filter__property__title">
+                    <h3>ویژگی ها</h3>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">WLAN بصورت رایگان</label>
+                </div>
+                <div class="category-content__item-filter__property__all">
+                    <a href="#">نمایش همه</a>
+                </div>
+            </div>
+            <div class="category-content__item-filter__areas">
+                <div class="category-content__item-filter__areas__title">
+                    <h3>مناطق</h3>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">WLAN بصورت رایگان</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">WLAN بصورت رایگان</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">WLAN بصورت رایگان</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">WLAN بصورت رایگان</label>
+                </div>
+                <div class="category-content__item-filter__areas__all">
+                    <a href="#">نمایش همه</a>
+                </div>
+            </div>
+            <div class="category-content__item-filter__distance">
+                <div class="category-content__item-filter__distance__title">
+                    <h3>مسافت</h3>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
+                           value="option2">
+                    <label class="form-check-label" for="exampleRadios2">
+                        از دید پرنده
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
+                           value="option2">
+                    <label class="form-check-label" for="exampleRadios2">
+                        از دید پرنده
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
+                           value="option2">
+                    <label class="form-check-label" for="exampleRadios2">
+                        از دید پرنده
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
+                           value="option2">
+                    <label class="form-check-label" for="exampleRadios2">
+                        از دید پرنده
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="category-content__item">
+        <div class="category-content__item__title">
+            <div class="category-content__item__title__top">
+                <a href="#">برلین</a>
+                <svg width="16" height="16" class="icon_svg">
+                    <path d="M6.5 12.05a1 1 0 01-.7-.28 1 1 0 010-1.42L8.1 8 5.79 5.65a1 1 0 111.42-1.41l3 3.06a1 1 0 010 1.4l-3 3.06a1 1 0 01-.71.29z">
+                    </path>
+                </svg>
+                <a href="#">وسایل نقلیه</a>
+            </div>
+            <div class="category-content__item__title__bottom">
+                <div class="category-content__item__title__bottom__right">
+                    <h1>10 وسیله نقلیه برتر در برلین</h1>
+                </div>
+                <div class="category-content__item__title__bottom__left">
+                    <span>مرتب سازی : </span>
+                    <select class="selectpicker form-control">
+                        <option>توصیه میشود</option>
+                        <option>توصیه میشود</option>
+                        <option>توصیه میشود</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="AllBussiness"></div>
+        <div class="category-content__item__quastion">
+            <div class="category-content__item__quastion__img">
+                <img src="./assets/img/img-quastion.svg">
+            </div>
+            <div class="category-content__item__quastion__text">
+                <h3>آیا نمی توانید تجارت را پیدا کنید؟</h3>
+                <p>افزودن مشاغل به Yelp همیشه رایگان است.</p>
+            </div>
+            <div class="category-content__item__quastion__button">
+                <a href="#">ایجاد شرکت</a>
+            </div>
+        </div>
+        <div class="category-content__item__text">
+            <p>از نتیجه راضی هستید؟ <a href="#">به ما کمک کنید Yelp را بهتر کنیم.</a></p>
+        </div>
+        <div class="category-content__item__more">
+            <a href="#">
+                نتایج بیشتر
+            </a>
+        </div>
+        <div class="category-content__item__information">
+            <h3>اطلاعات بیشتر در مورد وسایل نقلیه در برلین</h3>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="category-content__item__information__item">
+                        <ul>
+                            <li><a href="#">جزئیات خودکار</a></li>
+                            <li><a href="#">جزئیات خودکار</a></li>
+                            <li><a href="#">جزئیات خودکار</a></li>
+                            <li><a href="#">جزئیات خودکار</a></li>
+                            <li><a href="#">جزئیات خودکار</a></li>
+                            <li><a href="#">جزئیات خودکار</a></li>
+
+                        </ul>
+                        <a href="#">دسته های بیشتر</a>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="category-content__item__information__item">
+                        <ul>
+                            <li><a href="#">جزئیات خودکار</a></li>
+                            <li><a href="#">جزئیات خودکار</a></li>
+                            <li><a href="#">جزئیات خودکار</a></li>
+                            <li><a href="#">جزئیات خودکار</a></li>
+                            <li><a href="#">جزئیات خودکار</a></li>
+                            <li><a href="#">جزئیات خودکار</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="category-content__item__information__item">
+                        <ul>
+                            <li><a href="#">جزئیات خودکار</a></li>
+                            <li><a href="#">جزئیات خودکار</a></li>
+                            <li><a href="#">جزئیات خودکار</a></li>
+                            <li><a href="#">جزئیات خودکار</a></li>
+                            <li><a href="#">جزئیات خودکار</a></li>
+                            <li><a href="#">جزئیات خودکار</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="category-content__item__work">
+            <h3>کارها را با Yelp انجام دهید.</h3>
+            <div class="category-content__item__work__list">
+                <div class="category-content__item__work__item">
+                    <a href="#"><img src="./assets/img/img-work1.png"></a>
+                </div>
+
+                <div class="category-content__item__work__item">
+                    <a href="#"><img src="./assets/img/img-work2.png"></a>
+                </div>
+
+                <div class="category-content__item__work__item">
+                    <a href="#"><img src="./assets/img/img-work3.png"></a>
+                </div>
+
+                <div class="category-content__item__work__item">
+                    <a href="#"><img src="./assets/img/img-work4.png"></a>
+                </div>
+                <div class="category-content__item__work__item">
+                    <a href="#"><img src="./assets/img/img-work5.png"></a>
+                </div>
+
+                <div class="category-content__item__work__item">
+                    <a href="#"><img src="./assets/img/img-work6.png"></a>
+                </div>
+
+                <div class="category-content__item__work__item">
+                    <a href="#"><img src="./assets/img/img-work7.png"></a>
+                </div>
+
+                <div class="category-content__item__work__item">
+                    <a href="#"><img src="./assets/img/img-work8.png"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="category-content__map" id="mapid"></div>
+</section>
+@section Scripts
+{
+<script>
+    $(document).ready(function () {
+        GetData("/Search/AllBussiness?CategoryId=1044&page=1", "AllBussiness");
+        history.pushState(null, null, "/Search/Index?CategoryId=1044&page=1");
+        //LoadMap(0, 0);
+    });
+    function GetData(ActionName, Target, Data) {
+        $.ajax({
+            type: "GET",
+            data: Data,
+            url: "" + ActionName + "",
+            dataType: "html",
+            success: function (data) {
+                $('#' + Target + '').html('');
+                $('#' + Target + '').html(data);
+                console.log(data);
+                $('#' + Target + '').show();
+                if ($('#mapid').length > 0) {
+                    var planes = [];
+                    var lat = 0;
+                    var lon = 0;
+                    $('.category-content__item__cat-product').each(function (i, obj) {
+                         lat = $(this).data('assigned-lat');
+                        lon = $(this).data('assigned-lon');
+                       
+                        planes.push([$(this).data('assigned-datas'), $(this).data('assigned-lat'), $(this).data('assigned-lon')])
+                    });
+                   
+
+                    var mymap = L.map('mapid').setView([lat, lon], 8);
+                    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+                        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                        maxZoom: 18,
+                        id: 'mapbox/streets-v11',
+                        tileSize: 512,
+                        zoomOffset: -1,
+                        accessToken: 'your.mapbox.access.token'
+                    }).addTo(mymap);
+
+                    var map_icon = L.icon({
+                        iconUrl: '/Designs/MainWebSite/assets/img/location.png',
+                        iconSize: [30, 42],
+                        iconAnchor: [30, 42],
+                        popupAnchor: [0, -40]
+                    });
+                    //var marker = L.marker([32.6538472, 51.6724925], { icon: map_icon, }).addTo(mymap);
+                    for (var i = 0; i < planes.length; i++) {
+                        marker = new L.marker([planes[i][1], planes[i][2]])
+                            .bindPopup(planes[i][0])
+                            .addTo(mymap);
+                        marker.on('mouseover', function (e) {
+                            this.openPopup();
+                        });
+                        marker.on('mouseout', function (e) {
+                            this.closePopup();
+                        });
+                    }
+
+                }
+            }
+        });
+
+    }
+    //function LoadMap(lon, lat) {        
+    //    var theMarker = {};
+    //    if (lon == 0 && lat == 0) {
+    //        lon = 32.650823;
+    //        lat = 51.668037;
+    //    }
+    //    var mymap = L.map('mapid').setView([lon, lat], 13);
+    //    if (lon !== 0 && lat !== 0) {
+    //        theMarker = L.marker([lon, lat]).addTo(mymap);
+
+    //    }
+    //    //var mymap = L.map('mapid').setView([32.650823, 51.668037], 13);
+    //    //theMarker = L.marker([lon,lat], { icon: icon }).addTo(mymap);
+    //    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    //        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    //        maxZoom: 18,
+    //        id: 'mapbox/streets-v11',
+    //        tileSize: 512,
+    //        zoomOffset: -1,
+    //        accessToken: 'pk.eyJ1IjoiYWxpcmV6YXJhem1qb28iLCJhIjoiY2s1Yzg2aTM4MWo1bjNvcDN2dWQwbGs5byJ9.0MqeBvs7xijOfpnGE73R_A'
+    //    }).addTo(mymap);
+    //    mymap.on('click', function (e) {
+    //        var icon = new L.Icon.Default();
+    //        icon.options.shadowSize = [0, 0];
+
+
+    //        lat = e.latlng.lat;
+    //        lon = e.latlng.lng;
+    //        if (theMarker !== undefined) {
+
+    //            mymap.removeLayer(theMarker);
+    //        }
+    //        theMarker = L.marker([lat, lon], { icon: icon }).addTo(mymap);
+
+    //        //$("#latitude").val(e.latlng.lat);
+    //        //$("#longitude").val(e.latlng.lng);
+    //    });
+    //}
+</script>
+}

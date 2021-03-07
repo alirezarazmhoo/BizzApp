@@ -92,26 +92,7 @@ $(window).on('load', () => {
     
 
 
-    if($('#mapid').length > 0)
-    {
-        var mymap = L.map('mapid').setView([32.6538472, 51.6724925], 18);
-        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            maxZoom: 18,
-            id: 'mapbox/streets-v11',
-            tileSize: 512,
-            zoomOffset: -1,
-            accessToken: 'your.mapbox.access.token'
-        }).addTo(mymap);
-
-        var map_icon = L.icon({
-            iconUrl: './assets/img/location.png',
-            iconSize: [30, 42],
-            iconAnchor: [30, 42],
-            popupAnchor: [0, -40]
-        });
-        var marker = L.marker([32.6538472, 51.6724925], { icon: map_icon, }).addTo(mymap);
-    }
+   
 
     $('.category-content__filter-mobail__button-list__list a').on('click',function(){
         $(this).addClass('active')

@@ -37,6 +37,9 @@ namespace DataLayer.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<string>("UploadedPhoto")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BizAppUserId");
@@ -61,15 +64,15 @@ namespace DataLayer.Migrations
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("CityId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("DistrictId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(256)")
@@ -138,6 +141,9 @@ namespace DataLayer.Migrations
                     b.Property<bool>("PhotoChanged")
                         .HasColumnType("bit");
 
+                    b.Property<string>("PostalCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -162,6 +168,8 @@ namespace DataLayer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CityId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
 
@@ -177,8 +185,8 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "71e35f91-5b56-47dc-bb59-96cb711d8313",
-                            CreateDate = new DateTime(2021, 3, 1, 14, 24, 41, 346, DateTimeKind.Local).AddTicks(4541),
+                            ConcurrencyStamp = "2bcf361e-2bbe-4788-a4ab-0403840823c7",
+                            CreateDate = new DateTime(2021, 3, 6, 14, 3, 42, 26, DateTimeKind.Local).AddTicks(3738),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             Gender = 0,
@@ -188,10 +196,10 @@ namespace DataLayer.Migrations
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHAlcGHXzAPRuYDCvfh3ZLUiFhvn8cihIDCTwL2Hmjb05AQGC5f1kDHKVnzrK/pcWA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJ8GuD53vedZU0d4yc36K0pgKrJS6E3eSnkEaLQI4+bvCOyljgtUU1AMeDrQOUxzog==",
                             PhoneNumberConfirmed = false,
                             PhotoChanged = false,
-                            SecurityStamp = "33885823-8a8c-4747-9d56-c8e1557856b9",
+                            SecurityStamp = "a8d2a8ac-d6ee-4f77-bb4c-67814afd2725",
                             TwoFactorEnabled = false,
                             UserName = "mainadmin"
                         });
@@ -372,7 +380,7 @@ namespace DataLayer.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<int>("Order")
+                    b.Property<int?>("Order")
                         .HasColumnType("int");
 
                     b.Property<int?>("ParentCategoryId")
@@ -523,6 +531,172 @@ namespace DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Provinces");
+                });
+
+            modelBuilder.Entity("DomainClass.Review.CustomerBusinessMedia", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BizAppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("BusinessId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("StatusEnum")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BizAppUserId");
+
+                    b.HasIndex("BusinessId");
+
+                    b.ToTable("CustomerBusinessMedias");
+                });
+
+            modelBuilder.Entity("DomainClass.Review.CustomerBusinessMediaPictures", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CustomerBusinessMediaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("LikeCount")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("StatusEnum")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerBusinessMediaId");
+
+                    b.ToTable("CustomerBusinessMediaPictures");
+                });
+
+            modelBuilder.Entity("DomainClass.Review.Review", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BizAppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("BusinessId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("CoolCount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FunnyCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rate")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StatusEnum")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsefulCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BizAppUserId");
+
+                    b.HasIndex("BusinessId");
+
+                    b.ToTable("Reviews");
+                });
+
+            modelBuilder.Entity("DomainClass.Review.ReviewMedia", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LikeCount")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ReviewId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReviewId");
+
+                    b.ToTable("ReviewMedias");
+                });
+
+            modelBuilder.Entity("DomainClass.Review.UsersInCustomerBusinessMediaLike", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BizAppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid?>("CustomerBusinessMediaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CustomerBusinessMediaPicturesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BizAppUserId");
+
+                    b.HasIndex("CustomerBusinessMediaId");
+
+                    b.HasIndex("CustomerBusinessMediaPicturesId");
+
+                    b.ToTable("UsersInCustomerBusinessMediaLikes");
+                });
+
+            modelBuilder.Entity("DomainClass.Review.UsersInReviewLike", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BizAppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("ReviewId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BizAppUserId");
+
+                    b.HasIndex("ReviewId");
+
+                    b.ToTable("UsersInReviewLikes");
                 });
 
             modelBuilder.Entity("DomainClass.Slider", b =>
@@ -730,6 +904,13 @@ namespace DataLayer.Migrations
                         .HasForeignKey("BizAppUserId");
                 });
 
+            modelBuilder.Entity("DomainClass.BizAppUser", b =>
+                {
+                    b.HasOne("DomainClass.City", "City")
+                        .WithMany("Users")
+                        .HasForeignKey("CityId");
+                });
+
             modelBuilder.Entity("DomainClass.Businesses.Business", b =>
                 {
                     b.HasOne("DomainClass.Category", "Category")
@@ -832,6 +1013,80 @@ namespace DataLayer.Migrations
                     b.HasOne("DomainClass.City", "City")
                         .WithMany("Districts")
                         .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DomainClass.Review.CustomerBusinessMedia", b =>
+                {
+                    b.HasOne("DomainClass.BizAppUser", "BizAppUser")
+                        .WithMany()
+                        .HasForeignKey("BizAppUserId");
+
+                    b.HasOne("DomainClass.Businesses.Business", "Business")
+                        .WithMany("CustomerBusinessMedias")
+                        .HasForeignKey("BusinessId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DomainClass.Review.CustomerBusinessMediaPictures", b =>
+                {
+                    b.HasOne("DomainClass.Review.CustomerBusinessMedia", "CustomerBusinessMedia")
+                        .WithMany("CustomerBusinessMediaPictures")
+                        .HasForeignKey("CustomerBusinessMediaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DomainClass.Review.Review", b =>
+                {
+                    b.HasOne("DomainClass.BizAppUser", "BizAppUser")
+                        .WithMany()
+                        .HasForeignKey("BizAppUserId");
+
+                    b.HasOne("DomainClass.Businesses.Business", "Business")
+                        .WithMany()
+                        .HasForeignKey("BusinessId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DomainClass.Review.ReviewMedia", b =>
+                {
+                    b.HasOne("DomainClass.Review.Review", "Review")
+                        .WithMany("ReviewMedias")
+                        .HasForeignKey("ReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DomainClass.Review.UsersInCustomerBusinessMediaLike", b =>
+                {
+                    b.HasOne("DomainClass.BizAppUser", "BizAppUser")
+                        .WithMany()
+                        .HasForeignKey("BizAppUserId");
+
+                    b.HasOne("DomainClass.Review.CustomerBusinessMedia", null)
+                        .WithMany("UsersInCustomerBusinessMediaLikes")
+                        .HasForeignKey("CustomerBusinessMediaId");
+
+                    b.HasOne("DomainClass.Review.CustomerBusinessMediaPictures", "CustomerBusinessMediaPictures")
+                        .WithMany()
+                        .HasForeignKey("CustomerBusinessMediaPicturesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DomainClass.Review.UsersInReviewLike", b =>
+                {
+                    b.HasOne("DomainClass.BizAppUser", "BizAppUser")
+                        .WithMany()
+                        .HasForeignKey("BizAppUserId");
+
+                    b.HasOne("DomainClass.Review.Review", "Review")
+                        .WithMany("UsersInReviewLikes")
+                        .HasForeignKey("ReviewId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

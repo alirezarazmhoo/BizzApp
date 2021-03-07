@@ -8,6 +8,7 @@ namespace DataLayer.Infrastructure
 	{
 		Task<List<BizAppUser>> GetAll(string roleId);
 		 Task<List<BizAppUser>> GetAll(string roleId,string searchString);
+		Task<BizAppUser> GetById(string userId);
 		
 
 	}

@@ -27,6 +27,11 @@ namespace DataLayer.Services
 												 x.Email.Contains(searchString) ||
 												 x.FullName.Contains(searchString)).OrderByDescending(x=>x.CreateDate).ToListAsync();
 		}
+		public async Task<BizAppUser> GetById(string userId)
+        {
+			return  DbContext.Users.Include(x=>x.City).Where(x=>x.Id==userId).FirstOrDefault();
+
+        }
 		
 	}
 }

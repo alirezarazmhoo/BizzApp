@@ -2,6 +2,7 @@
 using DomainClass.Businesses.Queries;
 using DomainClass.Commands;
 using DomainClass.Queries;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,10 +14,11 @@ namespace DataLayer.Infrastructure
 		Task<List<Category>> GetAll(string searchString);
 		Task<Category> GetById(int id);
 		Task<GetCategoryByIdQuery> GetWithTermsById(int id);
-		Task Add(CreateCategoryCommand model);
-		Task Update(UpdateCategoryCommand command);
+		//Task<int> Add(CreateCategoryCommand model);
+		Task AddAsync(CreateCategoryCommand model, IFormFile pngIcon, IFormFile featureImage);
+		Task UpdateAsync(UpdateCategoryCommand command, IFormFile pngIcon, IFormFile featureImage);
 		Task AddOrUpdate(Category city);
-		void Remove(Category city);
+		Task Remove(Category city);
 	    Task<bool> HasChild(int Id);
 		Task<List<Category>> GetChilds(int Id);
 		Task<int> GetChildCount(int Id);

@@ -8,6 +8,7 @@ using BizApp.Models.Basic;
 using BizApp.Utility;
 using DataLayer.Infrastructure;
 using DomainClass.Commands;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PagedList.Core;
@@ -37,10 +38,29 @@ namespace BizApp.Areas.Admin.Controllers
 						await _UnitOfWork.CategoryRepo.GetAll()
 						: await _UnitOfWork.CategoryRepo.GetAll(searchString);
 
+				bool hasChild;
+				var childCount = 0;
 				foreach (var item in items.OrderByDescending(s => s.Id))
 				{
-					categoryViewModel.Add(new CategoryViewModel() { CategoryId = item.Id, HasChild = await _UnitOfWork.CategoryRepo.HasChild(item.Id), Name = item.Name, ParentCategoryId = item.ParentCategoryId, ChildCount = await _UnitOfWork.CategoryRepo.GetChildCount(item.Id) });
+					hasChild = await _UnitOfWork.CategoryRepo.HasChild(item.Id);
+					if (hasChild) 
+					{
+						childCount = await _UnitOfWork.CategoryRepo.GetChildCount(item.Id);
+					}
+
+					categoryViewModel.Add(new CategoryViewModel() 
+					{
+						CategoryId = item.Id, 
+						HasChild = hasChild, 
+						Name = item.Name,
+						Order = item.Order,
+						ParentCategoryId = item.ParentCategoryId, 
+						ChildCount = childCount
+					});
+
+					childCount = 0;
 				}
+
 				PagedList<CategoryViewModel> res = new PagedList<CategoryViewModel>(categoryViewModel.AsQueryable(), page ?? 1, pageSize);
 				return View(res);
 			}
@@ -50,21 +70,25 @@ namespace BizApp.Areas.Admin.Controllers
 			}
 		}
 		[HttpPost]
-		public async Task<IActionResult> CreateOrUpdate(CreateUpdateMainCategoryViewModel model)
+		public async Task<IActionResult> CreateOrUpdate(CreateUpdateMainCategoryViewModel model, IFormFile file, IFormFile featureImage)
 		{
 			ModelState.Remove("CategoryId");
+			ModelState.Remove("ChangedPngIcon");
+			ModelState.Remove("ChangedFeatureImage");
 
 			if (ModelState.IsValid)
 			{
-				if (model.CategoryId == 0)
+				if (model.Order == 0) model.Order = null;
+
+				if (model.CategoryId < 1)
 				{
 					var command = _mapper.Map<CreateCategoryCommand>(model);
 					try
 					{
-						await _UnitOfWork.CategoryRepo.Add(command);
+						await _UnitOfWork.CategoryRepo.AddAsync(command, file, featureImage);
 						return Json(new { success = true, responseText = CustomeMessages.Succcess });
 					}
-					catch // (Exception ex)
+					catch (Exception ex)
 					{
 						return Json(new { success = false, responseText = CustomeMessages.Fail });
 					}
@@ -75,7 +99,7 @@ namespace BizApp.Areas.Admin.Controllers
 
 					try
 					{
-						await _UnitOfWork.CategoryRepo.Update(command);
+						await _UnitOfWork.CategoryRepo.UpdateAsync(command, file, featureImage);
 						return Json(new { success = true, responseText = CustomeMessages.Succcess });
 					}
 					catch// (Exception ex)
@@ -94,8 +118,7 @@ namespace BizApp.Areas.Admin.Controllers
 			if (category == null) return Json(new { success = true, responseText = CustomeMessages.Fail });
 			try
 			{
-				_UnitOfWork.CategoryRepo.Remove(category);
-				await _UnitOfWork.SaveAsync();
+				await _UnitOfWork.CategoryRepo.Remove(category);
 				return Json(new { success = true, responseText = CustomeMessages.Succcess });
 			}
 			catch
@@ -123,7 +146,9 @@ namespace BizApp.Areas.Admin.Controllers
 				new EditViewModels { key = "ParentCategoryId", value = category.ParentCategoryId.ToString() },
 				new EditViewModels { key = "Icon", value = category.Icon },
 				new EditViewModels { key = "Order", value = category.Order.ToString() },
-				new EditViewModels { key = "IconWeb", value = category.IconWeb }
+				new EditViewModels { key = "IconWeb", value = category.IconWeb },
+				new EditViewModels { key = "PngIconPath", value = category.PngIconPath },
+				new EditViewModels { key = "FeatureImagePath", value = category.FeatureImagePath }
 			};
 
 			return Json(new { success = true, listItem = edit.ToList(), majoritem = ItemId });

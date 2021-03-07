@@ -1,4 +1,5 @@
 ﻿using DomainClass.Infrastructure;
+using DomainClass.Review;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -48,6 +49,7 @@ namespace DomainClass.Businesses
 		public virtual ICollection<BusinessGallery> Galleries { get; set; }
 		public virtual ICollection<BusinessFeature> Features { get; set; }
 		public virtual ICollection<BusinessTime> BusinessTimes{ get; set; }
+		public virtual ICollection< CustomerBusinessMedia>  CustomerBusinessMedias { get; set; }
 		public virtual BizAppUser Owner { get; set; }
 		public virtual BizAppUser UserCreator { get; set;  }
 	}

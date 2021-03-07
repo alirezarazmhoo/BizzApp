@@ -111,7 +111,6 @@ namespace BizApp.Controllers
 			public string name { get; set; }
 			public int categoryId { get; set; }
 		}
-
 		[HttpGet]
 		public async Task<JsonResult> GetAllWithParentNames(string txtSearch)
 		{
@@ -120,15 +119,13 @@ namespace BizApp.Controllers
 			try
 			{
 				var items = await _UnitOfWork.DistrictRepo.GetAllWithParentNames(txtSearch);
-				return Json(new { success = true, districts = items.ToList() });
+				return Json(new { success = true, districts = items.ToList().Take(10) });
 			}
 			catch (Exception ex)
 			{
 				return Json(ex.Message);
 			}
 		}
-
-
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
