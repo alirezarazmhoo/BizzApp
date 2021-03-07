@@ -128,8 +128,6 @@
 					</div>
 				</div>
 
-
-
 			</div>
 		</div>
 	</div>
@@ -166,8 +164,11 @@
 
 					<div class="form-group">
 						<label for="exampleInputEmail1">PNG آیکن:</label>
+						<input type="hidden" id="PngIconPath" name="PngIconPath" value=""/>
+						<input type="hidden" id="ChangedPngIcon" name="ChangedPngIcon" value=""/>
+
 						<div id="main-container">
-							<input display="Image" id="pngIcon" name="pngIcon" class="TheFile" onchange="SetPictures('pngIcon','ImageItems');" style="display:none" type="file">
+							<input display="Image" id="pngIcon" name="pngIcon" class="TheFile" onchange="overrideSetPictures('pngIcon','ImageItems');" style="display:none" type="file">
 							<button type="button" style="height:20%;margin-left:15px;top:0;" class="btn btn-primary" onclick="pngIcon.click()"><i class="fa fa-camera"></i>انتخاب کنید</button>
 							<div id="ImageItems" style="width:400px;height:auto;margin-left:5px;">
 							</div>
@@ -223,6 +224,7 @@
 	<script src="~/lib/fontawesome-free/js/all.js"></script>
 
 	<script>
+		var pngIconRemoveButton = '<span class="close" style="float: right;background: #ccc;padding: 2px 5px;" onclick="removeIconButton_click()">&times;</span>';
 		window.onload = Load;
 		function Load() {
 			FontAwesomeConfig = { autoReplaceSvg: false }
@@ -241,21 +243,40 @@
 					//var selectedIcon = window.FontAwesome.icon({ svgTag });
 
 					$("#selectIconButton").html(svgTag);
+
+					// show png icon
+					var pngIconPath = $("#PngIconPath").val();
+					if (pngIconPath || 0 !== pngIconPath.length) {
+						var imgTag = '<img src="' + pngIconPath + '" style="width:80px;height:80px;">';
+						$('#ImageItems').html(imgTag + pngIconRemoveButton);
+					}
 				});
+
 				var bodyStyle = document.body.style;
 				bodyStyle.removeProperty('padding-right');
 
-
-				//<button data-selected="graduation-cap" type="button" class="icp demo btn btn-default dropdown-toggle iconpicker-component form-control" data-toggle="dropdown" aria-expanded="false">
-				//	<svg id="iconResult" class="svg-inline--fa fa-accusoft fa-w-20" aria-hidden="true" data-prefix="fab" data-icon="accusoft" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg=""><path fill="currentColor" d="M482.2 372.1C476.5 365.2 250 75 242.3 65.5c-13.7-17.2 0-16.8 19.2-16.9 9.7-.1 106.3-.6 116.5-.6 24.1-.1 28.7.6 38.4 12.8 2.1 2.7 205.1 245.8 207.2 248.3 5.5 6.7 15.2 19.1 7.2 23.4-2.4 1.3-114.6 47.7-117.8 48.9-10.1 4-17.5 6.8-30.8-9.3m114.7-5.6s-115 50.4-117.5 51.6c-16 7.3-26.9-3.2-36.7-14.6l-57.1-74c-5.4-.9-60.4-9.6-65.3-9.3-3.1.2-9.6.8-14.4 2.9-4.9 2.1-145.2 52.8-150.2 54.7-5.1 2-11.4 3.6-11.1 7.6.2 2.5 2 2.6 4.6 3.5 2.7.8 300.9 67.6 308 69.1 15.6 3.3 38.5 10.5 53.6 1.7 2.1-1.2 123.8-76.4 125.8-77.8 5.4-4 4.3-6.8-1.7-8.2-2.3-.3-24.6-4.7-38-7.2m-326-181.3s-12 1.6-25 15.1c-9 9.3-242.1 239.1-243.4 240.9-7 10 1.6 6.8 15.7 1.7.8 0 114.5-36.6 114.5-36.6.5-.6-.1-.1.6-.6-.4-5.1-.8-26.2-1-27.7-.6-5.2 2.2-6.9 7-8.9l92.6-33.8c.6-.8 88.5-81.7 90.2-83.3v-1l-51.2-65.8"></path></svg><!-- <i id="iconResult" class="fab fa-accusoft"></i> --> &nbsp;<b>˅</b>
-				//	<span class=""></span>
-				//</button>
-
 			});
-			$('.pagination > li:first-child > a, .pagination > li:first-child > span').html('قبلی')
-			$('.pagination>li:last-child>a, .pagination>li:last-child>span').html('بعدی')
-
+			$('.pagination > li:first-child > a, .pagination > li:first-child > span').html('قبلی');
+			$('.pagination>li:last-child>a, .pagination>li:last-child>span').html('بعدی');
 		}
+
+		function overrideSetPictures(inputtarget, target) {
+			// create image tag
+			SetPictures(inputtarget, target);
+
+			// add remove button 
+			$('#ImageItems').append(pngIconRemoveButton);
+
+			$('#ChangedPngIcon').val('true');
+		}
+
+		function removeIconButton_click() {
+			$('#ImageItems').html('');
+			$('#pngIcon').val('');
+			$("#PngIconPath").val('');
+			$('#ChangedPngIcon').val('true');
+		}
+
 		function Save() {
 			if (checkvalidity('register') === 0) {
 				return;
@@ -288,7 +309,7 @@
 					$("#IconWeb").attr('value', '');
 				}
 
-				var Parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "CategoryId", htmlname: "CategoryId", special: "" }, { id: "Icon", htmlname: "Icon", special: "" }, { id: "Order", htmlname: "Order", special: "" }, { id: "IconWeb", htmlname: "IconWeb", special: "" }, { id: "pngIcon", htmlname: "pngIcon", special: "file" }];
+				var Parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "CategoryId", htmlname: "CategoryId", special: "" }, { id: "Icon", htmlname: "Icon", special: "" }, { id: "Order", htmlname: "Order", special: "" }, { id: "IconWeb", htmlname: "IconWeb", special: "" }, { id: "ChangedPngIcon", htmlname: "ChangedPngIcon", special: "" }, { id: "pngIcon", htmlname: "pngIcon", special: "file" }];
 
 				PostAjax('/admin/Categories/CreateOrUpdate', Parameters, "/admin/Categories/Index");
 			}

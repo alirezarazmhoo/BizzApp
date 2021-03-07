@@ -165,6 +165,8 @@ namespace DataLayer.Services
 				// Update category
 				var category = await DbContext.Categories.FirstOrDefaultAsync(f => f.Id == command.Id);
 
+				if (category == null) return;
+
 				category.Name = command.Name;
 				category.Order = command.Order;
 
@@ -176,12 +178,17 @@ namespace DataLayer.Services
 				// add new category icon if is exists
 				await CreateIconAsync(category.Id, command.Icon, command.IconWeb);
 
-				// delete category png icon
-				await DeletePngIcon(category.Id);
+				// if png icon changed
+				if (command.ChangedPngIcon)
+				{
+					// delete category png icon
+					await DeletePngIcon(category.Id);
 
-				// add new category png icon if exists
-				await CreatePngIconAsync(category.Id, pngIcon);
+					// add new category png icon if exists
+					await CreatePngIconAsync(category.Id, pngIcon);
+				}
 
+				// save all chagnes
 				await DbContext.SaveChangesAsync();
 
 				scope.Complete();
