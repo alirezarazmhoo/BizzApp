@@ -155,6 +155,8 @@ namespace DataLayer.Services
 		{
 			// get category items to edit
 			var categoryTerms = await DbContext.CategoryTerms.Where(w => w.CategoryId == id).ToListAsync();
+			// check if category not have any terms then return 
+			if (categoryTerms?.Count > 0) return;
 
 			// delete category icon
 			var categoryIcon = categoryTerms.FirstOrDefault(f => f.Key == IconType);

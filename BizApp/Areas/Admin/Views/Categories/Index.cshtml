@@ -161,29 +161,30 @@
 						<label for="">ترتیب</label>
 						<input type="number" min="0" max="10" class="form-control" name="Order" id="Order" />
 					</div>
+					<div class="row">
+						<div class="col-md-6 col-xs-6">
+							<label for="exampleInputEmail1">PNG آیکن:</label>
+							<input type="hidden" id="PngIconPath" name="PngIconPath" value="" />
+							<input type="hidden" id="ChangedPngIcon" name="ChangedPngIcon" value="" />
 
-					<div class="form-group">
-						<label for="exampleInputEmail1">PNG آیکن:</label>
-						<input type="hidden" id="PngIconPath" name="PngIconPath" value="" />
-						<input type="hidden" id="ChangedPngIcon" name="ChangedPngIcon" value="" />
-
-						<div id="main-container">
-							<input display="Image" id="pngIcon" name="pngIcon" class="TheFile" onchange="overrideSetPictures('pngIcon','ImageItems');" style="display:none" type="file">
-							<button type="button" style="height:20%;margin-left:15px;top:0;" class="btn btn-primary" onclick="pngIcon.click()"><i class="fa fa-camera"></i>انتخاب کنید</button>
-							<div id="ImageItems" style="width:400px;height:auto;margin-left:5px;">
+							<div id="main-container">
+								<input display="Image" id="pngIcon" name="pngIcon" class="TheFile" onchange="overrideSetPictures('pngIcon','ImageItems');" style="display:none" type="file">
+								<button type="button" style="height:20%;margin:5px 0 5px 0;top:0;" class="btn btn-primary" onclick="pngIcon.click()"><i class="fa fa-camera"></i>انتخاب کنید</button>
+								<div id="ImageItems" style="width:400px;height:auto;margin-left:5px;">
+								</div>
 							</div>
 						</div>
-					</div>
 
-					<div class="form-group">
-						<label for="exampleInputEmail1">تصویر شاخص:</label>
-						<input type="hidden" id="FeatureImagePath" name="FeatureImagePath" value="" />
-						<input type="hidden" id="ChangedFeatureImage" name="ChangedFeatureImage" value="" />
+						<div class="col-md-6 col-xs-5">
+							<label for="exampleInputEmail1">تصویر شاخص:</label>
+							<input type="hidden" id="FeatureImagePath" name="FeatureImagePath" value="" />
+							<input type="hidden" id="ChangedFeatureImage" name="ChangedFeatureImage" value="" />
 
-						<div id="main-container">
-							<input display="Image" id="featureImage" name="featureImage" class="TheFile2" onchange="overrideSetFeaturePictures('featureImage','FeatureImageItems');" style="display:none" type="file">
-							<button type="button" style="height:20%;margin-left:15px;top:0;" class="btn btn-primary" onclick="featureImage.click()"><i class="fa fa-camera"></i>انتخاب کنید</button>
-							<div id="FeatureImageItems" style="width:400px;height:auto;margin-left:5px;">
+							<div id="main-container">
+								<input display="Image" id="featureImage" name="featureImage" class="TheFile2" onchange="overrideSetFeaturePictures('featureImage','FeatureImageItems');" style="display:none" type="file">
+								<button type="button" style="height:20%;margin:5px 0 5px 0;" class="btn btn-primary" onclick="featureImage.click()"><i class="fa fa-camera"></i>انتخاب کنید</button>
+								<div id="FeatureImageItems" style="width:400px;height:auto;margin-left:5px;">
+								</div>
 							</div>
 						</div>
 					</div>
@@ -211,6 +212,19 @@
 						<label for="SubcategoryName"> نام :</label>
 						<input display="نام" id="SubcategoryName" name="SubcategoryName" placeholder="نام زیر دسته بندی را وارد کنید" class="form-control" style="width:70%" required>
 					</div>
+
+					<div class="btn-group">
+						<label> آیکن</label>
+						<input name="SubCategoryIcon" id="Icon" value="" type="hidden">
+						<input name="SubCategoryIconWeb" id="IconWeb" value="" type="hidden">
+						<button data-selected="graduation-cap" type="button" class="icp demo btn btn-default dropdown-toggle iconpicker-component form-control" data-toggle="dropdown" id="subCategorySelectIconButton">
+							<i id="SubCategoryIconResult" class="fa fa-fw"></i>
+							<span class=""></span>
+						</button>
+						<div class="dropdown-menu"></div>
+						<button id="subCategoryRemoveIconButton" type="button" onclick="SubCategoryClearIcon()"><i class="fas fa-undo"></i></button>
+					</div>
+
 				</form>
 			</div>
 			<div class="modal-footer">
@@ -237,7 +251,9 @@
 	<script>
 		var pngIconRemoveButton = '<span class="close" style="float: right;background: #ccc;padding: 2px 5px;" onclick="removeIconButton_click()">&times;</span>';
 		var featureImageRemoveButton = '<span class="close" style="float: right;background: #ccc;padding: 2px 5px;" onclick="removeFeatureImageButton_click()">&times;</span>';
+
 		window.onload = Load;
+
 		function Load() {
 			FontAwesomeConfig = { autoReplaceSvg: false }
 
@@ -245,20 +261,25 @@
 			$(".openmodal").click(function () {
 				clear('register', ["input"]);
 
+				// clear fonwawesome icon
+				ClearIcon();
+				SubCategoryClearIcon();
+
 				$('#ImageItems').html('');
 				$('#FeatureImageItems').html(''); // reset image show
-
 			});
+
 			$(".btn-warning").click(function () {
 				$("#Icon").val('');
+				$("#SubCategoryIcon").val('');
 
 				EditAjax("/admin/Categories/GetById", this.id, function () {
 					// set selected icon
 					var iconClassNames = $("#IconWeb").attr('value');
-					var svgTag = '<i id="iconResult" class="' + iconClassNames + '"></i>';
+					var iTag = '<i id="iconResult" class="' + iconClassNames + '"></i>';
 					//var selectedIcon = window.FontAwesome.icon({ svgTag });
 
-					$("#selectIconButton").html(svgTag);
+					$("#selectIconButton").html(iTag);
 
 					// show png icon
 					$('#ImageItems').html('');
@@ -281,6 +302,7 @@
 				bodyStyle.removeProperty('padding-right');
 
 			});
+
 			$('.pagination > li:first-child > a, .pagination > li:first-child > span').html('قبلی');
 			$('.pagination>li:last-child>a, .pagination>li:last-child>span').html('بعدی');
 		}
@@ -312,12 +334,67 @@
 			$('#ChangedFeatureImage').val('true');
 		}
 
-
 		function removeIconButton_click() {
 			$('#ImageItems').html('');
 			$('#pngIcon').val('');
 			$("#PngIconPath").val('');
 			$('#ChangedPngIcon').val('true');
+		}
+
+		function getParameters(parent) {
+			var iconInput = '', iconWebInput = '', iconResultInput = '';
+			if (parent && parent.length > 0) {
+				iconInput = 'SubCategoryIcon';
+				iconWebInput = 'SubCategoryIconWeb';
+				iconResultInput = 'SubCategoryIconResult';
+			}
+			else {
+				iconInput = 'Icon';
+				iconWebInput = 'IconWeb';
+				iconResultInput = 'iconResult';
+			}
+			// get icon
+			// get selected icon
+			var classList = $('#SubCategoryIconResult').attr('class').split(/\s+/);
+			var str = classList[1];
+
+			var selectedIcon;
+			if (str != undefined) {
+				// get icon name
+				var iconName = str.substring(3, str.length);
+
+				// sample: var camera = window.FontAwesome.icon({ prefix: 'fas', iconName: 'camera' })
+				// help: https://fontawesome.com/how-to-use/javascript-api/setup/getting-started
+				selectedIcon = window.FontAwesome.icon({ prefix: classList[0], iconName: iconName });
+			}
+			//console.log(selectedIcon);
+
+			console.log(selectedIcon)
+
+			// set icon in input
+			if (selectedIcon != undefined) {
+				alert(selectedIcon.icon[4])
+				$("#" + iconInput).attr('value', selectedIcon.icon[4]);
+				$("#" + iconWebInput).attr('value', $('#' + iconResultInput).attr('class'));
+			}
+			else {
+				$("#" + iconInput).attr('value', '');
+				$("#" + iconWebInput).attr('value', '');
+			}
+
+			alert($("#" + iconInput).attr('value'));
+			alert($("#" + iconWebInput).attr('value'));
+
+			var parameters = [];
+			if (parent && parent.length > 0) {
+				parameters = [{ id: "Name", htmlname: "SubcategoryName", special: "" }, { id: "CategoryId", htmlname: "CategoryId", special: "" }, { id: "Icon", htmlname: iconInput, special: "" }, { id: "Order", htmlname: "Order", special: "" }, { id: "IconWeb", htmlname: iconWebInput, special: "" }];
+			} else {
+				parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "CategoryId", htmlname: "CategoryId", special: "" }, { id: "Icon", htmlname: iconInput, special: "" }, { id: "Order", htmlname: "Order", special: "" }, { id: "IconWeb", htmlname: iconWebInput, special: "" }, { id: "ChangedPngIcon", htmlname: "ChangedPngIcon", special: "" }, { id: "ChangedFeatureImage", htmlname: "ChangedFeatureImage", special: "" }, { id: "pngIcon", htmlname: "pngIcon", special: "file" }];
+			}
+
+			//console.log(parameters);
+
+			return parameters;
 		}
 
 		function Save() {
@@ -327,34 +404,10 @@
 			else {
 				$("#myModal").modal('toggle');
 
-				// get icon
-				// get selected icon
-				var classList = $('#iconResult').attr('class').split(/\s+/);
-				// get icon name
-				var str = classList[1];
+				// get parameters beacause child categories must have different name
+				var parameters = getParameters('');
 
-				var selectedIcon;
-				if (str != undefined) {
-					var iconName = str.substring(3, str.length);
-					// sample: var camera = window.FontAwesome.icon({ prefix: 'fas', iconName: 'camera' })
-					// help: https://fontawesome.com/how-to-use/javascript-api/setup/getting-started
-					selectedIcon = window.FontAwesome.icon({ prefix: classList[0], iconName: iconName });
-				}
-				//console.log(selectedIcon);
-
-				// set icon in input
-				if (selectedIcon != undefined) {
-					$("#Icon").attr('value', selectedIcon.icon[4]);
-					$("#IconWeb").attr('value', $('#iconResult').attr('class'));
-				}
-				else {
-					$("#Icon").attr('value', '');
-					$("#IconWeb").attr('value', '');
-				}
-
-				var Parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "CategoryId", htmlname: "CategoryId", special: "" }, { id: "Icon", htmlname: "Icon", special: "" }, { id: "Order", htmlname: "Order", special: "" }, { id: "IconWeb", htmlname: "IconWeb", special: "" }, { id: "ChangedPngIcon", htmlname: "ChangedPngIcon", special: "" }, { id: "ChangedFeatureImage", htmlname: "ChangedFeatureImage", special: "" }, { id: "pngIcon", htmlname: "pngIcon", special: "file" }];
-
-				PostAjax('/admin/Categories/CreateOrUpdate', Parameters, "/admin/Categories/Index");
+				PostAjax('/admin/Categories/CreateOrUpdate', parameters, "/admin/Categories/Index");
 			}
 		}
 
@@ -374,8 +427,11 @@
 				return;
 			}
 			else {
-				var Parameters = [{ id: "Name", htmlname: "SubcategoryName", special: "" }, { id: "ParentCategoryId", htmlname: "ParentCategoryId", special: "" }];
-				PostAjax('/admin/Categories/CreateOrUpdate', Parameters, "/admin/Categories/Index");
+				// get parameters beacause child categories must have different name
+				var parent = $('#ParentCategoryId').val();
+				var parameters = getParameters(parent);
+
+				//PostAjax('/admin/Categories/CreateOrUpdate', parameters, "/admin/Categories/Index");
 			}
 		}
 
@@ -385,7 +441,12 @@
 			$("#iconResult").attr('class', '');
 			$('#iconResult').html('');
 		}
-
+		function SubCategoryClearIcon() {
+			$("#SubCategoryIcon").val('');
+			$("#SubCategoryIconWeb").val('');
+			$("#subCategoryconResult").attr('class', '');
+			$('#subCategoryconResult').html('');
+		}
 		//$("#Icon").onchange(function () { alert('sss')});
 		// Pack Icon input
 		$('.dropdown-menu').iconpicker();
