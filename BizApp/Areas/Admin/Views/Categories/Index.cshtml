@@ -215,8 +215,8 @@
 
 					<div class="btn-group">
 						<label> آیکن</label>
-						<input name="SubCategoryIcon" id="Icon" value="" type="hidden">
-						<input name="SubCategoryIconWeb" id="IconWeb" value="" type="hidden">
+						<input name="SubCategoryIcon" id="SubCategoryIcon" value="" type="hidden">
+						<input name="SubCategoryIconWeb" id="SubCategoryIconWeb" value="" type="hidden">
 						<button data-selected="graduation-cap" type="button" class="icp demo btn btn-default dropdown-toggle iconpicker-component form-control" data-toggle="dropdown" id="subCategorySelectIconButton">
 							<i id="SubCategoryIconResult" class="fa fa-fw"></i>
 							<span class=""></span>
@@ -258,15 +258,20 @@
 			FontAwesomeConfig = { autoReplaceSvg: false }
 
 			CreateAllModals();
+
 			$(".openmodal").click(function () {
 				clear('register', ["input"]);
 
 				// clear fonwawesome icon
 				ClearIcon();
-				SubCategoryClearIcon();
 
+				// reset png icon
 				$('#ImageItems').html('');
-				$('#FeatureImageItems').html(''); // reset image show
+				$('#pngIcon').val('');
+
+				// reset image show
+				$('#FeatureImageItems').html(''); 
+				$('#featureImage').val('');
 			});
 
 			$(".btn-warning").click(function () {
@@ -321,7 +326,7 @@
 			// create image tag
 			SetPictures(inputtarget, target);
 
-			// add remove button 
+			// add remove button
 			$('#FeatureImageItems').append(featureImageRemoveButton);
 
 			$('#ChangedFeatureImage').val('true');
@@ -353,9 +358,10 @@
 				iconWebInput = 'IconWeb';
 				iconResultInput = 'iconResult';
 			}
+
 			// get icon
 			// get selected icon
-			var classList = $('#SubCategoryIconResult').attr('class').split(/\s+/);
+			var classList = $('#' + iconResultInput).attr('class').split(/\s+/);
 			var str = classList[1];
 
 			var selectedIcon;
@@ -367,32 +373,22 @@
 				// help: https://fontawesome.com/how-to-use/javascript-api/setup/getting-started
 				selectedIcon = window.FontAwesome.icon({ prefix: classList[0], iconName: iconName });
 			}
-			//console.log(selectedIcon);
-
-			console.log(selectedIcon)
 
 			// set icon in input
 			if (selectedIcon != undefined) {
-				alert(selectedIcon.icon[4])
-				$("#" + iconInput).attr('value', selectedIcon.icon[4]);
-				$("#" + iconWebInput).attr('value', $('#' + iconResultInput).attr('class'));
-			}
-			else {
+				$("#" + iconInput).val(selectedIcon.icon[4]);
+				$("#" + iconWebInput).val($('#' + iconResultInput).attr('class'));
+			} else {
 				$("#" + iconInput).attr('value', '');
 				$("#" + iconWebInput).attr('value', '');
 			}
 
-			alert($("#" + iconInput).attr('value'));
-			alert($("#" + iconWebInput).attr('value'));
-
 			var parameters = [];
 			if (parent && parent.length > 0) {
-				parameters = [{ id: "Name", htmlname: "SubcategoryName", special: "" }, { id: "CategoryId", htmlname: "CategoryId", special: "" }, { id: "Icon", htmlname: iconInput, special: "" }, { id: "Order", htmlname: "Order", special: "" }, { id: "IconWeb", htmlname: iconWebInput, special: "" }];
+				parameters = [{ id: "Name", htmlname: "SubcategoryName", special: "" }, { id: "CategoryId", htmlname: "CategoryId", special: "" }, { id: "Icon", htmlname: iconInput, special: "" }, { id: "Order", htmlname: "Order", special: "" }, { id: "IconWeb", htmlname: iconWebInput, special: "" }, { id: "ParentCategoryId", htmlname: "ParentCategoryId", special: "" }];
 			} else {
 				parameters = [{ id: "Name", htmlname: "Name", special: "" }, { id: "CategoryId", htmlname: "CategoryId", special: "" }, { id: "Icon", htmlname: iconInput, special: "" }, { id: "Order", htmlname: "Order", special: "" }, { id: "IconWeb", htmlname: iconWebInput, special: "" }, { id: "ChangedPngIcon", htmlname: "ChangedPngIcon", special: "" }, { id: "ChangedFeatureImage", htmlname: "ChangedFeatureImage", special: "" }, { id: "pngIcon", htmlname: "pngIcon", special: "file" }];
 			}
-
-			//console.log(parameters);
 
 			return parameters;
 		}
@@ -417,6 +413,10 @@
 
 		function SubCategoryAssignButtonClicked(elem) {
 			$('#ParentCategoryId').val($(elem).data('assigned-id'));
+
+			// reset form
+			$('#SubcategoryName').val('');
+			SubCategoryClearIcon();
 		}
 		function Remove() {
 			var Parameters = [{ id: "CategoryId", htmlname: "CategoryId", special: "" }];
@@ -431,7 +431,7 @@
 				var parent = $('#ParentCategoryId').val();
 				var parameters = getParameters(parent);
 
-				//PostAjax('/admin/Categories/CreateOrUpdate', parameters, "/admin/Categories/Index");
+				PostAjax('/admin/Categories/CreateOrUpdate', parameters, "/admin/Categories/Index");
 			}
 		}
 
@@ -444,8 +444,8 @@
 		function SubCategoryClearIcon() {
 			$("#SubCategoryIcon").val('');
 			$("#SubCategoryIconWeb").val('');
-			$("#subCategoryconResult").attr('class', '');
-			$('#subCategoryconResult').html('');
+			$("#SubCategoryIconResult").attr('class', '');
+			$('#SubCategoryIconResult').html('');
 		}
 		//$("#Icon").onchange(function () { alert('sss')});
 		// Pack Icon input

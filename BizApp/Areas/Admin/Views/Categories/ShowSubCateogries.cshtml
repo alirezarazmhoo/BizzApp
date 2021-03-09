@@ -1,202 +1,340 @@
 ﻿@model PagedList.Core.IPagedList<BizApp.Areas.Admin.Models.CategoryViewModel>
 
 @{
-    ViewData["Title"] = "ShowSubCateogries";
-    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+	ViewData["Title"] = "ShowSubCateogries";
+	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
+
+@section head
+{
+	<link href="~/lib/fontawesome-free/css/all.css" rel="stylesheet" />
+	<link href="~/lib/fontawesome-iconpicker-master/dist/css/fontawesome-iconpicker.css" rel="stylesheet" />
+}
+
+
 <div class="header-secondary row gray-bg">
-    <div class="col-lg-12">
-        <div class="page-heading clearfix">
-            <h1 class="page-title pull-left"> @ViewBag.ParentCategoryName  مدیریت زیردسته</h1>
+	<div class="col-lg-12">
+		<div class="page-heading clearfix">
+			<h1 class="page-title pull-left"> @ViewBag.ParentCategoryName  مدیریت زیردسته</h1>
 
-        </div>
+		</div>
 
-        <!-- Breadcrumb -->
-        <ol class="breadcrumb breadcrumb-2">
-            <li><a href="#"><i class="fa fa-home"></i> خانه</a></li>
-            <li class="active"><strong>دسته بندی ها</strong></li>
-        </ol>
+		<!-- Breadcrumb -->
+		<ol class="breadcrumb breadcrumb-2">
+			<li><a href="#"><i class="fa fa-home"></i> خانه</a></li>
+			<li class="active"><strong>دسته بندی ها</strong></li>
+		</ol>
 
-    </div>
-    <div class="col-lg-12">
-        <button type="button" class="btn btn-warning" onclick="window.history.back();">بازگشت به سطح قبل</button>
+	</div>
+	<div class="col-lg-12">
+		<button type="button" class="btn btn-warning" onclick="window.history.back();">بازگشت به سطح قبل</button>
 
-    </div>
+	</div>
 </div>
 
-
 <div class="main-content">
-    <div class="row">
-        <div class="col-lg-12 animatedParent animateOnce z-index-50">
-            <div class="panel panel-default animated fadeInUp">
-                <div class="panel-heading clearfix">
-                    <h3 class="panel-title">زیر دسته ها</h3>
-                    <ul class="panel-tool-options">
-                        <li><a data-rel="collapse" href="#"><i class="icon-down-open"></i></a></li>
-                    </ul>
-                </div>
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped table-border table-hover dataTables-example">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        ردیف
-                                    </th>
-                                    <th>
-                                        نام
-                                    </th>
-                                    <th>
-                                        تعدادزیردسته
-                                    </th>
-                                    <th>
-                                        عملیات
-                                    </th>
-                                </tr>
-                            </thead>
-                            @{ int rowNo = 0; }
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    <td>
-                                        @(++rowNo)
-                                    </td>
-                                    <td>
-                                        @item.Name
-                                    </td>
-                                    <td>
-                                        @item.ChildCount عدد
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.CategoryId">حذف</button> |
-                                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.CategoryId"> ویرایش</button>
+	<div class="row">
+		<div class="col-lg-12 animatedParent animateOnce z-index-50">
+			<div class="panel panel-default animated fadeInUp">
+				<div class="panel-heading clearfix">
+					<h3 class="panel-title">زیر دسته ها</h3>
+					<ul class="panel-tool-options">
+						<li><a data-rel="collapse" href="#"><i class="icon-down-open"></i></a></li>
+					</ul>
+				</div>
+				<div class="panel-body">
+					<div class="table-responsive">
+						<table class="table table-striped table-border table-hover dataTables-example">
+							<thead>
+								<tr>
+									<th>
+										ردیف
+									</th>
+									<th>
+										نام
+									</th>
+									<th>
+										تعدادزیردسته
+									</th>
+									<th>
+										عملیات
+									</th>
+								</tr>
+							</thead>
+							@{ int rowNo = 0; }
+							@foreach (var item in Model)
+							{
+								<tr>
+									<td>
+										@(++rowNo)
+									</td>
+									<td>
+										@item.Name
+									</td>
+									<td>
+										@item.ChildCount عدد
+									</td>
+									<td>
+										<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.CategoryId">حذف</button> |
+										<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.CategoryId"> ویرایش</button>
 
-                                        @if (item.HasChild)
-                                        {
-                                            <a href="/admin/Categories/ShowSubCateogries?Id=@item.CategoryId" class="btn btn-flickr">مشاهده زیر دسته</a>
-                                        }
-                                        <button type="button" class="btn btn-bitbucket" data-toggle="modal" data-target="#SubcategoryModal" onclick="SubCategoryAssignButtonClicked(this)" data-assigned-id="@item.CategoryId"> ایجاد زیردسته</button>
-                                        @if (!item.HasChild)
-                                        {
-                                            <a href="/admin/category/@item.CategoryId/features" class="btn btn-adn">ثبت خصوصیات</a>
-                                        }
-                                    </td>
-                                </tr>
-                            }
-                        </table>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-5">
-                        </div>
-                        <div class="col-sm-7">
-                            <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
-                                <ul class="pagination">
+										@if (item.HasChild)
+										{
+											<a href="/admin/Categories/ShowSubCateogries?Id=@item.CategoryId" class="btn btn-flickr">مشاهده زیر دسته</a>
+										}
+										<button type="button" class="btn btn-bitbucket" data-toggle="modal" data-target="#SubcategoryModal" onclick="SubCategoryAssignButtonClicked(this)" data-assigned-id="@item.CategoryId"> ایجاد زیردسته</button>
+										@if (!item.HasChild)
+										{
+											<a href="/admin/category/@item.CategoryId/features" class="btn btn-adn">ثبت خصوصیات</a>
+										}
+									</td>
+								</tr>
+							}
+						</table>
+					</div>
+					<div class="row">
+						<div class="col-sm-5">
+						</div>
+						<div class="col-sm-7">
+							<div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+								<ul class="pagination">
 
-                                    <li>
-                                        <pager list="@Model" asp-controller="Categories" asp-action="ShowSubCategories" asp-area="admin" />
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
-        </div>
-        <div class="modal fade" id="myModal" role="dialog" style="height:auto;overflow-y:visible">
-            <div class="modal-dialog modal-sm" style="width:400px">
-                <div class="modal-content">
-                    <div class="modal-header text-center">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">ویرایش دسته بندی</h4>
-                    </div>
-                    <div class="modal-body" style="height:auto">
-                        <form id="register">
-                            <input id="CategoryId" name="CategoryId" hidden />
-                            <input id="ParentCategoryId" name="ParentCategoryId" value="" hidden />
+									<li>
+										<pager list="@Model" asp-controller="Categories" asp-action="ShowSubCategories" asp-area="admin" />
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="myModal" role="dialog" style="height:auto;overflow-y:visible">
+	<div class="modal-dialog modal-sm" style="width:400px">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">ویرایش دسته بندی</h4>
+			</div>
+			<div class="modal-body" style="height:auto">
+				<form id="register">
+					<input id="CategoryId" name="CategoryId" hidden />
+					<input id="ParentCategoryId" name="ParentCategoryId" value="" hidden />
 
-                            <div class="form-group" style="margin-right:5px">
-                                <label for="Name"> نام :</label>
-                                <input display="نام" id="Name" name="Name" placeholder="نام دسته بندی را وارد کنید" class="form-control" style="width:70%" required>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
-                        <button type="button" class="btn btn-success" onclick="Save();">ثبت</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="SubcategoryModal" role="dialog" style="height:auto;overflow-y:visible">
-            <div class="modal-dialog modal-sm" style="width:400px">
-                <div class="modal-content">
-                    <div class="modal-header text-center">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">ثبت زیر دسته</h4>
-                    </div>
-                    <div class="modal-body" style="height:auto">
-                        <form id="SubCategoryregister">
-                            <input id="ParentCategoryId" name="ParentCategoryId" hidden />
-                            <div class="form-group" style="margin-right:5px">
-                                <label for="SubcategoryName"> نام :</label>
-                                <input display="نام" id="SubcategoryName" name="SubcategoryName" placeholder="نام زیر دسته بندی را وارد کنید" class="form-control" style="width:70%" required>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
-                        <button type="button" class="btn btn-success" onclick="SubCategorySave();">ثبت</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+					<div class="form-group" style="margin-right:5px">
+						<label for="Name"> نام :</label>
+						<input display="نام" id="Name" name="Name" placeholder="نام دسته بندی را وارد کنید" class="form-control" style="width:70%" required>
+					</div>
 
-        <div id="Error"></div>
-        <div id="Success"></div>
-        <div id="Question"></div>
-        <script>
-    window.onload = Load;
-    function Load() {
-        CreateAllModals();
-        $(".openmodal").click(function () {
-            clear('register', ["input"]);
-        });
-        $(".btn-warning").click(function () {
-            EditAjax("/admin/Categories/GetById", this.id);
-            var bodyStyle = document.body.style;
-            bodyStyle.removeProperty('padding-right');
-        });
-    }
-    function Save() {
-        if (checkvalidity('register') === 0) {
-            return;
-        }
-		else {
+					<div class="btn-group">
+						<label for="Name"> آیکن</label>
+						<input name="Icon" id="Icon" value="" type="hidden">
+						<input name="IconWeb" id="IconWeb" value="" type="hidden">
+						<button data-selected="graduation-cap" type="button" class="icp demo btn btn-default dropdown-toggle iconpicker-component form-control" data-toggle="dropdown" id="selectIconButton">
+							<i id="iconResult" class="fa fa-fw"></i>
+							<span class=""></span>
+						</button>
+						<div class="dropdown-menu"></div>
+						<button id="removeIcon" type="button" onclick="ClearIcon()"><i class="fas fa-undo"></i></button>
+					</div>
 
-            $("#myModal").modal('toggle');
-            var Parameters = [{ id: "Name", htmlname: "Name", special: "" } , { id: "ParentCategoryId", htmlname: "ParentCategoryId", special: "" }, { id: "CategoryId", htmlname: "CategoryId", special: "" }];
-            PostAjax('/admin/Categories/CreateOrUpdate', Parameters, "/admin/Categories/ShowSubCateogries?Id="+@ViewBag.ParentCategoryId+"");
-        }
-    }
-    function AssignButtonClicked(elem) {
-        $('#CategoryId').val($(elem).data('assigned-id'));
-	}
-	function SubCategoryAssignButtonClicked(elem) {
-        $('#ParentCategoryId').val($(elem).data('assigned-id'));
-	}
-    function Remove() {
-        var Parameters = [{ id: "CategoryId", htmlname: "CategoryId", special: "" }];
-        PostAjax('/admin/Categories/Remove', Parameters, "/admin/Categories/ShowSubCateogries?Id="+@ViewBag.ParentCategoryId+"");
-	}
-    function SubCategorySave() {
-		if (checkvalidity('SubCategoryregister') === 0) {
-			return;
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+				<button type="button" class="btn btn-success" onclick="Save();">ثبت</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="SubcategoryModal" role="dialog" style="height:auto;overflow-y:visible">
+	<div class="modal-dialog modal-sm" style="width:400px">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">ثبت زیر دسته</h4>
+			</div>
+			<div class="modal-body" style="height:auto">
+				<form id="SubCategoryregister">
+					<input id="ParentCategoryId" name="ParentCategoryId" hidden />
+					<div class="form-group" style="margin-right:5px">
+						<label for="SubcategoryName"> نام :</label>
+						<input display="نام" id="SubcategoryName" name="SubcategoryName" placeholder="نام زیر دسته بندی را وارد کنید" class="form-control" style="width:70%" required>
+					</div>
+
+					<div class="btn-group">
+						<label> آیکن</label>
+						<input name="SubCategoryIcon" id="SubCategoryIcon" value="" type="hidden">
+						<input name="SubCategoryIconWeb" id="SubCategoryIconWeb" value="" type="hidden">
+						<button data-selected="graduation-cap" type="button" class="icp demo btn btn-default dropdown-toggle iconpicker-component form-control" data-toggle="dropdown" id="subCategorySelectIconButton">
+							<i id="SubCategoryIconResult" class="fa fa-fw"></i>
+							<span class=""></span>
+						</button>
+						<div class="dropdown-menu"></div>
+						<button id="subCategoryRemoveIconButton" type="button" onclick="SubCategoryClearIcon()"><i class="fas fa-undo"></i></button>
+					</div>
+
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+				<button type="button" class="btn btn-success" onclick="SubCategorySave();">ثبت</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="Error"></div>
+<div id="Success"></div>
+<div id="Question"></div>
+
+@section scripts {
+	<script src="~/lib/fontawesome-iconpicker-master/dist/js/fontawesome-iconpicker.js"></script>
+	<script>
+		FontAwesomeConfig = {
+			autoReplaceSvg: false
 		}
-		else {
-      var Parameters = [{ id: "Name", htmlname: "SubcategoryName", special: "" }, { id: "ParentCategoryId", htmlname: "ParentCategoryId", special: "" }];
-        PostAjax('/admin/Categories/CreateOrUpdate', Parameters,  "/admin/Categories/ShowSubCateogries?Id="+@ViewBag.ParentCategoryId+"");
+	</script>
+	<script src="~/lib/fontawesome-free/js/all.js"></script>
+
+	<script>
+		window.onload = Load;
+		function Load() {
+			CreateAllModals();
+			$(".openmodal").click(function () {
+				clear('register', ["input"]);
+			});
+			$(".btn-warning").click(function () {
+				EditAjax("/admin/Categories/GetById", this.id, function () {
+					// set selected icon
+					var iconClassNames = $("#IconWeb").attr('value');
+					var iTag = '<i id="iconResult" class="' + iconClassNames + '"></i>';
+					//var selectedIcon = window.FontAwesome.icon({ svgTag });
+
+					$("#selectIconButton").html(iTag);
+
+					console.log(iTag)
+				});
+
+				var bodyStyle = document.body.style;
+				bodyStyle.removeProperty('padding-right');
+
+
+			});
 		}
-	}
-        </script>
+
+		function getParameters(isEdit) {
+			var iconInput = '', iconWebInput = '', iconResultInput = '';
+			if (!isEdit) {
+				iconInput = 'SubCategoryIcon';
+				iconWebInput = 'SubCategoryIconWeb';
+				iconResultInput = 'SubCategoryIconResult';
+			}
+			else {
+				iconInput = 'Icon';
+				iconWebInput = 'IconWeb';
+				iconResultInput = 'iconResult';
+			}
+
+			// get icon
+			// get selected icon
+			var classList = $('#' + iconResultInput).attr('class').split(/\s+/);
+			var str = classList[1];
+
+			var selectedIcon;
+			if (str != undefined) {
+				// get icon name
+				var iconName = str.substring(3, str.length);
+
+				// sample: var camera = window.FontAwesome.icon({ prefix: 'fas', iconName: 'camera' })
+				// help: https://fontawesome.com/how-to-use/javascript-api/setup/getting-started
+				selectedIcon = window.FontAwesome.icon({ prefix: classList[0], iconName: iconName });
+			}
+
+			// set icon in input
+			if (selectedIcon != undefined) {
+				$("#" + iconInput).val(selectedIcon.icon[4]);
+				$("#" + iconWebInput).val($('#' + iconResultInput).attr('class'));
+			} else {
+				$("#" + iconInput).attr('value', '');
+				$("#" + iconWebInput).attr('value', '');
+			}
+
+			var parameters = [
+				{ id: "CategoryId", htmlname: "CategoryId", special: "" },
+				{ id: "Icon", htmlname: iconInput, special: "" },
+				{ id: "IconWeb", htmlname: iconWebInput, special: "" },
+				{ id: "ParentCategoryId", htmlname: "ParentCategoryId", special: "" }
+			];
+
+			if (!isEdit) {
+				parameters.push({ id: "Name", htmlname: "SubcategoryName", special: "" });
+			} else {
+				parameters.push({ id: "Name", htmlname: "Name", special: "" });
+			}
+
+			console.log(parameters);
+
+			return parameters;
+		}
+
+		function Save() {
+			if (checkvalidity('register') === 0) {
+				return;
+			}
+			else {
+				$("#myModal").modal('toggle');
+
+				var parameters = getParameters(true);
+
+				PostAjax('/admin/Categories/CreateOrUpdate', parameters, "/admin/Categories/ShowSubCateogries?Id=" + @ViewBag.ParentCategoryId + "");
+			}
+		}
+		function AssignButtonClicked(elem) {
+			$('#CategoryId').val($(elem).data('assigned-id'));
+		}
+		function SubCategoryAssignButtonClicked(elem) {
+			$('#ParentCategoryId').val($(elem).data('assigned-id'));
+
+			// reset form
+			$('#SubcategoryName').val('');
+			SubCategoryClearIcon();
+		}
+		function Remove() {
+			var Parameters = [{ id: "CategoryId", htmlname: "CategoryId", special: "" }];
+			PostAjax('/admin/Categories/Remove', Parameters, "/admin/Categories/ShowSubCateogries?Id="+@ViewBag.ParentCategoryId+"");
+		}
+		function SubCategorySave() {
+			if (checkvalidity('SubCategoryregister') === 0) {
+				return;
+			}
+			else {
+				var parameters = getParameters();
+
+				PostAjax('/admin/Categories/CreateOrUpdate', parameters, "/admin/Categories/ShowSubCateogries?Id=" + @ViewBag.ParentCategoryId + "");
+			}
+		}
+
+		function ClearIcon() {
+			$("#Icon").val('');
+			$("#IconWeb").val('');
+			$("#iconResult").attr('class', '');
+			$('#iconResult').html('');
+		}
+
+		function SubCategoryClearIcon() {
+			$("#SubCategoryIcon").val('');
+			$("#SubCategoryIconWeb").val('');
+			$("#SubCategoryIconResult").attr('class', '');
+			$('#SubCategoryIconResult').html('');
+		}
+
+		// Pack Icon input
+		$('.dropdown-menu').iconpicker();
+
+	</script>
+
+
+}
