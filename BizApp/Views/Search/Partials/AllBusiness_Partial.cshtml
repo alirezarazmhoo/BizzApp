@@ -9,7 +9,7 @@
 {
     int pageNumber = (((Model.PageNumber * 10) - 10 ) + (int)j);
     
-    <div class="category-content__item__cat-product" data-assigned-lon="@item.Longitude" data-assigned-count="@pageNumber" data-assigned-lat="@item.Latitude" data-assigned-datas="<div style='width:80%!important;height;80%!important;align-items: center !important;' ><img src='@item.FeatureImage'  ></div><br/><h6>@item.Name </h6><br/><div class='category-content__item__cat-product__content__text__desc__icon__star' data-star='3.5'></div>">
+    <div class="category-content__item__cat-product" data-assigned-lon="@item.Longitude" id="@pageNumber" data-assigned-count="@pageNumber" data-assigned-lat="@item.Latitude" data-assigned-datas="<div style='width:80%!important;height;80%!important;align-items: center !important;' ><img src='@item.FeatureImage'  ></div><br/><h6>@item.Name </h6><br/><div class='category-content__item__cat-product__content__text__desc__icon__star' data-star='3.5'></div>">
 
         <div class="category-content__item__cat-product__image">
             <img src="@item.FeatureImage">
@@ -83,8 +83,57 @@
 <script>
     function ChangePage(page) {
 
-        GetData("/Search/AllBussiness?CategoryId=1047&page=" + page + "", "AllBussiness");
+        GetData("/Search/AllBussiness?CategoryId=1047&page=" + page + "", "AllBussiness",null, page);
         history.pushState(null, null, "/Search/Index?CategoryId=1044&page=" + page + "");
 
     }
+    $('.category-content__item__cat-product').each(function (i, value) {
+        $(this).hover(function (e) {
+            //map.eachLayer(function (layer) {
+            //    if (layer.options.NumberedDivIcon === '1') {
+            //        layer.target.setIcon(new myIconReplc);
+            //    }
+            //});
+            //alert( $(this).attr('id'))
+            var myIconReplc = L.Icon.extend({
+                options: {
+                    iconUrl: "/Designs/MainWebSite/assets/img/3.png",
+                    
+
+                    shadowUrl: null,
+                    iconSize: new L.Point(25, 41),
+                    iconAnchor: new L.Point(13, 41),
+                    popupAnchor: new L.Point(0, -33),
+                    /*
+                    iconAnchor: (Point)
+                    popupAnchor: (Point)
+                    */
+                    className: 'leaflet-div-icon'
+                }
+            });
+            markerArray[$(this).attr('id')-1].setIcon(new myIconReplc({ number: "3333" }));
+
+
+        }, function () {
+                var myIconReplc =  L.Icon.extend({
+                    options: {
+                        iconUrl: "/Designs/MainWebSite/assets/img/4.png",
+                       
+                        shadowUrl: null,
+                        iconSize: new L.Point(25, 41),
+                        iconAnchor: new L.Point(13, 41),
+                        popupAnchor: new L.Point(0, -33),
+                        /*
+                        iconAnchor: (Point)
+                        popupAnchor: (Point)
+                        */
+                        className: 'leaflet-div-icon'
+                    }
+                });
+            markerArray[$(this).attr('id')-1].setIcon(new myIconReplc({ number: "3333" }));
+
+
+        });
+    });
+
 </script>
