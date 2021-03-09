@@ -43,10 +43,7 @@
     <Folder Include="Areas\BusinessProfile\Data\" />
     <Folder Include="Areas\BusinessProfile\Models\" />
     <Folder Include="Areas\BusinessProfile\Views\" />
-    <Folder Include="Areas\Profile\Controllers\" />
     <Folder Include="Areas\Profile\Data\" />
-    <Folder Include="Areas\Profile\Models\" />
-    <Folder Include="Areas\Profile\Views\" />
     <Folder Include="wwwroot\Admin\bower_components\" />
     <Folder Include="wwwroot\Upload\Bussiness\Files\" />
     <Folder Include="wwwroot\Upload\Categories\Files\" />

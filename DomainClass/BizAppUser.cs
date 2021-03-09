@@ -1,6 +1,8 @@
 ﻿using DomainClass.Enums;
 using DomainClass.Infrastructure;
+using DomainClass.Review;
 using System;
+using System.Collections.Generic;
 
 namespace DomainClass
 {
@@ -21,6 +23,8 @@ namespace DomainClass
 		public bool PhotoChanged { get; set; }
 		public string PostalCode { get; set; }
 
+		public virtual ICollection<Review.Review> Reviews { get; set; }
+		public virtual ICollection<CustomerBusinessMedia> CustomerBusinessMedia { get; set; }
 		public virtual City City { get; set; }
 	}
 }

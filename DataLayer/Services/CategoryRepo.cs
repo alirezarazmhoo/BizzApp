@@ -22,6 +22,7 @@ namespace DataLayer.Services
 		private readonly string IconWebType;
 		private readonly string FeatureImageType;
 		private readonly string PngIconType;
+
 		public CategoryRepo(ApplicationDbContext DbContext) : base(DbContext)
 		{
 			IconType = "icon";

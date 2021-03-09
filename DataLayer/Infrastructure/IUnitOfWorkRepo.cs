@@ -11,6 +11,7 @@ namespace DataLayer.Infrastructure
 		IDistrictRepo DistrictRepo { get; }
 		ICateogryRepo CategoryRepo { get; }
 		IFeatureRepo FeatureRepo { get; }
+		IUserProfileRepo UserProfileRepo { get; }
 		ICategoryFeatureRepo CategoryFeaturesRepo { get; }
 		ISliderRepo SliderRepo { get; }
 

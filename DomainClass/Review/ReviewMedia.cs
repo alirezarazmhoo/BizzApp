@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DomainClass.Review
 {
-public	class ReviewMedia
+	public	class ReviewMedia
 	{ 
 		public Guid Id { get; set;  }
 		public Guid ReviewId { get; set; }

@@ -1,0 +1,418 @@
+﻿@model BizApp.Areas.Profile.Models.ProfileViewModel	
+
+@{
+	Layout = "~/Views/Shared/_AllPagesLayout.cshtml";
+
+	var profile = (BizApp.Areas.Profile.Models.ProfileViewModel)ViewBag.Profile;
+}
+
+<main>
+
+	<section class="profile-header">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-9">
+					<div class="profile-header__user-profile">
+						<div class="profile-header__user-profile__image">
+							<a href="#">
+								<img src="./assets/img/img-profile.jpg" alt="">
+							</a>
+						</div>
+						<div class="profile-header__user-profile__info">
+							<div class="profile-header__user-profile__info__title">
+								<h1>@profile.FullName</h1>
+							</div>
+							<div class="profile-header__user-profile__info__location">
+								<h3>@profile.ProvinceName, @profile.CityName</h3>
+							</div>
+							<div class="profile-header__user-profile__info__stats">
+								<ul>
+									@*<li>
+										<svg id="24x24_friends" height="24" viewBox="0 0 24 24" width="24"><g><path d="M10.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946C1.618 12.48 2.586 11 4.018 11h4.964c1.432 0 2.4 1.48 1.842 2.817zM6.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path><path d="M21.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946c-.558-1.337.41-2.817 1.842-2.817h4.964c1.432 0 2.4 1.48 1.842 2.817zM17.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" opacity=".502"></path></g></svg>
+										<span>419</span>
+										<small>دوست</small>
+									</li>
+									<li>*@
+										<svg id="24x24_review" height="24" viewBox="0 0 24 24" width="24"><path d="M21 6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V6zm-5.88 10.428l-3.16-1.938-3.05 2.01.59-3.457L7 10.596l3.457-.505L11.96 6.5l1.582 3.59 3.458.506-2.5 2.447.62 3.385z"></path></svg>
+										<span>@profile.ReviewCount</span>
+										<small>نظرات</small>
+									</li>
+									<li>
+										<svg id="24x24_camera" height="24" viewBox="0 0 24 24" width="24"><path d="M19 20H5a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3h2.184A2.99 2.99 0 0 1 10 4h4a2.99 2.99 0 0 1 2.816 2H19a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3zM12.005 8.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zm0 7a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"></path></svg>
+										<span>@profile.UploadedPhotoCount</span>
+										<small>عکسها</small>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="profile-header__list-action">
+						<ul>
+							<li>
+								<a href="#">
+									<svg id="18x18_add_friend" height="18" viewBox="0 0 18 18" width="18"><g><path d="M5.827 9.647l-2.013 4.127c-.448.922-1.18.915-1.628-.007L.173 9.65C-.275 8.73.178 8 1.18 8h3.64c1.002 0 1.455.725 1.007 1.647zM3 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"></path><path d="M12.827 9.647l-2.013 4.127c-.448.922-1.18.915-1.628-.007L7.173 9.65C6.725 8.73 7.178 8 8.18 8h3.64c1.002 0 1.455.725 1.007 1.647zM10 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" opacity=".502"></path><path d="M18 14h-2v-2h-2v2h-2v2h2v2h2v-2h2v-2z"></path></g></svg>
+									اضافه کردن دوست
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg id="18x18_compliment" height="18" viewBox="0 0 18 18" width="18"><path d="M14.5 6.75a5.5 5.5 0 0 0-11 0 5.495 5.495 0 0 0 2.993 4.892L5.5 16.75l3.505-2 3.495 2-.993-5.108A5.495 5.495 0 0 0 14.5 6.75zm-5.5 4c-2.206 0-4-1.794-4-4s1.794-4 4-4 4 1.794 4 4-1.794 4-4 4z"></path></svg>
+									تعریف و تمجید
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg id="18x18_speech" height="18" viewBox="0 0 18 18" width="18"><path d="M2 4v6a2 2 0 0 0 2 2h1v3l4-3h5a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"></path></svg>
+									پیام فرستادن
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg id="18x18_following" height="18" viewBox="0 0 18 18" width="18"><path d="M16 13l-4 3v-2H9l1-2h2v-2l4 3zm-8.925 2.383c-.443.817-1.707.817-2.15 0L2.128 9.605C1.728 8.868 2.31 8 3.203 8h5.594c.893 0 1.474.868 1.075 1.605l-2.797 5.778zM6 7a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"></path></svg>
+									ایزابل ج را دنبال کنید
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg id="18x18_similar" height="18" viewBox="0 0 18 18" width="18"><path d="M16 12l-5 4v-2H8v-4h3V8l5 4zm-9-2L2 6l5-4v2h3v4H7v2z"></path></svg>
+									نظرات مشابه
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="profile-content">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 d-none d-sm-block ">
+					<div class="profile-content__list-profile">
+						<div class="profile-content__list-profile__title">
+							<h3>مشخصات ایزابل</h3>
+							<svg width="24" height="24" class="icon_svg">
+								<path d="M18.364 9.525L16.95 8.111 12 13.061l-4.95-4.95-1.414 1.414L12 15.889l6.364-6.364z"></path>
+							</svg>
+						</div>
+						<ul>
+							<li>
+								<a href="#">
+									<svg id="24x24_profile" height="24" viewBox="0 0 24 24" width="24"><path d="M4.37 22c.278-4.762 3.587-8 7.63-8 4.043 0 7.352 3.238 7.63 8H4.37zM12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"></path></svg>
+									نمای کلی نمایه
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg id="24x24_friends" height="24" viewBox="0 0 24 24" width="24"><g><path d="M10.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946C1.618 12.48 2.586 11 4.018 11h4.964c1.432 0 2.4 1.48 1.842 2.817zM6.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path><path d="M21.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946c-.558-1.337.41-2.817 1.842-2.817h4.964c1.432 0 2.4 1.48 1.842 2.817zM17.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" opacity=".502"></path></g></svg>
+									دوستان
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg id="24x24_review" height="24" viewBox="0 0 24 24" width="24"><path d="M21 6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V6zm-5.88 10.428l-3.16-1.938-3.05 2.01.59-3.457L7 10.596l3.457-.505L11.96 6.5l1.582 3.59 3.458.506-2.5 2.447.62 3.385z"></path></svg>
+									بررسی ها
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg id="24x24_camera" height="24" viewBox="0 0 24 24" width="24"><path d="M19 20H5a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3h2.184A2.99 2.99 0 0 1 10 4h4a2.99 2.99 0 0 1 2.816 2H19a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3zM12.005 8.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zm0 7a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"></path></svg>
+									عکسهای تجاری
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg id="24x24_compliment" height="24" viewBox="0 0 24 24" width="24"><path d="M19 9A7 7 0 0 0 5 9a6.995 6.995 0 0 0 3.957 6.297L8 21.992 12.005 19 16 21.992l-.957-6.695A6.995 6.995 0 0 0 19 9zm-7 5c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z"></path></svg>
+									تعارف
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg id="24x24_light_bulb" height="24" viewBox="0 0 24 24" width="24"><path d="M15 15.32V18H9v-2.68C6.64 14.19 5 11.79 5 9c0-3.87 3.13-7 7-7s7 3.13 7 7c0 2.79-1.64 5.19-4 6.32zM10.5 6C9.67 6 9 6.67 9 7.5S9.67 9 10.5 9 12 8.33 12 7.5 11.33 6 10.5 6zM13 22h-2a2 2 0 0 1-2-2h6a2 2 0 0 1-2 2z"></path></svg>
+									نکات
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg id="24x24_bookmark" height="24" viewBox="0 0 24 24" width="24"><path d="M16 2H8a3 3 0 0 0-3 3v17l7-5 7 5V5a3 3 0 0 0-3-3zm-1.817 10.45l-2.21-1.357L9.837 12.5l.413-2.42L8.5 8.367l2.42-.353L11.973 5.5l1.107 2.514 2.42.353-1.75 1.713.433 2.37z"></path></svg>
+									نشانک ها
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg id="24x24_save" height="24" viewBox="0 0 24 24" width="24"><path d="M16 2H8a3 3 0 0 0-3 3v17l7-5 7 5V5a3 3 0 0 0-3-3z"></path></svg>
+									مجموعه ها
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg id="24x24_following" height="24" viewBox="0 0 24 24" width="24"><path d="M21 17l-6 4v-3h-2.255l.835-2H15v-3l6 4zM9.842 19.763c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946C3.118 12.48 4.086 11 5.518 11h4.964c1.432 0 2.4 1.48 1.842 2.817l-2.482 5.946zM8 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path></svg>
+									دنبال کردن
+								</a>
+							</li>
+						</ul>
+						<div class="profile-content__list-profile__report">
+							<a href="#">
+								<svg id="14x14_flag" height="14" viewBox="0 0 14 14" width="14"><path d="M5 7.69V1.31c2 1.076 4-1.075 6 0v6.38c-2-1.076-4 1.075-6 0zM3.5 13a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 1 0v11a.5.5 0 0 1-.5.5z"></path></svg>
+								گزارش این نمایه
+							</a>
+						</div>
+					</div>
+				</div>
+
+				@RenderBody()
+
+				<div class="col-md-3">
+					<div class="profile-content__about">
+						<div class="profile-content__about__title">
+							<h3>درباره ایزابل ج</h3>
+
+						</div>
+						<div class="profile-content__about__score-title">
+							<h4>توزیع امتیاز</h4>
+						</div>
+						<div class="profile-content__about__score">
+
+							<div class="profile-content__about__score__review">
+								<span>5 ستاره</span>
+								<div class="profile-content__about__score__review__progerss" style="width: 100%;">
+									<span>26</span>
+								</div>
+							</div>
+							<div class="profile-content__about__score__review">
+								<span>4 ستاره</span>
+								<div class="profile-content__about__score__review__progerss" style="width: 62%;">
+									<span>16</span>
+								</div>
+							</div>
+							<div class="profile-content__about__score__review">
+								<span>3 ستاره</span>
+								<div class="profile-content__about__score__review__progerss" style="width: 30%;">
+									<span>4</span>
+								</div>
+							</div>
+							<div class="profile-content__about__score__review">
+								<span>2 ستاره</span>
+								<div class="profile-content__about__score__review__progerss" style="width: 45%;">
+									<span>7</span>
+								</div>
+							</div>
+							<div class="profile-content__about__score__review">
+								<span>1ستاره</span>
+								<div class="profile-content__about__score__review__progerss" style="width: 20%;">
+									<span>9</span>
+								</div>
+							</div>
+						</div>
+						<div class="profile-content__about__more-score">
+							<a href="#">مشاهده نمودارهای بیشتر</a>
+						</div>
+						<div class="profile-content__about__review-votes">
+							<div class="profile-content__about__review-votes__title">
+								<h4>بررسی آرا</h4>
+							</div>
+							<ul>
+								<li>
+									<svg id="18x18_useful_outline" height="18" viewBox="0 0 18 18" width="18"><path d="M9 17c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM9 2C5.14 2 2 5.14 2 9s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm2 8.392V12H7v-1.608a3.982 3.982 0 0 1-2-3.445 4 4 0 0 1 8 0c0 1.477-.81 2.752-2 3.445zM8 5.25a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5zm1.003 9.747h-.006A1.997 1.997 0 0 1 7 13h4a1.997 1.997 0 0 1-1.997 1.997z"></path></svg>
+									مفید
+									<span>101</span>
+								</li>
+								<li>
+									<svg id="18x18_funny_outline" height="18" viewBox="0 0 18 18" width="18"><path d="M9 17c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM9 2C5.14 2 2 5.14 2 9s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm0 12a4.87 4.87 0 0 1-4.787-4h9.574A4.87 4.87 0 0 1 9 14zm2.5-5.625a1.376 1.376 0 1 1 0-2.75 1.376 1.376 0 0 1 0 2.75zm-5 0a1.376 1.376 0 1 1 0-2.75 1.376 1.376 0 0 1 0 2.75z"></path></svg>
+									خنده دار
+									<span>18</span>
+								</li>
+								<li>
+									<svg id="18x18_cool_outline" height="18" viewBox="0 0 18 18" width="18"><path d="M9 17c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM9 2C5.14 2 2 5.14 2 9s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm6.026 5.335C14.766 8.797 13.5 10 11.986 10h-.003c-1.218 0-2.282-.764-2.767-1.813-.088-.19-.344-.242-.432-.052C8.3 9.185 7.234 10 6.016 10h-.003C4.5 10 3.195 8.83 2.973 7.35l-.093-.84c-.053-.242.192-.51.477-.51h11.286c.294 0 .508.332.477.56l-.094.775zm-2.068 4.154A4.28 4.28 0 0 1 9 14.144a4.28 4.28 0 0 1-3.958-2.657A6.81 6.81 0 0 0 9 12.753a6.81 6.81 0 0 0 3.958-1.265z"></path></svg>
+									سرد
+									<span>42</span>
+								</li>
+							</ul>
+						</div>
+						<div class="profile-content__about__stats">
+							<div class="profile-content__about__stats__title">
+								<h4>وضعیت</h4>
+							</div>
+							<ul>
+								<li>
+									<svg id="18x18_light_bulb" height="18" viewBox="0 0 18 18" width="18"><path d="M11 11.62V14H7v-2.38A5.498 5.498 0 0 1 9 1a5.498 5.498 0 0 1 2 10.62zM8 4a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm3 11.07A1.93 1.93 0 0 1 9.07 17h-.14A1.93 1.93 0 0 1 7 15.07V15h4v.07z"></path></svg>
+									نکات
+									<span>1</span>
+								</li>
+								<li>
+									<svg id="18x18_drafts" height="18" viewBox="0 0 18 18" width="18"><path d="M16.08 5.63c-1.045-.16-2.05-.215-2.918-.127.797.145 1.63.5 2.504.948a7.144 7.144 0 0 1-.11.19c-1.594-.223-3.12-.284-4.455-.15 1.2.22 2.44.678 3.735 1.258-1.903 2.582-5.284 4.92-10.975 4.526C7.405 8.18 12.16 4.7 15.486 2.606c-4.132 1.178-9.278 4.96-12.202 8.8.47-4.812 3.428-7.27 6.572-8.486-.083.86-.215 1.672-.438 2.42.528-.8 1.007-1.74 1.426-2.765.217-.066.433-.127.65-.184-.03.577-.1 1.117-.245 1.6a10 10 0 0 0 .89-1.754c1.94-.427 3.736-.475 4.82-.415.136.444-.06 2.016-.88 3.81zM3.857 12.273C2.767 13.533 1.785 14.847 1 16.2c.173-1.472 1.023-3.138 2.284-4.794a13.28 13.28 0 0 0-.056.82c.215.02.42.03.63.046z"></path></svg>
+									مرور به روزرسانی ها
+									<span>2</span>
+								</li>
+								<li>
+									<svg id="18x18_bookmark" height="18" viewBox="0 0 18 18" width="18"><path d="M14 2H4v14l5-4 5 4V2zm-3.13 7.957L8.978 8.794 7.148 10 7.5 7.926 6 6.458l2.074-.303L8.977 4l.948 2.155L12 6.458l-1.5 1.468.37 2.03z"></path></svg>
+									نشانک ها
+									<span>2</span>
+								</li>
+								<li>
+									<svg id="18x18_first" height="18" viewBox="0 0 18 18" width="18"><path d="M18 9l-2.136-1.84.932-2.66-2.772-.525-.524-2.77-2.66.93L8.997 0 7.163 2.136 4.5 1.206l-.525 2.77-2.77.524.932 2.66L0 9l2.137 1.84-.932 2.66 2.77.525.526 2.77 2.664-.932L8.998 18l1.84-2.137 2.662.932.524-2.77 2.772-.524-.932-2.66L18 9zm-7 4H7v-1h1V6.667L7 7V6l3-1v7h1v1z"></path></svg>
+									اولین ها
+									<span>1</span>
+								</li>
+								<li>
+									<svg id="18x18_followers" height="18" viewBox="0 0 18 18" width="18"><path d="M15 14h-2v2l-4-3 4-3v2h3l-1 2zm-7.925 1.383c-.443.817-1.707.817-2.15 0L2.128 9.605C1.728 8.868 2.31 8 3.203 8h5.594c.893 0 1.474.868 1.075 1.605l-2.797 5.778zM6 7a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"></path></svg>
+									پیروان
+									<span>4</span>
+								</li>
+							</ul>
+						</div>
+						<div class="profile-content__about__compliments">
+							<div class="profile-content__about__compliments__title">
+								<h4>11 تعارف</h4>
+							</div>
+							<ul>
+								<li>
+									<svg id="18x18_file" height="18" viewBox="0 0 18 18" width="18"><path d="M3 17V1h6v6h6v10H3zm9-7H6v1h6v-1zm0 3H6v1h6v-1zM10 1l5 5h-5V1z"></path></svg>
+									2
+								</li>
+								<li>
+									<svg id="18x18_compliment" height="18" viewBox="0 0 18 18" width="18"><path d="M14.5 6.75a5.5 5.5 0 0 0-11 0 5.495 5.495 0 0 0 2.993 4.892L5.5 16.75l3.505-2 3.495 2-.993-5.108A5.495 5.495 0 0 0 14.5 6.75zm-5.5 4c-2.206 0-4-1.794-4-4s1.794-4 4-4 4 1.794 4 4-1.794 4-4 4z"></path></svg>
+									2
+								</li>
+								<li>
+									<svg id="18x18_pencil" height="18" viewBox="0 0 18 18" width="18"><path d="M15.96 4.505a2.094 2.094 0 0 0-.577-1.89 2.103 2.103 0 0 0-2.973.002l-1.487 1.487-7.436 7.436L2 16l4.46-1.487 7.437-7.436 1.487-1.487c.308-.308.5-.688.577-1.085zm-10.067 9.09l-2.23.742.743-2.23 7.26-7.26 1.487 1.487-7.26 7.26z"></path></svg>
+									3
+								</li>
+								<li>
+									<svg id="18x18_profile" height="18" viewBox="0 0 18 18" width="18"><path d="M2.002 16h13.996a9.87 9.87 0 0 0-5.66-2.786V12.08c.898-.655 1.733-1.75 1.79-2.46 1.016-.495 1.228-1.723.506-1.994l-.017.024c.326-.458.527-1.04.527-1.706 0-.863-.156-1.66-.79-2.182C11.914 2.72 10.998 2 9.934 2c-.625 0-1.198.25-1.656.664a.955.955 0 0 0-.612-.23c-.4 0-.747.268-.934.662-1.005.37-1.738 1.505-1.738 2.848 0 .615.154 1.186.417 1.66-.78.307-.52 1.477.463 2.015.057.71.89 1.804 1.79 2.46v1.133A9.87 9.87 0 0 0 2.003 16z"></path></svg>
+									1
+								</li>
+								<li>
+									<svg id="18x18_cool" height="18" viewBox="0 0 18 18" width="18"><path d="M9 1C4.59 1 1 4.59 1 9s3.59 8 8 8 8-3.59 8-8-3.59-8-8-8zm0 13.146a4.28 4.28 0 0 1-3.958-2.657A6.81 6.81 0 0 0 9 12.75a6.81 6.81 0 0 0 3.958-1.265A4.28 4.28 0 0 1 9 14.145zM12.29 10h-.003c-1.343 0-2.515-.9-3.05-2.224-.096-.24-.38-.24-.476 0C8.23 9.1 7.06 10 5.717 10H5.71c-1.67 0-3.107-1.15-3.35-3.018l-.104-.734c-.058-.305.212-.25.526-.248h12.44c.323 0 .558-.04.524.248l-.103.517C15.353 8.612 13.96 10 12.29 10z"></path></svg>
+									3
+								</li>
+							</ul>
+						</div>
+						<div class="profile-content__about__location">
+							<div class="profile-content__about__location__title">
+								<h4>موقعیت</h4>
+							</div>
+							<div class="profile-content__about__location__content">
+								<p>نیویورک ، نیویورک ، ایالات متحده است</p>
+							</div>
+							<div class="profile-content__about__since">
+								<div class="profile-content__about__since__title">
+									<h4>Yelping از آنجا که</h4>
+								</div>
+								<div class="profile-content__about__since__content">
+									<p>ژانویه 2017</p>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="profile-content__mobile-about">
+						<div class="profile-content__mobile-about__list1">
+							<ul>
+								<li>
+									<a href="#">
+										<svg id="24x24_friends" height="24" viewBox="0 0 24 24" width="24"><g><path d="M10.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946C1.618 12.48 2.586 11 4.018 11h4.964c1.432 0 2.4 1.48 1.842 2.817zM6.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path><path d="M21.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946c-.558-1.337.41-2.817 1.842-2.817h4.964c1.432 0 2.4 1.48 1.842 2.817zM17.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" opacity=".502"></path></g></svg>
+										دوستان
+										<span>418</span>
+									</a>
+									<div class="profile-content__mobile-about__list1__svg-left">
+										<svg width="24" height="24" class="icon_svg">
+											<path d="M14.25 17.58a1 1 0 01-.71-.3L9 12.7a1 1 0 010-1.4l4.5-4.58A1 1 0 0115 6.7a1 1 0 010 1.42L11.15 12 15 15.88a1 1 0 010 1.42 1 1 0 01-.75.28z"></path>
+										</svg>
+									</div>
+								</li>
+								<li>
+									<a href="#">
+										<svg id="24x24_review" height="24" viewBox="0 0 24 24" width="24"><path d="M21 6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V6zm-5.88 10.428l-3.16-1.938-3.05 2.01.59-3.457L7 10.596l3.457-.505L11.96 6.5l1.582 3.59 3.458.506-2.5 2.447.62 3.385z"></path></svg>
+										بررسی ها
+										<span>62</span>
+									</a>
+									<div class="profile-content__mobile-about__list1__svg-left">
+										<svg width="24" height="24" class="icon_svg">
+											<path d="M14.25 17.58a1 1 0 01-.71-.3L9 12.7a1 1 0 010-1.4l4.5-4.58A1 1 0 0115 6.7a1 1 0 010 1.42L11.15 12 15 15.88a1 1 0 010 1.42 1 1 0 01-.75.28z"></path>
+										</svg>
+									</div>
+								</li>
+								<li>
+									<a href="#">
+										<svg id="24x24_camera" height="24" viewBox="0 0 24 24" width="24"><path d="M19 20H5a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3h2.184A2.99 2.99 0 0 1 10 4h4a2.99 2.99 0 0 1 2.816 2H19a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3zM12.005 8.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zm0 7a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"></path></svg>
+										عکسها
+										<span>73</span>
+									</a>
+									<div class="profile-content__mobile-about__list1__svg-left">
+										<svg width="24" height="24" class="icon_svg">
+											<path d="M14.25 17.58a1 1 0 01-.71-.3L9 12.7a1 1 0 010-1.4l4.5-4.58A1 1 0 0115 6.7a1 1 0 010 1.42L11.15 12 15 15.88a1 1 0 010 1.42 1 1 0 01-.75.28z"></path>
+										</svg>
+									</div>
+								</li>
+
+							</ul>
+						</div>
+						<div class="profile-content__mobile-about__list2">
+							<ul>
+								<li>
+									<a href="#">
+										<svg id="24x24_bookmark" height="24" viewBox="0 0 24 24" width="24"><path d="M16 2H8a3 3 0 0 0-3 3v17l7-5 7 5V5a3 3 0 0 0-3-3zm-1.817 10.45l-2.21-1.357L9.837 12.5l.413-2.42L8.5 8.367l2.42-.353L11.973 5.5l1.107 2.514 2.42.353-1.75 1.713.433 2.37z"></path></svg>
+										نشانک ها
+										<span>2</span>
+									</a>
+									<div class="profile-content__mobile-about__list2__svg-left">
+										<svg width="24" height="24" class="icon_svg">
+											<path d="M14.25 17.58a1 1 0 01-.71-.3L9 12.7a1 1 0 010-1.4l4.5-4.58A1 1 0 0115 6.7a1 1 0 010 1.42L11.15 12 15 15.88a1 1 0 010 1.42 1 1 0 01-.75.28z"></path>
+										</svg>
+									</div>
+								</li>
+								<li>
+									<a href="#">
+										<svg id="24x24_light_bulb" height="24" viewBox="0 0 24 24" width="24"><path d="M15 15.32V18H9v-2.68C6.64 14.19 5 11.79 5 9c0-3.87 3.13-7 7-7s7 3.13 7 7c0 2.79-1.64 5.19-4 6.32zM10.5 6C9.67 6 9 6.67 9 7.5S9.67 9 10.5 9 12 8.33 12 7.5 11.33 6 10.5 6zM13 22h-2a2 2 0 0 1-2-2h6a2 2 0 0 1-2 2z"></path></svg>
+										نکات
+										<span>44</span>
+
+									</a>
+									<div class="profile-content__mobile-about__list2__svg-left">
+										<svg width="24" height="24" class="icon_svg">
+											<path d="M14.25 17.58a1 1 0 01-.71-.3L9 12.7a1 1 0 010-1.4l4.5-4.58A1 1 0 0115 6.7a1 1 0 010 1.42L11.15 12 15 15.88a1 1 0 010 1.42 1 1 0 01-.75.28z"></path>
+										</svg>
+									</div>
+								</li>
+								<li>
+									<a href="#">
+										<svg id="24x24_regular" height="24" viewBox="0 0 24 24" width="24"><path d="M3.03 4.584c.224 7.093-1.084 12.336 8.99 16.4 9.5-3.358 8.918-9.575 8.99-16.174-6.7-2.483-11.28-2.25-17.98-.226zm7.837 10.778L9.33 13.826 7.027 11.52l1.537-1.535 2.304 2.304 4.61-4.61 1.537 1.535-6.147 6.146z"></path></svg>
+										منظم در
+										<span>0</span>
+
+
+									</a>
+									<div class="profile-content__mobile-about__list2__svg-left">
+										<svg width="24" height="24" class="icon_svg">
+											<path d="M14.25 17.58a1 1 0 01-.71-.3L9 12.7a1 1 0 010-1.4l4.5-4.58A1 1 0 0115 6.7a1 1 0 010 1.42L11.15 12 15 15.88a1 1 0 010 1.42 1 1 0 01-.75.28z"></path>
+										</svg>
+									</div>
+								</li>
+								<li>
+									<a href="#">
+										<svg id="24x24_badge" height="24" viewBox="0 0 24 24" width="24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zM8.375 13.917c-.05-.094-.084-.253-.104-.444-.06-.58.02-1.455.19-1.73.08-.128.2-.196.33-.19.087 0 .163.028 1.856.737l.496.204c.178.068.288.257.275.47-.01.207-.13.37-.303.416l-.7.228c-1.577.516-1.628.53-1.71.526a.37.37 0 0 1-.315-.217zm3.902 1.292c-.005 1.67-.007 1.73-.035 1.81a.37.37 0 0 1-.298.232c-.422.072-1.74-.42-2.014-.75a.388.388 0 0 1-.097-.22.322.322 0 0 1 .018-.155c.03-.084.08-.148 1.27-1.564l.35-.415c.12-.15.33-.198.525-.12.19.074.307.24.297.42l-.006.752zm-.284-3.52c-.087.023-.348.103-.666-.42 0 0-2.165-3.457-2.215-3.56-.032-.12.008-.258.11-.37.325-.337 2.072-.834 2.528-.72a.38.38 0 0 1 .288.27c.027.15.24 3.355.27 4.073.03.614-.23.697-.315.724zm2.924 4.742a.364.364 0 0 1-.374-.04c-.066-.054-.137-.164-1.072-1.705l-.27-.46a.46.46 0 0 1 .05-.545c.127-.16.32-.22.485-.155l.7.237c1.576.524 1.627.545 1.69.594a.384.384 0 0 1 .13.365c-.062.43-.93 1.552-1.33 1.714zm1.33-4.828a.423.423 0 0 1-.182.35c-.166.117-2.228.6-2.47.647-.245.05-.386-.046-.503-.225-.11-.174-.107-.375.008-.515l.442-.607c.958-1.33 1.016-1.4 1.086-1.445.11-.078.26-.08.395-.018.378.19 1.223 1.35 1.223 1.797v.013z"></path></svg>
+										نشان ها
+										<span>18</span>
+
+									</a>
+									<div class="profile-content__mobile-about__list2__svg-left">
+										<svg width="24" height="24" class="icon_svg">
+											<path d="M14.25 17.58a1 1 0 01-.71-.3L9 12.7a1 1 0 010-1.4l4.5-4.58A1 1 0 0115 6.7a1 1 0 010 1.42L11.15 12 15 15.88a1 1 0 010 1.42 1 1 0 01-.75.28z"></path>
+										</svg>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+
+
+</main>
