@@ -50,6 +50,12 @@ namespace DataLayer.Data
 			// default value for Call Number in business
 			builder.Entity<Business>()
 				.Property(b => b.CallNumber).HasDefaultValue(0);
+			// default value for Rate in business
+			builder.Entity<Business>()
+				.Property(b => b.Rate).HasDefaultValue(0);
+			// default value for Is Sponsor in business
+			builder.Entity<Business>()
+				.Property(b => b.IsSponsor).HasDefaultValue(false);
 
 			// Seed data
 			builder.SeedMainAdmin();

@@ -41,6 +41,8 @@ namespace DomainClass.Businesses
 		public DateTime CreatedDate { get; set; } = DateTime.Now;
 		public double Latitude { get; set; }
 		public double Longitude { get; set; }
+		public int Rate { get; set; }
+		public bool IsSponsor { get; set; }
 
 		// Relations
 		public virtual District District { get; set; }
