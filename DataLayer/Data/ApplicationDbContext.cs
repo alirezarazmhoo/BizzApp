@@ -31,10 +31,14 @@ namespace DataLayer.Data
 		public virtual DbSet<HierarchyNamesCategory> CategoryHierarchyNames { get; set; }
 		public virtual DbSet<CategoryTerm> CategoryTerms { get; set; }
 		public DbSet<Slider> Sliders { get; set; }
-		public virtual DbSet<ApplicationUserMedia> ApplicationUserMedias { get; set; }
-		public virtual DbSet<Review> Reviews { get; set; }
-		public virtual DbSet<ReviewMedia> ReviewMedias { get; set; }
-		public virtual DbSet<UsersInReviewLike> UsersInReviewLikes { get; set; }
+		public virtual DbSet<ApplicationUserMedia>  ApplicationUserMedias { get; set; }
+		public virtual DbSet<Review>  Reviews { get; set; }
+		public virtual DbSet<ReviewMedia>   ReviewMedias { get; set; }
+		public virtual DbSet<UsersInReviewLike>  UsersInReviewLikes { get; set; }
+		public virtual DbSet<CustomerBusinessMedia>  CustomerBusinessMedias { get; set; }
+		public virtual DbSet<UsersInCustomerBusinessMediaLike>   UsersInCustomerBusinessMediaLikes { get; set; }
+		public virtual DbSet<CustomerBusinessMediaPictures>  CustomerBusinessMediaPictures { get; set; }
+
 		#endregion
 		protected override void OnModelCreating(ModelBuilder builder)
 		{

@@ -99,29 +99,29 @@
 							<div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
 								<ul class="pagination">
 
-									<li>
-										<pager list="@Model" asp-controller="Categories" asp-action="ShowSubCategories" asp-area="admin" />
-									</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="modal fade" id="myModal" role="dialog" style="height:auto;overflow-y:visible">
-	<div class="modal-dialog modal-sm" style="width:400px">
-		<div class="modal-content">
-			<div class="modal-header text-center">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">ویرایش دسته بندی</h4>
-			</div>
-			<div class="modal-body" style="height:auto">
-				<form id="register">
-					<input id="CategoryId" name="CategoryId" hidden />
-					<input id="ParentCategoryId" name="ParentCategoryId" value="" hidden />
+                                    <li>
+                                        <pager list="@Model" asp-controller="Categories"  asp-route-Id="@ViewBag.ParentCategoryId" asp-action="ShowSubCateogries" asp-area="admin" />
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+        <div class="modal fade" id="myModal" role="dialog" style="height:auto;overflow-y:visible">
+            <div class="modal-dialog modal-sm" style="width:400px">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">ویرایش دسته بندی</h4>
+                    </div>
+                    <div class="modal-body" style="height:auto">
+                        <form id="register">
+                            <input id="CategoryId" name="CategoryId" hidden />
+                            <input id="ParentCategoryId" name="ParentCategoryId" value="" hidden />
 
 					<div class="form-group" style="margin-right:5px">
 						<label for="Name"> نام :</label>

@@ -25,8 +25,46 @@
 			<div class="main-header__logo">
 				<img src="~/Designs/MainWebSite/assets/img/logo.png">
 			</div>
-
 			<div class="main-header__search">
+				<div class="main-header__search__right">
+			
+						<label>جستجو</label>
+						<input type="text" name="idTxtCategorySearch" id="idTxtCategorySearch" oninput="AutoComplete(this.value)" placeholder="همبرگر ، آرایشگر ، اسپا ، لوله کش ...">
+						<div class="main-header__search__right__menu-bottom">
+							<ul id="cmbSearchCategoryAlternative" style="display:none">
+							</ul>
+							<ul id="cmbSearchCategoryPrimary">
+								@foreach (var item in Model.MainPage_Category)
+								{
+									<li>
+										<a href="#">
+											@{
+												<svg id="iconResult" class="svg-inline--fa fa-accusoft fa-w-20" aria-hidden="true" data-prefix="fab" data-icon="accusoft" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg=""><path fill="currentColor" d="@item.Image"></path></svg>
+
+											}
+											@item.Name
+										</a>
+									</li>
+								}
+							</ul>
+						</div>
+					</div>
+				<div class="main-header__search__left">
+					<label>جنب</label>
+					<input  id="searchCityInput" type="" name="" oninput="CityAutoComplete(this.value)" placeholder="مکان مورد نظر خود را جستجو کنید">
+					<div class="main-header__search__left__menu-bottom" id="cmbSearchCity">
+				
+					</div>
+				</div>
+				<div class="main-header__search__button">
+					<button class="submit" title="search">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="icon_svg">
+							<path d="M21.853 20.355l-3.444-3.443a9.428 9.428 0 10-16.761-6.171 9.428 9.428 0 0015.348 7.586l3.443 3.442a1 1 0 101.414-1.414zM5.82 16.245a7.429 7.429 0 115.253 2.175 7.38 7.38 0 01-5.253-2.176z"></path>
+						</svg>
+					</button>
+				</div>
+			</div>
+			@*<div class="main-header__search">
 			<div class="main-header__search__right" >
 				<label>جستجو</label>
 				<input type="text" name="idTxtCategorySearch" id="idTxtCategorySearch" oninput="AutoComplete(this.value)" placeholder="همبرگر ، آرایشگر ، اسپا ، لوله کش ...">
@@ -66,40 +104,40 @@
 					</svg>
 				</button>
 			</div>
-		</div>
+		</div>*@
 			<div class="main-header__menu-bottom">
 				<ul>
 
-		@foreach (var item in Model.MainPage_Category)
-		{
-			<li>
-				<a href="#" >
+					@foreach (var item in Model.MainPage_Category)
+					{
+						<li>
+							<a href="#">
 
-					<svg id="iconResult" class="svg-inline--fa fa-accusoft fa-w-20" aria-hidden="true" data-prefix="fab" data-icon="accusoft" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg=""><path fill="currentColor" d="@item.Image"></path></svg>
-					@item.Name <svg id="14x14_triangle_down" height="17" viewBox="0 0 14 14" width="14">
-						<path d="M7 9L3.5 5h7L7 9z"></path>
-					</svg>
+								<svg id="iconResult" class="svg-inline--fa fa-accusoft fa-w-20" aria-hidden="true" data-prefix="fab" data-icon="accusoft" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg=""><path fill="currentColor" d="@item.Image"></path></svg>
+								@item.Name <svg id="14x14_triangle_down" height="17" viewBox="0 0 14 14" width="14">
+									<path d="M7 9L3.5 5h7L7 9z"></path>
+								</svg>
 
-				</a>
-				@if (item.CategoryChilds.Count > 0)
-				{
-					<ul>
+							</a>
+							@if (item.CategoryChilds.Count > 0)
+							{
+								<ul>
 
-						@foreach (var item2 in item.CategoryChilds)
-						{
+									@foreach (var item2 in item.CategoryChilds)
+									{
 
-							<li><a href="#">@item2.Value</a></li>
-						}
+										<li><a href="#">@item2.Value</a></li>
+									}
 
-					</ul>
-				}
-			</li>
-		}
+								</ul>
+							}
+						</li>
+					}
 
 				</ul>
 			</div>
 			<div class="main-header__text">
-				<a href="#" style="color:black">@Model.Title</a>
+				<a href="#" style="color:white">@Model.Title</a>
 			</div>
 		</div>
 

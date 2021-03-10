@@ -65,19 +65,28 @@ namespace BizApp.Models.Basic
 	#region RecentActivity
 	public class MainPage_RecentActivity
 	{
+		public ActivityType ActivityType { get; set; }
+		public ICollection<MainPage_RecentActivityUserMediaBusiness> MainPage_RecentActivityUserMediaBusinesses { get; set;  }
 		public MainPage_RecentActivityCreator MainPage_RecentActivityCreator { get; set;  }
 		public MainPage_RecentActivityContent  MainPage_RecentActivityContent { get; set; }
+	}
+	public class MainPage_RecentActivityUserMediaBusiness
+	{
+		public Guid Id { get; set;  }
+		public string Description { get; set; }
+		public long LikeCount { get; set; }
+		public string Image { get; set; }
+
 	}
 	public class MainPage_RecentActivityCreator
 	{
 		public string Id { get; set;  }
 		public string Name { get; set; }
 		public string Image { get; set;  }
-		public ActivityType ActivityType { get; set;  }
 	}
 	public class MainPage_RecentActivityContent
 	{
-		public string Id { get; set; }
+		public Guid Id { get; set; }
 		public string Name { get; set;}
 		public string Image { get; set; }
 		public int Likes { get; set; }

@@ -4,14 +4,16 @@ using DataLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210309070848_FixBusibessMedia")]
+    partial class FixBusibessMedia
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -185,8 +187,8 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "07045c52-0394-456e-adfc-1afb7e57f6b0",
-                            CreateDate = new DateTime(2021, 3, 10, 10, 27, 55, 806, DateTimeKind.Local).AddTicks(3808),
+                            ConcurrencyStamp = "0ab5412f-fd8c-4cfd-8a39-a24847bae3dd",
+                            CreateDate = new DateTime(2021, 3, 9, 10, 38, 47, 554, DateTimeKind.Local).AddTicks(3052),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             Gender = 0,
@@ -196,10 +198,10 @@ namespace DataLayer.Migrations
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJKOK8ygaII2N7+Yd0+OaVIFP7hDNARbF5dEb2IPXRk6OWZ17h6bmsngWHwbSpjJoQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEI2bvxUDbjddEs9pqjsVjY6dHAjgpyOCuixkorEztzpQrZgBKUItD40EQISs+qToBA==",
                             PhoneNumberConfirmed = false,
                             PhotoChanged = false,
-                            SecurityStamp = "fec5bd2e-f085-4ea0-a44b-88efe0e1b498",
+                            SecurityStamp = "c43a5ba5-ac97-4a58-991c-e55f4a6e0d04",
                             TwoFactorEnabled = false,
                             UserName = "mainadmin"
                         });
@@ -557,15 +559,6 @@ namespace DataLayer.Migrations
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("LikeCount")
-                        .HasColumnType("bigint");
 
                     b.Property<int>("StatusEnum")
                         .HasColumnType("int");
@@ -1039,7 +1032,7 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DomainClass.Review.CustomerBusinessMedia", b =>
                 {
                     b.HasOne("DomainClass.BizAppUser", "BizAppUser")
-                        .WithMany("CustomerBusinessMedia")
+                        .WithMany()
                         .HasForeignKey("BizAppUserId");
 
                     b.HasOne("DomainClass.Businesses.Business", "Business")
@@ -1061,7 +1054,7 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DomainClass.Review.Review", b =>
                 {
                     b.HasOne("DomainClass.BizAppUser", "BizAppUser")
-                        .WithMany("Reviews")
+                        .WithMany()
                         .HasForeignKey("BizAppUserId");
 
                     b.HasOne("DomainClass.Businesses.Business", "Business")

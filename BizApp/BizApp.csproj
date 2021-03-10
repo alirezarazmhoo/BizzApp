@@ -12,10 +12,6 @@
     <None Remove="Areas\Admin\Data\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Remove="wwwroot\Designs\MainWebSite\assets\js\scripts - Copy.js.map" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />

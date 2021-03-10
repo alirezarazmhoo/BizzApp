@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using DataLayer.Infrastructure.Reviews;
+using System.Threading.Tasks;
 
 namespace DataLayer.Infrastructure
 {
@@ -14,6 +15,8 @@ namespace DataLayer.Infrastructure
 		IUserProfileRepo UserProfileRepo { get; }
 		ICategoryFeatureRepo CategoryFeaturesRepo { get; }
 		ISliderRepo SliderRepo { get; }
+		IReviewRepo  ReviewRepo { get; }
+
 
 		Task SaveAsync();
 	}

@@ -18,6 +18,7 @@ namespace DomainClass.Review
 
 		public virtual Business Business { get; set; }
 		public virtual BizAppUser BizAppUser { get; set;  }
+		public virtual ICollection<CustomerBusinessMediaPictures> CustomerBusinessMediaPictures { get; set;  }
 		public virtual ICollection<UsersInCustomerBusinessMediaLike> UsersInCustomerBusinessMediaLikes { get; set;  }
 	}
 }
