@@ -22,6 +22,7 @@ namespace BizApp.Automapper
 			CreateMap<Slider, SliderViewModel>()
 				.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
 				.ReverseMap();
+
 			// City
 			CreateMap<City, CityViewModel>()
 				.ForMember(dest => dest.CityId, opt => opt.MapFrom(src => src.Id))
@@ -64,7 +65,7 @@ namespace BizApp.Automapper
 			CreateMap<BizAppUser, UserViewModel>().ReverseMap();
 			CreateMap<BizAppUser, UpdateOperatorViewModel>().ReverseMap();
 			CreateMap<UserProfileDetailQuery, ProfileViewModel>()
-				.ForMember(dest => dest.RegisterDate, opt => opt.MapFrom(src => src.RegisterDate.ToPersianShortDate()))
+				//.ForMember(dest => dest.RegisterDate, opt => opt.MapFrom(src => src.RegisterDate.ToPersianShortDate()))
 				.ReverseMap();
 
 			// Business Create

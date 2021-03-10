@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace BizApp.Areas.Profile.Controllers
 {
 	[Area("profile")]
-	public class OverviewController : ProfileController
+	public class OverviewController : Controller
 	{
-		public OverviewController(IUnitOfWorkRepo unitOfWork, IMapper mapper, IHttpContextAccessor httpContextAccessor) 
-			: base(unitOfWork, mapper, httpContextAccessor)
+		public OverviewController(IUnitOfWorkRepo unitOfWork, IMapper mapper)
+			//: base(unitOfWork, mapper, httpContextAccessor)
 		{
 		}
 

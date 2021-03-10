@@ -1,9 +1,17 @@
-﻿@model BizApp.Areas.Profile.Models.ProfileViewModel	
+﻿@model BizApp.Areas.Profile.Models.ProfileViewModel
+@using BizApp.Extensions
+@inject DataLayer.Infrastructure.IUserProfileRepo UserProfileService
 
 @{
 	Layout = "~/Views/Shared/_AllPagesLayout.cshtml";
 
-	var profile = (BizApp.Areas.Profile.Models.ProfileViewModel)ViewBag.Profile;
+	var userName = Context.Request.Query["username"];
+	var user = UserProfileService.GetUserDetail(userName);
+
+	// todo: redirect if user is null
+
+
+	var currentUser = User.Identity.Name;
 }
 
 <main>
@@ -20,26 +28,26 @@
 						</div>
 						<div class="profile-header__user-profile__info">
 							<div class="profile-header__user-profile__info__title">
-								<h1>@profile.FullName</h1>
+								<h1>@user.FullName</h1>
 							</div>
 							<div class="profile-header__user-profile__info__location">
-								<h3>@profile.ProvinceName, @profile.CityName</h3>
+								<h3>@user.ProvinceName, @user.CityName</h3>
 							</div>
 							<div class="profile-header__user-profile__info__stats">
 								<ul>
 									@*<li>
-										<svg id="24x24_friends" height="24" viewBox="0 0 24 24" width="24"><g><path d="M10.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946C1.618 12.48 2.586 11 4.018 11h4.964c1.432 0 2.4 1.48 1.842 2.817zM6.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path><path d="M21.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946c-.558-1.337.41-2.817 1.842-2.817h4.964c1.432 0 2.4 1.48 1.842 2.817zM17.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" opacity=".502"></path></g></svg>
-										<span>419</span>
-										<small>دوست</small>
-									</li>
-									<li>*@
-										<svg id="24x24_review" height="24" viewBox="0 0 24 24" width="24"><path d="M21 6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V6zm-5.88 10.428l-3.16-1.938-3.05 2.01.59-3.457L7 10.596l3.457-.505L11.96 6.5l1.582 3.59 3.458.506-2.5 2.447.62 3.385z"></path></svg>
-										<span>@profile.ReviewCount</span>
-										<small>نظرات</small>
+											<svg id="24x24_friends" height="24" viewBox="0 0 24 24" width="24"><g><path d="M10.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946C1.618 12.48 2.586 11 4.018 11h4.964c1.432 0 2.4 1.48 1.842 2.817zM6.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path><path d="M21.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946c-.558-1.337.41-2.817 1.842-2.817h4.964c1.432 0 2.4 1.48 1.842 2.817zM17.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" opacity=".502"></path></g></svg>
+											<span>419</span>
+											<small>دوست</small>
+										</li>
+										<li>*@
+									<svg id="24x24_review" height="24" viewBox="0 0 24 24" width="24"><path d="M21 6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V6zm-5.88 10.428l-3.16-1.938-3.05 2.01.59-3.457L7 10.596l3.457-.505L11.96 6.5l1.582 3.59 3.458.506-2.5 2.447.62 3.385z"></path></svg>
+									<span>@user.ReviewCount</span>
+									<small>نظرات</small>
 									</li>
 									<li>
 										<svg id="24x24_camera" height="24" viewBox="0 0 24 24" width="24"><path d="M19 20H5a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3h2.184A2.99 2.99 0 0 1 10 4h4a2.99 2.99 0 0 1 2.816 2H19a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3zM12.005 8.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zm0 7a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"></path></svg>
-										<span>@profile.UploadedPhotoCount</span>
+										<span>@user.UploadedPhotoCount</span>
 										<small>عکسها</small>
 									</li>
 								</ul>
@@ -50,36 +58,57 @@
 				<div class="col-md-3">
 					<div class="profile-header__list-action">
 						<ul>
-							<li>
-								<a href="#">
-									<svg id="18x18_add_friend" height="18" viewBox="0 0 18 18" width="18"><g><path d="M5.827 9.647l-2.013 4.127c-.448.922-1.18.915-1.628-.007L.173 9.65C-.275 8.73.178 8 1.18 8h3.64c1.002 0 1.455.725 1.007 1.647zM3 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"></path><path d="M12.827 9.647l-2.013 4.127c-.448.922-1.18.915-1.628-.007L7.173 9.65C6.725 8.73 7.178 8 8.18 8h3.64c1.002 0 1.455.725 1.007 1.647zM10 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" opacity=".502"></path><path d="M18 14h-2v-2h-2v2h-2v2h2v2h2v-2h2v-2z"></path></g></svg>
-									اضافه کردن دوست
-								</a>
-							</li>
-							<li>
-								<a href="#">
-									<svg id="18x18_compliment" height="18" viewBox="0 0 18 18" width="18"><path d="M14.5 6.75a5.5 5.5 0 0 0-11 0 5.495 5.495 0 0 0 2.993 4.892L5.5 16.75l3.505-2 3.495 2-.993-5.108A5.495 5.495 0 0 0 14.5 6.75zm-5.5 4c-2.206 0-4-1.794-4-4s1.794-4 4-4 4 1.794 4 4-1.794 4-4 4z"></path></svg>
-									تعریف و تمجید
-								</a>
-							</li>
-							<li>
-								<a href="#">
-									<svg id="18x18_speech" height="18" viewBox="0 0 18 18" width="18"><path d="M2 4v6a2 2 0 0 0 2 2h1v3l4-3h5a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"></path></svg>
-									پیام فرستادن
-								</a>
-							</li>
-							<li>
-								<a href="#">
-									<svg id="18x18_following" height="18" viewBox="0 0 18 18" width="18"><path d="M16 13l-4 3v-2H9l1-2h2v-2l4 3zm-8.925 2.383c-.443.817-1.707.817-2.15 0L2.128 9.605C1.728 8.868 2.31 8 3.203 8h5.594c.893 0 1.474.868 1.075 1.605l-2.797 5.778zM6 7a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"></path></svg>
-									ایزابل ج را دنبال کنید
-								</a>
-							</li>
-							<li>
-								<a href="#">
-									<svg id="18x18_similar" height="18" viewBox="0 0 18 18" width="18"><path d="M16 12l-5 4v-2H8v-4h3V8l5 4zm-9-2L2 6l5-4v2h3v4H7v2z"></path></svg>
-									نظرات مشابه
-								</a>
-							</li>
+							@if (userName != currentUser)
+							{
+								<li>
+									<a href="#">
+										<svg id="18x18_add_friend" height="18" viewBox="0 0 18 18" width="18"><g><path d="M5.827 9.647l-2.013 4.127c-.448.922-1.18.915-1.628-.007L.173 9.65C-.275 8.73.178 8 1.18 8h3.64c1.002 0 1.455.725 1.007 1.647zM3 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"></path><path d="M12.827 9.647l-2.013 4.127c-.448.922-1.18.915-1.628-.007L7.173 9.65C6.725 8.73 7.178 8 8.18 8h3.64c1.002 0 1.455.725 1.007 1.647zM10 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" opacity=".502"></path><path d="M18 14h-2v-2h-2v2h-2v2h2v2h2v-2h2v-2z"></path></g></svg>
+										اضافه کردن دوست
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<svg id="18x18_compliment" height="18" viewBox="0 0 18 18" width="18"><path d="M14.5 6.75a5.5 5.5 0 0 0-11 0 5.495 5.495 0 0 0 2.993 4.892L5.5 16.75l3.505-2 3.495 2-.993-5.108A5.495 5.495 0 0 0 14.5 6.75zm-5.5 4c-2.206 0-4-1.794-4-4s1.794-4 4-4 4 1.794 4 4-1.794 4-4 4z"></path></svg>
+										تعریف و تمجید
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<svg id="18x18_speech" height="18" viewBox="0 0 18 18" width="18"><path d="M2 4v6a2 2 0 0 0 2 2h1v3l4-3h5a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"></path></svg>
+										پیام فرستادن
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<svg id="18x18_following" height="18" viewBox="0 0 18 18" width="18"><path d="M16 13l-4 3v-2H9l1-2h2v-2l4 3zm-8.925 2.383c-.443.817-1.707.817-2.15 0L2.128 9.605C1.728 8.868 2.31 8 3.203 8h5.594c.893 0 1.474.868 1.075 1.605l-2.797 5.778zM6 7a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"></path></svg>
+										ایزابل ج را دنبال کنید
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<svg id="18x18_similar" height="18" viewBox="0 0 18 18" width="18"><path d="M16 12l-5 4v-2H8v-4h3V8l5 4zm-9-2L2 6l5-4v2h3v4H7v2z"></path></svg>
+										نظرات مشابه
+									</a>
+								</li>
+							}
+							else
+							{
+								<li>
+									<a href="#">
+										<svg id="18x18_add_friend" height="18" viewBox="0 0 18 18" width="18"><g><path d="M5.827 9.647l-2.013 4.127c-.448.922-1.18.915-1.628-.007L.173 9.65C-.275 8.73.178 8 1.18 8h3.64c1.002 0 1.455.725 1.007 1.647zM3 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"></path><path d="M12.827 9.647l-2.013 4.127c-.448.922-1.18.915-1.628-.007L7.173 9.65C6.725 8.73 7.178 8 8.18 8h3.64c1.002 0 1.455.725 1.007 1.647zM10 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" opacity=".502"></path><path d="M18 14h-2v-2h-2v2h-2v2h2v2h2v-2h2v-2z"></path></g></svg>
+										اضافه کردن عکس پروفایل
+									</a>
+								</li>
+
+								<li>
+									<a href="#">
+										<svg id="18x18_compliment" height="18" viewBox="0 0 18 18" width="18"><path d="M14.5 6.75a5.5 5.5 0 0 0-11 0 5.495 5.495 0 0 0 2.993 4.892L5.5 16.75l3.505-2 3.495 2-.993-5.108A5.495 5.495 0 0 0 14.5 6.75zm-5.5 4c-2.206 0-4-1.794-4-4s1.794-4 4-4 4 1.794 4 4-1.794 4-4 4z"></path></svg>
+										ویرایش پروفایل
+									</a>
+								</li>
+
+							}
+
 						</ul>
 					</div>
 				</div>

@@ -4,6 +4,7 @@ using DataLayer.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace BizApp.Areas.Profile.Controllers
 {
@@ -29,7 +30,7 @@ namespace BizApp.Areas.Profile.Controllers
 
 			var viewModel = AutoMapper.Map<ProfileViewModel>(user);
 
-			ViewData["Profile"] = Profile;
+			ViewBag.Profile = Profile;
 		}
 
 		public ProfileViewModel Profile { get; private set; }
