@@ -146,7 +146,7 @@
 			@await Html.PartialAsync("/Views/Home/Partials/BrowseBusinessesByCategory_Partial.cshtml", Model.MainPage_BusinessesByCategoryMain)
 		</div>
 	</section>
-	<section class="recent-activities">
+	<section class="recent-activities" >
 		<div class="container">
 			<div class="recent-activities__title">
 				<h2>فعالیت اخیر</h2>
@@ -156,8 +156,8 @@
 			@await Html.PartialAsync("/Views/Home/Partials/RecentActivity_Partial.cshtml", Model.MainPage_RecentActivity)
 		</div>
 			
-			<div @*class="recent-activities__text-link"*@ style=" margin-top: 18px; padding-top: 12px; border-top: 1px solid #e6e6e6; text-align: center;">
-				<a href="#" onclick="GetMoreActivity()">
+			<div class="recent-activities__text-link" style=" margin-top: 18px; padding-top: 12px; border-top: 1px solid #e6e6e6; text-align: center;">
+				<a href="#" id="btnmoreActivity" onclick="GetMoreActivity()">
 					<i></i>
 					فعالیت بیشتری را نشان دهید
 				</a>

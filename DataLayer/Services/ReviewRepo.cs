@@ -26,19 +26,19 @@ namespace DataLayer.Services
 				.Include(s=>s.UsersInReviewLikes)
 				.Include(s=>s.BizAppUser)
 				.ThenInclude(s=>s.ApplicationUserMedias)
-				.Include(s=>s.Business)
+				.Include(s=>s.Business).Where(s=>s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted)
 				.Skip((pageNumber.Value - 1) * 10).Take(10).ToListAsync();
 			return Items; 
 		}
 		public async Task<IEnumerable<CustomerBusinessMedia>> GetRecentActivityBusinessMedia(int? pageNumber)
 		{
 			pageNumber = pageNumber.HasValue == false ? 1 : pageNumber;
-			
-			var Items = await DbContext.CustomerBusinessMedias.Where(s=>s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted)
+
+			var Items = await DbContext.CustomerBusinessMedias.Where(s => s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted)
 				.Include(s => s.CustomerBusinessMediaPictures)
-				.Include(s=>s.BizAppUser)
+				.Include(s => s.BizAppUser)
 				.ThenInclude(s => s.ApplicationUserMedias)
-				.Include(s=>s.UsersInCustomerBusinessMediaLikes)
+				.Include(s => s.UsersInCustomerBusinessMediaLikes).Where(s => s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted).Include(s=>s.Business)
 				.Skip((pageNumber.Value - 1) * 10).Take(10).ToListAsync();
 			return Items; 
 		}

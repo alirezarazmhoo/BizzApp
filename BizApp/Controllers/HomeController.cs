@@ -32,7 +32,7 @@ namespace BizApp.Controllers
 			MainPage_BusinessesByCategoryMain MainPage_BusinessesByCategoryMain = new MainPage_BusinessesByCategoryMain();
 			MainPage_BusinessesByCategoryMoreCategories MainPage_BusinessesByCategoryMoreCategories = new MainPage_BusinessesByCategoryMoreCategories();
 			List< MainPage_RecentActivity> MainPage_RecentActivity = new List<MainPage_RecentActivity>();
-			List<MainPage_RecentActivityUserMediaBusiness> MainPage_RecentActivityUserMediaBusinesses = new List<MainPage_RecentActivityUserMediaBusiness>();
+
 			
 			#endregion
 			#region Slider
@@ -82,18 +82,28 @@ namespace BizApp.Controllers
 			}
 			foreach (var item in await _UnitOfWork.ReviewRepo.GetRecentActivityBusinessMedia(null))
 			{
+				List<MainPage_RecentActivityUserMediaBusiness> MainPage_RecentActivityUserMediaBusinesses = new List<MainPage_RecentActivityUserMediaBusiness>();
+				if (item.CustomerBusinessMediaPictures.Count > 0)
+				{
 				MainPage_RecentActivityCreator MainPage_RecentActivityCreator = new MainPage_RecentActivityCreator();
+				MainPage_RecentActivityContent MainPage_RecentActivityContent = new MainPage_RecentActivityContent();
+
 				MainPage_RecentActivityCreator.Id = item.BizAppUser.Id;
 				MainPage_RecentActivityCreator.Name = item.BizAppUser.FullName;
 				MainPage_RecentActivityCreator.Image = item.BizAppUser.ApplicationUserMedias.FirstOrDefault(s => s.IsMainImage) == null ?string.Empty : item.BizAppUser.ApplicationUserMedias.FirstOrDefault(s => s.IsMainImage).UploadedPhoto;
-				foreach (var item2 in item.CustomerBusinessMediaPictures)
+				MainPage_RecentActivityContent.Image = item.Business.FeatureImage;
+					MainPage_RecentActivityContent.Name = item.Business.Name;
+					MainPage_RecentActivityContent.Text = string.IsNullOrEmpty( item.Business.Description) ? "بدون توضیحات" : item.Business.Description;
+					MainPage_RecentActivityContent.Rate = item.Business.Rate == 0 ? 1 : item.Business.Rate; 
+					foreach (var item2 in item.CustomerBusinessMediaPictures)
 				{
 					if(item2.StatusEnum == DomainClass.Enums.StatusEnum.Accepted)
 					{
 						MainPage_RecentActivityUserMediaBusinesses.Add(new MainPage_RecentActivityUserMediaBusiness() { Description = item2.Description, Id = item2.Id, Image = item2.Image, LikeCount = item2.LikeCount }); 
 					}
 				}
-				MainPage_RecentActivity.Add(new MainPage_RecentActivity() { MainPage_RecentActivityContent = null, MainPage_RecentActivityCreator = MainPage_RecentActivityCreator, ActivityType = ActivityType.AddPhoto  , MainPage_RecentActivityUserMediaBusinesses = MainPage_RecentActivityUserMediaBusinesses });
+				MainPage_RecentActivity.Add(new MainPage_RecentActivity() { MainPage_RecentActivityContent = MainPage_RecentActivityContent, MainPage_RecentActivityCreator = MainPage_RecentActivityCreator, ActivityType = ActivityType.AddPhoto  , MainPage_RecentActivityUserMediaBusinesses = MainPage_RecentActivityUserMediaBusinesses });
+				}
 			}
 			#endregion
 			#region FinalResults
@@ -166,7 +176,7 @@ namespace BizApp.Controllers
 		public async Task<JsonResult> GetMoreAcivites()
 		{
 			List<MainPage_RecentActivity> MainPage_RecentActivity = new List<MainPage_RecentActivity>();
-			List<MainPage_RecentActivityUserMediaBusiness> MainPage_RecentActivityUserMediaBusinesses = new List<MainPage_RecentActivityUserMediaBusiness>();
+
 			foreach (var item in await _UnitOfWork.ReviewRepo.GetRecentActivity(null))
 			{
 				MainPage_RecentActivityContent MainPage_RecentActivityContent = new MainPage_RecentActivityContent();
@@ -186,18 +196,26 @@ namespace BizApp.Controllers
 			}
 			foreach (var item in await _UnitOfWork.ReviewRepo.GetRecentActivityBusinessMedia(null))
 			{
+				List<MainPage_RecentActivityUserMediaBusiness> MainPage_RecentActivityUserMediaBusinesses = new List<MainPage_RecentActivityUserMediaBusiness>();
+				MainPage_RecentActivityContent MainPage_RecentActivityContent = new MainPage_RecentActivityContent();
+
+				if (item.CustomerBusinessMediaPictures.Count > 0) { 
 				MainPage_RecentActivityCreator MainPage_RecentActivityCreator = new MainPage_RecentActivityCreator();
 				MainPage_RecentActivityCreator.Id = item.BizAppUser.Id;
 				MainPage_RecentActivityCreator.Name = item.BizAppUser.FullName;
 				MainPage_RecentActivityCreator.Image = item.BizAppUser.ApplicationUserMedias.FirstOrDefault(s => s.IsMainImage) == null ? string.Empty : item.BizAppUser.ApplicationUserMedias.FirstOrDefault(s => s.IsMainImage).UploadedPhoto;
-				foreach (var item2 in item.CustomerBusinessMediaPictures)
+					MainPage_RecentActivityContent.Name = item.Business.Name;
+					MainPage_RecentActivityContent.Text = string.IsNullOrEmpty(item.Business.Description) ? "بدون توضیحات" : item.Business.Description;
+					MainPage_RecentActivityContent.Rate = item.Business.Rate == 0 ? 1 : item.Business.Rate;
+					foreach (var item2 in item.CustomerBusinessMediaPictures)
 				{
 					if (item2.StatusEnum == DomainClass.Enums.StatusEnum.Accepted)
 					{
 						MainPage_RecentActivityUserMediaBusinesses.Add(new MainPage_RecentActivityUserMediaBusiness() { Description = item2.Description, Id = item2.Id, Image = item2.Image, LikeCount = item2.LikeCount });
 					}
 				}
-				MainPage_RecentActivity.Add(new MainPage_RecentActivity() { MainPage_RecentActivityContent = null, MainPage_RecentActivityCreator = MainPage_RecentActivityCreator, ActivityType = ActivityType.AddPhoto, MainPage_RecentActivityUserMediaBusinesses = MainPage_RecentActivityUserMediaBusinesses });
+				MainPage_RecentActivity.Add(new MainPage_RecentActivity() { MainPage_RecentActivityContent = MainPage_RecentActivityContent, MainPage_RecentActivityCreator = MainPage_RecentActivityCreator, ActivityType = ActivityType.AddPhoto, MainPage_RecentActivityUserMediaBusinesses = MainPage_RecentActivityUserMediaBusinesses });
+				}
 			}
 
 			return Json(new { success = true, items = MainPage_RecentActivity });
