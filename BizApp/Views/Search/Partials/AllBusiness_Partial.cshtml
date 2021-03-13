@@ -3,6 +3,7 @@
     .active {
         background-color: #f5f5f5;
     }
+    
 </style>
 @{int j = 1;}
 @foreach (var item in Model)
@@ -83,7 +84,7 @@
 <script>
     function ChangePage(page) {
 
-        GetData("/Search/AllBussiness?CategoryId=1047&page=" + page + "", "AllBussiness",null, page);
+        GetData("/Search/AllBussiness?CategoryId=1047&page=" + page + "", "AllBussiness", null, page);
         history.pushState(null, null, "/Search/Index?CategoryId=1044&page=" + page + "");
 
     }
@@ -97,8 +98,8 @@
             //alert( $(this).attr('id'))
             var myIconReplc = L.Icon.extend({
                 options: {
-                    iconUrl: "/Designs/MainWebSite/assets/img/3.png",
-                    
+                    iconUrl: "/Designs/MainWebSite/assets/img/location12.png",
+
 
                     shadowUrl: null,
                     iconSize: new L.Point(25, 41),
@@ -110,30 +111,64 @@
                     */
                     className: 'leaflet-div-icon'
                 }
+                ,
+                createIcon: function () {
+                    var div = document.createElement('div');
+                    var img = this._createImg(this.options['iconUrl']);
+                    var numdiv = document.createElement('div');
+                    numdiv.setAttribute("class", "number");
+                    numdiv.innerHTML = this.options['number'] || '';
+                    div.appendChild(img);
+                    div.appendChild(numdiv);
+                    this._setIconStyles(div, 'icon');
+                    return div;
+                },
+                createShadow: function () {
+                    return null;
+                }
             });
-            markerArray[$(this).attr('id')-1].setIcon(new myIconReplc({ number: "3333" }));
+            markerArray[$(this).attr('id') - 1].setIcon(new myIconReplc({ number: "&nbsp" + $(this).attr('id') }));
+
 
 
         }, function () {
-                var myIconReplc =  L.Icon.extend({
-                    options: {
-                        iconUrl: "/Designs/MainWebSite/assets/img/4.png",
-                       
-                        shadowUrl: null,
-                        iconSize: new L.Point(25, 41),
-                        iconAnchor: new L.Point(13, 41),
-                        popupAnchor: new L.Point(0, -33),
-                        /*
-                        iconAnchor: (Point)
-                        popupAnchor: (Point)
-                        */
-                        className: 'leaflet-div-icon'
-                    }
-                });
-            markerArray[$(this).attr('id')-1].setIcon(new myIconReplc({ number: "3333" }));
+            var myIconReplc = L.Icon.extend({
+                options: {
+                    iconUrl: "/Designs/MainWebSite/assets/img/location11.png",
+
+                    shadowUrl: null,
+                    iconSize: new L.Point(25, 41),
+                    iconAnchor: new L.Point(13, 41),
+                    popupAnchor: new L.Point(0, -33),
+                    /*
+                    iconAnchor: (Point)
+                    popupAnchor: (Point)
+                    */
+                    className: 'leaflet-div-icon'
+                },
+                createIcon: function () {
+                    var div = document.createElement('div');
+                    var img = this._createImg(this.options['iconUrl']);
+                    var numdiv = document.createElement('div');
+                    numdiv.setAttribute("class", "number");
+                    numdiv.innerHTML = this.options['number'] || '';
+                    div.appendChild(img);
+                    div.appendChild(numdiv);
+                    this._setIconStyles(div, 'icon');
+                    return div;
+                },
+                createShadow: function () {
+                    return null;
+                }
+
+            });
+
+                markerArray[$(this).attr('id') - 1].setIcon(new myIconReplc({ number: "&nbsp" + $(this).attr('id') }));
+
 
 
         });
     });
+    
 
 </script>
