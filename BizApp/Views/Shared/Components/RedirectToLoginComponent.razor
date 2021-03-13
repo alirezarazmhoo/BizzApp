@@ -1,0 +1,14 @@
+﻿@inject NavigationManager NavigationManager
+
+<p class="mb-0">برای <a href="/Identity/Account/Register?ReturnUrl=@ReturnUrl">ثبت نام</a> یا <a href="/Identity/Account/Login?ReturnUrl=@ReturnUrl">ورود</a> کلیک کنید</p>
+
+@code {
+	[Parameter]
+	public string ReturnUrl { get; set; }
+	protected override void OnInitialized()
+	{
+		// help: https://stackoverflow.com/questions/59728006/how-do-i-pass-returnurl-to-login-page-in-blazor-server-application
+		ReturnUrl = "~/" + ReturnUrl;
+		NavigationManager.NavigateTo($"Identity/Account/Login?returnUrl={ ReturnUrl}", forceLoad: true);
+	}
+}

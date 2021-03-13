@@ -28,6 +28,7 @@ namespace DataLayer.Services
 						.Select(s => new UserProfileDetailQuery
 						{
 							Id = s.Id,
+							UsserName = s.UserName,
 							FullName = s.FullName,
 							RegisterDate = s.CreateDate,
 							CityName = s.City.Name,
