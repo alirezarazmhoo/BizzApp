@@ -294,6 +294,7 @@ namespace DataLayer.Services
 		{
 			return await FindByCondition(f => f.ParentCategoryId == Id).ToListAsync();
 		}
+		
 		public async Task<int> GetChildCount(int Id)
 		{
 			return await FindByCondition(f => f.ParentCategoryId == Id).CountAsync();

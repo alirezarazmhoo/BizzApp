@@ -26,10 +26,11 @@ namespace BizApp.Controllers
 		}
 		public async Task<IActionResult>  Index(SearchViewModel searchViewModel)
 		{
+			searchViewModel.categories =await _UnitOfWork.CategoryRepo.GetChilds(searchViewModel.CategoryId);
 			
 			return View(searchViewModel);
 		}
-		public IActionResult AllBussiness(int? CategoryId,int page=1)
+		public IActionResult AllBussiness(int CategoryId,int page=1)
         {
 			PagedList<Business> bussiness=_UnitOfWork.BusinessRepo.GetBussiness(CategoryId, page);
             return PartialView("Partials/AllBusiness_Partial", bussiness);
