@@ -29,7 +29,7 @@ namespace DomainClass.Businesses
 		public string Biography { get; set; }
 		[Required]
 		public int DistrictId { get; set; }
-		public int? CategoryId { get; set; }
+		public int CategoryId { get; set; }
 		[Column(TypeName = "nvarchar(255)")]
 		public string FeatureImage { get; set; }
 		[Required]
