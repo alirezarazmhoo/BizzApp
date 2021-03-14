@@ -1,9 +1,9 @@
 ﻿@model BizApp.Areas.Profile.Models.ProfileViewModel
 @using BizApp.Utility
 @using Microsoft.AspNetCore.Identity
-@using Microsoft.AspNetCore.Components
+@using BizApp.Extensions
 
-@inject NavigationManager NavigationManager
+@*@inject NavigationManager NavigationManager*@
 @inject UserManager<BizAppUser> UserManager
 @inject DataLayer.Infrastructure.IUserProfileRepo UserProfileService
 @{
@@ -21,20 +21,33 @@
 	var currentUser = User.Identity.Name;
 }
 
+@section head {
+	<style>
+		.active_menu {
+			background: #f5f5f5;
+			border-right: 3px solid #d32323;
+			border-top: 1px solid #e6e6e6;
+		}
+	</style>
+}
+
 <main>
 	@*// todo: redirect if user is null*@
 	@if (string.IsNullOrEmpty(userName))
 	{
+		var returnUrl = "~/profile";
 		IgnoreBody();
 		<div class="h-100 d-flex justify-content-center align-items-center p-5">
-			<div class="alert alert-warning" role="alert">
+			<div class="alert alert-warning m-2" role="alert">
 				<h4 class="alert-heading">اخطار - عدم شناسایی!</h4>
 				<p>داده های دریافت شده برای مشاهده معتبر نمی باشد لطفا برروی نام کاربری یکی از کاربران کلیک کیند یا از طریق لینک های زیر ثبت نام یا وارد شدید</p>
 				<hr>
 
-				@*var returnUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);*@
-				@{ var returnUrl = ""; }
-				<RedirectToLogin ReturnUrl="@returnUrl" />
+				<p class="m-2">برای <a href="/Identity/Account/Register?ReturnUrl=@returnUrl">ثبت نام</a> یا <a href="/Identity/Account/Login?ReturnUrl=@returnUrl">ورود</a> کلیک کنید</p>
+
+				@*var returnUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+					@{ var returnUrl = ""; }
+					<RedirectToLogin ReturnUrl="@returnUrl" />*@
 			</div>
 		</div>
 	}
@@ -149,24 +162,24 @@
 					<div class="col-md-3 d-none d-sm-block ">
 						<div class="profile-content__list-profile">
 							<div class="profile-content__list-profile__title">
-								<h3>مشخصات ایزابل</h3>
+								<h3>مشخصات @user.GetFullName()</h3>
 								<svg width="24" height="24" class="icon_svg">
 									<path d="M18.364 9.525L16.95 8.111 12 13.061l-4.95-4.95-1.414 1.414L12 15.889l6.364-6.364z"></path>
 								</svg>
 							</div>
 							<ul>
-								<li>
+								<li class="@Html.IsActive("overview", "index")">
 									<a href="#">
 										<svg id="24x24_profile" height="24" viewBox="0 0 24 24" width="24"><path d="M4.37 22c.278-4.762 3.587-8 7.63-8 4.043 0 7.352 3.238 7.63 8H4.37zM12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"></path></svg>
-										نمای کلی نمایه
+										نمای کلی
 									</a>
 								</li>
-								<li>
-									<a href="#">
-										<svg id="24x24_friends" height="24" viewBox="0 0 24 24" width="24"><g><path d="M10.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946C1.618 12.48 2.586 11 4.018 11h4.964c1.432 0 2.4 1.48 1.842 2.817zM6.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path><path d="M21.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946c-.558-1.337.41-2.817 1.842-2.817h4.964c1.432 0 2.4 1.48 1.842 2.817zM17.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" opacity=".502"></path></g></svg>
-										دوستان
-									</a>
-								</li>
+								@*<li>
+										<a href="#">
+											<svg id="24x24_friends" height="24" viewBox="0 0 24 24" width="24"><g><path d="M10.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946C1.618 12.48 2.586 11 4.018 11h4.964c1.432 0 2.4 1.48 1.842 2.817zM6.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path><path d="M21.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946c-.558-1.337.41-2.817 1.842-2.817h4.964c1.432 0 2.4 1.48 1.842 2.817zM17.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" opacity=".502"></path></g></svg>
+											دوستان
+										</a>
+									</li>*@
 								<li>
 									<a href="#">
 										<svg id="24x24_review" height="24" viewBox="0 0 24 24" width="24"><path d="M21 6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V6zm-5.88 10.428l-3.16-1.938-3.05 2.01.59-3.457L7 10.596l3.457-.505L11.96 6.5l1.582 3.59 3.458.506-2.5 2.447.62 3.385z"></path></svg>
@@ -179,36 +192,36 @@
 										عکسهای تجاری
 									</a>
 								</li>
-								<li>
-									<a href="#">
-										<svg id="24x24_compliment" height="24" viewBox="0 0 24 24" width="24"><path d="M19 9A7 7 0 0 0 5 9a6.995 6.995 0 0 0 3.957 6.297L8 21.992 12.005 19 16 21.992l-.957-6.695A6.995 6.995 0 0 0 19 9zm-7 5c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z"></path></svg>
-										تعارف
-									</a>
-								</li>
-								<li>
-									<a href="#">
-										<svg id="24x24_light_bulb" height="24" viewBox="0 0 24 24" width="24"><path d="M15 15.32V18H9v-2.68C6.64 14.19 5 11.79 5 9c0-3.87 3.13-7 7-7s7 3.13 7 7c0 2.79-1.64 5.19-4 6.32zM10.5 6C9.67 6 9 6.67 9 7.5S9.67 9 10.5 9 12 8.33 12 7.5 11.33 6 10.5 6zM13 22h-2a2 2 0 0 1-2-2h6a2 2 0 0 1-2 2z"></path></svg>
-										نکات
-									</a>
-								</li>
+								@*<li>
+										<a href="#">
+											<svg id="24x24_compliment" height="24" viewBox="0 0 24 24" width="24"><path d="M19 9A7 7 0 0 0 5 9a6.995 6.995 0 0 0 3.957 6.297L8 21.992 12.005 19 16 21.992l-.957-6.695A6.995 6.995 0 0 0 19 9zm-7 5c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z"></path></svg>
+											تعارف
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<svg id="24x24_light_bulb" height="24" viewBox="0 0 24 24" width="24"><path d="M15 15.32V18H9v-2.68C6.64 14.19 5 11.79 5 9c0-3.87 3.13-7 7-7s7 3.13 7 7c0 2.79-1.64 5.19-4 6.32zM10.5 6C9.67 6 9 6.67 9 7.5S9.67 9 10.5 9 12 8.33 12 7.5 11.33 6 10.5 6zM13 22h-2a2 2 0 0 1-2-2h6a2 2 0 0 1-2 2z"></path></svg>
+											نکات
+										</a>
+									</li>*@
 								<li>
 									<a href="#">
 										<svg id="24x24_bookmark" height="24" viewBox="0 0 24 24" width="24"><path d="M16 2H8a3 3 0 0 0-3 3v17l7-5 7 5V5a3 3 0 0 0-3-3zm-1.817 10.45l-2.21-1.357L9.837 12.5l.413-2.42L8.5 8.367l2.42-.353L11.973 5.5l1.107 2.514 2.42.353-1.75 1.713.433 2.37z"></path></svg>
 										نشانک ها
 									</a>
 								</li>
-								<li>
-									<a href="#">
-										<svg id="24x24_save" height="24" viewBox="0 0 24 24" width="24"><path d="M16 2H8a3 3 0 0 0-3 3v17l7-5 7 5V5a3 3 0 0 0-3-3z"></path></svg>
-										مجموعه ها
-									</a>
-								</li>
-								<li>
-									<a href="#">
-										<svg id="24x24_following" height="24" viewBox="0 0 24 24" width="24"><path d="M21 17l-6 4v-3h-2.255l.835-2H15v-3l6 4zM9.842 19.763c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946C3.118 12.48 4.086 11 5.518 11h4.964c1.432 0 2.4 1.48 1.842 2.817l-2.482 5.946zM8 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path></svg>
-										دنبال کردن
-									</a>
-								</li>
+								@*<li>
+										<a href="#">
+											<svg id="24x24_save" height="24" viewBox="0 0 24 24" width="24"><path d="M16 2H8a3 3 0 0 0-3 3v17l7-5 7 5V5a3 3 0 0 0-3-3z"></path></svg>
+											مجموعه ها
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<svg id="24x24_following" height="24" viewBox="0 0 24 24" width="24"><path d="M21 17l-6 4v-3h-2.255l.835-2H15v-3l6 4zM9.842 19.763c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946C3.118 12.48 4.086 11 5.518 11h4.964c1.432 0 2.4 1.48 1.842 2.817l-2.482 5.946zM8 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path></svg>
+											دنبال کردن
+										</a>
+									</li>*@
 							</ul>
 							<div class="profile-content__list-profile__report">
 								<a href="#">
@@ -373,7 +386,7 @@
 									<ul class="ylist">
 										<li>
 											<h4>از شهر</h4>
-											<p>@( !string.IsNullOrEmpty(user.CityName) ? user.CityName : "ثبت نشده" ) )</p>
+											<p>@( !string.IsNullOrEmpty(user.CityName) ? user.CityName : "ثبت نشده" ) </p>
 										</li>
 
 										<li>
