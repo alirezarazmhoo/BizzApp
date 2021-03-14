@@ -207,6 +207,7 @@ namespace BizApp.Controllers
 					MainPage_RecentActivityContent.Name = item.Business.Name;
 					MainPage_RecentActivityContent.Text = string.IsNullOrEmpty(item.Business.Description) ? "بدون توضیحات" : item.Business.Description;
 					MainPage_RecentActivityContent.Rate = item.Business.Rate == 0 ? 1 : item.Business.Rate;
+					MainPage_RecentActivityContent.Image = item.Business.FeatureImage;
 					foreach (var item2 in item.CustomerBusinessMediaPictures)
 				{
 					if (item2.StatusEnum == DomainClass.Enums.StatusEnum.Accepted)

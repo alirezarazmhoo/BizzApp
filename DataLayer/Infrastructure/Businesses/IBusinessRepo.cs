@@ -22,7 +22,7 @@ namespace DataLayer.Infrastructure
 		Task RemoveFeature(Guid? id, int FeatureId);
 		Task Remove(Business model);
 		bool DeleteFeatureImage(Guid id, string filePath);
-		PagedList<Business> GetBussiness(int? CategoryId, int page = 1);
+		PagedList<Business> GetBussiness(int CategoryId, int page = 1);
 
 
 	}

@@ -17,6 +17,13 @@
         width: 25px;
         text-align: center;
     }
+    .lbl-cat {
+        padding: 5px;
+        background-color: #f5f5f5;
+        border-radius: 2px;
+        cursor:pointer;
+        /*margin:5px;*/
+    }
 </style>
 <section class="category-content">
     <div class="category-content__sidebar">
@@ -53,6 +60,22 @@
                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
                     <label class="form-check-label" for="exampleCheck1">اکنون باز شده است</label>
                     <span class="span">14:18</span>
+                </div>
+            </div>
+            <div class="category-content__item-filter__property">
+                <div class="category-content__item-filter__property__title">
+                    <h3>دسته بندی</h3>
+                </div>
+                
+                @foreach (var item in Model.categories.Take(4))
+                {
+                    
+                <p class="lbl-cat" onclick="SearchByCat(@item.Id)">@item.Name</p>
+                       
+
+                }
+                <div class="category-content__item-filter__property__all">
+                    <a href="#" data-toggle="modal" data-target="#click-cat">نمایش همه</a>
                 </div>
             </div>
             <div class="category-content__item-filter__property">
@@ -253,15 +276,40 @@
     </div>
     <div class="category-content__map" id="weathermap"></div>
 </section>
+<div class="recent-activities__modal modal fade" id="click-cat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="recent-activities__modal__close" data-dismiss="modal">
+                    <span>بستن</span>
+                    @foreach (var item in Model.categories.Skip(4).ToList())
+                    {
+
+                        <p class="lbl-cat" onclick="SearchByCat(@item.Id)">@item.Name</p>
+
+
+                    }
+
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+</div>
 @section Scripts
 {
 
     <script>
         const markerHtmlStyles = "background-color:#000; width: 3rem; height: 3rem; display: block;  left: -1.5rem;  top: -1.5rem;  position: relative;  border-radius: 3rem 3rem 0;  transform: rotate(45deg);  border: 1px solid #FFFFFF";
         $(document).ready(function () {
-            GetData("/Search/AllBussiness?CategoryId=1047&page=1", "AllBussiness", null, 1);
-            history.pushState(null, null, "/Search/Index?CategoryId=1044&page=1");
+            GetData("/Search/AllBussiness?CategoryId=1058&page=1", "AllBussiness", null, 1);
+            history.pushState(null, null, "/Search/Index?CategoryId=1058&page=1");
         });
+        function SearchByCat(CategoryId) {
+            GetData("/Search/AllBussiness?CategoryId=" + CategoryId+"&page=1", "AllBussiness", null, 1);
+
+        }
         var markerArray = [];
         function GetData(ActionName, Target, Data, pageN) {
             $.ajax({
@@ -353,36 +401,36 @@
                         }
 
                     });
-                    var myIconReplc2 = L.Icon.extend({
-                        options: {
-                            iconUrl: "/Designs/MainWebSite/assets/img/location12.png",
+                    //var myIconReplc2 = L.Icon.extend({
+                    //    options: {
+                    //        iconUrl: "/Designs/MainWebSite/assets/img/location12.png",
 
-                            shadowUrl: null,
-                            iconSize: new L.Point(25, 41),
-                            iconAnchor: new L.Point(13, 41),
-                            popupAnchor: new L.Point(0, -33),
-                            /*
-                            iconAnchor: (Point)
-                            popupAnchor: (Point)
-                            */
-                            className: 'leaflet-div-icon'
-                        },
-                        createIcon: function () {
-                            var div = document.createElement('div');
-                            var img = this._createImg(this.options['iconUrl']);
-                            var numdiv = document.createElement('div');
-                            numdiv.setAttribute("class", "number");
-                            numdiv.innerHTML = this.options['number'] || '';
-                            div.appendChild(img);
-                            div.appendChild(numdiv);
-                            this._setIconStyles(div, 'icon');
-                            return div;
-                        },
-                        createShadow: function () {
-                            return null;
-                        }
+                    //        shadowUrl: null,
+                    //        iconSize: new L.Point(25, 41),
+                    //        iconAnchor: new L.Point(13, 41),
+                    //        popupAnchor: new L.Point(0, -33),
+                    //        /*
+                    //        iconAnchor: (Point)
+                    //        popupAnchor: (Point)
+                    //        */
+                    //        className: 'leaflet-div-icon'
+                    //    },
+                    //    createIcon: function () {
+                    //        var div = document.createElement('div');
+                    //        var img = this._createImg(this.options['iconUrl']);
+                    //        var numdiv = document.createElement('div');
+                    //        numdiv.setAttribute("class", "number");
+                    //        numdiv.innerHTML = this.options['number'] || '';
+                    //        div.appendChild(img);
+                    //        div.appendChild(numdiv);
+                    //        this._setIconStyles(div, 'icon');
+                    //        return div;
+                    //    },
+                    //    createShadow: function () {
+                    //        return null;
+                    //    }
 
-                    });
+                    //});
                     for (var i = 0; i < planes.length; i++) {
                         marker = new L.marker([planes[i][1], planes[i][2]], { icon: new L.NumberedDivIcon({ number: "&nbsp" + planes[i][3] }) })
                             .bindPopup(planes[i][0])
