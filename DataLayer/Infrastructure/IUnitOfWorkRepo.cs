@@ -16,6 +16,7 @@ namespace DataLayer.Infrastructure
 		ICategoryFeatureRepo CategoryFeaturesRepo { get; }
 		ISliderRepo SliderRepo { get; }
 		IReviewRepo  ReviewRepo { get; }
+		IUserPhotoRepo UserPhotoRepo { get; }
 
 
 		Task SaveAsync();

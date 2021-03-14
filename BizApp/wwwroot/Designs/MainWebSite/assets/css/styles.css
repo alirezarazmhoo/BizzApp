@@ -27245,7 +27245,7 @@ a:visited {
 /*profile*/
 .profile-header {
   background-color: #f5f5f5;
-  background-image: url("../img/profile-header-bg.png");
+  /*background-image: url("../img/profile-header-bg.png");*/
   background-position: bottom;
   background-size: 1400px 268px;
   background-repeat: no-repeat;

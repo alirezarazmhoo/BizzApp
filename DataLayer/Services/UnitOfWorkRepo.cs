@@ -23,6 +23,7 @@ namespace DataLayer.Services
 		private readonly SliderRepo sliderRepo;
 		private readonly UserRepo userRepo;
 		private readonly ReviewRepo  reviewRepo;
+		private readonly UserPhotoRepo userPhotoRepo;
 
 		private readonly UserProfileRepo userProfileRepo;
 
@@ -49,6 +50,7 @@ namespace DataLayer.Services
         public IUserRepo UserRepo => userRepo ?? new UserRepo(_DbContext);
 		public IReviewRepo  ReviewRepo =>  reviewRepo ?? new ReviewRepo(_DbContext);
         public IUserProfileRepo UserProfileRepo => userProfileRepo ?? new UserProfileRepo(_DbContext);
+        public IUserPhotoRepo UserPhotoRepo => userPhotoRepo ?? new UserPhotoRepo(_DbContext);
 
 		public async Task SaveAsync()
 		{

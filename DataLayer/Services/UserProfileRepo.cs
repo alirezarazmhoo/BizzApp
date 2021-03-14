@@ -3,12 +3,7 @@ using DataLayer.Infrastructure;
 using DomainClass;
 using DomainClass.Queries;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using DataLayer.Extensions;
 
 namespace DataLayer.Services
 {
