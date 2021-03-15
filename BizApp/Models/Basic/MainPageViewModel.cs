@@ -76,6 +76,7 @@ namespace BizApp.Models.Basic
 		public string Description { get; set; }
 		public long LikeCount { get; set; }
 		public string Image { get; set; }
+		public string UsersName { get; set; }
 
 	}
 	public class MainPage_RecentActivityCreator
@@ -95,7 +96,6 @@ namespace BizApp.Models.Basic
 		public int UseFulCount { get; set; }
 		public int FunnyCount { get; set;  }
 		public int CoolCount { get; set; }
-
 	}
 	public enum ActivityType
 	{
