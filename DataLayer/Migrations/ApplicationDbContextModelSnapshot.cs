@@ -185,8 +185,8 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2bcf361e-2bbe-4788-a4ab-0403840823c7",
-                            CreateDate = new DateTime(2021, 3, 6, 14, 3, 42, 26, DateTimeKind.Local).AddTicks(3738),
+                            ConcurrencyStamp = "5be4cf83-a4b6-4583-bc06-eed620f7cee0",
+                            CreateDate = new DateTime(2021, 3, 14, 11, 20, 40, 748, DateTimeKind.Local).AddTicks(5876),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             Gender = 0,
@@ -196,10 +196,10 @@ namespace DataLayer.Migrations
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJ8GuD53vedZU0d4yc36K0pgKrJS6E3eSnkEaLQI4+bvCOyljgtUU1AMeDrQOUxzog==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFJHy8O+r25hX/wpu8vp8X73ESXeywPSz8Zgbil41xn+Qvt/0UFZKnFMk8laOWz7Mg==",
                             PhoneNumberConfirmed = false,
                             PhotoChanged = false,
-                            SecurityStamp = "a8d2a8ac-d6ee-4f77-bb4c-67814afd2725",
+                            SecurityStamp = "df48bdf1-24d6-4c96-85d8-23894bc13de2",
                             TwoFactorEnabled = false,
                             UserName = "mainadmin"
                         });
@@ -222,7 +222,7 @@ namespace DataLayer.Migrations
                         .HasColumnType("bigint")
                         .HasDefaultValue(0L);
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
@@ -240,6 +240,11 @@ namespace DataLayer.Migrations
                     b.Property<string>("FeatureImage")
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<bool>("IsSponsor")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
 
@@ -255,6 +260,11 @@ namespace DataLayer.Migrations
 
                     b.Property<string>("PostalCode")
                         .HasColumnType("nvarchar(11)");
+
+                    b.Property<int>("Rate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<string>("UserCreatorId")
                         .HasColumnType("nvarchar(450)");
@@ -547,6 +557,15 @@ namespace DataLayer.Migrations
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("LikeCount")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("StatusEnum")
                         .HasColumnType("int");
@@ -915,7 +934,9 @@ namespace DataLayer.Migrations
                 {
                     b.HasOne("DomainClass.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DomainClass.District", "District")
                         .WithMany()
@@ -993,7 +1014,7 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DomainClass.CategoryTerm", b =>
                 {
                     b.HasOne("DomainClass.Category", "Category")
-                        .WithMany("Trems")
+                        .WithMany("Terms")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1020,7 +1041,7 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DomainClass.Review.CustomerBusinessMedia", b =>
                 {
                     b.HasOne("DomainClass.BizAppUser", "BizAppUser")
-                        .WithMany()
+                        .WithMany("CustomerBusinessMedia")
                         .HasForeignKey("BizAppUserId");
 
                     b.HasOne("DomainClass.Businesses.Business", "Business")
@@ -1042,7 +1063,7 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DomainClass.Review.Review", b =>
                 {
                     b.HasOne("DomainClass.BizAppUser", "BizAppUser")
-                        .WithMany()
+                        .WithMany("Reviews")
                         .HasForeignKey("BizAppUserId");
 
                     b.HasOne("DomainClass.Businesses.Business", "Business")

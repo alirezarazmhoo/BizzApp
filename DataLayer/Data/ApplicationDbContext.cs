@@ -31,10 +31,14 @@ namespace DataLayer.Data
 		public virtual DbSet<HierarchyNamesCategory> CategoryHierarchyNames { get; set; }
 		public virtual DbSet<CategoryTerm> CategoryTerms { get; set; }
 		public DbSet<Slider> Sliders { get; set; }
-		public virtual DbSet<ApplicationUserMedia> ApplicationUserMedias { get; set; }
-		public virtual DbSet<Review> Reviews { get; set; }
-		public virtual DbSet<ReviewMedia> ReviewMedias { get; set; }
-		public virtual DbSet<UsersInReviewLike> UsersInReviewLikes { get; set; }
+		public virtual DbSet<ApplicationUserMedia>  ApplicationUserMedias { get; set; }
+		public virtual DbSet<Review>  Reviews { get; set; }
+		public virtual DbSet<ReviewMedia>   ReviewMedias { get; set; }
+		public virtual DbSet<UsersInReviewLike>  UsersInReviewLikes { get; set; }
+		public virtual DbSet<CustomerBusinessMedia>  CustomerBusinessMedias { get; set; }
+		public virtual DbSet<UsersInCustomerBusinessMediaLike>   UsersInCustomerBusinessMediaLikes { get; set; }
+		public virtual DbSet<CustomerBusinessMediaPictures>  CustomerBusinessMediaPictures { get; set; }
+
 		#endregion
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
@@ -50,6 +54,12 @@ namespace DataLayer.Data
 			// default value for Call Number in business
 			builder.Entity<Business>()
 				.Property(b => b.CallNumber).HasDefaultValue(0);
+			// default value for Rate in business
+			builder.Entity<Business>()
+				.Property(b => b.Rate).HasDefaultValue(0);
+			// default value for Is Sponsor in business
+			builder.Entity<Business>()
+				.Property(b => b.IsSponsor).HasDefaultValue(false);
 
 			// Seed data
 			builder.SeedMainAdmin();

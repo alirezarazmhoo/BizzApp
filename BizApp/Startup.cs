@@ -49,6 +49,7 @@ namespace BizApp
 			//services.AddIdentity<BizAppUser, CustomRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
 			services.AddTransient<IUnitOfWorkRepo, UnitOfWorkRepo>();
+			services.AddTransient<IUserProfileRepo, UserProfileRepo>();
 
 			var config = new MapperConfiguration(c =>
 			{
@@ -89,10 +90,17 @@ namespace BizApp
 
 			app.UseEndpoints(endpoints =>
 			{
-				endpoints.MapControllerRoute(
+				// route admin area with authorization
+				endpoints.MapAreaControllerRoute(
 					name: "adminArea",
-					pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}")
+					areaName: "admin",
+					pattern: "admin/{controller=Home}/{action=Index}/{id?}")
 				.RequireAuthorization();
+
+				endpoints.MapAreaControllerRoute(
+					name: "allArea",
+					areaName: "profile",
+					pattern: "profile/{controller=Overview}/{action=Index}/{id?}");
 				//endpoints.MapControllerRoute(
 				//	name: "adminArea",
 				//	pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");

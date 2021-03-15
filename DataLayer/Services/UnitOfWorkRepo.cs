@@ -1,5 +1,6 @@
 ﻿using DataLayer.Data;
 using DataLayer.Infrastructure;
+using DataLayer.Infrastructure.Reviews;
 using DomainClass;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
@@ -21,6 +22,10 @@ namespace DataLayer.Services
 		private readonly BusinessRepo businessRepo;
 		private readonly SliderRepo sliderRepo;
 		private readonly UserRepo userRepo;
+		private readonly ReviewRepo  reviewRepo;
+		private readonly UserPhotoRepo userPhotoRepo;
+
+		private readonly UserProfileRepo userProfileRepo;
 
 
 		public UnitOfWorkRepo(ApplicationDbContext DbContext, UserManager<BizAppUser> userManager)
@@ -42,10 +47,12 @@ namespace DataLayer.Services
 		public ICategoryFeatureRepo CategoryFeaturesRepo => categoryFeaturesRepo ?? new CategoryFeatureRepo(_DbContext);
 		public IBusinessRepo BusinessRepo => businessRepo ?? new BusinessRepo(_DbContext, _currentUser, _userManager);
 		public ISliderRepo SliderRepo => sliderRepo ?? new SliderRepo(_DbContext);
-
         public IUserRepo UserRepo => userRepo ?? new UserRepo(_DbContext);
+		public IReviewRepo  ReviewRepo =>  reviewRepo ?? new ReviewRepo(_DbContext);
+        public IUserProfileRepo UserProfileRepo => userProfileRepo ?? new UserProfileRepo(_DbContext);
+        public IUserPhotoRepo UserPhotoRepo => userPhotoRepo ?? new UserPhotoRepo(_DbContext);
 
-        public async Task SaveAsync()
+		public async Task SaveAsync()
 		{
 			await _DbContext.SaveChangesAsync();
 		}

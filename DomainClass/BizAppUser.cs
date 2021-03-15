@@ -1,6 +1,11 @@
 ﻿using DomainClass.Enums;
 using DomainClass.Infrastructure;
+using DomainClass.Review;
+using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace DomainClass
 {
@@ -21,6 +26,21 @@ namespace DomainClass
 		public bool PhotoChanged { get; set; }
 		public string PostalCode { get; set; }
 
+		public virtual ICollection<Review.Review> Reviews { get; set; }
+		public virtual ICollection<CustomerBusinessMedia> CustomerBusinessMedia { get; set; }
 		public virtual City City { get; set; }
+
+		public ClaimsIdentity GenerateUserIdentityAsync(UserManager<BizAppUser> manager, ClaimsIdentity identity)
+		{
+			// Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
+			//var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+
+			// Add custom user claims here
+			identity.AddClaim(new Claim("FullName", this.FullName));
+			// ... add other claims as you like.
+
+			return identity;
+		}
+
 	}
 }

@@ -13,7 +13,7 @@ namespace DomainClass.Businesses.Commands
 		public string Email { get; set; }
 		public string Biography { get; set; }
 		public int DistrictId { get; set; }
-		public int? CategoryId { get; set; }
+		public int CategoryId { get; set; }
 		public string FeatureImage { get; set; }
 		public long CallNumber { get; set; }
 		public long? Mobile { get; set; }

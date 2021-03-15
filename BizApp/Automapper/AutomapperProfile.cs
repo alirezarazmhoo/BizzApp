@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using BizApp.Areas.Admin.Models;
+using BizApp.Areas.Profile.Models;
 using BizApp.Utility;
 using DomainClass;
 using DomainClass.Businesses;
 using DomainClass.Businesses.Commands;
 using DomainClass.Businesses.Queries;
 using DomainClass.Commands;
+using DomainClass.Queries;
 
 namespace BizApp.Automapper
 {
@@ -20,6 +22,7 @@ namespace BizApp.Automapper
 			CreateMap<Slider, SliderViewModel>()
 				.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
 				.ReverseMap();
+
 			// City
 			CreateMap<City, CityViewModel>()
 				.ForMember(dest => dest.CityId, opt => opt.MapFrom(src => src.Id))
@@ -61,6 +64,9 @@ namespace BizApp.Automapper
 			// Users
 			CreateMap<BizAppUser, UserViewModel>().ReverseMap();
 			CreateMap<BizAppUser, UpdateOperatorViewModel>().ReverseMap();
+			CreateMap<UserProfileDetailQuery, ProfileViewModel>()
+				//.ForMember(dest => dest.RegisterDate, opt => opt.MapFrom(src => src.RegisterDate.ToPersianShortDate()))
+				.ReverseMap();
 
 			// Business Create
 			CreateMap<Business, CreateBusinessViewModel>().ReverseMap();

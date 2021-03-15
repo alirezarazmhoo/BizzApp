@@ -29,7 +29,7 @@ namespace DomainClass.Businesses
 		public string Biography { get; set; }
 		[Required]
 		public int DistrictId { get; set; }
-		public int? CategoryId { get; set; }
+		public int CategoryId { get; set; }
 		[Column(TypeName = "nvarchar(255)")]
 		public string FeatureImage { get; set; }
 		[Required]
@@ -41,6 +41,8 @@ namespace DomainClass.Businesses
 		public DateTime CreatedDate { get; set; } = DateTime.Now;
 		public double Latitude { get; set; }
 		public double Longitude { get; set; }
+		public int Rate { get; set; }
+		public bool IsSponsor { get; set; }
 
 		// Relations
 		public virtual District District { get; set; }

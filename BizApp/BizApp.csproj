@@ -12,10 +12,6 @@
     <None Remove="Areas\Admin\Data\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Remove="wwwroot\Designs\MainWebSite\assets\js\scripts - Copy.js.map" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
@@ -43,13 +39,11 @@
     <Folder Include="Areas\BusinessProfile\Data\" />
     <Folder Include="Areas\BusinessProfile\Models\" />
     <Folder Include="Areas\BusinessProfile\Views\" />
-    <Folder Include="Areas\Profile\Controllers\" />
     <Folder Include="Areas\Profile\Data\" />
-    <Folder Include="Areas\Profile\Models\" />
-    <Folder Include="Areas\Profile\Views\" />
     <Folder Include="wwwroot\Admin\bower_components\" />
     <Folder Include="wwwroot\Upload\Bussiness\Files\" />
     <Folder Include="wwwroot\Upload\Categories\Files\" />
+    <Folder Include="wwwroot\Upload\Review\Files\" />
     <Folder Include="wwwroot\Upload\User\" />
   </ItemGroup>
 

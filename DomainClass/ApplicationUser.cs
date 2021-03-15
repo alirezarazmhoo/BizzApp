@@ -16,7 +16,7 @@ namespace DomainClass
 		public string Url { get; set; }
 		public string Password { get; set; }
 		public DateTime CreateDate { get; set; } = DateTime.Now;
-		public ICollection<ApplicationUserMedia>   ApplicationUserMedias { get; set; }
+		public ICollection<ApplicationUserMedia> ApplicationUserMedias { get; set; }
 		//public UserType UserType { get; set; }
 	}
 }

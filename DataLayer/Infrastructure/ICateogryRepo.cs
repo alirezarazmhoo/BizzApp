@@ -28,6 +28,7 @@ namespace DataLayer.Infrastructure
 		HierarchyNamesCategory GetCategoryHierarchyNamesById(int id);
 		Task<CategoryTerm> GetCategoryTerm(int id);
 		Task<List<Category>> GetChosens();
-		Task<List<Category>> GetUnChosens(); 
+		Task<List<Category>> GetUnChosens();
+
 	}
 }

@@ -22,6 +22,7 @@ namespace DataLayer.Services
 		private readonly string IconWebType;
 		private readonly string FeatureImageType;
 		private readonly string PngIconType;
+
 		public CategoryRepo(ApplicationDbContext DbContext) : base(DbContext)
 		{
 			IconType = "icon";
@@ -155,6 +156,8 @@ namespace DataLayer.Services
 		{
 			// get category items to edit
 			var categoryTerms = await DbContext.CategoryTerms.Where(w => w.CategoryId == id).ToListAsync();
+			// check if category not have any terms then return 
+			if (categoryTerms?.Count == 0) return;
 
 			// delete category icon
 			var categoryIcon = categoryTerms.FirstOrDefault(f => f.Key == IconType);
@@ -291,6 +294,7 @@ namespace DataLayer.Services
 		{
 			return await FindByCondition(f => f.ParentCategoryId == Id).ToListAsync();
 		}
+		
 		public async Task<int> GetChildCount(int Id)
 		{
 			return await FindByCondition(f => f.ParentCategoryId == Id).CountAsync();
