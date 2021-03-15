@@ -153,6 +153,11 @@
     <None Include="wwwroot\Designs\MainWebSite\assets\js\header-bundle.js.map" />
     <None Include="wwwroot\Designs\MainWebSite\assets\js\scripts.js" />
     <None Include="wwwroot\Designs\MainWebSite\assets\js\scripts.js.map" />
+    <None Include="wwwroot\lib\dropzone\dropzone-amd-module.js" />
+    <None Include="wwwroot\lib\dropzone\dropzone.js" />
+    <None Include="wwwroot\lib\dropzone\dropzone.js.map" />
+    <None Include="wwwroot\lib\dropzone\min\dropzone-amd-module.min.js" />
+    <None Include="wwwroot\lib\dropzone\min\dropzone.min.js" />
   </ItemGroup>
 
 </Project>

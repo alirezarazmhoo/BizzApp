@@ -1,5 +1,12 @@
 ﻿namespace DomainClass.Enums
 {
+	public enum UploadResult
+	{
+		Succeed = 0,
+		EmptyArray = 1,
+		Failed = 2
+	}
+
 	public enum BusinessFeatureType
 	{
 		Boolean = 0, 
