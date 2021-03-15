@@ -18,8 +18,8 @@ namespace DataLayer.Services
 		private readonly string databasePath;
 		public UserPhotoRepo(ApplicationDbContext dbContext) : base(dbContext)
 		{
-			directoryPath = @"wwwroot\Upload\Profile\Files\";
-			databasePath = "/Upload/Profile/Files/";
+			directoryPath = @"wwwroot\Upload\User\Profile\Files\";
+			databasePath = "/Upload/User/Profile/Files/";
 		}
 
 		public async Task<IEnumerable<ApplicationUserMedia>> GetAll(string userId)
@@ -50,8 +50,10 @@ namespace DataLayer.Services
 
 		}
 
-		public async Task UploadPhoto(string userId, IFormFile[] files)
+		public async Task<UploadResult> UploadPhotos(string userId, IFormFile[] files)
 		{
+			if (files.Count() < 1) return UploadResult.EmptyArray;
+
 			// upload photos in directory
 			string fileName;
 			var addedItems = new List<ApplicationUserMedia>();
@@ -87,6 +89,8 @@ namespace DataLayer.Services
 
 			// save changes in database 
 			await DbContext.SaveChangesAsync();
+
+			return UploadResult.Succeed;
 		}
 
 		public async Task DeletePhoto(Guid id)

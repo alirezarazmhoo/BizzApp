@@ -32,6 +32,10 @@ namespace DataLayer.Services
 			return  DbContext.Users.Include(x=>x.City).Where(x=>x.Id==userId).FirstOrDefault();
 
         }
-		
+
+		public async Task<BizAppUser> GetByUserName(string userName)
+		{
+			return await DbContext.Users.FirstOrDefaultAsync(f => f.UserName == userName);
+		}
 	}
 }
