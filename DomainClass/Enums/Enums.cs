@@ -3,7 +3,7 @@
 	public enum UploadResult
 	{
 		Succeed = 0,
-		EmptyArray = 1,
+		EmptyFile = 1,
 		Failed = 2
 	}
 

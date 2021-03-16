@@ -55,7 +55,7 @@ namespace BizApp.Areas.Profile.Controllers
 
 		[HttpPost, ActionName("upload")]
 		[Authorize]
-		public async Task<IActionResult> HandleUpload(IFormFile[] file)
+		public async Task<IActionResult> HandleUpload(IFormFile file)
 		{
 			// get user id
 			var userId = _userManager.GetUserId(HttpContext.User);
