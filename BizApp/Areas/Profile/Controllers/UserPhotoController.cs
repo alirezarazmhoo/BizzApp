@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using PagedList.Core;
 using System;
 using System.Threading.Tasks;
 
@@ -22,33 +23,53 @@ namespace BizApp.Areas.Profile.Controllers
 			_unitOfWork = unitOfWork;
 		}
 
+		private async Task<BizAppUser> GetUserDetail(string userName = null)
+		{
+			BizAppUser user;
+			if (userName == null)
+			{
+				var userId = _userManager.GetUserId(HttpContext.User);
+				user = await _unitOfWork.UserRepo.GetById(userId);
+			}
+			else
+			{
+				user = await _unitOfWork.UserRepo.GetByUserName(userName);
+			}
+
+			if (user != null) user.FullName = !string.IsNullOrEmpty(user.FullName) ? user.FullName : "بدون نام";
+
+			return user;
+		}
+
 		[HttpGet, ActionName("index")]
-		public async Task<IActionResult> Index(string userName) 
+		public async Task<IActionResult> Index(string userName, int page = 1)
 		{
 			// get user photos 
-			var user = await _unitOfWork.UserRepo.GetByUserName(userName);
+			var user = await GetUserDetail(userName);
 
 			// check if user not exists
 			if (user == null) return NotFound();
 
+			ViewBag.FullName = user.FullName;
+
 			// get user photos
 			var photos = await _unitOfWork.UserPhotoRepo.GetAll(user.Id);
 
+			// pagination data
+			var result = new PagedList<ApplicationUserMedia>(photos, page, 10);
+
 			// return result
-			return View(photos);
+			return View(result);
 		}
 
 		[HttpGet, ActionName("upload")]
 		[Authorize]
-		public async Task<IActionResult> CreateNew() 
+		public async Task<IActionResult> CreateNew()
 		{
 			// get user full name
-			var userId = _userManager.GetUserId(HttpContext.User);
-			// check user image
-			var user = await _unitOfWork.UserRepo.GetById(userId);
-			var userName = !string.IsNullOrEmpty(user.FullName) ? user.FullName : "بدون نام";
+			var user = await GetUserDetail();
 
-			ViewBag.UserName = userName;
+			ViewBag.FullName = user.FullName;
 
 			return View();
 		}
@@ -63,8 +84,8 @@ namespace BizApp.Areas.Profile.Controllers
 			try
 			{
 				// upload user photso by repository
-				var result = await _unitOfWork.UserPhotoRepo.UploadPhotos(userId, file);
-				
+				var result = await _unitOfWork.UserPhotoRepo.UploadPhoto(userId, file);
+
 				if (result == UploadResult.Succeed)
 					return Ok("Uploaded");
 

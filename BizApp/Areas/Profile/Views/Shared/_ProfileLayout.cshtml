@@ -15,7 +15,7 @@
 		userName = UserManager.GetUserName(User);
 
 	// get user information
-	var user = UserProfileService.GetUserDetail(userName);
+	var user = await UserProfileService.GetUserDetail(userName);
 
 	// get current user information, its make be null
 	var currentUser = User.Identity.Name;
@@ -66,19 +66,37 @@
 					<div class="col-md-9">
 						<div class="profile-header__user-profile">
 							<div class="profile-header__user-profile__image">
-								<a asp-area="profile"
-								   asp-controller="userphoto"
-								   asp-action="upload">
-									@if (user.Photos.Count == 0)
-									{
-										<img class="profile-photo-img" src='~/Designs/MainWebSite/assets/img/profile-img.jpg' />
-									}
-									else
-									{
-										<img class="profile-photo-img" src='@user.Photos.First()' />
-										// galleries
-									}
-								</a>
+
+								<div class="swiper-container swiper-container-initialized swiper-container-horizontal swiper-container-rtl">
+									<div class="swiper-wrapper" id="swiper-wrapper-8381dda56aa72616" aria-live="off" style="transform: translate3d(80px, 0px, 0px); transition-duration: 0ms;">
+
+										@if (user.Photos.Count == 0)
+										{
+											<a asp-area="profile"
+											   asp-controller="userphoto"
+											   asp-action="upload">
+												<img class="profile-photo-img" src='~/Designs/MainWebSite/assets/img/profile-img.jpg' />
+											</a>
+										}
+										else
+										{
+											int counter = 1;
+											@foreach (var photo in user.Photos)
+											{
+												<div class="swiper-slide swiper-slide-prev" role="group" aria-label="@counter++ / @user.Photos.Count style="width: 80px;">
+													<a asp-area="profile"
+													   asp-controller="userphoto"
+													   asp-action="upload">
+														<img src="@photo" alt="">
+													</a>
+												</div>
+											}
+											<img class="profile-photo-img" src='@user.Photos.First()' />
+											// galleries
+										}
+									</div>
+									<span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+								</div>
 							</div>
 							<div class="profile-header__user-profile__info">
 								<div class="profile-header__user-profile__info__title">

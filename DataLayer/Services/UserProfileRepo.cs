@@ -2,8 +2,10 @@
 using DataLayer.Infrastructure;
 using DomainClass;
 using DomainClass.Queries;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DataLayer.Services
 {
@@ -13,11 +15,11 @@ namespace DataLayer.Services
 		{
 		}
 
-		public UserProfileDetailQuery GetUserDetail(string userName)
+		public async Task<UserProfileDetailQuery> GetUserDetail(string userName)
 		{
 			try
 			{
-				var userDetail = 
+				var userDetail = await
 					DbContext.Users
 						.Where(w => w.UserName == userName)
 						.Select(s => new UserProfileDetailQuery
@@ -32,7 +34,7 @@ namespace DataLayer.Services
 							ReviewCount = s.Reviews.Count,
 							Photos = (s.ApplicationUserMedias.Select(s => s.UploadedPhoto).ToList())
 						})
-						.FirstOrDefault();
+						.FirstOrDefaultAsync();
 
 				return userDetail;
 			}

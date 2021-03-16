@@ -1,16 +1,23 @@
-﻿using DomainClass;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Security.Claims;
 
 namespace BizApp.Areas.Profile.Models
 {
 	public class ProfileViewModel
 	{
+		private string fullName;
 		public string Id { get; set; }
-		public string FullName { get; set; }
+		public string FullName
+		{
+			get
+			{
+				return fullName;
+			}
+			set
+			{
+				fullName = !string.IsNullOrEmpty(value) ? fullName : "بدون نام";
+			}
+		}
 		public DateTime RegisterDate { get; set; }
 		public int ReviewCount { get; set; }
 		public int UploadedPhotoCount { get; set; }

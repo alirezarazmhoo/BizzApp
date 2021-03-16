@@ -10,7 +10,7 @@ namespace DataLayer.Infrastructure
 	public interface IUserPhotoRepo
 	{
 		Task<IEnumerable<ApplicationUserMedia>> GetAll(string userId);
-		Task<UploadResult> UploadPhotos(string userId, IFormFile files);
+		Task<UploadResult> UploadPhoto(string userId, IFormFile files);
 		//Task<UploadResult> UploadPhotos(string userId, IFormFile[] files);
 		Task DeletePhoto(Guid id);
 		Task SetAsPrimary(Guid id, string userId);

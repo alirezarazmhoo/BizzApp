@@ -22,16 +22,6 @@ namespace DataLayer.Services
 			databasePath = "/Upload/User/Profiles/";
 		}
 
-		public async Task<IEnumerable<ApplicationUserMedia>> GetAll(string userId)
-		{
-			// get list of user photos
-			var items = await FindByCondition(f => f.BizAppUserId == userId)
-				.OrderByDescending(o => o.IsMainImage).ThenBy(c => c.CreatedAt)
-				.ToListAsync();
-
-			return items;
-		}
-
 		private async Task<string> UploadPhoto(IFormFile file, string userId)
 		{
 			try
@@ -59,7 +49,16 @@ namespace DataLayer.Services
 			}
 		}
 
-		public async Task<UploadResult> UploadPhotos(string userId, IFormFile file)
+		public async Task<IEnumerable<ApplicationUserMedia>> GetAll(string userId)
+		{
+			// get list of user photos
+			var items = await FindByCondition(f => f.BizAppUserId == userId)
+				.OrderByDescending(o => o.IsMainImage).ThenBy(c => c.CreatedAt)
+				.ToListAsync();
+
+			return items;
+		}
+		public async Task<UploadResult> UploadPhoto(string userId, IFormFile file)
 		{
 			if (file == null) return UploadResult.EmptyFile;
 
@@ -78,7 +77,8 @@ namespace DataLayer.Services
 				BizAppUserId = userId,
 				Status = StatusEnum.Accepted,
 				IsNew = true,
-				UploadedPhoto = $"{databasePath}{userId}/{fileName}"
+				UploadedPhoto = $"{databasePath}{userId}/{fileName}", 
+				CreatedAt = DateTime.Now
 			};
 
 			// check if user not have primary photo set for him or her
@@ -96,7 +96,6 @@ namespace DataLayer.Services
 
 			return UploadResult.Succeed;
 		}
-
 		public async Task DeletePhoto(Guid id)
 		{
 			// find photo
@@ -113,7 +112,6 @@ namespace DataLayer.Services
 
 			await DbContext.SaveChangesAsync();
 		}
-
 		public async Task SetAsPrimary(Guid id, string userId)
 		{
 			// get selected photo
