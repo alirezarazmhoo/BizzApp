@@ -46,6 +46,7 @@
     <Folder Include="Areas\BusinessProfile\Views\" />
     <Folder Include="Areas\Profile\Data\" />
     <Folder Include="wwwroot\Admin\bower_components\" />
+    <Folder Include="wwwroot\Scripts\Search\" />
     <Folder Include="wwwroot\Upload\Bussiness\Files\" />
     <Folder Include="wwwroot\Upload\Categories\Files\" />
     <Folder Include="wwwroot\Upload\Review\Files\" />
@@ -156,8 +157,6 @@
     <None Include="wwwroot\Designs\MainWebSite\assets\js\footer-bundle.js.map" />
     <None Include="wwwroot\Designs\MainWebSite\assets\js\header-bundle.js" />
     <None Include="wwwroot\Designs\MainWebSite\assets\js\header-bundle.js.map" />
-    <None Include="wwwroot\Designs\MainWebSite\assets\js\changeUrl.js" />
-    <None Include="wwwroot\Designs\MainWebSite\assets\js\changeUrl.js.map" />
     <None Include="wwwroot\Designs\MainWebSite\assets\js\scripts.js" />
     <None Include="wwwroot\Designs\MainWebSite\assets\js\scripts.js.map" />
     <None Include="wwwroot\lib\dropzone\dropzone-amd-module.js" />

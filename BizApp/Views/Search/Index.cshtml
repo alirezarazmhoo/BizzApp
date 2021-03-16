@@ -306,7 +306,7 @@
                         </div>
                     }
                 </div>
-                <button class="button-cat">جستجو</button>
+                <button onclick="SearchByCategoty()" class="button-cat">جستجو</button>
             </div>
 
         </div>
@@ -316,22 +316,25 @@
 <button onclick=" disposeFilterForType(1)">1تست تیم آترین</button>
 @section Scripts
 {
-    <script src="~/Designs/MainWebSite/assets/js/changeUrl.js"></script>
     
     <script>
+        window.arr1 = [];
+    </script>
+    <script src="~/Scripts/Search/changeUrl.js"></script>
+    <script>
+       
+        var pageN = 1;
         const markerHtmlStyles = "background-color:#000; width: 3rem; height: 3rem; display: block;  left: -1.5rem;  top: -1.5rem;  position: relative;  border-radius: 3rem 3rem 0;  transform: rotate(45deg);  border: 1px solid #FFFFFF";
         $(document).ready(function () {
             //GetData("/Search/AllBussiness?CategoryId=1058&page=1", "AllBussiness", null, 1);
             //history.pushState(null, null, "/Search/Index?CategoryId=1058&page=1");
-            disposeFilterForType(1);
-
-
-
+            disposeFilterForType(pageN);
+           
 
         });
         function SearchByCat(CategoryId) {
             //GetData("/Search/AllBussiness?CategoryId=" + CategoryId+"&page=1", "AllBussiness", null, 1);
-            disposeFilterForType(1);
+            disposeFilterForType(pageN);
 
         }
         //var markerArray = [];
@@ -462,7 +465,7 @@
 
         @*GetData("/Search/AllBussiness?CategoryId="+@ViewBag.CategoryId+"&page=" + page + "", "AllBussiness", null, page);
         history.pushState(null, null, "/Search/Index?CategoryId=1058&page=" + page + "");*@
-
+        pageN = page;
         disposeFilterForType(page);
         //alert("asd")
         //debugger
@@ -568,131 +571,16 @@
     //        }
 
     }
-    $('.category-content__item__cat-product').each(function (i, value) {
-        $(this).hover(function (e) {
-            var isSponsor = $(this).data('assigned-issponsor');
+        function SearchByCategoty(lstCat) {
+           
+            
 
-            var myIconReplc = L.Icon.extend({
-                options: {
-                    iconUrl: "/Designs/MainWebSite/assets/img/location12.png",
-                    shadowUrl: null,
-                    iconSize: new L.Point(25, 41),
-                    iconAnchor: new L.Point(13, 41),
-                    popupAnchor: new L.Point(0, -33),
-                    className: 'leaflet-div-icon'
-                }
-                ,
-                createIcon: function () {
-                    var div = document.createElement('div');
-
-                    var img = this._createImg(this.options['iconUrl']);
-                    var numdiv = document.createElement('div');
-                    numdiv.setAttribute("class", "number");
-                    numdiv.innerHTML = this.options['number'] || '';
-                    div.appendChild(img);
-                    div.appendChild(numdiv);
-                    this._setIconStyles(div, 'icon');
-                    return div;
-                },
-                createShadow: function () {
-                    return null;
-                }
+            $('.category-content input[type=checkbox]:checked').each(function () {
+                var sThisVal = (this.checked ? $(this).val() : "");
+                alert(sThisVal)
             });
-            var myIconReplcIsSponsor = L.Icon.extend({
-                options: {
-                    iconUrl: "/Designs/MainWebSite/assets/img/14.png",
-                    shadowUrl: null,
-                    iconSize: new L.Point(25, 41),
-                    iconAnchor: new L.Point(13, 41),
-                    popupAnchor: new L.Point(0, -33),
-                    className: 'leaflet-div-icon'
-                }
-                ,
-                createIcon: function () {
-                    var div = document.createElement('div');
-
-                    var img = this._createImg(this.options['iconUrl']);
-                    var numdiv = document.createElement('div');
-                    numdiv.setAttribute("class", "number");
-                    numdiv.innerHTML = this.options['number'] || '';
-                    div.appendChild(img);
-                    div.appendChild(numdiv);
-                    this._setIconStyles(div, 'icon');
-                    return div;
-                },
-                createShadow: function () {
-                    return null;
-                }
-            });
-            if (isSponsor=='False')
-                markerArray[$(this).attr('id') - 1].setIcon(new myIconReplc({ number: "&nbsp" + $(this).attr('id') }));
-            else
-                markerArray[$(this).attr('id') - 1].setIcon(new myIconReplcIsSponsor({ number: "&nbsp" + $(this).attr('id') }));
-
-
-        }, function () {
-                var isSponsor = $(this).data('assigned-issponsor');
-
-            var myIconReplc = L.Icon.extend({
-                options: {
-                    iconUrl: "/Designs/MainWebSite/assets/img/location11.png",
-                    shadowUrl: null,
-                    iconSize: new L.Point(25, 41),
-                    iconAnchor: new L.Point(13, 41),
-                    popupAnchor: new L.Point(0, -33),
-                    className: 'leaflet-div-icon'
-                },
-                createIcon: function () {
-                    var div = document.createElement('div');
-                    var img = this._createImg(this.options['iconUrl']);
-                    var numdiv = document.createElement('div');
-                    numdiv.setAttribute("class", "number");
-                    numdiv.innerHTML = this.options['number'] || '';
-                    div.appendChild(img);
-                    div.appendChild(numdiv);
-                    this._setIconStyles(div, 'icon');
-                    return div;
-                },
-                createShadow: function () {
-                    return null;
-                }
-
-            });
-                var myIconReplcIsSponsor = L.Icon.extend({
-                    options: {
-                        iconUrl: "/Designs/MainWebSite/assets/img/13.png",
-                        shadowUrl: null,
-                        iconSize: new L.Point(25, 41),
-                        iconAnchor: new L.Point(13, 41),
-                        popupAnchor: new L.Point(0, -33),
-                        className: 'leaflet-div-icon'
-                    }
-                    ,
-                    createIcon: function () {
-                        var div = document.createElement('div');
-
-                        var img = this._createImg(this.options['iconUrl']);
-                        var numdiv = document.createElement('div');
-                        numdiv.setAttribute("class", "number");
-                        numdiv.innerHTML = this.options['number'] || '';
-                        div.appendChild(img);
-                        div.appendChild(numdiv);
-                        this._setIconStyles(div, 'icon');
-                        return div;
-                    },
-                    createShadow: function () {
-                        return null;
-                    }
-                });
-                if (isSponsor == 'False')
-
-                    markerArray[$(this).attr('id') - 1].setIcon(new myIconReplc({ number: "&nbsp" + $(this).attr('id') }));
-                else
-                    markerArray[$(this).attr('id') - 1].setIcon(new myIconReplcIsSponsor({ number: "&nbsp" + $(this).attr('id') }));
-
-        });
-    });
-
+            disposeFilterForType(pageN);
+        }
 
     </script>
 }
