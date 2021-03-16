@@ -264,9 +264,10 @@ class Request extends AjaxRequest {
 
     renderData = (data) => {
         document.querySelector(`#${this.#tagId}`).innerHTML = data;
-        debugger
+        //debugger
         var markerArray = [];
         var mymap = null;
+        var marker = null;
         document.getElementById('weathermap').innerHTML = "<div id='mapid' style='width: 100%; height: 100%;'></div>";
         var planes = [];
         var lat = 0;
@@ -343,17 +344,18 @@ class Request extends AjaxRequest {
             }
         });
         for (var i = 0; i < planes.length; i++) {
-           // if (planes[i][4] == 'False') {
+            alert(i)
+            if (planes[i][4] == 'False') {
                 marker = new L.marker([planes[i][1], planes[i][2]], { icon: new L.NumberedDivIcon({ number: "&nbsp" + planes[i][3] }) })
                     .bindPopup(planes[i][0])
                     .addTo(mymap);
-            //}
-            //else {
+            }
+            else {
             //    debugger
                 marker = new L.marker([planes[i][1], planes[i][2]], { icon: new myIconReplc1({ number: "&nbsp" + planes[i][3] }) })
                     .bindPopup(planes[i][0])
                     .addTo(mymap);
-            //}
+            }
             marker.on('mouseover', function (e) {
                 this.openPopup();
                 //this.setIcon(new myIconReplc2({ number: this.options.icon.options.number }))

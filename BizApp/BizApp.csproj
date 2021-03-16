@@ -12,6 +12,11 @@
     <None Remove="Areas\Admin\Data\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="wwwroot\Designs\MainWebSite\assets\js\changeUrl.js" />
+    <Content Remove="wwwroot\Designs\MainWebSite\assets\js\scripts - Copy.js.map" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
@@ -151,6 +156,8 @@
     <None Include="wwwroot\Designs\MainWebSite\assets\js\footer-bundle.js.map" />
     <None Include="wwwroot\Designs\MainWebSite\assets\js\header-bundle.js" />
     <None Include="wwwroot\Designs\MainWebSite\assets\js\header-bundle.js.map" />
+    <None Include="wwwroot\Designs\MainWebSite\assets\js\changeUrl.js" />
+    <None Include="wwwroot\Designs\MainWebSite\assets\js\changeUrl.js.map" />
     <None Include="wwwroot\Designs\MainWebSite\assets\js\scripts.js" />
     <None Include="wwwroot\Designs\MainWebSite\assets\js\scripts.js.map" />
     <None Include="wwwroot\lib\dropzone\dropzone-amd-module.js" />

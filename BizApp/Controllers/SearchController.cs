@@ -33,6 +33,7 @@ namespace BizApp.Controllers
 		public IActionResult AllBussiness(int CategoryId,int page=1)
         {
 			PagedList<Business> bussiness=_UnitOfWork.BusinessRepo.GetBussiness(CategoryId, page);
+			ViewBag.CategoryId = CategoryId;
             return PartialView("Partials/AllBusiness_Partial", bussiness);
         }
 		

@@ -438,7 +438,7 @@ namespace DataLayer.Services
 
             }
             result = DbContext.Businesses.Where(x => cats.Contains(x.CategoryId)).OrderByDescending(x => x.CreatedDate);
-            PagedList<Business> res = new PagedList<Business>(result, page, 2);
+            PagedList<Business> res = new PagedList<Business>(result, page, 10);
             return res;
         }
     }
