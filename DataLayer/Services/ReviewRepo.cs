@@ -15,7 +15,6 @@ namespace DataLayer.Services
 	{
 		public ReviewRepo(ApplicationDbContext DbContext) : base(DbContext)
 		{
-
 		}
 		public async Task<IEnumerable<Review>> GetRecentActivity(int? pageNumber)
 		{
@@ -51,19 +50,44 @@ namespace DataLayer.Services
 		public async Task<string> GetUsersFullName(Guid Id)
 		{
 			string FullNames = string.Empty;
-			string newChar = "";
+			string newChar = string.Empty;
+			string Main = string.Empty;
+			int counter = 0;
+			string end = string.Empty;
 			var Item = await DbContext.CustomerBusinessMediaPictures.FirstOrDefaultAsync(s => s.Id.Equals(Id));
 			if (Item != null)
 			{
 				var ItemsObject = await DbContext.UsersInCustomerBusinessMediaLikes.Include(s=>s.BizAppUser).Where(s => s.CustomerBusinessMediaPicturesId.Equals(Item.Id)).ToListAsync();
-				for (int i = 0; i < ItemsObject.Count; i++)
+				if (ItemsObject.Count > 0)
 				{
-					FullNames = ItemsObject[i].BizAppUser.FullName;
-					newChar = ItemsObject[i].BizAppUser.FullName.Insert(i, "-");
-					FullNames = newChar;
+					for (int i = 0; i < ItemsObject.Count; i++)
+					{
+						counter += 1;
+						if (counter == 8)
+						{
+							break;
+						}
+						else
+						{
+							FullNames += ItemsObject[i].BizAppUser.FullName + "<br>";
+						}
+					}
+					if(ItemsObject.Count > 8)
+					{
+						end = $"و {ItemsObject.Count - 8} دیگر";
+						Main = $"<span>{FullNames},{end}</span>";
+					}
+					else
+					{
+					Main = $"<span>{FullNames}</span>";
+					}
+				}
+				else
+				{
+					Main = $"<span>اولین نفر در ثبت نظر باشید!</span>";
 				}
 			}
-			return FullNames; 
+			return Main; 
 		}
 	}
 }

@@ -449,9 +449,9 @@
         //}
 
 
-        let request = new Request('AllBussiness');
+        var request = new Request('AllBussiness');
 
-        const disposeFilterForType = (p) => {
+        var disposeFilterForType = (p) => {
             request.disposeFilter('/Search/AllBussiness', { CategoryId: 1058, page: p })
         }
 

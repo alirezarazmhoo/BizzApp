@@ -102,7 +102,7 @@ namespace BizApp.Controllers
 								Description = item2.Description,
 								Id = item2.Id,
 								Image = item2.Image,
-								LikeCount = item2.LikeCount,
+								LikeCount =item2.LikeCount,
 								UsersName = await _UnitOfWork.ReviewRepo.GetUsersFullName(item2.Id)
 							}) ;
 						}
@@ -223,7 +223,12 @@ namespace BizApp.Controllers
 					{
 						if (item2.StatusEnum == DomainClass.Enums.StatusEnum.Accepted)
 						{
-							MainPage_RecentActivityUserMediaBusinesses.Add(new MainPage_RecentActivityUserMediaBusiness() { Description = item2.Description, Id = item2.Id, Image = item2.Image, LikeCount = item2.LikeCount });
+							MainPage_RecentActivityUserMediaBusinesses.Add(new MainPage_RecentActivityUserMediaBusiness() { Description = item2.Description, 
+								Id = item2.Id,
+								Image = item2.Image,
+								LikeCount = item2.LikeCount
+								, UsersName = await _UnitOfWork.ReviewRepo.GetUsersFullName(item2.Id) 
+							});
 						}
 					}
 					MainPage_RecentActivity.Add(new MainPage_RecentActivity() { MainPage_RecentActivityContent = MainPage_RecentActivityContent, MainPage_RecentActivityCreator = MainPage_RecentActivityCreator, ActivityType = ActivityType.AddPhoto, MainPage_RecentActivityUserMediaBusinesses = MainPage_RecentActivityUserMediaBusinesses });
