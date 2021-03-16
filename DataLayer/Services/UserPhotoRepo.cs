@@ -18,8 +18,8 @@ namespace DataLayer.Services
 		private readonly string databasePath;
 		public UserPhotoRepo(ApplicationDbContext dbContext) : base(dbContext)
 		{
-			directoryPath = @"wwwroot\Upload\User\Profile\Files\";
-			databasePath = "/Upload/User/Profile/Files/";
+			directoryPath = @"wwwroot\Upload\User\Profiles\";
+			databasePath = "/Upload/User/Profiles/";
 		}
 
 		public async Task<IEnumerable<ApplicationUserMedia>> GetAll(string userId)
@@ -29,63 +29,64 @@ namespace DataLayer.Services
 			return items;
 		}
 
-		private string UploadPhoto(IFormFile file)
+		private async Task<string> UploadPhoto(IFormFile file, string userId)
 		{
 			try
 			{
+				// Create the folder if not existing for a full file name
+				if (!Directory.Exists(directoryPath + userId))
+				{
+					Directory.CreateDirectory(directoryPath + userId);
+				}
+
+				// create file
 				var fileName = Guid.NewGuid().ToString().Replace('-', '0') + Path.GetExtension(file.FileName).ToLower();
-				var filePath = Path.Combine(Directory.GetCurrentDirectory(), directoryPath, fileName);
+				var filePath = Path.Combine(Directory.GetCurrentDirectory(), directoryPath + userId, fileName);
 
 				using (var stream = new FileStream(filePath, FileMode.Create))
 				{
-					file.CopyTo(stream);
+					await file.CopyToAsync(stream);
 				}
 
 				return fileName;
 			}
-			catch
+			catch (Exception ex)
 			{
 				return null;
 			}
-
 		}
 
-		public async Task<UploadResult> UploadPhotos(string userId, IFormFile[] files)
+		public async Task<UploadResult> UploadPhotos(string userId, IFormFile file)
 		{
-			if (files.Count() < 1) return UploadResult.EmptyArray;
+			if (file == null) return UploadResult.EmptyFile;
 
 			// upload photos in directory
 			string fileName;
-			var addedItems = new List<ApplicationUserMedia>();
-			if (files != null && files.Count() > 0)
+			ApplicationUserMedia addedItem;
+
+			fileName = await UploadPhoto(file, userId);
+
+			// if file not uploadded
+			if (fileName == null) return UploadResult.Failed;
+
+			// save info in memeory
+			addedItem = new ApplicationUserMedia
 			{
-				foreach (var file in files)
-				{
-					fileName = UploadPhoto(file);
-
-					// if file not uploadded
-					if (fileName == null) continue;
-
-					// save info in memeory
-					addedItems.Add(new ApplicationUserMedia()
-					{
-						BizAppUserId = userId,
-						Status = StatusEnum.Accepted,
-						IsNew = true,
-						UploadedPhoto = databasePath + fileName
-					});
-				}
-			}
+				BizAppUserId = userId,
+				Status = StatusEnum.Accepted,
+				IsNew = true,
+				UploadedPhoto = $"{databasePath}{userId}/{fileName}"
+			};
 
 			// check if user not have primary photo set for him or her
 			var hasPhoto = await FindByCondition(f => f.BizAppUserId == userId).AnyAsync();
-			if (!hasPhoto && addedItems.Count > 0)
+			if (!hasPhoto)
 			{
-				addedItems.First().IsMainImage = true;
+				addedItem.IsMainImage = true;
 			}
 
 			// add new items to database
-			await DbContext.ApplicationUserMedias.AddRangeAsync(addedItems);
+			await DbContext.ApplicationUserMedias.AddAsync(addedItem);
 
 			// save changes in database 
 			await DbContext.SaveChangesAsync();

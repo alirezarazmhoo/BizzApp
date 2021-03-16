@@ -66,13 +66,16 @@
 					<div class="col-md-9">
 						<div class="profile-header__user-profile">
 							<div class="profile-header__user-profile__image">
-								<a href="#">
+								<a asp-area="profile"
+								   asp-controller="userphoto"
+								   asp-action="upload">
 									@if (user.Photos.Count == 0)
 									{
 										<img class="profile-photo-img" src='~/Designs/MainWebSite/assets/img/profile-img.jpg' />
 									}
 									else
 									{
+										<img class="profile-photo-img" src='@user.Photos.First()' />
 										// galleries
 									}
 								</a>
