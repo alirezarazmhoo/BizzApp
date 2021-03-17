@@ -5,6 +5,7 @@ namespace DataLayer.Infrastructure
 {
 	public interface IUserProfileRepo
 	{
-		Task<UserProfileDetailQuery> GetUserDetail(string userId);
+		Task<UserProfileDetailQuery> GetUserDetail(string userName);
+		Task<SharedUserProfileDetailQuery> GetSharedUserDetail(string userName);
 	}
 }

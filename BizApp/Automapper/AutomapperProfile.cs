@@ -64,8 +64,14 @@ namespace BizApp.Automapper
 			// Users
 			CreateMap<BizAppUser, UserViewModel>().ReverseMap();
 			CreateMap<BizAppUser, UpdateOperatorViewModel>().ReverseMap();
+			CreateMap<SharedUserProfileDetailQuery, SharedProfileDetailViewModel>().ReverseMap();
 			CreateMap<UserProfileDetailQuery, ProfileViewModel>()
 				//.ForMember(dest => dest.RegisterDate, opt => opt.MapFrom(src => src.RegisterDate.ToPersianShortDate()))
+				.ReverseMap();
+
+			// user photos
+			CreateMap<ApplicationUserMedia, UserPhotosViewModel>()
+				.ForMember(dest => dest.Path, opt => opt.MapFrom(src => src.UploadedPhoto))
 				.ReverseMap();
 
 			// Business Create

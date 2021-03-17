@@ -9,6 +9,7 @@ namespace DataLayer.Infrastructure
 		IProvinceRepo ProvinceRepo { get; }
 		ICityRepo CityRepo { get; }
 		IUserRepo UserRepo { get; }
+		IUserProfileRepo ProfileRepo { get; }
 		IDistrictRepo DistrictRepo { get; }
 		ICateogryRepo CategoryRepo { get; }
 		IFeatureRepo FeatureRepo { get; }

@@ -12,7 +12,7 @@ namespace DataLayer.Infrastructure
 		Task<IEnumerable<ApplicationUserMedia>> GetAll(string userId);
 		Task<UploadResult> UploadPhoto(string userId, IFormFile files);
 		//Task<UploadResult> UploadPhotos(string userId, IFormFile[] files);
-		Task DeletePhoto(Guid id);
+		Task DeletePhoto(Guid id, string currentUserId);
 		Task SetAsPrimary(Guid id, string userId);
 	}
 }

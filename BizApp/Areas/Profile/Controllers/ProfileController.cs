@@ -2,7 +2,6 @@
 using BizApp.Areas.Profile.Models;
 using DataLayer.Infrastructure;
 using DomainClass;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -11,14 +10,12 @@ namespace BizApp.Areas.Profile.Controllers
 {
 	public class ProfileController : Controller
 	{
-		private readonly IUserProfileRepo _userProfileRepository;
 		private readonly IUnitOfWorkRepo _unitOfWork;
 		private readonly UserManager<BizAppUser> _userManager;
 		private readonly IMapper _mapper;
 
-		public ProfileController(IUnitOfWorkRepo unitOfWork, IUserProfileRepo userPorfile, UserManager<BizAppUser> userManager, IMapper mapper)
+		public ProfileController(IUnitOfWorkRepo unitOfWork, UserManager<BizAppUser> userManager, IMapper mapper)
 		{
-			_userProfileRepository = userPorfile;
 			_userManager = userManager;
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
@@ -27,7 +24,7 @@ namespace BizApp.Areas.Profile.Controllers
 		private async Task<ProfileViewModel> GetCurrentUserDetail()
 		{
 			var userId = _userManager.GetUserId(HttpContext.User);
-			var userDetail = await _userProfileRepository.GetUserDetail(userId);
+			var userDetail = await _unitOfWork.ProfileRepo.GetUserDetail(userId);
 
 			var result = _mapper.Map<ProfileViewModel>(userDetail);
 
@@ -43,7 +40,7 @@ namespace BizApp.Areas.Profile.Controllers
 
 			var tempUser = await _unitOfWork.UserRepo.GetByUserName(userName);
 			
-			var user = await _userProfileRepository.GetUserDetail(tempUser.Id);
+			var user = await _unitOfWork.ProfileRepo.GetUserDetail(tempUser.Id);
 			var result = _mapper.Map<ProfileViewModel>(user);
 
 			return result;

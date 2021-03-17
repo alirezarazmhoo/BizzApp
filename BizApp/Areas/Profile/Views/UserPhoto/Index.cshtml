@@ -1,9 +1,8 @@
-﻿
+﻿@model BizApp.Areas.Profile.Models.UserPhotosWithProfileDetailViewModel 
 @{
 	ViewData["Title"] = "تصاویر پروفایل";
 	Layout = "~/Views/Shared/_AllPagesLayout.cshtml";
 }
-
 
 	
 <main>
@@ -14,12 +13,24 @@
 		<div class="container">
 			<div class="profile-content-all-photos__item">
 				<ul>
-					<li><a href="#" data-toggle="modal" data-target="#click-photo-1"><img src="./assets/img/profile-photo1.jpg" alt=""></a></li>
-					<li><a href="#" data-toggle="modal" data-target="#click-photo-2"><img src="./assets/img/profile-content-photos.jpg" alt=""></a></li>
-					<li><a href="#" data-toggle="modal" data-target="#click-photo-3"><img src="./assets/img/profile-photo1.jpg" alt=""></a></li>
-					<li><a href="#" data-toggle="modal" data-target="#click-photo-4"><img src="./assets/img/profile-photo1.jpg" alt=""></a></li>
+					@{ int count = 1; }
+					@foreach (var photo in Model.UserPhotos)
+					{
+						<li><a href="#" data-toggle="modal" data-target="#click-photo-@count++"><img src="@photo.Path" alt=""></a></li>
+					}
 				</ul>
 			</div>
+
+			<div class="col-sm-7">
+				<div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+					<ul class="pagination">
+						<li>
+							<pager list="@Model.UserPhotos" asp-controller="userphoto" asp-action="Index" asp-area="profile" />
+						</li>
+					</ul>
+				</div>
+			</div>
+
 			<div class="profile-content-all-photos__pagination">
 				<span>صفحه 1 از 1</span>
 			</div>

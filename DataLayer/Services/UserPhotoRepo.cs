@@ -48,9 +48,16 @@ namespace DataLayer.Services
 				return null;
 			}
 		}
+		private async Task<bool> IsOwner(Guid id, string currentUserId) 
+		{
+			var photo = await DbContext.ApplicationUserMedias.FirstOrDefaultAsync(w => w.Id == id);
+			return photo.BizAppUserId == currentUserId;
+		}
 
 		public async Task<IEnumerable<ApplicationUserMedia>> GetAll(string userId)
 		{
+			// 
+			
 			// get list of user photos
 			var items = await FindByCondition(f => f.BizAppUserId == userId)
 				.OrderByDescending(o => o.IsMainImage).ThenBy(c => c.CreatedAt)
@@ -96,8 +103,11 @@ namespace DataLayer.Services
 
 			return UploadResult.Succeed;
 		}
-		public async Task DeletePhoto(Guid id)
+		public async Task DeletePhoto(Guid id, string currentUserId)
 		{
+			var isOwner = await IsOwner(id, currentUserId);
+			if (!isOwner) throw new UnauthorizedAccessException();
+
 			// find photo
 			var photo = await DbContext.ApplicationUserMedias.FirstOrDefaultAsync(f => f.Id == id);
 
@@ -114,6 +124,9 @@ namespace DataLayer.Services
 		}
 		public async Task SetAsPrimary(Guid id, string userId)
 		{
+			var isOwner = await IsOwner(id, userId);
+			if (!isOwner) throw new UnauthorizedAccessException();
+
 			// get selected photo
 			var photo = await FindByCondition(f => f.Id == id).FirstOrDefaultAsync();
 			photo.IsMainImage = true;

@@ -1,4 +1,6 @@
-﻿using DataLayer.Infrastructure;
+﻿using AutoMapper;
+using BizApp.Areas.Profile.Models;
+using DataLayer.Infrastructure;
 using DomainClass;
 using DomainClass.Enums;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +9,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PagedList.Core;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BizApp.Areas.Profile.Controllers
@@ -16,29 +20,27 @@ namespace BizApp.Areas.Profile.Controllers
 	{
 		private readonly UserManager<BizAppUser> _userManager;
 		private readonly IUnitOfWorkRepo _unitOfWork;
+		private readonly IMapper _mapper;
 
-		public UserPhotoController(IUnitOfWorkRepo unitOfWork, UserManager<BizAppUser> userManager)
+		public UserPhotoController(IUnitOfWorkRepo unitOfWork, UserManager<BizAppUser> userManager, IMapper mapper)
 		{
 			_userManager = userManager;
 			_unitOfWork = unitOfWork;
+			_mapper = mapper;
 		}
 
-		private async Task<BizAppUser> GetUserDetail(string userName = null)
+		private async Task<SharedProfileDetailViewModel> GetUserDetail(string userName = null)
 		{
-			BizAppUser user;
 			if (userName == null)
 			{
-				var userId = _userManager.GetUserId(HttpContext.User);
-				user = await _unitOfWork.UserRepo.GetById(userId);
-			}
-			else
-			{
-				user = await _unitOfWork.UserRepo.GetByUserName(userName);
+				userName = _userManager.GetUserName(HttpContext.User);
 			}
 
-			if (user != null) user.FullName = !string.IsNullOrEmpty(user.FullName) ? user.FullName : "بدون نام";
+			var user = await _unitOfWork.UserProfileRepo.GetSharedUserDetail(userName);
 
-			return user;
+			var result = _mapper.Map<SharedProfileDetailViewModel>(user);
+
+			return result;
 		}
 
 		[HttpGet, ActionName("index")]
@@ -54,12 +56,19 @@ namespace BizApp.Areas.Profile.Controllers
 
 			// get user photos
 			var photos = await _unitOfWork.UserPhotoRepo.GetAll(user.Id);
+			// cast to view model
+			var photosViewModel = _mapper.Map<IEnumerable<UserPhotosViewModel>>(photos);
+			// pagination photos 
+			var paginatePhotos = new PagedList<UserPhotosViewModel>(photosViewModel.AsQueryable(), page, 20);
 
-			// pagination data
-			var result = new PagedList<ApplicationUserMedia>(photos, page, 10);
+			var model = new UserPhotosWithProfileDetailViewModel
+			{
+				ProfileDetail = user,
+				UserPhotos = paginatePhotos
+			};
 
 			// return result
-			return View(result);
+			return View(model);
 		}
 
 		[HttpGet, ActionName("upload")]
