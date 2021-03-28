@@ -6,6 +6,7 @@ using DomainClass.Businesses;
 using DomainClass.Businesses.Commands;
 using DomainClass.Businesses.Queries;
 using DomainClass.Infrastructure;
+using DomainClass.Queries;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -400,22 +401,18 @@ namespace DataLayer.Services
             return true;
         }
 
-        public PagedList<Business> GetBussiness(int CategoryId, int page = 1)
+        public PagedList<Business> GetBussiness(SearchBussinessQuery searchViewModel)
         {
             IQueryable<Business> result = null;
             List<int> cats = new List<int>();
-            int CatId = CategoryId;
-
-            var category = DbContext.Categories.FirstOrDefault(w => w.Id == CategoryId);
+            int CatId = searchViewModel.CategoryId;
+            var category = DbContext.Categories.FirstOrDefault(w => w.Id == searchViewModel.CategoryId);
             var allCategories = DbContext.Categories.Where(w => w.ParentCategoryId == category.ParentCategoryId);
-
-            foreach (var categoryItem in allCategories)
+            foreach (var categoryItem in allCategories.ToList())
             {
                 // add all childs categories to list
                 cats.Add(categoryItem.Id);
             }
-
-            //var allCategories = DbContext.Categories.Where(w => ).ToList();
             while (CatId > 0)
             {
                 var parent = DbContext.Categories.FirstOrDefault(f => f.Id == CatId);
@@ -423,22 +420,10 @@ namespace DataLayer.Services
                 {
                     cats.Add(parent.Id);
                 }
-
                 CatId = parent.ParentCategoryId == null ? 0 : (int)parent.ParentCategoryId;
-                //if (allCategories.Any(x => x.Id == category.ParentCategoryId))
-                //{
-                //    var parents = allCategories.Where(x => x.ParentCategoryId == CatId);
-                //    foreach (var item in parents)
-                //    {
-                //        cats.Add(item.Id);
-                //        CatId = (int)item.ParentCategoryId;
-                //    }
-                //}
-
-
             }
             result = DbContext.Businesses.Where(x => cats.Contains(x.CategoryId)).OrderByDescending(x => x.CreatedDate);
-            PagedList<Business> res = new PagedList<Business>(result, page, 10);
+            PagedList<Business> res = new PagedList<Business>(result, searchViewModel.page, 10);
             return res;
         }
     }

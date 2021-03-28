@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using BizApp.Extensions;
 using System;
 using BizApp.Utility;
+using DomainClass.Queries;
 
 namespace BizApp.Controllers
 {
@@ -20,20 +21,20 @@ namespace BizApp.Controllers
             _logger = logger;
             _UnitOfWork = unitOfWork;
         }
-        public async Task<IActionResult> Index(SearchViewModel searchViewModel)
+        public async Task<IActionResult> Index(SearchBussinessQuery searchViewModel)
         {
             searchViewModel.categories = await _UnitOfWork.CategoryRepo.GetChilds(searchViewModel.CategoryId);
 
             return View(searchViewModel);
         }
-        public IActionResult AllBussiness(int CategoryId, int page = 1)
+        public IActionResult AllBussiness(SearchBussinessQuery searchViewModel)
         {
-            //var httpClient = new HttpClient();
             bool isAjax = Request.IsAjaxRequest();
             if (isAjax == false)
-                return RedirectToAction("Index",new {CategoryId=CategoryId });
-            PagedList<Business> bussiness = _UnitOfWork.BusinessRepo.GetBussiness(CategoryId, page);
-            ViewBag.CategoryId = CategoryId;
+                return RedirectToAction("Index",new {CategoryId=searchViewModel.CategoryId });
+            //PagedList<Business> bussiness = _UnitOfWork.BusinessRepo.GetBussiness(searchViewModel.CategoryId, searchViewModel.page);
+            PagedList<Business> bussiness = _UnitOfWork.BusinessRepo.GetBussiness(searchViewModel);
+            ViewBag.CategoryId = searchViewModel.CategoryId;
             return PartialView("Partials/AllBusiness_Partial", bussiness);
         }
 

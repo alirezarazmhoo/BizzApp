@@ -1,11 +1,13 @@
 ﻿using DomainClass.Businesses;
 using DomainClass.Businesses.Commands;
 using DomainClass.Businesses.Queries;
+using DomainClass.Queries;
 using Microsoft.AspNetCore.Http;
 using PagedList.Core;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 
 namespace DataLayer.Infrastructure
 {
@@ -22,7 +24,7 @@ namespace DataLayer.Infrastructure
 		Task RemoveFeature(Guid? id, int FeatureId);
 		Task Remove(Business model);
 		bool DeleteFeatureImage(Guid id, string filePath);
-		PagedList<Business> GetBussiness(int CategoryId, int page = 1);
+		PagedList<Business> GetBussiness(SearchBussinessQuery searchViewModel);
 
 
 	}

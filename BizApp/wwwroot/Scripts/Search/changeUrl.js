@@ -333,10 +333,10 @@ class Request extends AjaxRequest {
         });
         
         _defineProperty(this, "renderData", data => {
-            document.querySelector(`#${_classPrivateFieldGet(this, _tagId2)}`).innerHTML = data; //debugger
+            document.querySelector(`#${_classPrivateFieldGet(this, _tagId2)}`).innerHTML = data; 
             $('.category-content__item__cat-product').each(function (i, value) {
                 $(this).hover(function (e) {
-                    debugger
+                    
                     var isSponsor = $(this).data('assigned-issponsor');
 
                     var myIconReplc = L.Icon.extend({
@@ -554,7 +554,7 @@ class Request extends AjaxRequest {
                         })
                     }).bindPopup(planes[i][0]).addTo(mymap);
                 } else {
-                    //    debugger
+                    
                     marker = new L.marker([planes[i][1], planes[i][2]], {
                         icon: new myIconReplc1({
                             number: "&nbsp" + planes[i][3]
