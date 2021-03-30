@@ -10,6 +10,8 @@ namespace BizApp.Models.Basic
 	public class SearchViewModel
 	{
 		public int CategoryId { get; set; }
+		public int page { get; set; } = 1;
+		public string catsFinder { get; set; }
 		public List<Category> categories{ get; set; }
 
 	}

@@ -1,5 +1,13 @@
-﻿using DataLayer.Infrastructure;
+﻿using AutoMapper;
+using BizApp.Areas.Profile.Models;
+using DataLayer.Infrastructure;
+using DomainClass;
+using DomainClass.Enums;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using PagedList.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,26 +18,93 @@ namespace BizApp.Areas.Profile.Controllers
 	[Area("profile")]
 	public class UserPhotoController : Controller
 	{
-		private readonly IUnitOfWorkRepo UnitOfWork;
+		private readonly UserManager<BizAppUser> _userManager;
+		private readonly IUnitOfWorkRepo _unitOfWork;
+		private readonly IMapper _mapper;
 
-		public UserPhotoController(IUnitOfWorkRepo unitOfWork)
+		public UserPhotoController(IUnitOfWorkRepo unitOfWork, UserManager<BizAppUser> userManager, IMapper mapper)
 		{
-			UnitOfWork = unitOfWork;
+			_userManager = userManager;
+			_unitOfWork = unitOfWork;
+			_mapper = mapper;
+		}
+
+		private async Task<SharedProfileDetailViewModel> GetUserDetail(string userName = null)
+		{
+			if (userName == null)
+			{
+				userName = _userManager.GetUserName(HttpContext.User);
+			}
+
+			var user = await _unitOfWork.UserProfileRepo.GetSharedUserDetail(userName);
+
+			var result = _mapper.Map<SharedProfileDetailViewModel>(user);
+
+			return result;
 		}
 
 		[HttpGet, ActionName("index")]
-		public IActionResult Index(string username) 
+		public async Task<IActionResult> Index(string userName, int page = 1)
 		{
 			// get user photos 
-			//var photos = await UnitOfWork.UserPhotoRepo.GetAll();
+			var user = await GetUserDetail(userName);
+
+			// check if user not exists
+			if (user == null) return NotFound();
+
+			ViewBag.FullName = user.FullName;
+
+			// get user photos
+			var photos = await _unitOfWork.UserPhotoRepo.GetAll(user.Id);
+			// cast to view model
+			var photosViewModel = _mapper.Map<IEnumerable<UserPhotosViewModel>>(photos);
+			// pagination photos 
+			var paginatePhotos = new PagedList<UserPhotosViewModel>(photosViewModel.AsQueryable(), page, 20);
+
+			var model = new UserPhotosWithProfileDetailViewModel
+			{
+				ProfileDetail = user,
+				UserPhotos = paginatePhotos
+			};
+
+			// return result
+			return View(model);
+		}
+
+		[HttpGet, ActionName("upload")]
+		[Authorize]
+		public async Task<IActionResult> CreateNew()
+		{
+			// get user full name
+			var user = await GetUserDetail();
+
+			ViewBag.FullName = user.FullName;
 
 			return View();
 		}
 
-		[HttpGet, ActionName("upload")]
-		public IActionResult CreateNew() 
+		[HttpPost, ActionName("upload")]
+		[Authorize]
+		public async Task<IActionResult> HandleUpload(IFormFile file)
 		{
-			return View();
+			// get user id
+			var userId = _userManager.GetUserId(HttpContext.User);
+
+			try
+			{
+				// upload user photso by repository
+				var result = await _unitOfWork.UserPhotoRepo.UploadPhoto(userId, file);
+
+				if (result == UploadResult.Succeed)
+					return Ok("Uploaded");
+
+				return Problem(result.ToString());
+			}
+			catch (Exception ex)
+			{
+				return Problem(ex.Message, "UserPhoto", 500);
+			}
+
 		}
 	}
 }

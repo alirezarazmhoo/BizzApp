@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BizApp.Areas.Admin.Models;
 using BizApp.Areas.Profile.Models;
+using BizApp.Models.Basic;
 using BizApp.Utility;
 using DomainClass;
 using DomainClass.Businesses;
@@ -8,6 +9,8 @@ using DomainClass.Businesses.Commands;
 using DomainClass.Businesses.Queries;
 using DomainClass.Commands;
 using DomainClass.Queries;
+using DomainClass.Review;
+using System.Linq;
 
 namespace BizApp.Automapper
 {
@@ -64,14 +67,29 @@ namespace BizApp.Automapper
 			// Users
 			CreateMap<BizAppUser, UserViewModel>().ReverseMap();
 			CreateMap<BizAppUser, UpdateOperatorViewModel>().ReverseMap();
+			CreateMap<SharedUserProfileDetailQuery, SharedProfileDetailViewModel>().ReverseMap();
 			CreateMap<UserProfileDetailQuery, ProfileViewModel>()
 				//.ForMember(dest => dest.RegisterDate, opt => opt.MapFrom(src => src.RegisterDate.ToPersianShortDate()))
+				.ReverseMap();
+
+			// user photos
+			CreateMap<ApplicationUserMedia, UserPhotosViewModel>()
+				.ForMember(dest => dest.Path, opt => opt.MapFrom(src => src.UploadedPhoto))
 				.ReverseMap();
 
 			// Business Create
 			CreateMap<Business, CreateBusinessViewModel>().ReverseMap();
 			CreateMap<CreateBusinessCommand, CreateBusinessViewModel>().ReverseMap();
-
+			//CustomerBusinessMedia
+			CreateMap<CustomerBusinessMedia, BusinessMediaViewModel>()
+			.ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.CustomerBusinessMediaPictures.Select(s=>s.Image)))
+			.ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date))
+			.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+			.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+			.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.BizAppUser.FullName))
+			.ForMember(dest => dest.BusinessId, opt => opt.MapFrom(src => src.BusinessId))
+			.ForMember(dest => dest.UserProfilePicture, opt => opt.MapFrom(src => src.BizAppUser.ApplicationUserMedias.Where(s=>s.IsMainImage).Select(s=>s.UploadedPhoto).FirstOrDefault()))
+			.ReverseMap();
 		}
 	}
 }

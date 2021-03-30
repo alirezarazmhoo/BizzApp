@@ -19,14 +19,98 @@ namespace DataLayer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("DomainClass.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ApiToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2021, 3, 16, 14, 24, 18, 858, DateTimeKind.Local).AddTicks(4634));
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long>("Mobile")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("NationalCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApplicationUser");
+                });
+
             modelBuilder.Entity("DomainClass.ApplicationUserMedia", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("BizAppUserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsMainImage")
                         .HasColumnType("bit");
@@ -41,6 +125,8 @@ namespace DataLayer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("BizAppUserId");
 
@@ -185,8 +271,8 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5be4cf83-a4b6-4583-bc06-eed620f7cee0",
-                            CreateDate = new DateTime(2021, 3, 14, 11, 20, 40, 748, DateTimeKind.Local).AddTicks(5876),
+                            ConcurrencyStamp = "6f0bc4b1-c894-4c5b-aa0c-5f50135cf5d5",
+                            CreateDate = new DateTime(2021, 3, 16, 14, 24, 18, 862, DateTimeKind.Local).AddTicks(3543),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             Gender = 0,
@@ -196,10 +282,10 @@ namespace DataLayer.Migrations
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFJHy8O+r25hX/wpu8vp8X73ESXeywPSz8Zgbil41xn+Qvt/0UFZKnFMk8laOWz7Mg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELvi2YmCv3ozojjAmoJwrVT7J+/erzzbtJDGKHjzFINFxN6jmjRi3d+M7MFBfWBCYA==",
                             PhoneNumberConfirmed = false,
                             PhotoChanged = false,
-                            SecurityStamp = "df48bdf1-24d6-4c96-85d8-23894bc13de2",
+                            SecurityStamp = "31feb179-3c71-4939-ac2e-ba365ad81185",
                             TwoFactorEnabled = false,
                             UserName = "mainadmin"
                         });
@@ -918,6 +1004,10 @@ namespace DataLayer.Migrations
 
             modelBuilder.Entity("DomainClass.ApplicationUserMedia", b =>
                 {
+                    b.HasOne("DomainClass.ApplicationUser", null)
+                        .WithMany("ApplicationUserMedias")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("DomainClass.BizAppUser", "BizAppUser")
                         .WithMany("ApplicationUserMedias")
                         .HasForeignKey("BizAppUserId");

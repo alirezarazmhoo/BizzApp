@@ -2,8 +2,10 @@
 using DataLayer.Infrastructure;
 using DomainClass;
 using DomainClass.Queries;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DataLayer.Services
 {
@@ -13,17 +15,42 @@ namespace DataLayer.Services
 		{
 		}
 
-		public UserProfileDetailQuery GetUserDetail(string userName)
+		public async Task<SharedUserProfileDetailQuery> GetSharedUserDetail(string userName)
 		{
 			try
 			{
-				var userDetail = 
+				var userDetail = await
+					DbContext.Users
+						.Where(w => w.UserName == userName)
+						.Select(s => new SharedUserProfileDetailQuery
+						{
+							Id = s.Id,
+							UserName = s.UserName,
+							FullName = s.FullName,
+							ReviewCount = s.Reviews.Count,
+							MainPhotoPath = s.ApplicationUserMedias.FirstOrDefault(f => f.BizAppUserId == s.Id && f.IsMainImage).UploadedPhoto
+						})
+						.FirstOrDefaultAsync();
+
+				return userDetail;
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public async Task<UserProfileDetailQuery> GetUserDetail(string userName)
+		{
+			try
+			{
+				var userDetail = await
 					DbContext.Users
 						.Where(w => w.UserName == userName)
 						.Select(s => new UserProfileDetailQuery
 						{
 							Id = s.Id,
-							UsserName = s.UserName,
+							UserName = s.UserName,
 							FullName = s.FullName,
 							RegisterDate = s.CreateDate,
 							CityName = s.City.Name,
@@ -32,7 +59,7 @@ namespace DataLayer.Services
 							ReviewCount = s.Reviews.Count,
 							Photos = (s.ApplicationUserMedias.Select(s => s.UploadedPhoto).ToList())
 						})
-						.FirstOrDefault();
+						.FirstOrDefaultAsync();
 
 				return userDetail;
 			}

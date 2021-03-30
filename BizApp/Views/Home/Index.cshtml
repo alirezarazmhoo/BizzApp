@@ -144,6 +144,7 @@
 						</li>
 					</ul>
 				</div>*@
+
 			@await Html.PartialAsync("/Views/Home/Partials/BrowseBusinessesByCategory_Partial.cshtml", Model.MainPage_BusinessesByCategoryMain)
 		</div>
 	</section>
@@ -151,6 +152,9 @@
 		<div class="container">
 			<div class="recent-activities__title">
 				<h2>فعالیت اخیر</h2>
+				<input id="currentpage" value="" hidden/>
+				<input id="hasnext" value="true" hidden/>
+
 			</div>
 			<div class="recent-activities__list">
 

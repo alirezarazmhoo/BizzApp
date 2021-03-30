@@ -5,6 +5,7 @@ using DomainClass.Infrastructure;
 using DomainClass.Review;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -60,6 +61,9 @@ namespace DataLayer.Data
 			// default value for Is Sponsor in business
 			builder.Entity<Business>()
 				.Property(b => b.IsSponsor).HasDefaultValue(false);
+			// default value appliccation user media createdAt
+			builder.Entity<ApplicationUser>()
+				.Property(b => b.CreateDate).HasDefaultValue(DateTime.Now);
 
 			// Seed data
 			builder.SeedMainAdmin();

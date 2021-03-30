@@ -14,6 +14,7 @@ namespace DomainClass
 		public StatusEnum Status { get; set;  }
 		public string UploadedPhoto { get; set; }
 		public bool IsMainImage { get; set; }
+		public DateTime CreatedAt { get; set; }
 
 		public BizAppUser BizAppUser { get; set;  }
 	}

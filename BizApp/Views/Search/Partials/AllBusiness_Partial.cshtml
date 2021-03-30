@@ -4,13 +4,14 @@
         background-color: #f5f5f5;
     }
     
+    
 </style>
 @{int j = 1;}
 @foreach (var item in Model)
 {
     int pageNumber = (((Model.PageNumber * 10) - 10 ) + (int)j);
     
-    <div class="category-content__item__cat-product" data-assigned-lon="@item.Longitude" id="@pageNumber" data-assigned-count="@pageNumber" data-assigned-lat="@item.Latitude" data-assigned-datas="<div style='width:80%!important;height;80%!important;align-items: center !important;' ><img src='@item.FeatureImage'  ></div><br/><h6>@item.Name </h6><br/><div class='category-content__item__cat-product__content__text__desc__icon__star' data-star='3.5'></div>">
+    <div class="category-content__item__cat-product" data-assigned-lon="@item.Longitude" id="@pageNumber" data-assigned-count="@pageNumber" data-assigned-lat="@item.Latitude" data-assigned-isSponsor="@item.IsSponsor" data-assigned-datas="<div style='width:80%!important;height;80%!important;align-items: center !important;' ><img src='@item.FeatureImage'  ></div><br/><h6>@item.Name </h6><br/><div class='category-content__item__cat-product__content__text__desc__icon__star' data-star='3.5'></div>">
 
         <div class="category-content__item__cat-product__image">
             <img src="@item.FeatureImage">
@@ -50,125 +51,38 @@
             {
 
                 <li>
-                    <a onclick="ChangePage(@Model.PageNumber - 1)" href="#">
+                    <button onclick="ChangePage(@Model.PageNumber - 1)" >
                         <svg width="24" height="24" class="icon_svg">
                             <path d="M9.75 17.58a1 1 0 01-.7-.28 1 1 0 010-1.42l3.8-3.88L9 8.12a1 1 0 111.41-1.42L15 11.3a1 1 0 010 1.4l-4.5 4.58a1 1 0 01-.75.3z">
                             </path>
                         </svg>
-                    </a>
+                    </button>
                 </li>
             }
             @for (int i = 1; i <= Model.PageCount; i++)
             {
                 <li class="paginate_button  @((i==Model.PageNumber?"active":""))">
-                    <a onclick="ChangePage(@i)" href="#">@i</a>
+                    <button onclick="ChangePage(@i)"  >@i</button>
                 </li>
             }
 
-
-            <li>
-                <a onclick="ChangePage(@Model.PageNumber+1)" href="#">
-                    <svg width="24" height="24" class="icon_svg">
-                        <path d="M14.25 17.58a1 1 0 01-.71-.3L9 12.7a1 1 0 010-1.4l4.5-4.58A1 1 0 0115 6.7a1 1 0 010 1.42L11.15 12 15 15.88a1 1 0 010 1.42 1 1 0 01-.75.28z">
-                        </path>
-                    </svg>
-                </a>
-            </li>
-        </ul>
+            @if (Model.HasNextPage)
+            {
+                <li>
+                    <button onclick="ChangePage(@Model.PageNumber+1)" >
+                        <svg width="24" height="24" class="icon_svg">
+                            <path d="M14.25 17.58a1 1 0 01-.71-.3L9 12.7a1 1 0 010-1.4l4.5-4.58A1 1 0 0115 6.7a1 1 0 010 1.42L11.15 12 15 15.88a1 1 0 010 1.42 1 1 0 01-.75.28z">
+                            </path>
+                        </svg>
+                    </button>
+                </li>
+            }
+            </ul>
     </div>
     <div class="category-content__item__number-page__cunter">
-        <span>@Model.PageNumber از @Model.TotalItemCount</span>
+        <span>@Model.PageNumber از @Model.PageCount</span>
     </div>
 </div>
 
-<script>
-    function ChangePage(page) {
-
-        GetData("/Search/AllBussiness?CategoryId=1058&page=" + page + "", "AllBussiness", null, page);
-        history.pushState(null, null, "/Search/Index?CategoryId=1058&page=" + page + "");
-
-    }
-    $('.category-content__item__cat-product').each(function (i, value) {
-        $(this).hover(function (e) {
-            //map.eachLayer(function (layer) {
-            //    if (layer.options.NumberedDivIcon === '1') {
-            //        layer.target.setIcon(new myIconReplc);
-            //    }
-            //});
-            //alert( $(this).attr('id'))
-            var myIconReplc = L.Icon.extend({
-                options: {
-                    iconUrl: "/Designs/MainWebSite/assets/img/location12.png",
 
 
-                    shadowUrl: null,
-                    iconSize: new L.Point(25, 41),
-                    iconAnchor: new L.Point(13, 41),
-                    popupAnchor: new L.Point(0, -33),
-                    /*
-                    iconAnchor: (Point)
-                    popupAnchor: (Point)
-                    */
-                    className: 'leaflet-div-icon'
-                }
-                ,
-                createIcon: function () {
-                    var div = document.createElement('div');
-                    var img = this._createImg(this.options['iconUrl']);
-                    var numdiv = document.createElement('div');
-                    numdiv.setAttribute("class", "number");
-                    numdiv.innerHTML = this.options['number'] || '';
-                    div.appendChild(img);
-                    div.appendChild(numdiv);
-                    this._setIconStyles(div, 'icon');
-                    return div;
-                },
-                createShadow: function () {
-                    return null;
-                }
-            });
-            markerArray[$(this).attr('id') - 1].setIcon(new myIconReplc({ number: "&nbsp" + $(this).attr('id') }));
-
-
-
-        }, function () {
-            var myIconReplc = L.Icon.extend({
-                options: {
-                    iconUrl: "/Designs/MainWebSite/assets/img/location11.png",
-
-                    shadowUrl: null,
-                    iconSize: new L.Point(25, 41),
-                    iconAnchor: new L.Point(13, 41),
-                    popupAnchor: new L.Point(0, -33),
-                    /*
-                    iconAnchor: (Point)
-                    popupAnchor: (Point)
-                    */
-                    className: 'leaflet-div-icon'
-                },
-                createIcon: function () {
-                    var div = document.createElement('div');
-                    var img = this._createImg(this.options['iconUrl']);
-                    var numdiv = document.createElement('div');
-                    numdiv.setAttribute("class", "number");
-                    numdiv.innerHTML = this.options['number'] || '';
-                    div.appendChild(img);
-                    div.appendChild(numdiv);
-                    this._setIconStyles(div, 'icon');
-                    return div;
-                },
-                createShadow: function () {
-                    return null;
-                }
-
-            });
-
-                markerArray[$(this).attr('id') - 1].setIcon(new myIconReplc({ number: "&nbsp" + $(this).attr('id') }));
-
-
-
-        });
-    });
-    
-
-</script>

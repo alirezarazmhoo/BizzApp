@@ -15,8 +15,8 @@ namespace BizApp.Extensions
 
                 var viewModel = new ProfileViewModel 
                 {
-                    Id = user.Id,
-                    FullName = user.FullName
+                    //Id = user.Id,
+                    //FullName = user.FullName
                 };
 
                 return viewModel;

@@ -124,7 +124,7 @@
 							{
 								<ul>
 
-									@foreach (var item2 in item.CategoryChilds)
+									@foreach (var item2 in item.CategoryChilds.Take(15))
 									{
 
 										<li><a href="#">@item2.Value</a></li>

@@ -7,7 +7,7 @@ namespace DomainClass.Queries
 	{
 		public string Id { get; set; }
 		public string FullName { get; set; }
-		public string UsserName { get; set; }
+		public string UserName { get; set; }
 		public DateTime RegisterDate { get; set; }
 		public int ReviewCount { get; set; }
 		public int UploadedPhotoCount { get; set; }

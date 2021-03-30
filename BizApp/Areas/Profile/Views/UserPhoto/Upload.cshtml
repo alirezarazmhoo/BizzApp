@@ -1,0 +1,38 @@
+﻿
+@{
+	ViewData["Title"] = "تصاویر پروفایل";
+	Layout = "~/Views/Shared/_AllPagesLayout.cshtml";
+}
+
+<partial name="_HeaderPartial" />
+
+<section class="upload-pic">
+	<div class="container">
+		<form action="/profile/userphoto/upload" method="post" enctype="multipart/form-data" class="dropzone" id="dropzone">
+			<div class="fallback">
+				<input name="file" type="file" multiple>
+			</div>
+			<div class="dz-message" data-dz-message>
+				<span>تصاویر خود را در این قسمت بکشید</span>
+				<div class="hr-line"><span>یا</span></div>
+				<button type="button">انتخاب عکس</button>
+			</div>
+		</form>
+	</div>
+</section>
+
+@section scripts {
+	<script type="text/javascript" src="~/lib/dropzone/min/dropzone.min.js"></script>
+	@*<script type="text/javascript">
+		Dropzone.options.myAwesomeDropzone = {
+			paramName: "files", // The name that will be used to transfer the file
+			maxFilesize: 2, // MB
+			//accept: function (file, done) {
+			//	if (file.name == "justinbieber.jpg") {
+			//		done("Naha, you don't.");
+			//	}
+			//	else { done(); }
+			//}
+		}; 
+	</script>*@
+}

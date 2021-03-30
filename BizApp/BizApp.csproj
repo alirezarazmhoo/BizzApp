@@ -12,6 +12,11 @@
     <None Remove="Areas\Admin\Data\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="wwwroot\Designs\MainWebSite\assets\js\changeUrl.js" />
+    <Content Remove="wwwroot\Designs\MainWebSite\assets\js\scripts - Copy.js.map" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
@@ -41,10 +46,11 @@
     <Folder Include="Areas\BusinessProfile\Views\" />
     <Folder Include="Areas\Profile\Data\" />
     <Folder Include="wwwroot\Admin\bower_components\" />
+    <Folder Include="wwwroot\Scripts\Search\" />
     <Folder Include="wwwroot\Upload\Bussiness\Files\" />
     <Folder Include="wwwroot\Upload\Categories\Files\" />
     <Folder Include="wwwroot\Upload\Review\Files\" />
-    <Folder Include="wwwroot\Upload\User\" />
+    <Folder Include="wwwroot\Upload\User\Profiles\" />
   </ItemGroup>
 
 
@@ -153,6 +159,11 @@
     <None Include="wwwroot\Designs\MainWebSite\assets\js\header-bundle.js.map" />
     <None Include="wwwroot\Designs\MainWebSite\assets\js\scripts.js" />
     <None Include="wwwroot\Designs\MainWebSite\assets\js\scripts.js.map" />
+    <None Include="wwwroot\lib\dropzone\dropzone-amd-module.js" />
+    <None Include="wwwroot\lib\dropzone\dropzone.js" />
+    <None Include="wwwroot\lib\dropzone\dropzone.js.map" />
+    <None Include="wwwroot\lib\dropzone\min\dropzone-amd-module.min.js" />
+    <None Include="wwwroot\lib\dropzone\min\dropzone.min.js" />
   </ItemGroup>
 
 </Project>

@@ -9,6 +9,8 @@ namespace DataLayer.Infrastructure.Reviews
 	public  interface IReviewRepo
 	{
 		Task<IEnumerable<Review>> GetRecentActivity(int? pageNumber);
-		Task<IEnumerable<CustomerBusinessMedia>> GetRecentActivityBusinessMedia(int? pageNumber); 
+		Task<IEnumerable<CustomerBusinessMedia>> GetRecentActivityBusinessMedia(int? pageNumber);
+		Task<string> GetUsersFullName(Guid Id);
+		Task<CustomerBusinessMedia> GetCustomerBusinessMediaById(Guid id); 
 	}
 }
