@@ -32,7 +32,7 @@ namespace DataLayer.Services
 				.Include(s => s.BizAppUser)
 				.ThenInclude(s => s.ApplicationUserMedias)
 				.Include(s => s.Business).Where(s => s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted)
-				.Skip((pageNumber.Value - 1) * 10).Take(3).ToListAsync();
+				.Skip((pageNumber.Value - 1) * 3).Take(3).ToListAsync();
 			return Items;
 		}
 		public async Task<IEnumerable<CustomerBusinessMedia>> GetRecentActivityBusinessMedia(int? pageNumber)
@@ -43,8 +43,8 @@ namespace DataLayer.Services
 				.Include(s => s.CustomerBusinessMediaPictures)
 				.Include(s => s.BizAppUser)
 				.ThenInclude(s => s.ApplicationUserMedias)
-				.Include(s => s.UsersInCustomerBusinessMediaLikes).Where(s => s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted).Include(s => s.Business)
-				.Skip((pageNumber.Value - 1) * 10).Take(3).ToListAsync();
+				.Include(s => s.UsersInCustomerBusinessMediaLikes).Include(s => s.Business).Where(s => s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted)
+				.Skip((pageNumber.Value - 1) * 3).Take(3).ToListAsync();
 			return Items;
 		}
 		public async Task<string> GetUsersFullName(Guid Id)
@@ -57,7 +57,7 @@ namespace DataLayer.Services
 			var Item = await DbContext.CustomerBusinessMediaPictures.FirstOrDefaultAsync(s => s.Id.Equals(Id));
 			if (Item != null)
 			{
-				var ItemsObject = await DbContext.UsersInCustomerBusinessMediaLikes.Include(s=>s.BizAppUser).Where(s => s.CustomerBusinessMediaPicturesId.Equals(Item.Id)).ToListAsync();
+				var ItemsObject = await DbContext.UsersInCustomerBusinessMediaLikes.Include(s => s.BizAppUser).Where(s => s.CustomerBusinessMediaPicturesId.Equals(Item.Id)).ToListAsync();
 				if (ItemsObject.Count > 0)
 				{
 					for (int i = 0; i < ItemsObject.Count; i++)
@@ -72,14 +72,14 @@ namespace DataLayer.Services
 							FullNames += ItemsObject[i].BizAppUser.FullName + "<br>";
 						}
 					}
-					if(ItemsObject.Count > 8)
+					if (ItemsObject.Count > 8)
 					{
 						end = $"و {ItemsObject.Count - 8} دیگر";
 						Main = $"<span>{FullNames},{end}</span>";
 					}
 					else
 					{
-					Main = $"<span>{FullNames}</span>";
+						Main = $"<span>{FullNames}</span>";
 					}
 				}
 				else
@@ -87,7 +87,18 @@ namespace DataLayer.Services
 					Main = $"<span>اولین نفر در ثبت نظر باشید!</span>";
 				}
 			}
-			return Main; 
+			return Main;
 		}
-	}
+		public async Task<CustomerBusinessMedia> GetCustomerBusinessMediaById(Guid id)
+		{
+			return (await DbContext.CustomerBusinessMedias
+				.Include(s => s.CustomerBusinessMediaPictures)
+				.Include(s => s.BizAppUser)
+				.ThenInclude(s => s.ApplicationUserMedias)
+				.Include(s => s.Business)
+				.Where(s => s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted)
+				.FirstOrDefaultAsync(s => s.Id.Equals(id)));
+		}
+		
+		}
 }

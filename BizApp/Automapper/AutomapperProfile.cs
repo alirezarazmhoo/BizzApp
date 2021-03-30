@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BizApp.Areas.Admin.Models;
 using BizApp.Areas.Profile.Models;
+using BizApp.Models.Basic;
 using BizApp.Utility;
 using DomainClass;
 using DomainClass.Businesses;
@@ -8,6 +9,8 @@ using DomainClass.Businesses.Commands;
 using DomainClass.Businesses.Queries;
 using DomainClass.Commands;
 using DomainClass.Queries;
+using DomainClass.Review;
+using System.Linq;
 
 namespace BizApp.Automapper
 {
@@ -77,7 +80,15 @@ namespace BizApp.Automapper
 			// Business Create
 			CreateMap<Business, CreateBusinessViewModel>().ReverseMap();
 			CreateMap<CreateBusinessCommand, CreateBusinessViewModel>().ReverseMap();
-
+			//CustomerBusinessMedia
+			CreateMap<CustomerBusinessMedia, BusinessMediaViewModel>()
+			.ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.CustomerBusinessMediaPictures.Select(s=>s.Image)))
+			.ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date))
+			.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+			.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+			.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.BizAppUser.FullName))
+			.ForMember(dest => dest.BusinessId, opt => opt.MapFrom(src => src.BusinessId))
+			.ReverseMap();
 		}
 	}
 }

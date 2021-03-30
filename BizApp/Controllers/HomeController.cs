@@ -1,6 +1,8 @@
-﻿using BizApp.Areas.Admin.Models;
+﻿using AutoMapper;
+using BizApp.Areas.Admin.Models;
 using BizApp.Models;
 using BizApp.Models.Basic;
+using BizApp.Utility;
 using DataLayer.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -8,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BizApp.Controllers
@@ -16,10 +19,14 @@ namespace BizApp.Controllers
 	{
 		private readonly ILogger<HomeController> _logger;
 		private readonly IUnitOfWorkRepo _UnitOfWork;
-		public HomeController(ILogger<HomeController> logger, IUnitOfWorkRepo unitOfWork)
+		private readonly IMapper _mapper;
+
+		public HomeController(ILogger<HomeController> logger, IUnitOfWorkRepo unitOfWork, IMapper mapper)
 		{
 			_logger = logger;
 			_UnitOfWork = unitOfWork;
+			_mapper = mapper;
+
 		}
 		public async Task<IActionResult> Index()
 		{
@@ -92,7 +99,7 @@ namespace BizApp.Controllers
 					MainPage_RecentActivityContent.Name = item.Business.Name;
 					MainPage_RecentActivityContent.Text = string.IsNullOrEmpty(item.Business.Description) ? "بدون توضیحات" : item.Business.Description;
 					MainPage_RecentActivityContent.Rate = item.Business.Rate == 0 ? 1 : item.Business.Rate;
-
+					MainPage_RecentActivityContent.Id = item.CustomerBusinessMediaPictures.FirstOrDefault().CustomerBusinessMediaId;
 					foreach (var item2 in item.CustomerBusinessMediaPictures)
 					{
 						if (item2.StatusEnum == DomainClass.Enums.StatusEnum.Accepted)
@@ -218,6 +225,7 @@ namespace BizApp.Controllers
 					MainPage_RecentActivityContent.Text = string.IsNullOrEmpty(item.Business.Description) ? "بدون توضیحات" : item.Business.Description;
 					MainPage_RecentActivityContent.Rate = item.Business.Rate == 0 ? 1 : item.Business.Rate;
 					MainPage_RecentActivityContent.Image = item.Business.FeatureImage;
+					MainPage_RecentActivityContent.Id = item.BusinessId;
 
 					foreach (var item2 in item.CustomerBusinessMediaPictures)
 					{
@@ -226,8 +234,8 @@ namespace BizApp.Controllers
 							MainPage_RecentActivityUserMediaBusinesses.Add(new MainPage_RecentActivityUserMediaBusiness() { Description = item2.Description, 
 								Id = item2.Id,
 								Image = item2.Image,
-								LikeCount = item2.LikeCount
-								, UsersName = await _UnitOfWork.ReviewRepo.GetUsersFullName(item2.Id) 
+								LikeCount = item2.LikeCount,
+								UsersName = Regex.Replace(await _UnitOfWork.ReviewRepo.GetUsersFullName(item2.Id), "<.*?>", String.Empty) 
 							});
 						}
 					}
@@ -249,6 +257,30 @@ namespace BizApp.Controllers
 				currentpage = CurrentPage,
 				hasnext = HasNext = MainPage_RecentActivity.Count > 0 ? true : false
 			});
+		}
+		[HttpGet]
+		public async Task<JsonResult> GetActivityById(Guid id)
+		{
+			var item = _mapper.Map<BusinessMediaViewModel>(await _UnitOfWork.ReviewRepo.GetCustomerBusinessMediaById(id));
+			if(item != null)
+			{
+			item.Description = string.IsNullOrEmpty(item.Description) ? "بدون توضیحات" : item.Description;
+			item.PersianDate = DateChanger.ToPersianDateString(item.Date);
+			item.TotalReview =await _UnitOfWork.BusinessReviewCountRepo.Count(item.BusinessId);
+			return Json(new
+			{
+				success = true,
+				item = item ,
+			});
+			}
+			else
+			{
+				return Json(new
+				{
+					success = false,
+					item = "",
+				});
+			}
 		}
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()

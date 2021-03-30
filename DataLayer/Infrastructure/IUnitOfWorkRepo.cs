@@ -19,7 +19,7 @@ namespace DataLayer.Infrastructure
 		IReviewRepo  ReviewRepo { get; }
 		IUserPhotoRepo UserPhotoRepo { get; }
 
-
+		IBusinessReviewCountRepo BusinessReviewCountRepo { get; }
 		Task SaveAsync();
 	}
 }
