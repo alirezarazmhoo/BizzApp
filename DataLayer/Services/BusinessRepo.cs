@@ -406,22 +406,55 @@ namespace DataLayer.Services
             IQueryable<Business> result = null;
             List<int> cats = new List<int>();
             int CatId = searchViewModel.CategoryId;
-            var category = DbContext.Categories.FirstOrDefault(w => w.Id == searchViewModel.CategoryId);
-            var allCategories = DbContext.Categories.Where(w => w.ParentCategoryId == category.ParentCategoryId);
-            foreach (var categoryItem in allCategories.ToList())
+            var allCategories = DbContext.Categories;
+            //var category = DbContext.Categories.FirstOrDefault(w => w.Id == searchViewModel.CategoryId);
+            //var allChildCategory = allCategories.Where(w => w.ParentCategoryId == category.ParentCategoryId);
+            var allChildCategory = allCategories.Where(w => w.ParentCategoryId == searchViewModel.CategoryId);
+            if (String.IsNullOrEmpty(searchViewModel.catsFinder))
             {
-                // add all childs categories to list
-                cats.Add(categoryItem.Id);
-            }
-            while (CatId > 0)
-            {
-                var parent = DbContext.Categories.FirstOrDefault(f => f.Id == CatId);
-                if (parent != null)
+                foreach (var categoryItem in allChildCategory.ToList())
                 {
-                    cats.Add(parent.Id);
+                    // add all childs categories to list
+                    cats.Add(categoryItem.Id);
                 }
-                CatId = parent.ParentCategoryId == null ? 0 : (int)parent.ParentCategoryId;
+                foreach (var item in allChildCategory.ToList())
+                {
+                    foreach (var item2 in allCategories)
+                    {
+                        if (item2.ParentCategoryId == item.Id)
+                        {
+                            cats.Remove(item.Id);
+                            cats.Add(item2.Id);
+                        }
+                    }
+                }
             }
+            else
+            {
+                string[] subcatsFinder = searchViewModel.catsFinder.Split(',');
+                var subcatFirstId = 0;
+                foreach (var sub in subcatsFinder)
+                {
+                    subcatFirstId = allCategories.FirstOrDefault(w => w.Name.Replace("\t", "") == sub.Replace("-", " ")).Id;
+                    cats.Add(subcatFirstId);
+                    foreach (var item2 in allCategories)
+                    {
+                        if (item2.ParentCategoryId == subcatFirstId)
+                        {
+                            cats.Add(item2.Id);
+                        }
+                    }
+                }
+            }
+            //while (CatId > 0)
+            //{
+            //    var parent = DbContext.Categories.FirstOrDefault(f => f.Id == CatId);
+            //    if (parent != null)
+            //    {
+            //        cats.Add(parent.Id);
+            //    }
+            //    CatId = parent.ParentCategoryId == null ? 0 : (int)parent.ParentCategoryId;
+            //}
             result = DbContext.Businesses.Where(x => cats.Contains(x.CategoryId)).OrderByDescending(x => x.CreatedDate);
             PagedList<Business> res = new PagedList<Business>(result, searchViewModel.page, 10);
             return res;

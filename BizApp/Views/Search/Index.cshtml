@@ -87,7 +87,7 @@
 
                 }
                 <div class="category-content__item-filter__property__all">
-                    <a href="#" data-toggle="modal" data-target="#click-cat">نمایش همه</a>
+                    <a href="#" data-toggle="modal" onclick="OpenCategoryModal()" >نمایش همه</a>
                 </div>
             </div>
             <div class="category-content__item-filter__property">
@@ -297,9 +297,11 @@
 
                 </div>
                 <div class="category-content">
-                    @foreach (var item in Model.categories.Skip(4).ToList())
+                    @foreach (var item in Model.categories.ToList())
                     {
                         @*<p class="lbl-cat" onclick="SearchByCat(@item.Id)">@item.Name</p>*@
+                       
+                        
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="@item.Id">
                             <label class="form-check-label" for="@item.Id">@item.Name</label>
@@ -321,18 +323,8 @@
     </script>
     <script src="~/Scripts/Search/changeUrl.js"></script>
     <script>
-        var pageN = 1;
-        const markerHtmlStyles = "background-color:#000; width: 3rem; height: 3rem; display: block;  left: -1.5rem;  top: -1.5rem;  position: relative;  border-radius: 3rem 3rem 0;  transform: rotate(45deg);  border: 1px solid #FFFFFF";
-        $(document).ready(function () {
-            //GetData("/Search/AllBussiness?CategoryId=1058&page=1", "AllBussiness", null, 1);
-            //history.pushState(null, null, "/Search/Index?CategoryId=1058&page=1");
-            disposeFilterForType(pageN);
-        });
-        function SearchByCat(cats) {
-            
-            var catsFinder = "";
-            const urlParameters = window.location.href;
-            alert(urlParameters);
+        function OpenCategoryModal() {
+            $('#click-cat').modal('show');
             var parseQueryString = function () {
                 var str = window.location.search;
                 var objURL = {};
@@ -344,13 +336,69 @@
                 );
                 return objURL;
             };
-            //Example how to use it: 
             var params = parseQueryString();
-            alert(params["catsFinder"]);
+            if (params["catsFinder"] != undefined) {
+                $('#click-cat .category-content .form-check-label').each(function () {
+                    if (decodeURIComponent(params["catsFinder"].toString()).includes($(this).text().replaceAll(" ","-")))
+                    $(this).prev().prop('checked','checked')
+                });
+            }
+        }
+    </script>
+    <script>
+        var pageN = 1;
+        const markerHtmlStyles = "background-color:#000; width: 3rem; height: 3rem; display: block;  left: -1.5rem;  top: -1.5rem;  position: relative;  border-radius: 3rem 3rem 0;  transform: rotate(45deg);  border: 1px solid #FFFFFF";
+       
+        $(document).ready(function () {
+           
+            //GetData("/Search/AllBussiness?CategoryId=1058&page=1", "AllBussiness", null, 1);
+            //history.pushState(null, null, "/Search/Index?CategoryId=1058&page=1");
+            var catsFinder = "";
+            var parseQueryString = function () {
+                var str = window.location.search;
+                // find href and then concat other category
+                var objURL = {};
+                str.replace(
+                    new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+                    function ($0, $1, $2, $3) {
+                        objURL[$1] = $3;
+                    }
+                );
+                return objURL;
+            };
+            var params = parseQueryString();
+            if (params["catsFinder"] != undefined) {
+                catsFinder = params["catsFinder"];
+                disposeFilterForType(pageN, catsFinder);
+            }
+            else
+                disposeFilterForType(pageN);
+
+        });
+        function SearchByCat(cats) {
+            var catsFinder = "";
+            const urlParameters = window.location.href;
+            var parseQueryString = function () {
+                var str = window.location.search;
+                // find href and then concat other category
+                var objURL = {};
+                str.replace(
+                    new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+                    function ($0, $1, $2, $3) {
+                        objURL[$1] = $3;
+                    }
+                );
+                return objURL;
+            };
+            var params = parseQueryString();
             if (params["catsFinder"] == undefined)
                 catsFinder = cats;
-            else
-                catsFinder = params["catsFinder"]+"%2"+cats;
+            else {
+                if (!decodeURIComponent(params["catsFinder"].toString()).includes(cats))
+                    catsFinder = params["catsFinder"] + "," + cats;
+                else
+                    catsFinder = cats;
+            }
             disposeFilterForType(pageN, catsFinder);
         }
         var request = new Request('AllBussiness');
@@ -368,11 +416,18 @@
         pageN = page;
         disposeFilterForType(page);
     }
-        function SearchByCategoty(lstCat) {
-            $('.category-content input[type=checkbox]:checked').each(function () {
-                var sThisVal = (this.checked ? $(this).val() : "");
+        function SearchByCategoty() {
+            var catsFinder = "";
+            $('#click-cat .category-content input[type=checkbox]:checked').each(function () {
+                debugger
+                catsFinder += $(this).next().text().replaceAll(" ", "-")+",";
             });
-            disposeFilterForType(pageN);
+            catsFinder = catsFinder.slice(0, -1);
+           
+            disposeFilterForType(pageN, catsFinder);
+            $("#click-cat").modal('hide');
+            $('.modal-backdrop').remove();
         }
     </script>
+
 }
