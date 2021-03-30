@@ -404,13 +404,13 @@ namespace DataLayer.Services
         }
         public async Task<List<Category>> GetChosens()
         {
-            var Items = await DbContext.Categories.Where(s => s.Order != 0 && !s.ParentCategoryId.HasValue).ToListAsync();
+            var Items = await DbContext.Categories.Include(s=>s.Terms).Where(s => s.Order != 0 && !s.ParentCategoryId.HasValue).ToListAsync();
             Items = Items.TakeWhile(s => s.Order <= 10).ToList();
             return Items;
         }
         public async Task<List<Category>> GetUnChosens()
         {
-            var Items = await DbContext.Categories.Where(s => s.Order == 0 && !s.ParentCategoryId.HasValue).ToListAsync();
+            var Items = await DbContext.Categories.Include(s => s.Terms).Where(s => s.Order == 0 && !s.ParentCategoryId.HasValue).ToListAsync();
             return Items;
         }
     }
