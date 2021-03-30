@@ -109,9 +109,9 @@ namespace BizApp.Controllers
 								Description = item2.Description,
 								Id = item2.Id,
 								Image = item2.Image,
-								LikeCount =item2.LikeCount,
+								LikeCount = item2.LikeCount,
 								UsersName = await _UnitOfWork.ReviewRepo.GetUsersFullName(item2.Id)
-							}) ;
+							});
 						}
 					}
 					MainPage_RecentActivity.Add(new MainPage_RecentActivity() { MainPage_RecentActivityContent = MainPage_RecentActivityContent, MainPage_RecentActivityCreator = MainPage_RecentActivityCreator, ActivityType = ActivityType.AddPhoto, MainPage_RecentActivityUserMediaBusinesses = MainPage_RecentActivityUserMediaBusinesses });
@@ -225,17 +225,18 @@ namespace BizApp.Controllers
 					MainPage_RecentActivityContent.Text = string.IsNullOrEmpty(item.Business.Description) ? "بدون توضیحات" : item.Business.Description;
 					MainPage_RecentActivityContent.Rate = item.Business.Rate == 0 ? 1 : item.Business.Rate;
 					MainPage_RecentActivityContent.Image = item.Business.FeatureImage;
-					MainPage_RecentActivityContent.Id = item.BusinessId;
-
+					MainPage_RecentActivityContent.Id = item.CustomerBusinessMediaPictures.FirstOrDefault().CustomerBusinessMediaId;
 					foreach (var item2 in item.CustomerBusinessMediaPictures)
 					{
 						if (item2.StatusEnum == DomainClass.Enums.StatusEnum.Accepted)
 						{
-							MainPage_RecentActivityUserMediaBusinesses.Add(new MainPage_RecentActivityUserMediaBusiness() { Description = item2.Description, 
+							MainPage_RecentActivityUserMediaBusinesses.Add(new MainPage_RecentActivityUserMediaBusiness()
+							{
+								Description = item2.Description,
 								Id = item2.Id,
 								Image = item2.Image,
 								LikeCount = item2.LikeCount,
-								UsersName = Regex.Replace(await _UnitOfWork.ReviewRepo.GetUsersFullName(item2.Id), "<.*?>", String.Empty) 
+								UsersName = Regex.Replace(await _UnitOfWork.ReviewRepo.GetUsersFullName(item2.Id), "<.*?>", String.Empty)
 							});
 						}
 					}
@@ -262,16 +263,17 @@ namespace BizApp.Controllers
 		public async Task<JsonResult> GetActivityById(Guid id)
 		{
 			var item = _mapper.Map<BusinessMediaViewModel>(await _UnitOfWork.ReviewRepo.GetCustomerBusinessMediaById(id));
-			if(item != null)
+			if (item != null)
 			{
-			item.Description = string.IsNullOrEmpty(item.Description) ? "بدون توضیحات" : item.Description;
-			item.PersianDate = DateChanger.ToPersianDateString(item.Date);
-			item.TotalReview =await _UnitOfWork.BusinessReviewCountRepo.Count(item.BusinessId);
-			return Json(new
-			{
-				success = true,
-				item = item ,
-			});
+				item.Description = string.IsNullOrEmpty(item.Description) ? "بدون توضیحات" : item.Description;
+				item.PersianDate = DateChanger.ToPersianDateString(item.Date);
+				item.TotalReview = await _UnitOfWork.BusinessReviewCountRepo.Count(item.BusinessId);
+				item.UserProfilePicture = item.UserProfilePicture == null ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : item.UserProfilePicture;
+				return Json(new
+				{
+					success = true,
+					item = item,
+				});
 			}
 			else
 			{

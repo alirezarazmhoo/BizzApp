@@ -88,6 +88,7 @@ namespace BizApp.Automapper
 			.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
 			.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.BizAppUser.FullName))
 			.ForMember(dest => dest.BusinessId, opt => opt.MapFrom(src => src.BusinessId))
+			.ForMember(dest => dest.UserProfilePicture, opt => opt.MapFrom(src => src.BizAppUser.ApplicationUserMedias.Where(s=>s.IsMainImage).Select(s=>s.UploadedPhoto).FirstOrDefault()))
 			.ReverseMap();
 		}
 	}
