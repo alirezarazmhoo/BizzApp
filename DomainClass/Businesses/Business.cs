@@ -43,6 +43,7 @@ namespace DomainClass.Businesses
 		public double Longitude { get; set; }
 		public int Rate { get; set; }
 		public bool IsSponsor { get; set; }
+		public string BoldFeature { get; set; }
 
 		// Relations
 		public virtual District District { get; set; }
@@ -52,6 +53,7 @@ namespace DomainClass.Businesses
 		public virtual ICollection<BusinessFeature> Features { get; set; }
 		public virtual ICollection<BusinessTime> BusinessTimes{ get; set; }
 		public virtual ICollection< CustomerBusinessMedia>  CustomerBusinessMedias { get; set; }
+		public virtual ICollection<BusinessFaq>  BusinessFaqs { get; set; }
 		public virtual BizAppUser Owner { get; set; }
 		public virtual BizAppUser UserCreator { get; set;  }
 	}
