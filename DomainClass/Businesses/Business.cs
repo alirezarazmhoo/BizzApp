@@ -44,6 +44,7 @@ namespace DomainClass.Businesses
 		public int Rate { get; set; }
 		public bool IsSponsor { get; set; }
 		public string BoldFeature { get; set; }
+		public bool IsClaimed { get; set; }
 
 		// Relations
 		public virtual District District { get; set; }

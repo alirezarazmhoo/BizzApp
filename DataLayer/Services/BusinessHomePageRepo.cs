@@ -22,19 +22,19 @@ namespace DataLayer.Services
 			var BusinessItem = await DbContext.Businesses.FirstOrDefaultAsync(s=>s.Id.Equals(id));
 			if(BusinessItem != null)
 			{
-				return await DbContext.CustomerBusinessMediaPictures.Where(s => s.CustomerBusinessMedia.BusinessId.Equals(id)).Select(s=>s.Image).ToListAsync();
+				return await DbContext.BusinessGalleries.Where(s => s.BusinessId.Equals(id)).Select(s=>s.FileAddress).ToListAsync();
 			}
 			else
 			{
 				return null;  
 			}
 		}
-		public async Task<Tuple<string , int , int , bool , int , string , string , string>> GetBusinessSummary(Guid id)
+		public async Task<Tuple<string , int , int , bool , int , string , string >> GetBusinessSummary(Guid id)
 		{
 			var BusinessItem = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Id.Equals(id));
 			if(BusinessItem != null)
 			{
-			return new Tuple<string, int, int, bool, int , string ,string , string>(BusinessItem.Name , BusinessItem.Rate, await GetTotalReview(id) ,false, await GetTotalMediaReview(id) , BusinessItem.Description , BusinessItem.WebsiteUrl ,BusinessItem.CallNumber.ToString());
+			return new Tuple<string, int, int, bool, int , string ,string >(BusinessItem.Name , BusinessItem.Rate, await GetTotalReview(id) ,BusinessItem.IsClaimed, await GetTotalMediaReview(id) , BusinessItem.Description , BusinessItem.WebsiteUrl );
 			}
 			else
 			{
@@ -73,7 +73,7 @@ namespace DataLayer.Services
 			{
 				foreach (var item in await DbContext.Businesses.Where(s => s.DistrictId == BusinessItem.DistrictId && s.IsSponsor).Take(2).ToListAsync())
 				{
-					MainList.Add(new Tuple<string, string, int, int, Guid, string>(item.Name , item.FeatureImage , item.Rate , await GetTotalReview(item.Id),item.Id, item.Description));
+					MainList.Add(new Tuple<string, string, int, int, Guid, string>(item.Name,item.FeatureImage,item.Rate,await GetTotalReview(item.Id),item.Id, item.Description));
 				}
 				return MainList; 
 			}
@@ -95,7 +95,10 @@ namespace DataLayer.Services
 				}
 				return businessFaqs;				
 			}
+			else
+			{
 			return null; 
+			}
 		}
 
 		public async Task<IEnumerable<Review>> GetBusinessReview(Guid id)
@@ -108,10 +111,6 @@ namespace DataLayer.Services
 				.ToListAsync();
 			return Items;
 		}
-
-
-
-
 		public class LocationHours
 		{
 			public WeekDaysEnum Day { get; set; }
