@@ -435,13 +435,19 @@ namespace DataLayer.Services
                 var subcatFirstId = 0;
                 foreach (var sub in subcatsFinder)
                 {
-                    subcatFirstId = allCategories.FirstOrDefault(w => w.Name.Replace("\t", "") == sub.Replace("-", " ")).Id;
-                    cats.Add(subcatFirstId);
-                    foreach (var item2 in allCategories)
+                    if (sub.Replace("-", " ") != "")
                     {
-                        if (item2.ParentCategoryId == subcatFirstId)
+                        if (sub.Replace("-", " ") != "")
                         {
-                            cats.Add(item2.Id);
+                            subcatFirstId = allCategories.FirstOrDefault(w => w.Name.Replace("\t", "") == sub.Replace("-", " ")).Id;
+                            cats.Add(subcatFirstId);
+                            foreach (var item2 in allCategories)
+                            {
+                                if (item2.ParentCategoryId == subcatFirstId)
+                                {
+                                    cats.Add(item2.Id);
+                                }
+                            }
                         }
                     }
                 }

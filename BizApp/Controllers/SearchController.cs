@@ -24,7 +24,7 @@ namespace BizApp.Controllers
         public async Task<IActionResult> Index(SearchBussinessQuery searchViewModel)
         {
             searchViewModel.categories = await _UnitOfWork.CategoryRepo.GetChilds(searchViewModel.CategoryId);
-
+            searchViewModel.features = await _UnitOfWork.FeatureRepo.GetAllIsBoolValue();
             return View(searchViewModel);
         }
         public IActionResult AllBussiness(SearchBussinessQuery searchViewModel)

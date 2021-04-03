@@ -585,10 +585,10 @@ window.onpopstate = async () => {
    
 
     const urlParameters = window.location.href;
-    console.log(urlParameters);
+   
 
     if (request.totalAjax[urlParameters] && request.totalAjax[urlParameters].method === 'get') {
-        console.log('here');
+        
         const ajaxRequest = new AjaxRequest(false);
         const data = await ajaxRequest.get(urlParameters);
         request.renderData(data);

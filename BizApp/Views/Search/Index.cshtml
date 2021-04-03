@@ -36,6 +36,10 @@
         font-weight: 600;
         display: inline-block;
     }
+    .active-lbl-cat, .lbl-cat:hover {
+        background-color: #666;
+        color: white;
+    }
 </style>
 <section class="category-content">
     <div class="category-content__sidebar">
@@ -94,14 +98,17 @@
                 <div class="category-content__item-filter__property__title">
                     <h3>ویژگی ها</h3>
                 </div>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">WLAN بصورت رایگان</label>
+                @foreach (var item in Model.features.Take(4))
+                {
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="featu-@item.Id">
+                        <label class="form-check-label" for="featu-@item.Id">@item.Name</label>
+                    </div>
+                }
+                    <div class="category-content__item-filter__property__all">
+                        <a href="#">نمایش همه</a>
+                    </div>
                 </div>
-                <div class="category-content__item-filter__property__all">
-                    <a href="#">نمایش همه</a>
-                </div>
-            </div>
             <div class="category-content__item-filter__areas">
                 <div class="category-content__item-filter__areas__title">
                     <h3>مناطق</h3>
@@ -339,7 +346,9 @@
             var params = parseQueryString();
             if (params["catsFinder"] != undefined) {
                 $('#click-cat .category-content .form-check-label').each(function () {
-                    if (decodeURIComponent(params["catsFinder"].toString()).includes($(this).text().replaceAll(" ","-")))
+                    
+                    if (decodeURIComponent(params["catsFinder"].toString()).includes($.trim($(this).text().replaceAll(" ", "-"))))
+                        
                     $(this).prev().prop('checked','checked')
                 });
             }
@@ -348,7 +357,6 @@
     <script>
         var pageN = 1;
         const markerHtmlStyles = "background-color:#000; width: 3rem; height: 3rem; display: block;  left: -1.5rem;  top: -1.5rem;  position: relative;  border-radius: 3rem 3rem 0;  transform: rotate(45deg);  border: 1px solid #FFFFFF";
-       
         $(document).ready(function () {
            
             //GetData("/Search/AllBussiness?CategoryId=1058&page=1", "AllBussiness", null, 1);
@@ -376,6 +384,22 @@
 
         });
         function SearchByCat(cats) {
+            $(".category-content__item-filter__property").find(".lbl-cat").each(function () {
+                if ($.trim($(this).text().replaceAll(" ", "-")) == $.trim(cats))
+                    $(this).toggleClass("active-lbl-cat");
+            });
+            var catsFinder= addParameterToUrl(cats);
+            disposeFilterForType(pageN, catsFinder);
+        }
+        var request = new Request('AllBussiness');
+        var disposeFilterForType = (p, catsFinder) => {
+            if (catsFinder != undefined )
+                request.disposeFilter('/Search/AllBussiness', { CategoryId: 1059, page: p, catsFinder: catsFinder })
+            else
+                request.disposeFilter('/Search/AllBussiness', { CategoryId: 1059, page: p })
+        }
+        function addParameterToUrl(cats, featu) {
+           
             var catsFinder = "";
             const urlParameters = window.location.href;
             var parseQueryString = function () {
@@ -391,22 +415,29 @@
                 return objURL;
             };
             var params = parseQueryString();
-            if (params["catsFinder"] == undefined)
-                catsFinder = cats;
-            else {
-                if (!decodeURIComponent(params["catsFinder"].toString()).includes(cats))
-                    catsFinder = params["catsFinder"] + "," + cats;
-                else
+            if (cats != null) {
+              
+                if (params["catsFinder"] == undefined)
                     catsFinder = cats;
+                else {
+
+                    if (!decodeURIComponent(params["catsFinder"].toString()).includes($.trim(cats)))
+                        catsFinder = params["catsFinder"] + "," + cats;
+                    else {
+                        var strCats = decodeURIComponent(params["catsFinder"].toString());
+                        catsFinder = strCats.replace($.trim(cats), '');
+                        //catsFinder = catsFinder.substring(0, catsFinder.length - 1);
+                        //catsFinder = catsFinder.slice(0, -1);
+                    }
+
+                }
+               
             }
-            disposeFilterForType(pageN, catsFinder);
-        }
-        var request = new Request('AllBussiness');
-        var disposeFilterForType = (p, catsFinder) => {
-            if (catsFinder != undefined)
-                request.disposeFilter('/Search/AllBussiness', { CategoryId: 1059, page: p, catsFinder: catsFinder })
+            if (catsFinder == "")
+                return undefined;
             else
-                request.disposeFilter('/Search/AllBussiness', { CategoryId: 1059, page: p })
+                return catsFinder;
+            
         }
     </script>
     <script>
@@ -416,10 +447,10 @@
         pageN = page;
         disposeFilterForType(page);
     }
-        function SearchByCategoty() {
+    function SearchByCategoty() {
             var catsFinder = "";
             $('#click-cat .category-content input[type=checkbox]:checked').each(function () {
-                debugger
+                
                 catsFinder += $(this).next().text().replaceAll(" ", "-")+",";
             });
             catsFinder = catsFinder.slice(0, -1);
@@ -429,5 +460,23 @@
             $('.modal-backdrop').remove();
         }
     </script>
+<script>
+    var header = document.getElementById("myDIV");
+    var lbls = header.getElementsByClassName("lbl-cat");
+    for (var i = 0; i < lbls.length; i++) {
+        lbls[i].addEventListener("click", function () {
+            var current = document.getElementsByClassName("active-lbl-cat");
+            current[0].className = current[0].className.replace(" active-lbl-cat", "");
+            this.className += " active-lbl-cat";
+        });
+    }
+</script>
+<script>
+    $('.form-check-input').change(function () {
+       
+        var featursFinder = addParameterToUrl(null, $(this).next().text());
+        disposeFilterForType(pageN, featursFinder);
+    });
+</script>
 
 }

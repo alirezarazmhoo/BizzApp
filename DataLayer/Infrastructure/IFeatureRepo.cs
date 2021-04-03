@@ -11,5 +11,6 @@ namespace DataLayer.Infrastructure
 		Task<Feature> GetById(int id);
 		Task AddOrUpdate(Feature model);
 		void Remove(Feature model);
+		Task<List<Feature>> GetAllIsBoolValue();
 	}
 }
