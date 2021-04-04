@@ -392,15 +392,21 @@
             disposeFilterForType(pageN, catsFinder);
         }
         var request = new Request('AllBussiness');
-        var disposeFilterForType = (p, catsFinder) => {
-            if (catsFinder != undefined )
-                request.disposeFilter('/Search/AllBussiness', { CategoryId: 1059, page: p, catsFinder: catsFinder })
+        //var disposeFilterForType = (p, catsFinder, featuFinder) => {
+        var disposeFilterForType = (p, featuFinder) => {
+            
+          //  if (catsFinder != undefined )
+          //      request.disposeFilter('/Search/AllBussiness', { CategoryId: 1059, page: p, catsFinder: catsFinder })
+            //else  
+            if (featuFinder != undefined)
+                request.disposeFilter('/Search/AllBussiness', { CategoryId: 1059, page: p, featuFinder: featuFinder })
             else
                 request.disposeFilter('/Search/AllBussiness', { CategoryId: 1059, page: p })
         }
         function addParameterToUrl(cats, featu) {
            
             var catsFinder = "";
+            var featuFinder = "";
             const urlParameters = window.location.href;
             var parseQueryString = function () {
                 var str = window.location.search;
@@ -424,19 +430,43 @@
                     if (!decodeURIComponent(params["catsFinder"].toString()).includes($.trim(cats)))
                         catsFinder = params["catsFinder"] + "," + cats;
                     else {
+                        
                         var strCats = decodeURIComponent(params["catsFinder"].toString());
                         catsFinder = strCats.replace($.trim(cats), '');
-                        //catsFinder = catsFinder.substring(0, catsFinder.length - 1);
-                        //catsFinder = catsFinder.slice(0, -1);
+                       catsFinder = catsFinder.trim().replace(/,{1,}$/, '');
+                        
                     }
 
                 }
+                if (catsFinder == "")
+                    return undefined;
+                else
+                    return catsFinder;
                
             }
-            if (catsFinder == "")
-                return undefined;
-            else
-                return catsFinder;
+            if (featu != null) {
+
+                if (params["featuFinder"] == undefined)
+                    featuFinder = featu;
+                else {
+
+                    if (!decodeURIComponent(params["featuFinder"].toString()).includes($.trim(featu)))
+                        featuFinder = params["featuFinder"] + "," + featu;
+                    else {
+
+                        var strfeatu = decodeURIComponent(params["featuFinder"].toString());
+                        featuFinder = strfeatu.replace($.trim(featu), '');
+                        featuFinder = featuFinder.trim().replace(/,{1,}$/, '');
+                    }
+
+                }
+                if (featuFinder == "")
+                    return undefined;
+                else
+                    return featuFinder;
+
+            }
+           
             
         }
     </script>
@@ -474,7 +504,7 @@
 <script>
     $('.form-check-input').change(function () {
        
-        var featursFinder = addParameterToUrl(null, $(this).next().text());
+        var featursFinder = addParameterToUrl(null, $(this).next().text().replaceAll(" ", "-"));
         disposeFilterForType(pageN, featursFinder);
     });
 </script>

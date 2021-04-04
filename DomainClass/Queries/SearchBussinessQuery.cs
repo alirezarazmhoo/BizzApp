@@ -9,6 +9,7 @@ namespace DomainClass.Queries
         public int CategoryId { get; set; }
 		public int page { get; set; } = 1;
 		public string catsFinder { get; set; }
+		public string featuFinder { get; set; }
 		public List<Category> categories{ get; set; }
 		public List<Feature> features{ get; set; }
     }

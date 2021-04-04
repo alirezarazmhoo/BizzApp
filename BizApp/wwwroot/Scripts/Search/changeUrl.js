@@ -318,6 +318,8 @@ class Request extends AjaxRequest {
         _defineProperty(this, "_params", void 0);
 
         _defineProperty(this, "disposeFilter", async (path, params = {}) => {
+            
+           debugger
             this._params = params;
             this.setUrlParams();
             const url = path + this.objectToUrl(params);

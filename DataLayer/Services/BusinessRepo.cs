@@ -405,11 +405,14 @@ namespace DataLayer.Services
         {
             IQueryable<Business> result = null;
             List<int> cats = new List<int>();
+            List<int> features = new List<int>();
             int CatId = searchViewModel.CategoryId;
             var allCategories = DbContext.Categories;
             //var category = DbContext.Categories.FirstOrDefault(w => w.Id == searchViewModel.CategoryId);
             //var allChildCategory = allCategories.Where(w => w.ParentCategoryId == category.ParentCategoryId);
             var allChildCategory = allCategories.Where(w => w.ParentCategoryId == searchViewModel.CategoryId);
+            //string[] subcatsFinder = searchViewModel.catsFinder.Split(',');
+            //if (String.IsNullOrEmpty(searchViewModel.catsFinder) && !subcatsFinder.All(x => string.IsNullOrEmpty(x)))
             if (String.IsNullOrEmpty(searchViewModel.catsFinder))
             {
                 foreach (var categoryItem in allChildCategory.ToList())
@@ -429,6 +432,7 @@ namespace DataLayer.Services
                     }
                 }
             }
+
             else
             {
                 string[] subcatsFinder = searchViewModel.catsFinder.Split(',');
@@ -437,31 +441,41 @@ namespace DataLayer.Services
                 {
                     if (sub.Replace("-", " ") != "")
                     {
-                        if (sub.Replace("-", " ") != "")
+
+                        subcatFirstId = allCategories.FirstOrDefault(w => w.Name.Replace("\t", "") == sub.Replace("-", " ")).Id;
+                        cats.Add(subcatFirstId);
+                        foreach (var item2 in allCategories)
                         {
-                            subcatFirstId = allCategories.FirstOrDefault(w => w.Name.Replace("\t", "") == sub.Replace("-", " ")).Id;
-                            cats.Add(subcatFirstId);
-                            foreach (var item2 in allCategories)
+                            if (item2.ParentCategoryId == subcatFirstId)
                             {
-                                if (item2.ParentCategoryId == subcatFirstId)
-                                {
-                                    cats.Add(item2.Id);
-                                }
+                                cats.Add(item2.Id);
                             }
                         }
+
                     }
                 }
             }
-            //while (CatId > 0)
-            //{
-            //    var parent = DbContext.Categories.FirstOrDefault(f => f.Id == CatId);
-            //    if (parent != null)
-            //    {
-            //        cats.Add(parent.Id);
-            //    }
-            //    CatId = parent.ParentCategoryId == null ? 0 : (int)parent.ParentCategoryId;
-            //}
-            result = DbContext.Businesses.Where(x => cats.Contains(x.CategoryId)).OrderByDescending(x => x.CreatedDate);
+            if (!String.IsNullOrEmpty(searchViewModel.featuFinder))
+            {
+                string[] allfeatuFinder = searchViewModel.featuFinder.Split(',');
+                var featuFinderId = 0;
+
+                foreach (var sub in allfeatuFinder)
+                {
+                    if (sub.Replace("-", " ") != "")
+                    {
+                        featuFinderId = DbContext.Features.FirstOrDefault(w => w.Name.Replace("\t", "") == sub.Replace("-", " ")).Id;
+                        features.Add(featuFinderId);
+                    }
+                }
+            }
+            result = DbContext.Businesses.Where(x => cats.Contains(x.CategoryId) ).OrderByDescending(x => x.CreatedDate);
+            //var bussinessFeature = DbContext.BusinessFeatures.Where(x => result.Select(c => c.Id).ToList().Contains(x.BusinessId) && features.Contains(x.FeatureId));
+            if (features.Count() > 0)
+            {
+                var bussinessFeature = DbContext.BusinessFeatures.Where(x => features.Contains(x.FeatureId));
+                result = result.Where(x => bussinessFeature.Select(c => c.BusinessId).ToList().Contains(x.Id));
+            }
             PagedList<Business> res = new PagedList<Business>(result, searchViewModel.page, 10);
             return res;
         }
