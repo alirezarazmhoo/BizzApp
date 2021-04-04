@@ -111,6 +111,18 @@ namespace DataLayer.Services
 				.ToListAsync();
 			return Items;
 		}
+		public async Task<Tuple<string, string,string,string>> GetBusinessOtherInfo(Guid id)
+		{
+			var BusinessItem = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Id.Equals(id));
+			if (BusinessItem != null)
+			{
+				return new Tuple<string,string,string,string>(BusinessItem.Description ,BusinessItem.WebsiteUrl,BusinessItem.CallNumber.ToString() , BusinessItem.Address);
+			}
+			else
+			{
+				return null;
+			}
+		}
 		public class LocationHours
 		{
 			public WeekDaysEnum Day { get; set; }

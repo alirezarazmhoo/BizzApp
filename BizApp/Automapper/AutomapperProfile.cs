@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BizApp.Areas.Admin.Models;
 using BizApp.Areas.Profile.Models;
+using BizApp.Areas.WebApi.Models;
 using BizApp.Models.Basic;
 using BizApp.Utility;
 using DomainClass;
@@ -90,6 +91,9 @@ namespace BizApp.Automapper
 			.ForMember(dest => dest.BusinessId, opt => opt.MapFrom(src => src.BusinessId))
 			.ForMember(dest => dest.UserProfilePicture, opt => opt.MapFrom(src => src.BizAppUser.ApplicationUserMedias.Where(s=>s.IsMainImage).Select(s=>s.UploadedPhoto).FirstOrDefault()))
 			.ReverseMap();
+
+
+	
 		}
 	}
 }
