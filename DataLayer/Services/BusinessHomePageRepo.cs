@@ -88,10 +88,9 @@ namespace DataLayer.Services
 			if(BusinessItem != null)
 			{
 				List<BusinessFaq> businessFaqs = new List<BusinessFaq>();
-				var Questions = await DbContext.BusinessFaqs.Where(s => s.BusinessId.Equals(id)).ToListAsync();
-				foreach (var item in Questions)
+				foreach (var item in await DbContext.BusinessFaqs.Include(s=>s.BusinessFaqAnswers).Where(s => s.BusinessId.Equals(id)).ToListAsync())
 				{
-					businessFaqs.Add(new BusinessFaq() { BusinessId = id, Answer = item.Answer , Question = item.Question , Id = item.Id });
+					businessFaqs.Add(new BusinessFaq() { BusinessId = id,  BusinessFaqAnswers = item.BusinessFaqAnswers, Question = item.Question, Id = item.Id });
 				}
 				return businessFaqs;				
 			}
@@ -100,7 +99,6 @@ namespace DataLayer.Services
 			return null; 
 			}
 		}
-
 		public async Task<IEnumerable<Review>> GetBusinessReview(Guid id)
 		{
 			var Items = await DbContext.Reviews
@@ -123,6 +121,26 @@ namespace DataLayer.Services
 				return null;
 			}
 		}
+		public async Task<IEnumerable<Business>> GetRelatedBusiness(Guid id)
+		{
+			var businessItem = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Id.Equals(id));
+			if (businessItem != null)
+			{
+				return await DbContext.Businesses.Where(s => s.DistrictId.Equals(businessItem.DistrictId) && s.CategoryId.Equals(businessItem.CategoryId) && !s.Id.Equals(businessItem.Id)).ToListAsync();
+			}
+			else
+			{
+				return new List<Business>();
+			}
+		}
+		public async Task MessageToBusiness(MessageToBusiness model)
+		{
+			if(await DbContext.Businesses.AnyAsync(s => s.Id.Equals(model.BusinessId)))
+			{
+				await DbContext.MessageToBusinesses.AddAsync(model);
+				await DbContext.SaveChangesAsync();
+			}
+		}
 		public class LocationHours
 		{
 			public WeekDaysEnum Day { get; set; }
@@ -139,12 +157,10 @@ namespace DataLayer.Services
 			}
 			return locationHours; 
 		}
-
 		private  async Task<List<string>> GetBusinessFeaturesTitle(Guid id)
 		{
 			return  await DbContext.BusinessFeatures.Include(s=>s.Feature).Where(s => s.BusinessId.Equals(id)).Select(s => s.Feature.Name).ToListAsync();
 		}
-
 		private async Task<int> GetTotalMediaReview(Guid id)
 		{
 			return await DbContext.CustomerBusinessMediaPictures.Where(s => s.CustomerBusinessMedia.BusinessId.Equals(id)).CountAsync();

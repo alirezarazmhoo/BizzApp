@@ -12,10 +12,12 @@ namespace BizApp.Models.Basic
 		public BusinessHomePage_SliderViewModel businessHomePage_SliderViewModel { get; set; }
 		public BusinessHomePage_SummaryViewModel businessHomePage_SummaryViewModel { get; set;  }
 		public BusinessHomePage_FeatureViewModel businessHomePage_FeatureViewModel { get; set; }
-		public ICollection<BusinessHomePage_NearSponseredViewModel> businessHomePage_NearSponseredViewModel { get; set;  }
 		public BusinessHomePage_DescriptionViewModel businessHomePage_DescriptionViewModel { get; set; }
 		public BusinessHomePage_RightPageBusinessInfoViewModel businessHomePage_RightPageBusinessInfoViewModel { get; set; }
 		public ICollection< BusinessHomePage_ReviewsViewModel> businessHomePage_ReviewsViewModel { get; set; }
+		public ICollection<BusinessHomePage_FaqViewModel> businessHomePage_FaqViewModels { get; set; }
+		public ICollection<BusinessHomePage_NearSponseredViewModel> businessHomePage_NearSponseredViewModel { get; set;  }
+		public ICollection<BusinessHomePage_RelatedBusinessViewModel> businessHomePage_RelatedBusinessViewModels { get; set; }
 	}
 	#endregion
 	#region Slider
@@ -83,6 +85,22 @@ namespace BizApp.Models.Basic
 		public int Funny { get; set; }
 	}
 
+	#endregion
+	#region BusinessFaq
+	public class BusinessHomePage_FaqViewModel
+	{
+		public string Question { get; set; }
+		public ICollection<string> Answers { get; set; }
+	}
+	#endregion
+	#region RelatedBusiness
+	public class BusinessHomePage_RelatedBusinessViewModel
+	{
+		public string Image { get; set; }
+		public string Name { get; set;  }
+		public int Rate { get; set;  }
+		public int Review { get; set;  }
+	}
 	#endregion
 
 

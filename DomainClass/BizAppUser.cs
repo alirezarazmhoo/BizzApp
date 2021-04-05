@@ -1,4 +1,5 @@
-﻿using DomainClass.Enums;
+﻿using DomainClass.Businesses;
+using DomainClass.Enums;
 using DomainClass.Infrastructure;
 using DomainClass.Review;
 using Microsoft.AspNetCore.Identity;
@@ -28,6 +29,8 @@ namespace DomainClass
 
 		public virtual ICollection<Review.Review> Reviews { get; set; }
 		public virtual ICollection<CustomerBusinessMedia> CustomerBusinessMedia { get; set; }
+		public virtual ICollection<BusinessFaq>  BusinessFaqs { get; set; }
+
 		public virtual City City { get; set; }
 
 		public ClaimsIdentity GenerateUserIdentityAsync(UserManager<BizAppUser> manager, ClaimsIdentity identity)

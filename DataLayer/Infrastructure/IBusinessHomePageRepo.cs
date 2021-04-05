@@ -1,4 +1,5 @@
 ﻿using DataLayer.Migrations;
+using DomainClass.Businesses;
 using DomainClass.Review;
 using System;
 using System.Collections.Generic;
@@ -18,5 +19,7 @@ namespace DataLayer.Infrastructure
 		Task<Tuple<string, string, string, string>> GetBusinessOtherInfo(Guid id); 
 		Task<IEnumerable<DomainClass.Businesses.BusinessFaq>> GetBusinessFaq(Guid id);
 		Task<IEnumerable<Review>> GetBusinessReview(Guid id);
+		Task<IEnumerable<Business>> GetRelatedBusiness(Guid id);
+		Task MessageToBusiness(MessageToBusiness model); 
 	}
 }

@@ -406,13 +406,10 @@ namespace DataLayer.Services
             IQueryable<Business> result = null;
             List<int> cats = new List<int>();
             List<int> features = new List<int>();
+            List<int> districts = new List<int>();
             int CatId = searchViewModel.CategoryId;
             var allCategories = DbContext.Categories;
-            //var category = DbContext.Categories.FirstOrDefault(w => w.Id == searchViewModel.CategoryId);
-            //var allChildCategory = allCategories.Where(w => w.ParentCategoryId == category.ParentCategoryId);
             var allChildCategory = allCategories.Where(w => w.ParentCategoryId == searchViewModel.CategoryId);
-            //string[] subcatsFinder = searchViewModel.catsFinder.Split(',');
-            //if (String.IsNullOrEmpty(searchViewModel.catsFinder) && !subcatsFinder.All(x => string.IsNullOrEmpty(x)))
             if (String.IsNullOrEmpty(searchViewModel.catsFinder))
             {
                 foreach (var categoryItem in allChildCategory.ToList())
@@ -432,7 +429,6 @@ namespace DataLayer.Services
                     }
                 }
             }
-
             else
             {
                 string[] subcatsFinder = searchViewModel.catsFinder.Split(',');
@@ -469,12 +465,39 @@ namespace DataLayer.Services
                     }
                 }
             }
+            if (!String.IsNullOrEmpty(searchViewModel.districtFinder))
+            {
+                string[] alldistrictFinder = searchViewModel.districtFinder.Split(',');
+                foreach (var sub in alldistrictFinder)
+                {
+                    if (sub.Replace("-", " ") != "")
+                    {
+                        var province = DbContext.Provinces.FirstOrDefault(w => w.Name.Replace("\t", "") == sub.Replace("-", " "));
+                        if(province!=null)
+                        {
+                            var allCities = DbContext.Cities.Where(x => x.ProvinceId == province.Id).Select(x=>x.Id).ToList();
+                            var allDistrict = DbContext.Districts.Where(x=>allCities.Contains(x.Id)).Select(x=>x.Id).ToList();
+                             districts.AddRange(allDistrict);
+
+                        }
+                        var city = DbContext.Cities.FirstOrDefault(w => w.Name.Replace("\t", "") == sub.Replace("-", " "));
+                        if(city!=null)
+                        {
+                            var allDistrict = DbContext.Districts.Where(x=>x.CityId==city.Id).Select(x=>x.Id).ToList();
+                            districts.AddRange(allDistrict);
+                        }
+                    }
+                }
+            }
             result = DbContext.Businesses.Where(x => cats.Contains(x.CategoryId) ).OrderByDescending(x => x.CreatedDate);
-            //var bussinessFeature = DbContext.BusinessFeatures.Where(x => result.Select(c => c.Id).ToList().Contains(x.BusinessId) && features.Contains(x.FeatureId));
+            if(districts.Count()>0)
+            {
+                result = result.Where(x =>districts.Contains(x.DistrictId));
+            }
             if (features.Count() > 0)
             {
-                var bussinessFeature = DbContext.BusinessFeatures.Where(x => features.Contains(x.FeatureId));
-                result = result.Where(x => bussinessFeature.Select(c => c.BusinessId).ToList().Contains(x.Id));
+                var bussinessFeature = DbContext.BusinessFeatures.Where(x => features.Contains(x.FeatureId)).Select(x=>x.BusinessId).ToList();
+                result = result.Where(x => bussinessFeature.Contains(x.Id));
             }
             PagedList<Business> res = new PagedList<Business>(result, searchViewModel.page, 10);
             return res;

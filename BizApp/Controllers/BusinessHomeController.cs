@@ -2,6 +2,7 @@
 using BizApp.Models.Basic;
 using BizApp.Utility;
 using DataLayer.Infrastructure;
+using DomainClass.Businesses;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -31,13 +32,23 @@ namespace BizApp.Controllers
 			BusinessHomePage_DescriptionViewModel businessHomePage_DescriptionViewModel = new BusinessHomePage_DescriptionViewModel();
 			BusinessHomePage_RightPageBusinessInfoViewModel businessHomePage_RightPageBusinessInfoViewModel = new BusinessHomePage_RightPageBusinessInfoViewModel();
 			List<BusinessHomePage_ReviewsViewModel> businessHomePage_ReviewsViewModel = new List<BusinessHomePage_ReviewsViewModel>();
+			List<BusinessHomePage_FaqViewModel> businessHomePage_FaqViewModels = new List<BusinessHomePage_FaqViewModel>();
+			List<BusinessHomePage_RelatedBusinessViewModel> businessHomePage_RelatedBusinessViewModels = new List<BusinessHomePage_RelatedBusinessViewModel>();
+			#endregion
+			#region Resource
+			var SliderItem = await _UnitOfWork.BusinessHomePageRepo.GetSlider(BusinessId);
+			var SummaryItem = await _UnitOfWork.BusinessHomePageRepo.GetBusinessSummary(BusinessId);
+			var FeaturesItem = await _UnitOfWork.BusinessHomePageRepo.GetBusinessFeatures(BusinessId);
+			var SponseredBusinessItem = await _UnitOfWork.BusinessHomePageRepo.GetNearByBusinessSponsored(BusinessId);
+			var BusinessOtherInfoItem = await _UnitOfWork.BusinessHomePageRepo.GetBusinessOtherInfo(BusinessId);
+			var ReviewsItem = await _UnitOfWork.BusinessHomePageRepo.GetBusinessReview(BusinessId);
+			var CommunityItems = await _UnitOfWork.BusinessHomePageRepo.GetBusinessFaq(BusinessId);
+			var RelatedBusinessItem = await _UnitOfWork.BusinessHomePageRepo.GetRelatedBusiness(BusinessId);
 			#endregion
 			#region Slider
-			var SliderItem = await _UnitOfWork.BusinessHomePageRepo.GetSlider(BusinessId);
 			businessHomePage_SliderViewModel.Images = SliderItem;
 			#endregion
 			#region BusinessSummary
-			var SummaryItem = await _UnitOfWork.BusinessHomePageRepo.GetBusinessSummary(BusinessId);
 			businessHomePage_SummaryViewModel.Title = SummaryItem.Item1;
 			businessHomePage_SummaryViewModel.Rate = SummaryItem.Item2;
 			businessHomePage_SummaryViewModel.Reviews = SummaryItem.Item3;
@@ -45,19 +56,16 @@ namespace BizApp.Controllers
 			businessHomePage_SummaryViewModel.TotalPhotos = SummaryItem.Item5;
 			#endregion
 			#region Featrues
-			var FeaturesItem = await _UnitOfWork.BusinessHomePageRepo.GetBusinessFeatures(BusinessId);
 			businessHomePage_FeatureViewModel.BoldFeature = FeaturesItem.Item1;
 			businessHomePage_FeatureViewModel.Features = FeaturesItem.Item2;
 			#endregion
 			#region NearSponseredBusiness
-			var SponseredBusinessItem = await _UnitOfWork.BusinessHomePageRepo.GetNearByBusinessSponsored(BusinessId);
 			foreach (var item in SponseredBusinessItem)
 			{
 				businessHomePage_NearSponseredViewModel.Add(new BusinessHomePage_NearSponseredViewModel() { Name = item.Item1, Image = item.Item2, Rate = item.Item3, Review = item.Item4, Id = item.Item5, Descripton = item.Item6 });
 			}
 			#endregion
 			#region Description
-			var BusinessOtherInfoItem = await _UnitOfWork.BusinessHomePageRepo.GetBusinessOtherInfo(BusinessId);
 			businessHomePage_DescriptionViewModel.Descripton = string.IsNullOrEmpty(BusinessOtherInfoItem.Item1) == true ? "فاقد توضیحات" : BusinessOtherInfoItem.Item1;
 			#endregion
 			#region RightPageBusinessInfo
@@ -65,14 +73,23 @@ namespace BizApp.Controllers
 			businessHomePage_RightPageBusinessInfoViewModel.PhoneNumber = BusinessOtherInfoItem.Item3;
 			businessHomePage_RightPageBusinessInfoViewModel.Address = BusinessOtherInfoItem.Item4;
 			#endregion
-
 			#region Reviews
-			var ReviewsItem = await _UnitOfWork.BusinessHomePageRepo.GetBusinessReview(BusinessId);
 			foreach (var item in ReviewsItem)
 			{
 				businessHomePage_ReviewsViewModel.Add(new BusinessHomePage_ReviewsViewModel() { Cool = item.CoolCount , Date = DateChanger.ToPersianDateString(item.Date) , DistricName = item.BizAppUser.Address , Funny = item.FunnyCount , Rate = item.Rate , Text = item.Description , UseFull = item.UsefulCount , TotalReviews = item.BizAppUser.Reviews.Count , TotalPictures = 0 , UserName = item.BizAppUser.FullName , Id = item.BizAppUser.Id});
 			}
-	
+			#endregion
+			#region AsktheCommunity
+			foreach (var item in CommunityItems)
+			{
+				businessHomePage_FaqViewModels.Add(new BusinessHomePage_FaqViewModel() { Question = item.Question, Answers = item.BusinessFaqAnswers.Select(s => s.Text).ToList()}) ;
+			}
+			#endregion
+			#region RelatedBusiness
+			foreach (var item in RelatedBusinessItem)
+			{
+				businessHomePage_RelatedBusinessViewModels.Add(new BusinessHomePage_RelatedBusinessViewModel() { Image = string.IsNullOrEmpty(item.FeatureImage) == false ? "/Upload/DefaultPicutres/Bussiness/Business.jpg" : item.FeatureImage }); 
+			}
 			#endregion
 			#region FinalResults
 			businessHomePageViewModel.businessHomePage_SliderViewModel = businessHomePage_SliderViewModel;
@@ -82,8 +99,25 @@ namespace BizApp.Controllers
 			businessHomePageViewModel.businessHomePage_DescriptionViewModel = businessHomePage_DescriptionViewModel;
 			businessHomePageViewModel.businessHomePage_RightPageBusinessInfoViewModel = businessHomePage_RightPageBusinessInfoViewModel;
 			businessHomePageViewModel.businessHomePage_ReviewsViewModel = businessHomePage_ReviewsViewModel;
+			businessHomePageViewModel.businessHomePage_FaqViewModels = businessHomePage_FaqViewModels;
+			businessHomePageViewModel.businessHomePage_RelatedBusinessViewModels = businessHomePage_RelatedBusinessViewModels; 
 			#endregion
 			return View();
 		}
+		[HttpPost]
+		public async Task<JsonResult> SendMessageToBusiness(MessageToBusiness model )
+		{
+			try
+			{
+				await _UnitOfWork.BusinessHomePageRepo.MessageToBusiness(model);
+				await _UnitOfWork.SaveAsync();
+				return Json(new { success = true });
+			}
+			catch (Exception )
+			{
+				return Json(new { success = false });
+			}
+		}
+
 	}
 }

@@ -10,7 +10,10 @@ namespace DomainClass.Queries
 		public int page { get; set; } = 1;
 		public string catsFinder { get; set; }
 		public string featuFinder { get; set; }
+		public string districtFinder { get; set; }
 		public List<Category> categories{ get; set; }
 		public List<Feature> features{ get; set; }
+		public List<Province> provinces{ get; set; }
+		public List<City> cities{ get; set; }
     }
 }

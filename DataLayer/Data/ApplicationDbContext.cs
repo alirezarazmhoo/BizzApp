@@ -40,6 +40,9 @@ namespace DataLayer.Data
 		public virtual DbSet<UsersInCustomerBusinessMediaLike>   UsersInCustomerBusinessMediaLikes { get; set; }
 		public virtual DbSet<CustomerBusinessMediaPictures>  CustomerBusinessMediaPictures { get; set; }
 		public virtual DbSet<BusinessFaq>  BusinessFaqs { get; set; }
+		public virtual DbSet<BusinessFaqAnswer>  BusinessFaqAnswers { get; set; }
+		public virtual DbSet<MessageToBusiness> MessageToBusinesses { get; set; }
+		
 		#endregion
 		protected override void OnModelCreating(ModelBuilder builder)
 		{

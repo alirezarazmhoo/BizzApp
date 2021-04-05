@@ -25,6 +25,8 @@ namespace BizApp.Controllers
         {
             searchViewModel.categories = await _UnitOfWork.CategoryRepo.GetChilds(searchViewModel.CategoryId);
             searchViewModel.features = await _UnitOfWork.FeatureRepo.GetAllIsBoolValue();
+            searchViewModel.provinces = await _UnitOfWork.ProvinceRepo.GetAll();
+            searchViewModel.cities = await _UnitOfWork.CityRepo.GetAll();
             return View(searchViewModel);
         }
         public IActionResult AllBussiness(SearchBussinessQuery searchViewModel)
