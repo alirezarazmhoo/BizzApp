@@ -36,10 +36,68 @@
         font-weight: 600;
         display: inline-block;
     }
+
     .active-lbl-cat, .lbl-cat:hover {
         background-color: #666;
         color: white;
     }
+    .collapsible {
+        background-color: #f5f5f5;
+        color: black;
+        cursor: pointer;
+        padding: 18px;
+        width: 100%;
+        border: none;
+        text-align: right;
+        outline: none;
+        font-size: 15px;
+    }
+
+        .activeProv, .collapsible:hover {
+            background-color: #666;
+            color: white;
+        }
+
+    .collapsible:after {
+        content: '\002B';
+        color: white;
+        font-weight: bold;
+        float: left;
+        margin-left: 5px;
+    }
+
+    .activeProv:after {
+        content: "\2212";
+    }
+
+    .contentPro {
+        padding: 0 18px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.2s ease-out;
+        background-color: #f1f1f1;
+    }
+        .contentPro .form-check-label {
+            color: #2b273c;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 20px;
+            margin-left: 8px;
+        }
+        .contentPro .form-check-input {
+            margin-top: 0;
+            margin-left: 10px;
+            position: static;
+            width: 20px;
+            height: 20px;
+        }
+        .contentPro .form-check-label {
+            color: #2b273c;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 20px;
+            margin-left: 8px;
+        }
 </style>
 <section class="category-content">
     <div class="category-content__sidebar">
@@ -78,20 +136,17 @@
                     <span class="span">14:18</span>
                 </div>
             </div>
-            <div class="category-content__item-filter__property">
+            <div class="category-content__item-filter__property" >
                 <div class="category-content__item-filter__property__title">
                     <h3>دسته بندی</h3>
                 </div>
 
                 @foreach (var item in Model.categories.Take(4))
                 {
-
                     <p class="lbl-cat" onclick="SearchByCat('@item.Name.Replace(" ","-")')">@item.Name</p>
-
-
                 }
                 <div class="category-content__item-filter__property__all">
-                    <a href="#" data-toggle="modal" onclick="OpenCategoryModal()" >نمایش همه</a>
+                    <a href="#" data-toggle="modal" onclick="OpenCategoryModal()">نمایش همه</a>
                 </div>
             </div>
             <div class="category-content__item-filter__property">
@@ -101,36 +156,27 @@
                 @foreach (var item in Model.features.Take(4))
                 {
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="featu-@item.Id">
+                        <input type="checkbox" class="form-check-input form-check-featu" id="featu-@item.Id">
                         <label class="form-check-label" for="featu-@item.Id">@item.Name</label>
                     </div>
                 }
-                    <div class="category-content__item-filter__property__all">
-                        <a href="#">نمایش همه</a>
-                    </div>
+                <div class="category-content__item-filter__property__all">
+                    <a href="#" onclick="OpenFeatureModal()">نمایش همه</a>
                 </div>
+            </div>
             <div class="category-content__item-filter__areas">
                 <div class="category-content__item-filter__areas__title">
-                    <h3>مناطق</h3>
+                    <h3>استانها</h3>
                 </div>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">WLAN بصورت رایگان</label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">WLAN بصورت رایگان</label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">WLAN بصورت رایگان</label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">WLAN بصورت رایگان</label>
-                </div>
+                @foreach (var item in Model.provinces.Take(4))
+                {
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="prov-@item.Id">
+                        <label class="form-check-label" for="prov-@item.Id">@item.Name</label>
+                    </div>
+                }
                 <div class="category-content__item-filter__areas__all">
-                    <a href="#">نمایش همه</a>
+                    <a href="#" onclick="OpenProvModal()">نمایش همه</a>
                 </div>
             </div>
             <div class="category-content__item-filter__distance">
@@ -307,8 +353,8 @@
                     @foreach (var item in Model.categories.ToList())
                     {
                         @*<p class="lbl-cat" onclick="SearchByCat(@item.Id)">@item.Name</p>*@
-                       
-                        
+
+
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="@item.Id">
                             <label class="form-check-label" for="@item.Id">@item.Name</label>
@@ -321,192 +367,294 @@
         </div>
     </div>
 </div>
+<div class="recent-activities__modal modal fade" id="click-featu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="recent-activities__modal__close" data-dismiss="modal">
+                    <span>بستن</span>
 
-@section Scripts
-{
-    
-    <script>
-        window.arr1 = [];
-    </script>
-    <script src="~/Scripts/Search/changeUrl.js"></script>
-    <script>
-        function OpenCategoryModal() {
-            $('#click-cat').modal('show');
-            var parseQueryString = function () {
-                var str = window.location.search;
-                var objURL = {};
-                str.replace(
-                    new RegExp("([^?=&]+)(=([^&]*))?", "g"),
-                    function ($0, $1, $2, $3) {
-                        objURL[$1] = $3;
+                </div>
+                <div class="category-content">
+                    @foreach (var item in Model.features.ToList())
+                    {
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="featuModal-@item.Id">
+                        <label class="form-check-label" for="featuModal-@item.Id">@item.Name</label>
+                    </div>
                     }
-                );
-                return objURL;
-            };
-            var params = parseQueryString();
-            if (params["catsFinder"] != undefined) {
-                $('#click-cat .category-content .form-check-label').each(function () {
-                    
-                    if (decodeURIComponent(params["catsFinder"].toString()).includes($.trim($(this).text().replaceAll(" ", "-"))))
-                        
-                    $(this).prev().prop('checked','checked')
+                </div>
+                <button onclick="SearchByCategoty()" class="button-cat">جستجو</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="recent-activities__modal modal fade" id="click-prov" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" >
+            <div class="modal-body">
+                <div class="recent-activities__modal__close" data-dismiss="modal">
+                    <span>بستن</span>
+                </div>
+                <div class="Prov-content ">
+                    @foreach (var item in Model.provinces.ToList())
+                    {
+                        <button class="collapsible">@item.Name</button>
+                        <div class="contentPro">
+                            @foreach (var item2 in Model.cities.Where(x => x.ProvinceId == item.Id).ToList())
+                            {
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="ProvModal-@item2.Id">
+                                    <label class="form-check-label" for="ProvModal-@item2.Id">@item2.Name</label>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+                <button onclick="SearchByPro()" class="button-cat">جستجو</button>
+
+            </div>
+        </div>
+    </div>
+    </div>
+    @section Scripts
+{
+        <script>
+            var coll = document.getElementsByClassName("collapsible");
+            var i;
+
+            for (i = 0; i < coll.length; i++) {
+                coll[i].addEventListener("click", function () {
+                    this.classList.toggle("activeProv");
+                    var content = this.nextElementSibling;
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    }
                 });
             }
-        }
-    </script>
-    <script>
-        var pageN = 1;
-        const markerHtmlStyles = "background-color:#000; width: 3rem; height: 3rem; display: block;  left: -1.5rem;  top: -1.5rem;  position: relative;  border-radius: 3rem 3rem 0;  transform: rotate(45deg);  border: 1px solid #FFFFFF";
-        $(document).ready(function () {
-           
-            //GetData("/Search/AllBussiness?CategoryId=1058&page=1", "AllBussiness", null, 1);
-            //history.pushState(null, null, "/Search/Index?CategoryId=1058&page=1");
-            var catsFinder = "";
-            var parseQueryString = function () {
-                var str = window.location.search;
-                // find href and then concat other category
-                var objURL = {};
-                str.replace(
-                    new RegExp("([^?=&]+)(=([^&]*))?", "g"),
-                    function ($0, $1, $2, $3) {
-                        objURL[$1] = $3;
-                    }
-                );
-                return objURL;
-            };
-            var params = parseQueryString();
-            if (params["catsFinder"] != undefined) {
-                catsFinder = params["catsFinder"];
+        </script>
+        <script>
+            window.arr1 = [];
+        </script>
+        <script src="~/Scripts/Search/changeUrl.js"></script>
+        <script>
+            function OpenCategoryModal() {
+                $('#click-cat').modal('show');
+                var parseQueryString = function () {
+                    var str = window.location.search;
+                    var objURL = {};
+                    str.replace(
+                        new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+                        function ($0, $1, $2, $3) {
+                            objURL[$1] = $3;
+                        }
+                    );
+                    return objURL;
+                };
+                var params = parseQueryString();
+                if (params["catsFinder"] != undefined) {
+                    $('#click-cat .category-content .form-check-label').each(function () {
+
+                        if (decodeURIComponent(params["catsFinder"].toString()).includes($.trim($(this).text().replaceAll(" ", "-"))))
+
+                            $(this).prev().prop('checked', 'checked')
+                    });
+                }
+            }
+            function OpenFeatureModal() {
+                $('#click-featu').modal('show');
+                var parseQueryString = function () {
+                    var str = window.location.search;
+                    var objURL = {};
+                    str.replace(
+                        new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+                        function ($0, $1, $2, $3) {
+                            objURL[$1] = $3;
+                        }
+                    );
+                    return objURL;
+                };
+                var params = parseQueryString();
+                if (params["featuFinder"] != undefined) {
+                    $('#click-featu .category-content .form-check-label').each(function () {
+                        if (decodeURIComponent(params["featuFinder"].toString()).includes($.trim($(this).text().replaceAll(" ", "-"))))
+                            $(this).prev().prop('checked', 'checked')
+                    });
+                }
+            }
+            function OpenProvModal() {
+                $('#click-prov').modal('show');
+                //var parseQueryString = function () {
+                //    var str = window.location.search;
+                //    var objURL = {};
+                //    str.replace(
+                //        new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+                //        function ($0, $1, $2, $3) {
+                //            objURL[$1] = $3;
+                //        }
+                //    );
+                //    return objURL;
+                //};
+                //var params = parseQueryString();
+                //if (params["featuFinder"] != undefined) {
+                //    $('#click-featu .category-content .form-check-label').each(function () {
+                //        if (decodeURIComponent(params["featuFinder"].toString()).includes($.trim($(this).text().replaceAll(" ", "-"))))
+                //            $(this).prev().prop('checked', 'checked')
+                //    });
+                //}
+            }
+        </script>
+        <script>
+            var pageN = 1;
+            const markerHtmlStyles = "background-color:#000; width: 3rem; height: 3rem; display: block;  left: -1.5rem;  top: -1.5rem;  position: relative;  border-radius: 3rem 3rem 0;  transform: rotate(45deg);  border: 1px solid #FFFFFF";
+            $(document).ready(function () {
+
+                //GetData("/Search/AllBussiness?CategoryId=1058&page=1", "AllBussiness", null, 1);
+                //history.pushState(null, null, "/Search/Index?CategoryId=1058&page=1");
+                var catsFinder = "";
+                var parseQueryString = function () {
+                    var str = window.location.search;
+                    // find href and then concat other category
+                    var objURL = {};
+                    str.replace(
+                        new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+                        function ($0, $1, $2, $3) {
+                            objURL[$1] = $3;
+                        }
+                    );
+                    return objURL;
+                };
+                var params = parseQueryString();
+                if (params["catsFinder"] != undefined) {
+                    catsFinder = params["catsFinder"];
+                    disposeFilterForType(pageN, catsFinder);
+                }
+                else
+                    disposeFilterForType(pageN);
+
+            });
+            function SearchByCat(cats) {
+                $(".category-content__item-filter__property").find(".lbl-cat").each(function () {
+                    if ($.trim($(this).text().replaceAll(" ", "-")) == $.trim(cats))
+                        $(this).toggleClass("active-lbl-cat");
+                });
+                var catsFinder = addParameterToUrl(cats);
                 disposeFilterForType(pageN, catsFinder);
             }
-            else
-                disposeFilterForType(pageN);
+            var request = new Request('AllBussiness');
+            var disposeFilterForType = (p, catsFinder, featuFinder) => {
 
-        });
-        function SearchByCat(cats) {
-            $(".category-content__item-filter__property").find(".lbl-cat").each(function () {
-                if ($.trim($(this).text().replaceAll(" ", "-")) == $.trim(cats))
-                    $(this).toggleClass("active-lbl-cat");
-            });
-            var catsFinder= addParameterToUrl(cats);
-            disposeFilterForType(pageN, catsFinder);
-        }
-        var request = new Request('AllBussiness');
-        //var disposeFilterForType = (p, catsFinder, featuFinder) => {
-        var disposeFilterForType = (p, featuFinder) => {
-            
-          //  if (catsFinder != undefined )
-          //      request.disposeFilter('/Search/AllBussiness', { CategoryId: 1059, page: p, catsFinder: catsFinder })
-            //else  
-            if (featuFinder != undefined)
-                request.disposeFilter('/Search/AllBussiness', { CategoryId: 1059, page: p, featuFinder: featuFinder })
-            else
-                request.disposeFilter('/Search/AllBussiness', { CategoryId: 1059, page: p })
-        }
-        function addParameterToUrl(cats, featu) {
-           
-            var catsFinder = "";
-            var featuFinder = "";
-            const urlParameters = window.location.href;
-            var parseQueryString = function () {
-                var str = window.location.search;
-                // find href and then concat other category
-                var objURL = {};
-                str.replace(
-                    new RegExp("([^?=&]+)(=([^&]*))?", "g"),
-                    function ($0, $1, $2, $3) {
-                        objURL[$1] = $3;
+                const disposeFilterRemover = (url, parameters) => {
+                    for (var key in parameters) {
+                        if (parameters[key] == undefined)
+                            delete parameters[key];
                     }
-                );
-                return objURL;
-            };
-            var params = parseQueryString();
-            if (cats != null) {
-              
-                if (params["catsFinder"] == undefined)
-                    catsFinder = cats;
-                else {
-
-                    if (!decodeURIComponent(params["catsFinder"].toString()).includes($.trim(cats)))
-                        catsFinder = params["catsFinder"] + "," + cats;
-                    else {
-                        
-                        var strCats = decodeURIComponent(params["catsFinder"].toString());
-                        catsFinder = strCats.replace($.trim(cats), '');
-                       catsFinder = catsFinder.trim().replace(/,{1,}$/, '');
-                        
-                    }
-
+                    request.disposeFilter(url, parameters)
                 }
-                if (catsFinder == "")
-                    return undefined;
-                else
-                    return catsFinder;
-               
+
+                disposeFilterRemover('/Search/AllBussiness', { CategoryId: 1059, page: p, catsFinder: catsFinder, featuFinder: featuFinder })
             }
-            if (featu != null) {
+            function addParameterToUrl(cats, featu) {
 
-                if (params["featuFinder"] == undefined)
-                    featuFinder = featu;
-                else {
-
-                    if (!decodeURIComponent(params["featuFinder"].toString()).includes($.trim(featu)))
-                        featuFinder = params["featuFinder"] + "," + featu;
+                var catsFinder = "";
+                var featuFinder = "";
+                const urlParameters = window.location.href;
+                var parseQueryString = function () {
+                    var str = window.location.search;
+                    // find href and then concat other category
+                    var objURL = {};
+                    str.replace(
+                        new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+                        function ($0, $1, $2, $3) {
+                            objURL[$1] = $3;
+                        }
+                    );
+                    return objURL;
+                };
+                var params = parseQueryString();
+                if (cats != null) {
+                    debugger
+                    if (params["catsFinder"] == undefined)
+                        catsFinder = cats;
                     else {
 
-                        var strfeatu = decodeURIComponent(params["featuFinder"].toString());
-                        featuFinder = strfeatu.replace($.trim(featu), '');
-                        featuFinder = featuFinder.trim().replace(/,{1,}$/, '');
+                        if (!decodeURIComponent(params["catsFinder"].toString()).includes($.trim(cats)))
+                            catsFinder = params["catsFinder"] + "," + cats;
+                        else {
+                            var strCats = decodeURIComponent(params["catsFinder"].toString());
+                            catsFinder = strCats.replace($.trim(cats), '');
+                            catsFinder = catsFinder.trim().replace(/,{1,}$/, '');
+                        }
+
                     }
+                    if (catsFinder == "")
+                        return undefined;
+                    else
+                        return catsFinder;
 
                 }
-                if (featuFinder == "")
-                    return undefined;
-                else
-                    return featuFinder;
+                if (featu != null) {
+
+                    if (params["featuFinder"] == undefined)
+                        featuFinder = featu;
+                    else {
+
+                        if (!decodeURIComponent(params["featuFinder"].toString()).includes($.trim(featu)))
+                            featuFinder = params["featuFinder"] + "," + featu;
+                        else {
+
+                            var strfeatu = decodeURIComponent(params["featuFinder"].toString());
+                            featuFinder = strfeatu.replace($.trim(featu), '');
+                            featuFinder = featuFinder.trim().replace(/,{1,}$/, '');
+                        }
+
+                    }
+                    if (featuFinder == "")
+                        return undefined;
+                    else
+                        return featuFinder;
+
+                }
+
 
             }
-           
-            
-        }
-    </script>
-    <script>
+        </script>
+        <script>
     function ChangePage(page) {
-        @*GetData("/Search/AllBussiness?CategoryId="+@ViewBag.CategoryId+"&page=" + page + "", "AllBussiness", null, page);
-        history.pushState(null, null, "/Search/Index?CategoryId=1058&page=" + page + "");*@
         pageN = page;
         disposeFilterForType(page);
     }
     function SearchByCategoty() {
             var catsFinder = "";
             $('#click-cat .category-content input[type=checkbox]:checked').each(function () {
-                
+
                 catsFinder += $(this).next().text().replaceAll(" ", "-")+",";
             });
             catsFinder = catsFinder.slice(0, -1);
-           
             disposeFilterForType(pageN, catsFinder);
             $("#click-cat").modal('hide');
             $('.modal-backdrop').remove();
         }
-    </script>
-<script>
-    var header = document.getElementById("myDIV");
-    var lbls = header.getElementsByClassName("lbl-cat");
-    for (var i = 0; i < lbls.length; i++) {
-        lbls[i].addEventListener("click", function () {
-            var current = document.getElementsByClassName("active-lbl-cat");
-            current[0].className = current[0].className.replace(" active-lbl-cat", "");
-            this.className += " active-lbl-cat";
-        });
-    }
-</script>
-<script>
-    $('.form-check-input').change(function () {
-       
-        var featursFinder = addParameterToUrl(null, $(this).next().text().replaceAll(" ", "-"));
-        disposeFilterForType(pageN, featursFinder);
-    });
-</script>
+        </script>
+        <script>
+            var header = document.getElementById("myDIV");
+            var lbls = header.getElementsByClassName("lbl-cat");
+            for (var i = 0; i < lbls.length; i++) {
+                lbls[i].addEventListener("click", function () {
+                    var current = document.getElementsByClassName("active-lbl-cat");
+                    current[0].className = current[0].className.replace(" active-lbl-cat", "");
+                    this.className += " active-lbl-cat";
+                });
+            }
+        </script>
+        <script>
+            $('.form-check-featu').change(function () {
+                var featursFinder = addParameterToUrl(null, $(this).next().text().replaceAll(" ", "-"));
+                disposeFilterForType(pageN, undefined, featursFinder);
+            });
+        </script>
 
-}
+    }
