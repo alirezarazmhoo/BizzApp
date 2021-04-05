@@ -2,11 +2,59 @@
 @{
 	ViewData["Title"] = "تصاویر پروفایل";
 	Layout = "~/Views/Shared/_AllPagesLayout.cshtml";
+
+	var currentUser = User.Identity.Name;
+	var userName = Context.Request.Query["username"].ToString();
+
+	var hasAccess = currentUser != null;
+	if (!string.IsNullOrEmpty(userName))
+	{
+		hasAccess = userName.Equals(currentUser, StringComparison.OrdinalIgnoreCase);
+	}
+}
+
+@section head {
+	<style>
+		.upload-btn {
+			color: #fff !important;
+			background: #d32323;
+			padding: 0 35px;
+			line-height: 36px;
+			border: none;
+			border-radius: 3px;
+			font-size: 13px;
+			font-weight: 600;
+			display: inline-block;
+			margin-top: 5%;
+		}
+	</style>
 }
 
 <main>
+	@if (TempData["message"] != null)
+	{
+		<div class="container" style="padding-top: 10px;">
+			<div class="alert alert-success" role="alert">
+				@TempData["message"]
+			</div>
+		</div>
+	}
+	<div class="container">
+		<div class="row">
+			<div class="col-md-7 md-7">
+				<partial name="_HeaderPartial" />
+			</div>
 
-	<partial name="_HeaderPartial" />
+			@if (hasAccess)
+			{
+				<div class="col-md-5">
+					<div class="dz-message" data-dz-message="">
+						<a asp-area="profile" asp-controller="userphoto" asp-action="upload" class="upload-btn">آپلود تصویر</a>
+					</div>
+				</div>
+			}
+		</div>
+	</div>
 
 	<section class="profile-content-all-photos">
 		<div class="container">
@@ -83,18 +131,25 @@
 
 								@await Html.PartialAsync("Partials/_UserInfoPartial", Model.ProfileDetail)
 
-								<div class="profile-content-all-photos__modal__content__desc">
-									<p>بهترین خدمات هتل حرفه ای Maitres و BARMEN در خانه در پاریس و ایل دو فرانسه</p>
-								</div>
+								@if (hasAccess)
+								{
+									<div class="profile-content-all-photos__modal__content__desc">
+										<form asp-action="setasprimary" asp-controller="userphoto" asp-area="profile" method="post">
+											<input type="hidden" id="photoId" name="id" />
+											<button type="submit" class="btn btn-link btn-sm" onclick="setAsPrimary()">تنظیم به عنوان تصویر اصلی</button>
+										</form>
+										<p>
+											<a href="">حذف عکس</a>
+										</p>
+									</div>
+								}
 								<div class="profile-content-all-photos__modal__content__date">
 									<span>@*@photo.CreatedAt*@</span>
 								</div>
 							</div>
 						</div>
-
 					</div>
 				</div>
-
 			</div>
 		</div>
 	</div>
@@ -103,13 +158,34 @@
 
 @section Scripts {
 	<script>
+
 		function setSliderIndex(index) {
 			// Initialize Swiper
 			var swiper = document.querySelector('.swiper-container').swiper;
 
-			console.log(swiper.slides);
 			swiper.slideTo(index);
 			swiper.autoplay.pause = true;
+		}
+
+		function setAsPrimary() {
+			var swiper = document.querySelector('.swiper-container').swiper;
+			var photoId = swiper.slides[swiper.activeIndex].id;
+
+			$('#photoId').val(photoId);
+			//var user = '@currentUser';
+			//console.log(user);
+
+			//$.ajax({
+			//	method: 'post',
+			//	url: "/profile/userphoto/setasprimary",
+			//	data: { id: photoId },
+			//	error: function (xhr) {
+			//		console.log(user);
+			//		if (xhr.status === 401 && user == 'undefined')
+			//			alert('')
+			//			//window.location.href = "/Identity/Account/Login";
+			//	}
+			//});
 		}
 	</script>
 }

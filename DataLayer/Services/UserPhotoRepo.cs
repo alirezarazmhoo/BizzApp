@@ -48,7 +48,7 @@ namespace DataLayer.Services
 				return null;
 			}
 		}
-		private async Task<bool> IsOwner(Guid id, string currentUserId) 
+		private async Task<bool> IsOwner(Guid id, string currentUserId)
 		{
 			var photo = await DbContext.ApplicationUserMedias.FirstOrDefaultAsync(w => w.Id == id);
 			return photo.BizAppUserId == currentUserId;
@@ -57,10 +57,11 @@ namespace DataLayer.Services
 		public async Task<IEnumerable<ApplicationUserMedia>> GetAll(string userId)
 		{
 			// 
-			
+
 			// get list of user photos
 			var items = await FindByCondition(f => f.BizAppUserId == userId)
-				.OrderByDescending(o => o.IsMainImage).ThenBy(c => c.CreatedAt)
+					.OrderByDescending(o => o.IsMainImage)
+					.ThenBy(c => c.CreatedAt)
 				.ToListAsync();
 
 			return items;
@@ -84,7 +85,7 @@ namespace DataLayer.Services
 				BizAppUserId = userId,
 				Status = StatusEnum.Accepted,
 				IsNew = true,
-				UploadedPhoto = $"{databasePath}{userId}/{fileName}", 
+				UploadedPhoto = $"{databasePath}{userId}/{fileName}",
 				CreatedAt = DateTime.Now
 			};
 
@@ -138,8 +139,15 @@ namespace DataLayer.Services
 				userPhoto.IsMainImage = false;
 			}
 
-			// save all caanges
-			await DbContext.SaveChangesAsync();
+			try
+			{
+				// save all caanges
+				await DbContext.SaveChangesAsync();
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
 		}
 	}
 }

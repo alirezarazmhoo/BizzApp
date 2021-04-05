@@ -58,7 +58,7 @@ namespace BizApp.Areas.Profile.Controllers
 			var photos = await _unitOfWork.UserPhotoRepo.GetAll(user.Id);
 			// cast to view model
 			var photosViewModel = _mapper.Map<IEnumerable<UserPhotosViewModel>>(photos);
-			// pagination photos 
+			// pagination photos
 			var paginatePhotos = new PagedList<UserPhotosViewModel>(photosViewModel.AsQueryable(), page, 20);
 
 			var model = new UserPhotosWithProfileDetailViewModel
@@ -105,6 +105,33 @@ namespace BizApp.Areas.Profile.Controllers
 				return Problem(ex.Message, "UserPhoto", 500);
 			}
 
+		}
+
+		[HttpPost, ActionName("setasprimary")]
+		[Authorize]
+		public async Task<IActionResult> SetAsPrimary(Guid id)
+		{
+			// get current user id
+			var user = await _userManager.GetUserAsync(HttpContext.User);
+			if (user == null) return Unauthorized();
+
+			var userId = user?.Id;
+
+			try
+			{
+				await _unitOfWork.UserPhotoRepo.SetAsPrimary(id, userId);
+				TempData["message"] = "تصویر پروفایل شما تغییر کرد";
+
+				return RedirectToAction("index");
+			}
+			catch (UnauthorizedAccessException)
+			{
+				return Unauthorized();
+			}
+			catch(Exception)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError);
+			}
 		}
 	}
 }
