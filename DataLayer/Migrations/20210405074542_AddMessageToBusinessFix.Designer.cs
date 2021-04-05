@@ -4,14 +4,16 @@ using DataLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210405074542_AddMessageToBusinessFix")]
+    partial class AddMessageToBusinessFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +41,7 @@ namespace DataLayer.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 4, 5, 14, 18, 17, 622, DateTimeKind.Local).AddTicks(3541));
+                        .HasDefaultValue(new DateTime(2021, 4, 5, 12, 15, 40, 944, DateTimeKind.Local).AddTicks(8149));
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -271,8 +273,8 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f42bc47a-4992-4512-a9a4-13d7fae8ac5c",
-                            CreateDate = new DateTime(2021, 4, 5, 14, 18, 17, 625, DateTimeKind.Local).AddTicks(8251),
+                            ConcurrencyStamp = "0aa3c0aa-09ff-42f1-81dd-2ea4e6333c6e",
+                            CreateDate = new DateTime(2021, 4, 5, 12, 15, 40, 951, DateTimeKind.Local).AddTicks(8335),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             Gender = 0,
@@ -282,10 +284,10 @@ namespace DataLayer.Migrations
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOuZ3VrIRMDNdQrzK7NI1H0nN0nY+geDSBQl1LNtD3mcU2JxVtgpkE8mZejyyHqe/w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEInWkCjwIB3M53e28aGpEJ8oMt3Oih+gVtod5ET00HovcSR+yQF0NUJDe6boVheSRw==",
                             PhoneNumberConfirmed = false,
                             PhotoChanged = false,
-                            SecurityStamp = "263e7d48-887e-45b1-8f6a-9afc607fb741",
+                            SecurityStamp = "5c51b5dd-211a-4452-b30e-cb21ebacece9",
                             TwoFactorEnabled = false,
                             UserName = "mainadmin"
                         });
@@ -404,10 +406,7 @@ namespace DataLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BizAppUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("BizAppUserId1")
+                    b.Property<string>("BizAppUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid>("BusinessId")
@@ -416,12 +415,9 @@ namespace DataLayer.Migrations
                     b.Property<string>("Question")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StatusEnum")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("BizAppUserId1");
+                    b.HasIndex("BizAppUserId");
 
                     b.HasIndex("BusinessId");
 
@@ -1154,9 +1150,9 @@ namespace DataLayer.Migrations
 
             modelBuilder.Entity("DomainClass.Businesses.BusinessFaq", b =>
                 {
-                    b.HasOne("DomainClass.BizAppUser", "BizAppUser")
+                    b.HasOne("DomainClass.BizAppUser", null)
                         .WithMany("BusinessFaqs")
-                        .HasForeignKey("BizAppUserId1");
+                        .HasForeignKey("BizAppUserId");
 
                     b.HasOne("DomainClass.Businesses.Business", "Business")
                         .WithMany("BusinessFaqs")

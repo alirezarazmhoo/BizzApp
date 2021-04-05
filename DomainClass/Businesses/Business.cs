@@ -55,6 +55,7 @@ namespace DomainClass.Businesses
 		public virtual ICollection<BusinessTime> BusinessTimes{ get; set; }
 		public virtual ICollection< CustomerBusinessMedia>  CustomerBusinessMedias { get; set; }
 		public virtual ICollection<BusinessFaq>  BusinessFaqs { get; set; }
+		public virtual ICollection<MessageToBusiness> MessageToBusinesses { get; set; }
 		public virtual BizAppUser Owner { get; set; }
 		public virtual BizAppUser UserCreator { get; set;  }
 	}
