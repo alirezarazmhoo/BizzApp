@@ -581,20 +581,25 @@
                 };
                 var params = parseQueryString();
                 if (cats != null) {
-                    debugger
+                    
                     if (params["catsFinder"] == undefined)
                         catsFinder = cats;
                     else {
-
-                        if (!decodeURIComponent(params["catsFinder"].toString()).includes($.trim(cats)))
-                            catsFinder = params["catsFinder"] + "," + cats;
-                        else {
-                            var strCats = decodeURIComponent(params["catsFinder"].toString());
-                            catsFinder = strCats.replace($.trim(cats), '');
-                            catsFinder = catsFinder.trim().replace(/,{1,}$/, '');
+                       debugger
+                        var urlCats = decodeURIComponent(params["catsFinder"].toString());
+                        if (urlCats == cats+",") {
+                            urlCats = urlCats.replace(urlCats, '');
+                        }
+                       else if (!urlCats.includes($.trim(cats)))
+                                catsFinder = params["catsFinder"] + "," + cats;
+                            else {
+                            var strCats = urlCats;
+                                catsFinder = strCats.replace($.trim(cats), '');
+                                catsFinder = catsFinder.trim().replace(/,{1,}$/, '');
+                            }
                         }
 
-                    }
+                    
                     if (catsFinder == "")
                         return undefined;
                     else
