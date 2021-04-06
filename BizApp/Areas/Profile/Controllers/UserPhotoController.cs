@@ -29,6 +29,15 @@ namespace BizApp.Areas.Profile.Controllers
 			_mapper = mapper;
 		}
 
+		private async Task<string> GetCurrentUserId()
+		{
+			// get current user id
+			var user = await _userManager.GetUserAsync(HttpContext.User);
+			if (user == null) return null;
+
+			return user.Id;
+		}
+
 		private async Task<SharedProfileDetailViewModel> GetUserDetail(string userName = null)
 		{
 			if (userName == null)
@@ -112,10 +121,8 @@ namespace BizApp.Areas.Profile.Controllers
 		public async Task<IActionResult> SetAsPrimary(Guid id)
 		{
 			// get current user id
-			var user = await _userManager.GetUserAsync(HttpContext.User);
-			if (user == null) return Unauthorized();
-
-			var userId = user?.Id;
+			var userId = await GetCurrentUserId();
+			if (userId == null) return Unauthorized();
 
 			try
 			{
@@ -128,10 +135,53 @@ namespace BizApp.Areas.Profile.Controllers
 			{
 				return Unauthorized();
 			}
-			catch(Exception)
+			catch (Exception)
 			{
 				return StatusCode(StatusCodes.Status500InternalServerError);
 			}
 		}
+
+		[HttpGet, ActionName("confirmDelete")]
+		[Authorize]
+		public async Task<IActionResult> ConfirmDelete(Guid id)
+		{
+			try
+			{
+				var data = await _unitOfWork.UserPhotoRepo.GetById(id);
+				var model = _mapper.Map<RemoveUserPhotoViewModel>(data);
+
+				return View(model);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, ex);
+			}
+		}
+
+		[HttpPost, ActionName("delete")]
+		[Authorize]
+		public async Task<IActionResult> DeletePhoto(Guid id)
+		{
+			// get current user id
+			var userId = await GetCurrentUserId();
+			if (userId == null) return Unauthorized();
+
+			try
+			{
+				await _unitOfWork.UserPhotoRepo.DeletePhoto(id, userId);
+				TempData["message"] = "تصویر پروفایل حذف شد";
+
+				return RedirectToAction("index");
+			}
+			catch (UnauthorizedAccessException)
+			{
+				return Unauthorized();
+			}
+			catch (Exception)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError);
+			}
+		}
+
 	}
 }

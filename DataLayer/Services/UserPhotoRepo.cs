@@ -56,13 +56,12 @@ namespace DataLayer.Services
 
 		public async Task<IEnumerable<ApplicationUserMedia>> GetAll(string userId)
 		{
-			// 
-
 			// get list of user photos
-			var items = await FindByCondition(f => f.BizAppUserId == userId)
-					.OrderByDescending(o => o.IsMainImage)
-					.ThenBy(c => c.CreatedAt)
-				.ToListAsync();
+			var items = 
+				await FindByCondition(f => f.BizAppUserId == userId)
+						.OrderByDescending(o => o.IsMainImage)
+						.ThenBy(c => c.CreatedAt)
+					.ToListAsync();
 
 			return items;
 		}
@@ -148,6 +147,11 @@ namespace DataLayer.Services
 			{
 				throw ex;
 			}
+		}
+
+		public async Task<ApplicationUserMedia> GetById(Guid id)
+		{
+			return await FindByCondition(f=> f.Id == id).FirstOrDefaultAsync();
 		}
 	}
 }

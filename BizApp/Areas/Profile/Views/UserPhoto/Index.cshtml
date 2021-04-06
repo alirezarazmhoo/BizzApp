@@ -136,11 +136,12 @@
 									<div class="profile-content-all-photos__modal__content__desc">
 										<form asp-action="setasprimary" asp-controller="userphoto" asp-area="profile" method="post">
 											<input type="hidden" id="photoId" name="id" />
-											<button type="submit" class="btn btn-link btn-sm" onclick="setAsPrimary()">تنظیم به عنوان تصویر اصلی</button>
+											<button type="submit" class="btn btn-link btn-sm" style="font-size:12px;" onclick="setAsPrimary()">تنظیم به عنوان تصویر اصلی</button>
 										</form>
-										<p>
-											<a href="">حذف عکس</a>
-										</p>
+										<form asp-action="confirmDelete" asp-controller="userphoto" asp-area="profile" method="get">
+											<input type="hidden" id="deleteId" name="id" />
+											<button type="submit" class="btn btn-link btn-sm" onclick="deletePhoto()" style="font-size:12px;" >حذف تصویر</button>
+										</form>
 									</div>
 								}
 								<div class="profile-content-all-photos__modal__content__date">
@@ -172,20 +173,13 @@
 			var photoId = swiper.slides[swiper.activeIndex].id;
 
 			$('#photoId').val(photoId);
-			//var user = '@currentUser';
-			//console.log(user);
+		}
 
-			//$.ajax({
-			//	method: 'post',
-			//	url: "/profile/userphoto/setasprimary",
-			//	data: { id: photoId },
-			//	error: function (xhr) {
-			//		console.log(user);
-			//		if (xhr.status === 401 && user == 'undefined')
-			//			alert('')
-			//			//window.location.href = "/Identity/Account/Login";
-			//	}
-			//});
+		function deletePhoto() {
+			var swiper = document.querySelector('.swiper-container').swiper;
+			var photoId = swiper.slides[swiper.activeIndex].id;
+
+			$('#deleteId').val(photoId);
 		}
 	</script>
 }
