@@ -476,7 +476,7 @@ namespace DataLayer.Services
                         if(province!=null)
                         {
                             var allCities = DbContext.Cities.Where(x => x.ProvinceId == province.Id).Select(x=>x.Id).ToList();
-                            var allDistrict = DbContext.Districts.Where(x=>allCities.Contains(x.Id)).Select(x=>x.Id).ToList();
+                            var allDistrict = DbContext.Districts.Where(x=>allCities.Contains(x.CityId)).Select(x=>x.Id).ToList();
                              districts.AddRange(allDistrict);
 
                         }

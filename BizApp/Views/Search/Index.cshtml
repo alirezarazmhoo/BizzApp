@@ -98,6 +98,15 @@
             line-height: 20px;
             margin-left: 8px;
         }
+    #click-featu .category-content
+    {
+        display:block !important;
+        padding:0 !important;
+    }
+    #click-cat .category-content {
+        display: block !important;
+        padding: 0 !important;
+    }
 </style>
 <section class="category-content">
     <div class="category-content__sidebar">
@@ -171,7 +180,7 @@
                 @foreach (var item in Model.provinces.Take(4))
                 {
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="prov-@item.Id">
+                        <input type="checkbox" class="form-check-input form-check-featu" id="prov-@item.Id">
                         <label class="form-check-label" for="prov-@item.Id">@item.Name</label>
                     </div>
                 }
@@ -341,8 +350,8 @@
     </div>
     <div class="category-content__map" id="weathermap"></div>
 </section>
-<div class="recent-activities__modal modal fade" id="click-cat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class=" modal fade" id="click-cat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-body">
                 <div class="recent-activities__modal__close" data-dismiss="modal">
@@ -352,8 +361,6 @@
                 <div class="category-content">
                     @foreach (var item in Model.categories.ToList())
                     {
-                        @*<p class="lbl-cat" onclick="SearchByCat(@item.Id)">@item.Name</p>*@
-
 
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="@item.Id">
@@ -361,37 +368,38 @@
                         </div>
                     }
                 </div>
+                <br />
                 <button onclick="SearchByCategoty()" class="button-cat">جستجو</button>
             </div>
 
         </div>
     </div>
 </div>
-<div class="recent-activities__modal modal fade" id="click-featu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class=" modal fade" id="click-featu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-body">
                 <div class="recent-activities__modal__close" data-dismiss="modal">
                     <span>بستن</span>
-
                 </div>
                 <div class="category-content">
                     @foreach (var item in Model.features.ToList())
                     {
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="featuModal-@item.Id">
-                        <label class="form-check-label" for="featuModal-@item.Id">@item.Name</label>
-                    </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input form-check-label" id="featuModal-@item.Id">
+                            <label class="form-check-label" for="featuModal-@item.Id">@item.Name</label>
+                        </div>
                     }
                 </div>
-                <button onclick="SearchByCategoty()" class="button-cat">جستجو</button>
+                <br />
+                <button onclick="SearchByFeature()" class="button-cat">جستجو</button>
             </div>
 
         </div>
     </div>
 </div>
-<div class="recent-activities__modal modal fade" id="click-prov" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
-    <div class="modal-dialog" role="document">
+<div class=" modal fade" id="click-prov" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content" >
             <div class="modal-body">
                 <div class="recent-activities__modal__close" data-dismiss="modal">
@@ -412,8 +420,8 @@
                         </div>
                     }
                 </div>
+                <br />
                 <button onclick="SearchByPro()" class="button-cat">جستجو</button>
-
             </div>
         </div>
     </div>
@@ -423,7 +431,6 @@
         <script>
             var coll = document.getElementsByClassName("collapsible");
             var i;
-
             for (i = 0; i < coll.length; i++) {
                 coll[i].addEventListener("click", function () {
                     this.classList.toggle("activeProv");
@@ -545,8 +552,7 @@
                 disposeFilterForType(pageN, catsFinder);
             }
             var request = new Request('AllBussiness');
-            var disposeFilterForType = (p, catsFinder, featuFinder) => {
-
+            var disposeFilterForType = (p, catsFinder, featuFinder, districtFinder) => {
                 const disposeFilterRemover = (url, parameters) => {
                     for (var key in parameters) {
                         if (parameters[key] == undefined)
@@ -554,8 +560,7 @@
                     }
                     request.disposeFilter(url, parameters)
                 }
-
-                disposeFilterRemover('/Search/AllBussiness', { CategoryId: 1059, page: p, catsFinder: catsFinder, featuFinder: featuFinder })
+                disposeFilterRemover('/Search/AllBussiness', { CategoryId: @ViewBag.CategoryId, page: p, catsFinder: catsFinder, featuFinder: featuFinder, districtFinder: districtFinder })
             }
             function addParameterToUrl(cats, featu) {
 
@@ -618,8 +623,6 @@
                         return featuFinder;
 
                 }
-
-
             }
         </script>
         <script>
@@ -637,7 +640,28 @@
             disposeFilterForType(pageN, catsFinder);
             $("#click-cat").modal('hide');
             $('.modal-backdrop').remove();
-        }
+            }
+    function SearchByFeature() {
+                var featuFinder = "";
+                $('#click-featu .category-content input[type=checkbox]:checked').each(function () {
+
+                    featuFinder += $(this).next().text().replaceAll(" ", "-") + ",";
+                });
+                featuFinder = featuFinder.slice(0, -1);
+                disposeFilterForType(pageN, undefined, featuFinder);
+                $("#click-featu").modal('hide');
+                $('.modal-backdrop').remove();
+            }
+    function SearchByPro() {
+                var districtFinder = "";
+                $('#click-prov .Prov-content input[type=checkbox]:checked').each(function () {
+                    districtFinder += $(this).next().text().replaceAll(" ", "-") + ",";
+                });
+                districtFinder = districtFinder.slice(0, -1);
+                disposeFilterForType(pageN, undefined, undefined, districtFinder);
+                $("#click-prov").modal('hide');
+                $('.modal-backdrop').remove();
+            }
         </script>
         <script>
             var header = document.getElementById("myDIV");
@@ -651,9 +675,24 @@
             }
         </script>
         <script>
-            $('.form-check-featu').change(function () {
+            $('.category-content__item-filter__property .form-check-featu').change(function () {
                 var featursFinder = addParameterToUrl(null, $(this).next().text().replaceAll(" ", "-"));
                 disposeFilterForType(pageN, undefined, featursFinder);
+            });
+            $('.category-content__item-filter__areas .form-check-featu').change(function () {
+                var pro = $(this).next().text().replaceAll(" ", "-");
+                var districtFinder = addParameterToUrl(null, pro);
+                //$(".Prov-content").find(".lbl-cat").each(function () {
+                //    if ($.trim($(this).text().replaceAll(" ", "-")) == $.trim(cats))
+                //        $(this).toggleClass("active-lbl-cat");
+                //});
+                $(".Prov-content .collapsible").each(function () {
+                    if ($(this).text().replaceAll(" ", "-") == $.trim(pro)) {
+                        $(this).find('.contentPro').prop("checked", "checked")
+                       
+                    }
+                })
+                disposeFilterForType(pageN, undefined, undefined, districtFinder);
             });
         </script>
 
