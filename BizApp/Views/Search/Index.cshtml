@@ -560,7 +560,7 @@
                     }
                     request.disposeFilter(url, parameters)
                 }
-                disposeFilterRemover('/Search/AllBussiness', { CategoryId: @ViewBag.CategoryId, page: p, catsFinder: catsFinder, featuFinder: featuFinder, districtFinder: districtFinder })
+                disposeFilterRemover('/Search/AllBussiness', { CategoryId: '@ViewBag.CategoryId', page: p, catsFinder: catsFinder, featuFinder: featuFinder, districtFinder: districtFinder })
             }
             function addParameterToUrl(cats, featu) {
 
