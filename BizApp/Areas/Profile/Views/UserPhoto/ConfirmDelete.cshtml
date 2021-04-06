@@ -35,7 +35,7 @@
 		<form asp-action="delete" asp-controller="userphoto" asp-area="profile" method="post">
 			<p>آیا از حذف این عکس مطمئن هستید؟</p>
 			<a href="@Model.Path" data-toggle="modal" data-target="#click-photo">
-				<img src="@Model.Path" alt="" />
+				<img src="@Model.Path" alt="" width="100" />
 			</a>
 			<p>
 				<input type="hidden" id="id" name="id" value="@Model.Id" />
