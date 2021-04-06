@@ -22,7 +22,7 @@ namespace DataLayer.Services
 			var businessItem = await DbContext.Businesses.FirstOrDefaultAsync(s=>s.Id.Equals(Id));
 			if(businessItem != null)
 			{
-				return await DbContext.BusinessFaqs.Include(s=>s.Business).Include(s=>s.BizAppUser).Where(s=>s.BusinessId.Equals(Id)).ToListAsync();
+				return await DbContext.BusinessFaqs.Include(s=>s.Business).Include(s=>s.BusinessFaqAnswers).ThenInclude(s=>s.BizAppUser).ThenInclude(s=>s.ApplicationUserMedias).Where(s=>s.BusinessId.Equals(Id) && s.BusinessFaqAnswers.Count()>0).ToListAsync();
 			}
 			else
 			{
@@ -47,8 +47,21 @@ namespace DataLayer.Services
 		}
 		public async Task AddBusinessFaq(BusinessFaq model)
 		{
+			model.Date = DateTime.Now; 
 			await DbContext.BusinessFaqs.AddAsync(model);
 		}
-	
+		public async Task<BusinessFaq> GetBusinessFaqById(Guid Id)
+		{
+			var BusinessFaqItem = await DbContext.BusinessFaqs.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+			if(BusinessFaqItem != null)
+			{
+				return BusinessFaqItem; 
+
+			}
+			else
+			{
+				return null; 
+			}
+		}
 	}
 }

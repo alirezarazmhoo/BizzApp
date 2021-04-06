@@ -8,6 +8,7 @@ namespace DomainClass.Businesses
 	public class BusinessFaq
 	{ 
 		public Guid Id {get;set;}
+		public DateTime Date { get; set;  }
 		public string Question {get;set;}
 		public Guid BusinessId {get; set;}
 		public virtual Business Business {get;set;}

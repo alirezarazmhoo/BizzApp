@@ -41,6 +41,7 @@ namespace BizApp.Models.Basic
 	#region Business
 	public class AnswerAskTheCommunity_BusinessViewModel
 	{
+		public Guid Id { get; set; }
 		public string Image { get; set; }
 		public int Rate { get; set; }
 		public int Review { get; set; }

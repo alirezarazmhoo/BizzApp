@@ -13,7 +13,6 @@ namespace DataLayer.Infrastructure
 		Task<IEnumerable<BusinessFaqAnswer>> GetBusinessFaqAnswers(Guid Id);
 		Task AddBusinessFaqAnswers(BusinessFaqAnswer model);
 		Task AddBusinessFaq(BusinessFaq model);
-	
-		
+		Task<BusinessFaq> GetBusinessFaqById(Guid Id);
 	}
 }
