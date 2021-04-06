@@ -92,7 +92,10 @@ namespace BizApp.Automapper
 			.ForMember(dest => dest.UserProfilePicture, opt => opt.MapFrom(src => src.BizAppUser.ApplicationUserMedias.Where(s=>s.IsMainImage).Select(s=>s.UploadedPhoto).FirstOrDefault()))
 			.ReverseMap();
 
-
+			// User Photo
+			CreateMap<ApplicationUserMedia, RemoveUserPhotoViewModel>()
+				.ForMember(dest => dest.Path, opt => opt.MapFrom(src => src.UploadedPhoto))
+				.ReverseMap();
 	
 		}
 	}

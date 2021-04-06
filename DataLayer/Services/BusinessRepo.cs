@@ -502,5 +502,19 @@ namespace DataLayer.Services
             PagedList<Business> res = new PagedList<Business>(result, searchViewModel.page, 10);
             return res;
         }
+
+        public async Task<string> GetBusinessName(Guid Id)
+        {
+            var BusinessItem = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+            if (BusinessItem != null)
+            {
+                return BusinessItem.Name;
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
     }
 }

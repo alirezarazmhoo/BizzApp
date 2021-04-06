@@ -99,6 +99,13 @@ namespace DataLayer.Services
 				.Where(s => s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted)
 				.FirstOrDefaultAsync(s => s.Id.Equals(id)));
 		}
+
+		public async Task<int> BusinessReviewCount(Guid Id)
+		{
+			var BusinessItem = await DbContext.Reviews.Where(s => s.BusinessId.Equals(Id)).CountAsync();
+	    	return BusinessItem;
+		}
+
 		
 		}
 }
