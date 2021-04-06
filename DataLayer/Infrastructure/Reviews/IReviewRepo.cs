@@ -11,6 +11,7 @@ namespace DataLayer.Infrastructure.Reviews
 		Task<IEnumerable<Review>> GetRecentActivity(int? pageNumber);
 		Task<IEnumerable<CustomerBusinessMedia>> GetRecentActivityBusinessMedia(int? pageNumber);
 		Task<string> GetUsersFullName(Guid Id);
-		Task<CustomerBusinessMedia> GetCustomerBusinessMediaById(Guid id); 
+		Task<CustomerBusinessMedia> GetCustomerBusinessMediaById(Guid id);
+		Task<int> BusinessReviewCount(Guid Id); 
 	}
 }

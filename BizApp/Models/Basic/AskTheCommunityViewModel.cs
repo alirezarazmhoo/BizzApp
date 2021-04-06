@@ -23,7 +23,7 @@ namespace BizApp.Models.Basic
 	public class AskTheCommunity_QuestionListViewModel
 	{
 		public string Subject { get; set; }
-		public string UserId { get; set; }
+		public Guid UserId { get; set; }
 		public string UserImage { get; set;  }
 		public string Answer { get; set; }
 		public int AnswersCount { get; set; }
@@ -33,10 +33,10 @@ namespace BizApp.Models.Basic
 	#region Business
 	public class AskTheCommunity_BusinessViewModel
 	{
+		public Guid Id { get; set;  }
 		public string Image { get; set; }
 		public int Rate { get; set; }
 		public int Review { get; set; }
-
 	}
 	#endregion
 
