@@ -1,20 +1,24 @@
 ﻿using DataLayer.Data;
+using DataLayer.Extensions;
 using DataLayer.Infrastructure.Reviews;
-using DomainClass;
+using DomainClass.Enums;
 using DomainClass.Review;
+using DomainClass.Review.Queries;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace DataLayer.Services
 {
 	public class ReviewRepo : RepositoryBase<Review>, IReviewRepo
 	{
+		private int _pageSize;
 		public ReviewRepo(ApplicationDbContext DbContext) : base(DbContext)
 		{
+			_pageSize = 10;
 		}
 		public async Task<IEnumerable<Review>> GetRecentActivity(int? pageNumber)
 		{
@@ -99,13 +103,64 @@ namespace DataLayer.Services
 				.Where(s => s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted)
 				.FirstOrDefaultAsync(s => s.Id.Equals(id)));
 		}
-
 		public async Task<int> BusinessReviewCount(Guid Id)
 		{
 			var BusinessItem = await DbContext.Reviews.Where(s => s.BusinessId.Equals(Id)).CountAsync();
-	    	return BusinessItem;
+			return BusinessItem;
 		}
 
-		
+		private IQueryable<ReviewPaginateQuery> GetPaginateReviewQuery(int page, int pageSize = 10)
+		{
+			var query =
+				DbContext.Reviews
+						.Where(w => w.StatusEnum == StatusEnum.Accepted)
+						.Paginate(page, pageSize)
+						.Select(s => new ReviewPaginateQuery
+						{
+							Id = s.Id,
+							Rate = s.Rate,
+							Description = s.Description,
+							UsefulCount = s.UsefulCount,
+							FunnyCount = s.FunnyCount,
+							CoolCount = s.CoolCount,
+							Status = s.StatusEnum,
+							Business = new ReviewPaginateQuery.BusinessQuery
+							{
+								Id = s.Business.Id,
+								FeatureImage = s.Business.FeatureImage,
+								CityId = s.Business.District.CityId,
+								CityName = s.Business.District.City.Name,
+								Name = s.Business.Name,
+								OwnerFullName = s.Business.Owner.FullName
+								//OwnerUserName = s.Business.Owner.UserName
+							},
+							Media = s.ReviewMedias.Take(3)
+										.Select(m => new ReviewMediaQuery
+										{
+											CreatedAt = m.CreatedAt,
+											Description = m.Description
+										})
+						});
+
+			return query;
 		}
+
+		public async Task<IEnumerable<Review>> GetAll(int page)
+		{
+			var result = await GetPaginateReviewQuery(page, _pageSize)
+				.Where(w => w.Status == StatusEnum.Waiting).ToListAsync();
+
+
+
+			throw new NotImplementedException();
+		}
+
+		public async Task<IEnumerable<Review>> GetAll(int page, string userName)
+		{
+			var result = await GetPaginateReviewQuery(page, _pageSize).ToListAsync();
+
+
+			throw new NotImplementedException();
+		}
+	}
 }

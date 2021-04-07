@@ -27,6 +27,7 @@
 	public enum StatusEnum
 	{
 		Accepted = 1,
-		Rejected = 0
+		Rejected = 0,
+		Waiting = 2
 	}
 }

@@ -1,7 +1,6 @@
 ﻿using DomainClass.Review;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataLayer.Infrastructure.Reviews
@@ -12,6 +11,8 @@ namespace DataLayer.Infrastructure.Reviews
 		Task<IEnumerable<CustomerBusinessMedia>> GetRecentActivityBusinessMedia(int? pageNumber);
 		Task<string> GetUsersFullName(Guid Id);
 		Task<CustomerBusinessMedia> GetCustomerBusinessMediaById(Guid id);
-		Task<int> BusinessReviewCount(Guid Id); 
+		Task<int> BusinessReviewCount(Guid Id);
+		Task<IEnumerable<Review>> GetAll(int page);
+		Task<IEnumerable<Review>> GetAll(int page, string userName);
 	}
 }
