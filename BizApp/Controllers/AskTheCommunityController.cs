@@ -7,8 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
-
 namespace BizApp.Controllers
 {
 	public class AskTheCommunityController : Controller
@@ -71,7 +69,6 @@ namespace BizApp.Controllers
 				return Json(new { success = false });
 			}
 		}
-
 		public async Task<IActionResult> GetFaqsAnswers(Guid Id , Guid BusinessFaqId)
 		{
 			var BusinessId = new Guid("4e9b06be-2a73-4c40-fea1-08d8e04ff1b3");
@@ -79,25 +76,56 @@ namespace BizApp.Controllers
 			#region Objects
 			AnswerAskTheCommunityViewModel answerAskTheCommunityViewModel = new AnswerAskTheCommunityViewModel();
 			AnswerAskTheCommunity_NavbarViewModel answerAskTheCommunity_NavbarViewModel = new AnswerAskTheCommunity_NavbarViewModel();
-
+			AnswerAskTheCommunity_AnswersCountViewModel answerAskTheCommunity_AnswersCountViewModel = new AnswerAskTheCommunity_AnswersCountViewModel();
+			List<AnswerAskTheCommunity_AnswersViewModel> answerAskTheCommunity_AnswersViewModels = new List<AnswerAskTheCommunity_AnswersViewModel>();
 			#endregion
 			#region Resource
 			var BusinessNameItem = await _UnitOfWork.BusinessRepo.GetBusinessName(BusinessId);
 			var BusinessFaqItem = await _UnitOfWork.AskTheCommunityRepo.GetBusinessFaqById(BusinessFaqIId);
+			var Answers = await _UnitOfWork.AskTheCommunityRepo.GetBusinessFaqAnswers(BusinessFaqIId);
 			#endregion
 			#region Navbar
 			answerAskTheCommunity_NavbarViewModel.BusinessName = BusinessNameItem;
 			answerAskTheCommunity_NavbarViewModel.Date = BusinessFaqItem.Date.ToPersianDateString();
-
 			#endregion
-
+			#region AnswerCount
+			var AnswerCount = await _UnitOfWork.AskTheCommunityRepo.AnswerCount(BusinessFaqIId);
+			answerAskTheCommunity_AnswersCountViewModel.Count = AnswerCount;
+			#endregion
+			#region Answers
+			foreach (var item in Answers)
+			{
+				var UserPhoto = item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault() == null ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault().UploadedPhoto;
+				answerAskTheCommunity_AnswersViewModels.Add(new AnswerAskTheCommunity_AnswersViewModel() { HelpFullCount = item.HelpFullCount, NotHelpFullCount = item.NotHelpFullCount, Text = item.Text, UserName = item.BizAppUser.FullName, UserPicture = UserPhoto });
+			}
+			#endregion
 			#region FinalResualts
-
+			answerAskTheCommunityViewModel.answerAskTheCommunity_AnswersCountViewModel = answerAskTheCommunity_AnswersCountViewModel;
+			answerAskTheCommunityViewModel.answerAskTheCommunity_NavbarViewModel = answerAskTheCommunity_NavbarViewModel;
+			answerAskTheCommunityViewModel.answerAskTheCommunity_AnswersViewModels = answerAskTheCommunity_AnswersViewModels;
 			#endregion
-			return View();
+			return View(answerAskTheCommunityViewModel);
 		}
-
-
-
+		[HttpPost]
+		public async Task<IActionResult> AddFaqsAnswers(BusinessFaqAnswer model)
+		{
+			await _UnitOfWork.AskTheCommunityRepo.AddBusinessFaqAnswers(model);
+			await _UnitOfWork.SaveAsync();
+			return Json(new { success = true });
+		}
+		[HttpPost]
+		public async Task<IActionResult> AddHelpfullAnswers(Guid Id, string UserId)
+		{
+			await _UnitOfWork.AskTheCommunityRepo.AddHelpFull(Id, UserId);
+			await _UnitOfWork.SaveAsync();
+			return Json(new { success = true });
+		}
+		[HttpPost]
+		public async Task<IActionResult> AddNotHelpfullAnswers(Guid Id, string UserId)
+		{
+			await _UnitOfWork.AskTheCommunityRepo.AddNotHelpFull(Id, UserId);
+			await _UnitOfWork.SaveAsync();
+			return Json(new { success = true });
+		}
 	}
 }

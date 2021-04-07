@@ -55,7 +55,6 @@
     <Folder Include="wwwroot\Scripts\Search\" />
     <Folder Include="wwwroot\Upload\Bussiness\Files\" />
     <Folder Include="wwwroot\Upload\Categories\Files\" />
-    <Folder Include="wwwroot\Upload\Review\Files\" />
     <Folder Include="wwwroot\Upload\User\Profiles\" />
   </ItemGroup>
 

@@ -14,5 +14,8 @@ namespace DataLayer.Infrastructure
 		Task AddBusinessFaqAnswers(BusinessFaqAnswer model);
 		Task AddBusinessFaq(BusinessFaq model);
 		Task<BusinessFaq> GetBusinessFaqById(Guid Id);
+		Task<int> AnswerCount(Guid Id);
+		Task AddHelpFull(Guid Id, string UserId);
+		Task AddNotHelpFull(Guid Id, string UserId); 
 	}
 }

@@ -30,4 +30,9 @@
 		Rejected = 0,
 		Waiting = 2
 	}
+	public enum VotesType
+	{
+		HelpFull , 
+		NotHelpFull
+	}
 }

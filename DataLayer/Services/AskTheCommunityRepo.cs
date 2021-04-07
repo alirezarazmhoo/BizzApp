@@ -63,5 +63,33 @@ namespace DataLayer.Services
 				return null; 
 			}
 		}
+		public async Task<int> AnswerCount(Guid Id)
+		{
+			return  await DbContext.BusinessFaqAnswers.Where(s => s.BusinessFaqId.Equals(Id)).CountAsync();
+		}
+		public async Task AddHelpFull(Guid Id , string UserId)
+		{
+			var Items = await DbContext.BusinessFaqAnswers.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+			var UserItem = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(UserId));
+			if(Items !=null && UserItem != null)
+			{
+				if(await DbContext.UsersInCommunityVotes.AnyAsync(s=>s.BizAppUserId == UserId && s.BusinessFaqAnswerId == Id && s.VotesType == DomainClass.Enums.VotesType.HelpFull))
+				{
+					Items.HelpFullCount += 1; 
+				}
+			}
+		}
+		public async Task AddNotHelpFull(Guid Id, string UserId)
+		{
+			var Items = await DbContext.BusinessFaqAnswers.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+			var UserItem = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(UserId));
+			if (Items != null && UserItem != null)
+			{
+				if (await DbContext.UsersInCommunityVotes.AnyAsync(s => s.BizAppUserId == UserId && s.BusinessFaqAnswerId == Id && s.VotesType == DomainClass.Enums.VotesType.NotHelpFull))
+				{
+					Items.NotHelpFullCount += 1;
+				}
+			}
+		}
 	}
 }

@@ -10,7 +10,7 @@ namespace BizApp.Models.Basic
 	{
 		public AnswerAskTheCommunity_NavbarViewModel answerAskTheCommunity_NavbarViewModel { get; set; }
 		public ICollection<AnswerAskTheCommunity_AnswersViewModel> answerAskTheCommunity_AnswersViewModels { get; set; }
-
+		public AnswerAskTheCommunity_AnswersCountViewModel answerAskTheCommunity_AnswersCountViewModel { get; set; }
 	}
 	#endregion
 	#region Navbar
@@ -22,15 +22,19 @@ namespace BizApp.Models.Basic
 		public string UserName { get; set; }
 		public string UserId { get; set; }
 		public string Date { get; set; }
-
-
+	}
+	#endregion
+	#region AnswerCount
+	public class AnswerAskTheCommunity_AnswersCountViewModel
+	{
+		public int Count { get; set; }
 	}
 
 	#endregion
+
 	#region Answers
 	public class AnswerAskTheCommunity_AnswersViewModel
 	{
-		public int AnswerCount { get; set;  }
 		public string UserName { get; set; }
 		public string UserPicture { get; set; }
 		public string Text { get; set; }
