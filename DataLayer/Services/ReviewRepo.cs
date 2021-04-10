@@ -4,9 +4,11 @@ using DataLayer.Infrastructure.Reviews;
 using DomainClass.Enums;
 using DomainClass.Review;
 using DomainClass.Review.Queries;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -43,11 +45,11 @@ namespace DataLayer.Services
 		{
 			pageNumber = pageNumber.HasValue == false ? 1 : pageNumber;
 
-			var Items = await DbContext.CustomerBusinessMedias.Where(s => s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted)
+			var Items = await DbContext.CustomerBusinessMedias.Where(s => s.StatusEnum == StatusEnum.Accepted)
 				.Include(s => s.CustomerBusinessMediaPictures)
 				.Include(s => s.BizAppUser)
 				.ThenInclude(s => s.ApplicationUserMedias)
-				.Include(s => s.UsersInCustomerBusinessMediaLikes).Include(s => s.Business).Where(s => s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted)
+				.Include(s => s.UsersInCustomerBusinessMediaLikes).Include(s => s.Business).Where(s => s.StatusEnum == StatusEnum.Accepted && s.CustomerBusinessMediaPictures.Where(s=>s.StatusEnum == StatusEnum.Accepted).Count()>0)
 				.Skip((pageNumber.Value - 1) * 3).Take(3).ToListAsync();
 			return Items;
 		}
@@ -153,5 +155,94 @@ namespace DataLayer.Services
 
 			return result;
 		}
+
+		public async Task<IEnumerable<Review>> GetBusinessReviews(Guid Id)
+		{
+			var BusinessItem = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+			if (BusinessItem != null)
+			{
+				return await DbContext.Reviews.Include(s => s.BizAppUser).ThenInclude(s => s.ApplicationUserMedias).Where(s => s.BusinessId.Equals(Id) && s.StatusEnum == StatusEnum.Accepted).ToListAsync();
+			}
+			else
+			{
+				return new List<Review>();
+			}
+		}
+		public async Task AddReview(Review model, IFormFile[] files)
+		{
+			if (await DbContext.Users.AnyAsync(s => s.Id.Equals(model.BizAppUserId)) && await DbContext.Businesses.AnyAsync(s => s.Id.Equals(model.BusinessId)))
+			{
+				model.StatusEnum = StatusEnum.Waiting;
+				model.Date = DateTime.Now;
+				model.UsefulCount = 0;
+				model.CoolCount = 0;
+				model.FunnyCount = 0;
+				model.Rate = model.Rate == 0 ? 1 : model.Rate;
+				await DbContext.Reviews.AddAsync(model);
+				await DbContext.SaveChangesAsync();
+				if (files != null && files.Count() > 0)
+				{
+					foreach (var item in files)
+					{
+						var fileName = Guid.NewGuid().ToString().Replace('-', '0') + Path.GetExtension(item.FileName).ToLower();
+						var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Upload\Review\Files\", fileName);
+						using (var stream = new FileStream(filePath, FileMode.Create))
+						{
+							item.CopyTo(stream);
+						}
+						DbContext.ReviewMedias.Add(new ReviewMedia()
+						{
+							LikeCount = 0,
+							ReviewId = model.Id,
+							CreatedAt = DateTime.Now,
+							Description = string.Empty,
+							Image = "/Upload/Review/Files/" + fileName,
+						});
+					}
+				}
+			}
+
+			}
+		public async Task AddBusinessMedia(CustomerBusinessMedia model, IFormFile[] files)
+		{
+			if (await DbContext.Users.AnyAsync(s => s.Id.Equals(model.BizAppUserId)) && await DbContext.Businesses.AnyAsync(s => s.Id.Equals(model.BusinessId)))
+			{
+				model.Date = DateTime.Now;
+				model.StatusEnum = StatusEnum.Accepted;
+				await DbContext.CustomerBusinessMedias.AddAsync(model);
+				await DbContext.SaveChangesAsync();
+				if (files != null && files.Count() > 0)
+				{
+					foreach (var item in files)
+					{
+						var fileName = Guid.NewGuid().ToString().Replace('-', '0') + Path.GetExtension(item.FileName).ToLower();
+						var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Upload\CustomerMediaBusiess\Files\", fileName);
+						using (var stream = new FileStream(filePath, FileMode.Create))
+						{
+							item.CopyTo(stream);
+						}
+						DbContext.CustomerBusinessMediaPictures.Add(new CustomerBusinessMediaPictures()
+						{
+							LikeCount = 0,
+							CustomerBusinessMediaId = model.Id,
+							StatusEnum = StatusEnum.Waiting,
+							Description = string.Empty,
+							Image = "/Upload/CustomerMediaBusiess/Files/" + fileName,
+						});
+
+					}
+				}
+			}
+		}
+		//public async Task<CustomerBusinessMedia> GetBusinessMedia(Guid id)
+		//{
+		//	var BusinessItem = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Equals(id));
+		//	if(BusinessItem != null)
+		//	{
+		//		var CustomerBusinessItem = await DbContext.CustomerBusinessMedias.Where(s=>s.BusinessId.Equals(id) && s.)
+		//	}
+		//}
+
+
 	}
 }

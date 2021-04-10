@@ -88,7 +88,7 @@ namespace BizApp.Controllers
 			foreach (var item in await _UnitOfWork.ReviewRepo.GetRecentActivityBusinessMedia(null))
 			{
 				List<MainPage_RecentActivityUserMediaBusiness> MainPage_RecentActivityUserMediaBusinesses = new List<MainPage_RecentActivityUserMediaBusiness>();
-				if (item.CustomerBusinessMediaPictures.Count > 0)
+				if (item.CustomerBusinessMediaPictures.Count > 0 )
 				{
 					MainPage_RecentActivityCreator MainPage_RecentActivityCreator = new MainPage_RecentActivityCreator();
 					MainPage_RecentActivityContent MainPage_RecentActivityContent = new MainPage_RecentActivityContent();
