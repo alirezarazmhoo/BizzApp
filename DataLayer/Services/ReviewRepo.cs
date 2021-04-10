@@ -109,11 +109,11 @@ namespace DataLayer.Services
 			return BusinessItem;
 		}
 
-		private IQueryable<ReviewPaginateQuery> GetPaginateReviewQuery(int page, int pageSize = 10)
+		private IQueryable<ReviewPaginateQuery> GetPaginateReviewQuery(string userName, int page, int pageSize = 10)
 		{
 			var query =
 				DbContext.Reviews
-						.Where(w => w.StatusEnum == StatusEnum.Accepted)
+						.Where(w => w.StatusEnum == StatusEnum.Accepted && w.BizAppUser.UserName == userName)
 						.Paginate(page, pageSize)
 						.Select(s => new ReviewPaginateQuery
 						{
@@ -140,27 +140,18 @@ namespace DataLayer.Services
 											CreatedAt = m.CreatedAt,
 											Description = m.Description
 										})
+										.OrderByDescending(x => x.CreatedAt)
 						});
 
 			return query;
 		}
-
-		public async Task<IEnumerable<Review>> GetAll(int page)
+		public async Task<IEnumerable<ReviewPaginateQuery>> GetUseReviews(string userName, int page)
 		{
-			var result = await GetPaginateReviewQuery(page, _pageSize)
-				.Where(w => w.Status == StatusEnum.Waiting).ToListAsync();
+			var result = await GetPaginateReviewQuery(userName, page, _pageSize)
+							.Where(w => w.Status == StatusEnum.Waiting)
+							.ToListAsync();
 
-
-
-			throw new NotImplementedException();
-		}
-
-		public async Task<IEnumerable<Review>> GetAll(int page, string userName)
-		{
-			var result = await GetPaginateReviewQuery(page, _pageSize).ToListAsync();
-
-
-			throw new NotImplementedException();
+			return result;
 		}
 	}
 }

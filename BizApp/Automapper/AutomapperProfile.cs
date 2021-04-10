@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BizApp.Areas.Admin.Models;
 using BizApp.Areas.Profile.Models;
+using BizApp.Areas.Profile.Models.Reviews;
 using BizApp.Areas.WebApi.Models;
 using BizApp.Models.Basic;
 using BizApp.Utility;
@@ -11,6 +12,7 @@ using DomainClass.Businesses.Queries;
 using DomainClass.Commands;
 using DomainClass.Queries;
 using DomainClass.Review;
+using DomainClass.Review.Queries;
 using System.Linq;
 
 namespace BizApp.Automapper
@@ -96,7 +98,14 @@ namespace BizApp.Automapper
 			CreateMap<ApplicationUserMedia, RemoveUserPhotoViewModel>()
 				.ForMember(dest => dest.Path, opt => opt.MapFrom(src => src.UploadedPhoto))
 				.ReverseMap();
+
+			// Reviews
+			CreateMap<ReviewPaginateQuery, UserReviewViewModel>()
+				.ForMember(dest => dest.Media, opt => opt.MapFrom(src => src.Media))
+				.ReverseMap();
 	
+			//CreateMap<ReviewMediaQuery, ReviewMediaViewModel>
+
 		}
 	}
 }

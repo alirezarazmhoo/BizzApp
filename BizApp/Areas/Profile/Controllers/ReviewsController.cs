@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
+using BizApp.Areas.Profile.Models.Reviews;
 using DataLayer.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace BizApp.Areas.Profile.Controllers
 {
+	[Area("profile")]
 	public class ReviewsController : Controller
 	{
 		private readonly IMapper _mapper;
@@ -15,10 +19,16 @@ namespace BizApp.Areas.Profile.Controllers
 			_unitOfWork = unitOfWork;
 		}
 
-		public IActionResult Index()
+		public async Task<IActionResult> Index(string userName = null, int page = 1)
 		{
+			if (string.IsNullOrEmpty(userName)) userName = User.Identity.Name;
+			if (string.IsNullOrEmpty(userName)) return NotFound();
 
-			return View();
+			var data = await _unitOfWork.ReviewRepo.GetUseReviews(userName, page);
+			var model = _mapper.Map<UserReviewViewModel>(data);
+
+			return View(model);
 		}
+
 	}
 }

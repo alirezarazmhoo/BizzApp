@@ -41,6 +41,8 @@
     <Compile Remove="Migrations\20210302094835_ChangerUserMediaAndAddUsername.Designer.cs" />
     <Compile Remove="Migrations\20210314074806_unnullableBusinessCategory.cs" />
     <Compile Remove="Migrations\20210314074806_unnullableBusinessCategory.Designer.cs" />
+    <Compile Remove="Migrations\20210410093721_Nemche.cs" />
+    <Compile Remove="Migrations\20210410093721_Nemche.Designer.cs" />
 
   </ItemGroup>
 
