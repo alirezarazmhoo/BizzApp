@@ -1,6 +1,7 @@
 ﻿using DataLayer.Data;
 using DataLayer.Extensions;
 using DataLayer.Infrastructure.Reviews;
+using DomainClass.Businesses;
 using DomainClass.Enums;
 using DomainClass.Review;
 using DomainClass.Review.Queries;
@@ -237,15 +238,151 @@ namespace DataLayer.Services
 				}
 			}
 		}
-		//public async Task<CustomerBusinessMedia> GetBusinessMedia(Guid id)
-		//{
-		//	var BusinessItem = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Equals(id));
-		//	if(BusinessItem != null)
-		//	{
-		//		var CustomerBusinessItem = await DbContext.CustomerBusinessMedias.Where(s=>s.BusinessId.Equals(id) && s.)
-		//	}
-		//}
+	
+		public async Task<IEnumerable<Business>> GuessReview(string id , int? cityId)
+		{
+			var UserItem = await DbContext.Users.FirstOrDefaultAsync(s=>s.Id.Equals(id));
+			List<Business> FinalList = new List<Business>();
+			List<Review> Reviews = new List<Review>();
+			List<Business> Businesses = new List<Business>();
+			if(UserItem != null)
+			{
+				if (UserItem.CityId.HasValue)
+				{
+					 Reviews = await DbContext.Reviews.Where(s => s.StatusEnum == StatusEnum.Accepted && s.BizAppUserId.Equals( id)).ToListAsync();
+					 Businesses = await DbContext.Businesses.Where(s => s.District.City.Id == UserItem.CityId).ToListAsync();
+					foreach (var item in Businesses)
+					{
+						if(!Reviews.Any(s=>s.BusinessId == item.Id))
+						{
+							FinalList.Add(item);
+						}
+					}
+				return FinalList; 
+				}
+				else
+				{
+					Reviews = await DbContext.Reviews.Where(s => s.StatusEnum == StatusEnum.Accepted && s.BizAppUserId.Equals(id)).ToListAsync();
+					Businesses = await DbContext.Businesses.Where(s => s.District.City.Id == cityId.Value).ToListAsync();
+					foreach (var item in Businesses)
+					{
+						if (Reviews.Any(s => s.BusinessId == item.Id) == false)
+						{
+							FinalList.Add(item);
+						}
+					}
+					return FinalList;
 
+				}
+			}
+			
+			else
+			{
+				return new List<Business>();
+			}
 
+		}
+
+		public async Task<VotesAction> ChangeHelpFull(Guid Id, string UserId)
+		{
+			var Item = await DbContext.Reviews.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+			var UserItem = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(UserId));
+			UsersInReviewVotes usersInReviewVotes = new UsersInReviewVotes();
+			if (Item != null && UserItem != null)
+			{
+				if (!await DbContext.UsersInReviewVotes.AnyAsync(s => s.BizAppUserId == UserId && s.ReviewId == Id && s.VotesType == VotesType.HelpFull))
+				{
+					Item.UsefulCount += 1;
+					usersInReviewVotes.BizAppUserId = UserId;
+					usersInReviewVotes.ReviewId = Id;
+					usersInReviewVotes.VotesType = VotesType.HelpFull;
+				 await	DbContext.UsersInReviewVotes.AddAsync(usersInReviewVotes);
+
+					return VotesAction.Add; 
+				}
+				else
+				{
+					Item.UsefulCount -= 1;
+					var ReviewVoteItem = await DbContext.UsersInReviewVotes.FirstOrDefaultAsync(s => s.BizAppUserId == UserId && s.ReviewId == Id && s.VotesType == VotesType.HelpFull);
+					if(ReviewVoteItem != null)
+					{
+						 DbContext.UsersInReviewVotes.Remove(ReviewVoteItem);
+					}
+					return VotesAction.Submission;
+				}
+			}
+			else
+			{
+				return VotesAction.Undefinded; 
+			}
+		}
+		public async Task<VotesAction> ChangeFunnyCount(Guid Id, string UserId)
+		{
+			var Item = await DbContext.Reviews.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+			var UserItem = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(UserId));
+			UsersInReviewVotes usersInReviewVotes = new UsersInReviewVotes();
+
+			if (Item != null && UserItem != null)
+			{
+				if (!await DbContext.UsersInReviewVotes.AnyAsync(s => s.BizAppUserId == UserId && s.ReviewId == Id && s.VotesType == VotesType.Funny))
+				{
+					Item.FunnyCount += 1;
+					usersInReviewVotes.BizAppUserId = UserId;
+					usersInReviewVotes.ReviewId = Id;
+					usersInReviewVotes.VotesType = VotesType.Funny;
+					await DbContext.UsersInReviewVotes.AddAsync(usersInReviewVotes);
+					return VotesAction.Add;
+				}
+				else
+				{
+					Item.FunnyCount -= 1;
+					var ReviewVoteItem = await DbContext.UsersInReviewVotes.FirstOrDefaultAsync(s => s.BizAppUserId == UserId && s.ReviewId == Id && s.VotesType == VotesType.Funny);
+					if (ReviewVoteItem != null)
+					{
+						DbContext.UsersInReviewVotes.Remove(ReviewVoteItem);
+					}
+					return VotesAction.Submission;
+
+				}
+			}
+			else
+			{
+				return VotesAction.Undefinded;
+			}
+		}
+		public async Task<VotesAction> ChangeCoolCount(Guid Id, string UserId)
+		{
+			var Item = await DbContext.Reviews.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+			var UserItem = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(UserId));
+			UsersInReviewVotes usersInReviewVotes = new UsersInReviewVotes();
+
+			if (Item != null && UserItem != null)
+			{
+				if (!await DbContext.UsersInReviewVotes.AnyAsync(s => s.BizAppUserId == UserId && s.ReviewId == Id && s.VotesType == VotesType.Cool))
+				{
+					Item.CoolCount += 1;
+					usersInReviewVotes.BizAppUserId = UserId;
+					usersInReviewVotes.ReviewId = Id;
+					usersInReviewVotes.VotesType = VotesType.Cool;
+					await DbContext.UsersInReviewVotes.AddAsync(usersInReviewVotes);
+					return VotesAction.Add;
+				}
+				else
+				{
+					Item.CoolCount -= 1;
+					var ReviewVoteItem = await DbContext.UsersInReviewVotes.FirstOrDefaultAsync(s => s.BizAppUserId == UserId && s.ReviewId == Id && s.VotesType == VotesType.Cool);
+					if (ReviewVoteItem != null)
+					{
+						DbContext.UsersInReviewVotes.Remove(ReviewVoteItem);
+					}
+					return VotesAction.Submission;
+
+				}
+			}
+			else
+			{
+				return VotesAction.Undefinded;
+			}
+		}
 	}
 }

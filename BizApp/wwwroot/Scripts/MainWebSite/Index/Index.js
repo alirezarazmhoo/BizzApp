@@ -194,3 +194,64 @@ function ShowModal(elem) {
 	});
 }
 
+//addUsefull
+function changeUsefull(element) {
+
+	$.ajax({
+		type: "Post",
+		url: '/Review/ChangeUseFullCount?Id=' + $(element).data('assigned-id') + '',
+		dataType: "json",
+		contentType: false,
+		processData: false,
+		success: function (response) {
+			if (response.type == "add") {
+				var number = parseInt($(element).prev().text()) + 1;
+				$(element).prev().text(number);
+			}
+			else {
+				var number = parseInt($(element).prev().text()) - 1;
+				$(element).prev().text(number);
+			}
+			}
+	});
+}
+function changeFunny(element) {
+
+	$.ajax({
+		type: "Post",
+		url: '/Review/ChangeFunnyCount?Id=' + $(element).data('assigned-id') + '',
+		dataType: "json",
+		contentType: false,
+		processData: false,
+		success: function (response) {
+			if (response.type == "add") {
+				var number = parseInt($(element).prev().text()) + 1;
+				$(element).prev().text(number);
+			}
+			else {
+				var number = parseInt($(element).prev().text()) - 1;
+				$(element).prev().text(number);
+			}
+		}
+	});
+}
+function changeCool(element) {
+
+	$.ajax({
+		type: "Post",
+		url: '/Review/ChangeCoolCount?Id=' + $(element).data('assigned-id') + '',
+		dataType: "json",
+		contentType: false,
+		processData: false,
+		success: function (response) {
+			if (response.type == "add") {
+				var number = parseInt($(element).prev().text()) + 1;
+				$(element).prev().text(number);
+			}
+			else {
+				var number = parseInt($(element).prev().text()) - 1;
+				$(element).prev().text(number);
+			}
+		}
+	});
+}

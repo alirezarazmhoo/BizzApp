@@ -1,4 +1,6 @@
-﻿using DomainClass.Review;
+﻿using DomainClass.Businesses;
+using DomainClass.Enums;
+using DomainClass.Review;
 using DomainClass.Review.Queries;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -19,6 +21,10 @@ namespace DataLayer.Infrastructure.Reviews
 
 		Task<IEnumerable<Review>> GetBusinessReviews(Guid Id);
 		Task AddReview(Review model, IFormFile[] files);
-		Task AddBusinessMedia(CustomerBusinessMedia model, IFormFile[] files); 
+		Task AddBusinessMedia(CustomerBusinessMedia model, IFormFile[] files);
+		Task<IEnumerable<Business>> GuessReview(string id, int? cityId);
+		Task<VotesAction> ChangeHelpFull(Guid Id, string UserId);
+		Task<VotesAction> ChangeFunnyCount(Guid Id, string UserId);
+		Task<VotesAction> ChangeCoolCount(Guid Id, string UserId);
 	}
 }

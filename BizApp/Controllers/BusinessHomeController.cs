@@ -3,6 +3,8 @@ using BizApp.Models.Basic;
 using BizApp.Utility;
 using DataLayer.Infrastructure;
 using DomainClass.Businesses;
+using DomainClass.Review;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -118,6 +120,60 @@ namespace BizApp.Controllers
 				return Json(new { success = false });
 			}
 		}
+		[HttpPost]
+		public async Task<IActionResult> AddFaqsAnswers(Review model, IFormFile[] files)
+		{
+			try
+			{
+				await _UnitOfWork.ReviewRepo.AddReview(model, files);
+				await _UnitOfWork.SaveAsync();
+				return RedirectToAction(nameof(Index));
+			}
+			catch (Exception)
+			{
+				return RedirectToAction(nameof(Index));
+			}
+		}
+		[HttpPost]
+		public async Task<IActionResult> AddMediaForBusiness(CustomerBusinessMedia model, IFormFile[] files)
+		{
+			try
+			{
+				await _UnitOfWork.ReviewRepo.AddBusinessMedia(model, files);
+				await _UnitOfWork.SaveAsync();
+				return Content("");
+			}
+			catch (Exception)
+			{
+				return Content("");
+
+			}
+		}
+		public async Task<IActionResult> GetGalleryForBusiness(Guid Id)
+		{
+			#region Objects
+			BusinessGalleryViewModel businessGalleryViewModel = new BusinessGalleryViewModel();
+			Dictionary<Guid, string> Gallery = new Dictionary<Guid, string>();
+			#endregion
+			#region Resource
+			var BusinessInfo = await _UnitOfWork.BusinessRepo.GetById(Id);
+			var TotalReviews = await _UnitOfWork.ReviewRepo.BusinessReviewCount(Id);
+			var GalleryItems = await _UnitOfWork.BusinessHomePageRepo.GetBusinessGallery(Id);
+			#endregion
+			#region Main
+			businessGalleryViewModel.BusinessId = BusinessInfo.Id;
+			businessGalleryViewModel.BusinessName = BusinessInfo.Name;
+			businessGalleryViewModel.BusinessRate = BusinessInfo.Rate;
+			businessGalleryViewModel.BusinessTotalReview = TotalReviews;
+			foreach (var item in GalleryItems)
+			{
+				Gallery.TryAdd(item.Id, item.Image);
+			}
+			businessGalleryViewModel.Pictures = Gallery; 
+			#endregion
+			return View(businessGalleryViewModel);
+		}
+
 
 	}
 }

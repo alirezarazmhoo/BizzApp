@@ -141,6 +141,20 @@ namespace DataLayer.Services
 				await DbContext.SaveChangesAsync();
 			}
 		}
+
+
+		public async Task<IEnumerable<CustomerBusinessMediaPictures>> GetBusinessGallery(Guid id)
+		{
+			var BusinessItem = await DbContext.Businesses.FirstOrDefaultAsync(s=>s.Id.Equals(id));
+			if(BusinessItem != null)
+			{
+				return await DbContext.CustomerBusinessMediaPictures.Where(s => s.CustomerBusinessMedia.BusinessId.Equals(id) && s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted).ToListAsync();
+			}
+			else
+			{
+				return new List<CustomerBusinessMediaPictures>();
+			}
+		}
 		public class LocationHours
 		{
 			public WeekDaysEnum Day { get; set; }
@@ -171,5 +185,9 @@ namespace DataLayer.Services
 			int Sum2 = await DbContext.CustomerBusinessMedias.Where(s => s.BusinessId.Equals(id)).CountAsync();
 			return Sum1 + Sum2; 
 		}
+	
+
+
+
 	}
 }

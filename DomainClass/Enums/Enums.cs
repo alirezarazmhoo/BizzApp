@@ -33,6 +33,17 @@
 	public enum VotesType
 	{
 		HelpFull , 
-		NotHelpFull
+		NotHelpFull ,
+		Cool , 
+		Funny,
+		Like  
+		
+	}
+	public enum VotesAction
+	{
+		Add,
+		Submission,
+		Undefinded
+
 	}
 }

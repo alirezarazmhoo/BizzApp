@@ -14,7 +14,6 @@ namespace BizApp.Controllers
 	public class ReviewController : Controller
 	{
 		private readonly IUnitOfWorkRepo _unitOfWork;
-
 		public ReviewController(IUnitOfWorkRepo unitOfWork)
 		{
 			_unitOfWork = unitOfWork;
@@ -40,40 +39,102 @@ namespace BizApp.Controllers
 			#endregion
 			return View(reviewViewModel);
 		}
-
+		public async Task<IActionResult> GuessReivew(string Id)
+		{
+			#region Objects
+			GuessReviewViewModel guessReviewViewModel = new GuessReviewViewModel();
+			List<GuessReview_BusinessListViewModel> guessReview_BusinessListViewModels = new List<GuessReview_BusinessListViewModel>();
+			#endregion
+			#region Resource
+			var items = await _unitOfWork.ReviewRepo.GuessReview(Id, null);
+			#endregion
+			#region ListBusiness
+			foreach (var item in items)
+			{
+				guessReview_BusinessListViewModels.Add(new GuessReview_BusinessListViewModel() { Id = item.Id, Image = string.IsNullOrEmpty(item.FeatureImage) == true ? "/Upload/DefaultPicutres/Bussiness/Business.jpg" : item.FeatureImage, Name = item.Name }); 
+			}
+			#endregion
+			#region FinalResualt
+			guessReviewViewModel.guessReview_BusinessListViewModels = guessReview_BusinessListViewModels; 
+			#endregion
+			return View(guessReviewViewModel);
+		}
 		[HttpPost]
-		public async Task<IActionResult> AddFaqsAnswers(Review model, IFormFile[] files)
+		public async Task<JsonResult> ChangeUseFullCount(Guid Id)
 		{
+			var UserId = "8ad1f65a-c47d-4f1a-a601-5c64c186c09b";
+			try {
+				string type;
+				if (await _unitOfWork.ReviewRepo.ChangeHelpFull(Id, UserId) == DomainClass.Enums.VotesAction.Add)
+				{
+					type = "add";
+				}
+				else
+				{
+					type = "submission";
+
+				}
+				await _unitOfWork.SaveAsync();
+			    return Json(new { success = true , type });
+			}
+			catch (Exception)
+			{
+				return Json(new { success = false });
+
+			}
+
+		}
+		[HttpPost]
+		public async Task<JsonResult> ChangeFunnyCount(Guid Id)
+		{
+			var UserId = "8ad1f65a-c47d-4f1a-a601-5c64c186c09b";
 			try
 			{
-				await _unitOfWork.ReviewRepo.AddReview(model, files);
-				await _unitOfWork.SaveAsync();
-				return RedirectToAction(nameof(Index));
-			}
-			catch (Exception )
-			{
-				return RedirectToAction(nameof(Index));
-			}
-		}
+				string type;
+				if (await _unitOfWork.ReviewRepo.ChangeFunnyCount(Id, UserId) == DomainClass.Enums.VotesAction.Add)
+				{
+					type = "add";
+				}
+				else
+				{
+					type = "submission";
 
-		public async Task<IActionResult> AddMediaForBusiness(CustomerBusinessMedia model, IFormFile[] files)
+				}
+				await _unitOfWork.SaveAsync();
+				return Json(new { success = true, type });
+			}
+			catch (Exception)
+			{
+				return Json(new { success = false });
+
+			}
+
+		}
+		[HttpPost]
+		public async Task<JsonResult> ChangeCoolCount(Guid Id)
 		{
+			var UserId = "8ad1f65a-c47d-4f1a-a601-5c64c186c09b";
 			try
 			{
-				await _unitOfWork.ReviewRepo.AddBusinessMedia(model,files);
+				string type;
+				if (await _unitOfWork.ReviewRepo.ChangeCoolCount(Id, UserId) == DomainClass.Enums.VotesAction.Add)
+				{
+					type = "add";
+				}
+				else
+				{
+					type = "submission";
+
+				}
 				await _unitOfWork.SaveAsync();
-				return Content("");
+				return Json(new { success = true, type });
 			}
-			catch (Exception )
+			catch (Exception)
 			{
-				return Content("");
+				return Json(new { success = false });
 
 			}
+
 		}
-
-
-
-
-
 	}
 }

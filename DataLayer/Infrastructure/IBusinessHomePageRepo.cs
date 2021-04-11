@@ -20,6 +20,10 @@ namespace DataLayer.Infrastructure
 		Task<IEnumerable<DomainClass.Businesses.BusinessFaq>> GetBusinessFaq(Guid id);
 		Task<IEnumerable<Review>> GetBusinessReview(Guid id);
 		Task<IEnumerable<Business>> GetRelatedBusiness(Guid id);
-		Task MessageToBusiness(MessageToBusiness model); 
+		Task MessageToBusiness(MessageToBusiness model);
+
+
+		Task<IEnumerable<CustomerBusinessMediaPictures>> GetBusinessGallery(Guid id); 
+
 	}
 }
