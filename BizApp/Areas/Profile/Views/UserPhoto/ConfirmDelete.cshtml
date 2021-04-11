@@ -1,0 +1,47 @@
+﻿@model BizApp.Areas.Profile.Models.RemoveUserPhotoViewModel
+@{
+	ViewData["Title"] = "حذف تصویر پروفایل";
+	Layout = "~/Views/Shared/_AllPagesLayout.cshtml";
+}
+
+@section head
+{ 
+	<style>
+		.submit-btn {
+			color: #fff !important;
+			background: #d32323;
+			padding: 0 35px;
+			line-height: 36px;
+			border: none;
+			border-radius: 3px;
+			font-size: 13px;
+			font-weight: 600;
+			display: inline-block;
+			margin-top: 5%;
+		}
+	</style>
+}
+
+<section class="page-header">
+	<div class="container">
+		<div class="page-header__wrapper">
+			<h2>تایید حذف عکس</h2>
+		</div>
+	</div>
+</section>
+
+<section>
+	<div class="container">
+		<form asp-action="delete" asp-controller="userphoto" asp-area="profile" method="post">
+			<p>آیا از حذف این عکس مطمئن هستید؟</p>
+			<a href="@Model.Path" data-toggle="modal" data-target="#click-photo">
+				<img src="@Model.Path" alt="" width="100" />
+			</a>
+			<p>
+				<input type="hidden" id="id" name="id" value="@Model.Id" />
+				<button type="submit" class="submit-btn" style="font-size:12px;">حذف</button>
+				<a asp-action="index" asp-controller="userphoto" asp-area="profile" class="btn btn-link btn-sm" style="font-size:12px;">انصراف</a>
+			</p>
+		</form>
+	</div>
+</section>

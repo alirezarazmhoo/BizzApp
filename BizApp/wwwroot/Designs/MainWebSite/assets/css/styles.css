@@ -18516,7 +18516,7 @@ a:visited {
         margin-right: 0; }
       .recent-activities__item1__icon__left span::before {
         position: absolute;
-        content: "";
+     
         border-width: 5px 5px 5px 0;
         border-style: solid;
         border-color: transparent #d2d2d2 transparent transparent;
@@ -18524,7 +18524,7 @@ a:visited {
         left: -5px; }
       .recent-activities__item1__icon__left span::after {
         position: absolute;
-        content: "";
+        
         border-width: 4px 4px 4px 0;
         border-style: solid;
         border-color: transparent #fff transparent transparent;

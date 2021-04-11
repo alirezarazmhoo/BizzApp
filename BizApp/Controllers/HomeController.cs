@@ -57,11 +57,11 @@ namespace BizApp.Controllers
 			#region BrowseBusinessesByCategory
 			foreach (var item in CategoryItems)
 			{
-				MainPage_BrowseBusinessesByCategory.Add(new MainPage_BusinessesByCategory() { Id = item.Id, Name = item.Name, PngIcon = string.Empty, });
+				MainPage_BrowseBusinessesByCategory.Add(new MainPage_BusinessesByCategory() { Id = item.Id, Name = item.Name, PngIcon = item.Terms.Where(s=>s.CategoryId == item.Id && s.Key.Equals("png-icon")).Select(s=>s.Value).FirstOrDefault() == null ? "/Upload/DefaultPicutres/Category/categorydefault.jpg" : item.Terms.Where(s => s.CategoryId == item.Id && s.Key.Equals("png-icon")).Select(s => s.Value).FirstOrDefault()});
 			}
 			foreach (var item in UnChosenCategoryItems)
 			{
-				MoreCategoriesTuples.Add(new Tuple<string, string, int>(item.Name, "PngIcon", item.Id));
+				MoreCategoriesTuples.Add(new Tuple<string, string, int>(item.Name, item.Terms.Where(s => s.CategoryId == item.Id && s.Key.Equals("icon-web")).Select(s => s.Value).FirstOrDefault() == null ? "fa fa-cubes" : item.Terms.Where(s => s.CategoryId == item.Id && s.Key.Equals("icon-web")).Select(s => s.Value).FirstOrDefault(), item.Id));
 			}
 			MainPage_BusinessesByCategoryMain.MainPage_BusinessesByCategories = MainPage_BrowseBusinessesByCategory;
 			MainPage_BusinessesByCategoryMoreCategories.MoreCategories = MoreCategoriesTuples;
@@ -88,7 +88,7 @@ namespace BizApp.Controllers
 			foreach (var item in await _UnitOfWork.ReviewRepo.GetRecentActivityBusinessMedia(null))
 			{
 				List<MainPage_RecentActivityUserMediaBusiness> MainPage_RecentActivityUserMediaBusinesses = new List<MainPage_RecentActivityUserMediaBusiness>();
-				if (item.CustomerBusinessMediaPictures.Count > 0)
+				if (item.CustomerBusinessMediaPictures.Count > 0 )
 				{
 					MainPage_RecentActivityCreator MainPage_RecentActivityCreator = new MainPage_RecentActivityCreator();
 					MainPage_RecentActivityContent MainPage_RecentActivityContent = new MainPage_RecentActivityContent();

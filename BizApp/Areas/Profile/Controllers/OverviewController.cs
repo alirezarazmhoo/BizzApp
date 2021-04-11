@@ -11,7 +11,6 @@ namespace BizApp.Areas.Profile.Controllers
 			//: base(unitOfWork, mapper, httpContextAccessor)
 		{
 		}
-
 		public IActionResult Index()
 		{
 			return View();

@@ -2,7 +2,6 @@
 using DomainClass.Enums;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace DomainClass.Review
 {
@@ -12,15 +11,16 @@ namespace DomainClass.Review
 		public StatusEnum StatusEnum { get; set; }
 		public string Description { get; set; }
 		public int Rate { get; set; }
-		public int UsefulCount { get; set;  }
-		public int FunnyCount { get; set;  }
+		public int UsefulCount { get; set; }
+		public int FunnyCount { get; set; }
 		public int CoolCount { get; set; }
-		public DateTime Date { get; set;}
+		public DateTime Date { get; set; }
 		public Guid BusinessId { get; set; }
-		public virtual Business Business { get; set; }
 		public string BizAppUserId { get; set; }
+
+		public virtual Business Business { get; set; }
 		public BizAppUser BizAppUser { get; set; }
 		public virtual ICollection<ReviewMedia> ReviewMedias { get; set; }
-		public virtual ICollection<UsersInReviewLike>  UsersInReviewLikes { get; set; }
+		public virtual ICollection<UsersInReviewLike> UsersInReviewLikes { get; set; }
 	}
 }

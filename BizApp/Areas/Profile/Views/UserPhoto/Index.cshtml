@@ -1,22 +1,74 @@
-﻿@model BizApp.Areas.Profile.Models.UserPhotosWithProfileDetailViewModel 
+﻿@model BizApp.Areas.Profile.Models.UserPhotosWithProfileDetailViewModel
 @{
 	ViewData["Title"] = "تصاویر پروفایل";
 	Layout = "~/Views/Shared/_AllPagesLayout.cshtml";
+
+	var currentUser = User.Identity.Name;
+	var userName = Context.Request.Query["username"].ToString();
+
+	var hasAccess = currentUser != null;
+	if (!string.IsNullOrEmpty(userName))
+	{
+		hasAccess = userName.Equals(currentUser, StringComparison.OrdinalIgnoreCase);
+	}
 }
 
-	
-<main>
+@section head {
+	<style>
+		.upload-btn {
+			color: #fff !important;
+			background: #d32323;
+			padding: 0 35px;
+			line-height: 36px;
+			border: none;
+			border-radius: 3px;
+			font-size: 13px;
+			font-weight: 600;
+			display: inline-block;
+			margin-top: 5%;
+		}
+	</style>
+}
 
-	<partial name="_HeaderPartial" />
+<main>
+	@if (TempData["message"] != null)
+	{
+		<div class="container" style="padding-top: 10px;">
+			<div class="alert alert-success" role="alert">
+				@TempData["message"]
+			</div>
+		</div>
+	}
+	<div class="container">
+		<div class="row">
+			<div class="col-md-7 md-7">
+				@(ViewBag.UserName = !string.IsNullOrEmpty(userName) ? userName : currentUser)				
+				<partial name="_HeaderPartial" />
+			</div>
+
+			@if (hasAccess)
+			{
+				<div class="col-md-5">
+					<div class="dz-message" data-dz-message="">
+						<a asp-area="profile" asp-controller="userphoto" asp-action="upload" class="upload-btn">آپلود تصویر</a>
+					</div>
+				</div>
+			}
+		</div>
+	</div>
 
 	<section class="profile-content-all-photos">
 		<div class="container">
 			<div class="profile-content-all-photos__item">
 				<ul>
-					@{ int count = 1; }
+					@{ int count = 0; }
 					@foreach (var photo in Model.UserPhotos)
 					{
-						<li><a href="#" data-toggle="modal" data-target="#click-photo-@count++"><img src="@photo.Path" alt=""></a></li>
+						<li>
+							<a href="#" data-toggle="modal" data-target="#click-photo" onclick="setSliderIndex(@(count++))">
+								<img src="@photo.Path" alt="" />
+							</a>
+						</li>
 					}
 				</ul>
 			</div>
@@ -38,63 +90,37 @@
 		</div>
 	</section>
 
-	<div class="profile-content-all-photos__modal modal fade" id="click-photo-1" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+	@*	@await Html.PartialAsync("Partials/_PhotoCarouselModalPartial", Model)*@
+
+	@*
+		slider source:
+			main website: https://swiperjs.com/demos
+			sample: https://github.com/nolimits4web/Swiper/blob/master/demos/060-pagination-fraction.html
+	*@
+
+	@(count = 1)
+	<div class="profile-content-all-photos__modal modal fade" id="click-photo" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-body">
 					<div class="profile-content-all-photos__modal__close" data-dismiss="modal">
 						<span>بستن</span>
 						<svg id="24x24_close" height="24" viewBox="0 0 24 24" width="24"><path d="M17.657 19.07L12 13.415 6.343 19.07 4.93 17.658 10.585 12 4.93 6.343 6.342 4.93 12 10.585l5.657-5.657L19.07 6.34 13.416 12l5.657 5.657-1.413 1.414z"></path></svg>
-
 					</div>
 					<div class="row" data-space="10">
 						<div class="col-lg-10 col-md-9 col-sm-8">
 							<div class="swiper-container">
-
 								<div class="swiper-wrapper">
-									<div class="swiper-slide">
-										<div class="profile-content-all-photos__modal__image">
-											<a href="#">
-												<img src="./assets/img/hamber.jpg" alt="">
-											</a>
-										</div>
-										<div class="profile-content-all-photos__modal__footer-slide">
-											<div class="profile-content-all-photos__modal__footer-slide__right">
+									@foreach (var photo in Model.UserPhotos)
+									{
+										<div class="swiper-slide" id="@photo.Id" tabindex="@(count++)">
+											<div class="profile-content-all-photos__modal__image">
 												<a href="#">
-													<svg id="18x18_grid" height="18" viewBox="0 0 18 18" width="18"><path d="M10 15v-5h5v5h-5zm0-12h5v5h-5V3zm-7 7h5v5H3v-5zm0-7h5v5H3V3z"></path></svg>
-													نمایش همه
-												</a>
-											</div>
-											<div class="profile-content-all-photos__modal__footer-slide__left">
-												<a href="#">
-													<svg id="18x18_share" height="18" viewBox="0 0 18 18" width="18"><path d="M17.714 6.43L13 10.356v-3.03c-1 0-5.097 1.47-6.286 3.62.274-3.08 4.286-5.5 6.286-5.5V2.5l4.714 3.93zM3 4v10h11v-2.5l1-1V15H2V3h8.5l-1 1H3z"></path></svg>
-													اشتراک گذاری
+													<img src="@photo.Path" alt="">
 												</a>
 											</div>
 										</div>
-									</div>
-									<div class="swiper-slide">
-
-										<div class="profile-content-all-photos__modal__image">
-											<a href="#">
-												<img src="./assets/img/hamber.jpg" alt="">
-											</a>
-										</div>
-										<div class="profile-content-all-photos__modal__footer-slide">
-											<div class="profile-content-all-photos__modal__footer-slide__right">
-												<a href="#">
-													<svg id="18x18_grid" height="18" viewBox="0 0 18 18" width="18"><path d="M10 15v-5h5v5h-5zm0-12h5v5h-5V3zm-7 7h5v5H3v-5zm0-7h5v5H3V3z"></path></svg>
-													نمایش همه
-												</a>
-											</div>
-											<div class="profile-content-all-photos__modal__footer-slide__left">
-												<a href="#">
-													<svg id="18x18_share" height="18" viewBox="0 0 18 18" width="18"><path d="M17.714 6.43L13 10.356v-3.03c-1 0-5.097 1.47-6.286 3.62.274-3.08 4.286-5.5 6.286-5.5V2.5l4.714 3.93zM3 4v10h11v-2.5l1-1V15H2V3h8.5l-1 1H3z"></path></svg>
-													اشتراک گذاری
-												</a>
-											</div>
-										</div>
-									</div>
+									}
 								</div>
 								<div class="swiper-pagination"></div>
 								<div class="swiper-button-next"></div>
@@ -103,391 +129,58 @@
 						</div>
 						<div class="col-lg-2 col-md-3 col-sm-4">
 							<div class="profile-content-all-photos__modal__content">
-								<div class="profile-content-all-photos__modal__content__title">
-									<div class="profile-content-all-photos__modal__content__title__avatar">
-										<a href="#"><img src="./assets/img/food.jpg" alt=""></a>
+
+								@await Html.PartialAsync("Partials/_UserInfoPartial", Model.ProfileDetail)
+
+								@if (hasAccess)
+								{
+									<div class="profile-content-all-photos__modal__content__desc">
+										<form asp-action="setasprimary" asp-controller="userphoto" asp-area="profile" method="post">
+											<input type="hidden" id="photoId" name="id" />
+											<button type="submit" class="btn btn-link btn-sm" style="font-size:12px;" onclick="setAsPrimary()">تنظیم به عنوان تصویر اصلی</button>
+										</form>
+										<form asp-action="confirmDelete" asp-controller="userphoto" asp-area="profile" method="get">
+											<input type="hidden" id="deleteId" name="id" />
+											<button type="submit" class="btn btn-link btn-sm" onclick="deletePhoto()" style="font-size:12px;" >حذف تصویر</button>
+										</form>
 									</div>
-									<div class="profile-content-all-photos__modal__content__title__info">
-										<div class="profile-content-all-photos__modal__content__title__info__name">
-											<a href="#">شیر روی سنگ ها</a>
-										</div>
-										<div class="profile-content-all-photos__modal__content__title__info__status">
-											<ul>
-												<li>
-													<svg id="24x24_friends" height="24" viewBox="0 0 24 24" width="24"><g><path d="M10.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946C1.618 12.48 2.586 11 4.018 11h4.964c1.432 0 2.4 1.48 1.842 2.817zM6.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path><path d="M21.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946c-.558-1.337.41-2.817 1.842-2.817h4.964c1.432 0 2.4 1.48 1.842 2.817zM17.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" opacity=".502"></path></g></svg>
-													<span>419</span>
-
-												</li>
-												<li>
-													<svg id="24x24_review" height="24" viewBox="0 0 24 24" width="24"><path d="M21 6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V6zm-5.88 10.428l-3.16-1.938-3.05 2.01.59-3.457L7 10.596l3.457-.505L11.96 6.5l1.582 3.59 3.458.506-2.5 2.447.62 3.385z"></path></svg>
-													<span>62</span>
-
-												</li>
-												<li>
-													<a href="#">نخبه</a>
-
-												</li>
-											</ul>
-										</div>
-
-									</div>
-
-
-
-								</div>
-								<div class="profile-content-all-photos__modal__content__desc">
-									<p>بهترین خدمات هتل حرفه ای Maitres و BARMEN در خانه در پاریس و ایل دو فرانسه</p>
-								</div>
+								}
 								<div class="profile-content-all-photos__modal__content__date">
-									<span>6 مارس 2021</span>
+									<span>@*@photo.CreatedAt*@</span>
 								</div>
 							</div>
 						</div>
-
 					</div>
 				</div>
-
-			</div>
-		</div>
-	</div>
-
-	<div class="profile-content-all-photos__modal modal fade" id="click-photo-2" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-body">
-					<div class="profile-content-all-photos__modal__close" data-dismiss="modal">
-						<span>بستن</span>
-						<svg id="24x24_close" height="24" viewBox="0 0 24 24" width="24"><path d="M17.657 19.07L12 13.415 6.343 19.07 4.93 17.658 10.585 12 4.93 6.343 6.342 4.93 12 10.585l5.657-5.657L19.07 6.34 13.416 12l5.657 5.657-1.413 1.414z"></path></svg>
-
-					</div>
-					<div class="row" data-space="10">
-						<div class="col-lg-10 col-md-9 col-sm-8">
-							<div class="swiper-container">
-
-								<div class="swiper-wrapper">
-									<div class="swiper-slide">
-										<div class="profile-content-all-photos__modal__image">
-											<a href="#">
-												<img src="./assets/img/hamber.jpg" alt="">
-											</a>
-										</div>
-										<div class="profile-content-all-photos__modal__footer-slide">
-											<div class="profile-content-all-photos__modal__footer-slide__right">
-												<a href="#">
-													<svg id="18x18_grid" height="18" viewBox="0 0 18 18" width="18"><path d="M10 15v-5h5v5h-5zm0-12h5v5h-5V3zm-7 7h5v5H3v-5zm0-7h5v5H3V3z"></path></svg>
-													نمایش همه
-												</a>
-											</div>
-											<div class="profile-content-all-photos__modal__footer-slide__left">
-												<a href="#">
-													<svg id="18x18_share" height="18" viewBox="0 0 18 18" width="18"><path d="M17.714 6.43L13 10.356v-3.03c-1 0-5.097 1.47-6.286 3.62.274-3.08 4.286-5.5 6.286-5.5V2.5l4.714 3.93zM3 4v10h11v-2.5l1-1V15H2V3h8.5l-1 1H3z"></path></svg>
-													اشتراک گذاری
-												</a>
-											</div>
-										</div>
-									</div>
-									<div class="swiper-slide">
-
-										<div class="profile-content-all-photos__modal__image">
-											<a href="#">
-												<img src="./assets/img/hamber.jpg" alt="">
-											</a>
-										</div>
-										<div class="profile-content-all-photos__modal__footer-slide">
-											<div class="profile-content-all-photos__modal__footer-slide__right">
-												<a href="#">
-													<svg id="18x18_grid" height="18" viewBox="0 0 18 18" width="18"><path d="M10 15v-5h5v5h-5zm0-12h5v5h-5V3zm-7 7h5v5H3v-5zm0-7h5v5H3V3z"></path></svg>
-													نمایش همه
-												</a>
-											</div>
-											<div class="profile-content-all-photos__modal__footer-slide__left">
-												<a href="#">
-													<svg id="18x18_share" height="18" viewBox="0 0 18 18" width="18"><path d="M17.714 6.43L13 10.356v-3.03c-1 0-5.097 1.47-6.286 3.62.274-3.08 4.286-5.5 6.286-5.5V2.5l4.714 3.93zM3 4v10h11v-2.5l1-1V15H2V3h8.5l-1 1H3z"></path></svg>
-													اشتراک گذاری
-												</a>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="swiper-pagination"></div>
-								<div class="swiper-button-next"></div>
-								<div class="swiper-button-prev"></div>
-							</div>
-						</div>
-						<div class="col-lg-2 col-md-3 col-sm-4">
-							<div class="profile-content-all-photos__modal__content">
-								<div class="profile-content-all-photos__modal__content__title">
-									<div class="profile-content-all-photos__modal__content__title__avatar">
-										<a href="#"><img src="./assets/img/food.jpg" alt=""></a>
-									</div>
-									<div class="profile-content-all-photos__modal__content__title__info">
-										<div class="profile-content-all-photos__modal__content__title__info__name">
-											<a href="#">شیر روی سنگ ها</a>
-										</div>
-										<div class="profile-content-all-photos__modal__content__title__info__status">
-											<ul>
-												<li>
-													<svg id="24x24_friends" height="24" viewBox="0 0 24 24" width="24"><g><path d="M10.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946C1.618 12.48 2.586 11 4.018 11h4.964c1.432 0 2.4 1.48 1.842 2.817zM6.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path><path d="M21.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946c-.558-1.337.41-2.817 1.842-2.817h4.964c1.432 0 2.4 1.48 1.842 2.817zM17.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" opacity=".502"></path></g></svg>
-													<span>419</span>
-
-												</li>
-												<li>
-													<svg id="24x24_review" height="24" viewBox="0 0 24 24" width="24"><path d="M21 6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V6zm-5.88 10.428l-3.16-1.938-3.05 2.01.59-3.457L7 10.596l3.457-.505L11.96 6.5l1.582 3.59 3.458.506-2.5 2.447.62 3.385z"></path></svg>
-													<span>62</span>
-
-												</li>
-												<li>
-													<a href="#">نخبه</a>
-
-												</li>
-											</ul>
-										</div>
-
-									</div>
-
-
-
-								</div>
-								<div class="profile-content-all-photos__modal__content__desc">
-									<p>بهترین خدمات هتل حرفه ای Maitres و BARMEN در خانه در پاریس و ایل دو فرانسه</p>
-								</div>
-								<div class="profile-content-all-photos__modal__content__date">
-									<span>6 مارس 2021</span>
-								</div>
-							</div>
-						</div>
-
-					</div>
-				</div>
-
-			</div>
-		</div>
-	</div>
-
-	<div class="profile-content-all-photos__modal modal fade" id="click-photo-3" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-body">
-					<div class="profile-content-all-photos__modal__close" data-dismiss="modal">
-						<span>بستن</span>
-						<svg id="24x24_close" height="24" viewBox="0 0 24 24" width="24"><path d="M17.657 19.07L12 13.415 6.343 19.07 4.93 17.658 10.585 12 4.93 6.343 6.342 4.93 12 10.585l5.657-5.657L19.07 6.34 13.416 12l5.657 5.657-1.413 1.414z"></path></svg>
-
-					</div>
-					<div class="row" data-space="10">
-						<div class="col-lg-10 col-md-9 col-sm-8">
-							<div class="swiper-container">
-
-								<div class="swiper-wrapper">
-									<div class="swiper-slide">
-										<div class="profile-content-all-photos__modal__image">
-											<a href="#">
-												<img src="./assets/img/hamber.jpg" alt="">
-											</a>
-										</div>
-										<div class="profile-content-all-photos__modal__footer-slide">
-											<div class="profile-content-all-photos__modal__footer-slide__right">
-												<a href="#">
-													<svg id="18x18_grid" height="18" viewBox="0 0 18 18" width="18"><path d="M10 15v-5h5v5h-5zm0-12h5v5h-5V3zm-7 7h5v5H3v-5zm0-7h5v5H3V3z"></path></svg>
-													نمایش همه
-												</a>
-											</div>
-											<div class="profile-content-all-photos__modal__footer-slide__left">
-												<a href="#">
-													<svg id="18x18_share" height="18" viewBox="0 0 18 18" width="18"><path d="M17.714 6.43L13 10.356v-3.03c-1 0-5.097 1.47-6.286 3.62.274-3.08 4.286-5.5 6.286-5.5V2.5l4.714 3.93zM3 4v10h11v-2.5l1-1V15H2V3h8.5l-1 1H3z"></path></svg>
-													اشتراک گذاری
-												</a>
-											</div>
-										</div>
-									</div>
-									<div class="swiper-slide">
-
-										<div class="profile-content-all-photos__modal__image">
-											<a href="#">
-												<img src="./assets/img/hamber.jpg" alt="">
-											</a>
-										</div>
-										<div class="profile-content-all-photos__modal__footer-slide">
-											<div class="profile-content-all-photos__modal__footer-slide__right">
-												<a href="#">
-													<svg id="18x18_grid" height="18" viewBox="0 0 18 18" width="18"><path d="M10 15v-5h5v5h-5zm0-12h5v5h-5V3zm-7 7h5v5H3v-5zm0-7h5v5H3V3z"></path></svg>
-													نمایش همه
-												</a>
-											</div>
-											<div class="profile-content-all-photos__modal__footer-slide__left">
-												<a href="#">
-													<svg id="18x18_share" height="18" viewBox="0 0 18 18" width="18"><path d="M17.714 6.43L13 10.356v-3.03c-1 0-5.097 1.47-6.286 3.62.274-3.08 4.286-5.5 6.286-5.5V2.5l4.714 3.93zM3 4v10h11v-2.5l1-1V15H2V3h8.5l-1 1H3z"></path></svg>
-													اشتراک گذاری
-												</a>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="swiper-pagination"></div>
-								<div class="swiper-button-next"></div>
-								<div class="swiper-button-prev"></div>
-							</div>
-						</div>
-						<div class="col-lg-2 col-md-3 col-sm-4">
-							<div class="profile-content-all-photos__modal__content">
-								<div class="profile-content-all-photos__modal__content__title">
-									<div class="profile-content-all-photos__modal__content__title__avatar">
-										<a href="#"><img src="./assets/img/food.jpg" alt=""></a>
-									</div>
-									<div class="profile-content-all-photos__modal__content__title__info">
-										<div class="profile-content-all-photos__modal__content__title__info__name">
-											<a href="#">شیر روی سنگ ها</a>
-										</div>
-										<div class="profile-content-all-photos__modal__content__title__info__status">
-											<ul>
-												<li>
-													<svg id="24x24_friends" height="24" viewBox="0 0 24 24" width="24"><g><path d="M10.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946C1.618 12.48 2.586 11 4.018 11h4.964c1.432 0 2.4 1.48 1.842 2.817zM6.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path><path d="M21.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946c-.558-1.337.41-2.817 1.842-2.817h4.964c1.432 0 2.4 1.48 1.842 2.817zM17.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" opacity=".502"></path></g></svg>
-													<span>419</span>
-
-												</li>
-												<li>
-													<svg id="24x24_review" height="24" viewBox="0 0 24 24" width="24"><path d="M21 6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V6zm-5.88 10.428l-3.16-1.938-3.05 2.01.59-3.457L7 10.596l3.457-.505L11.96 6.5l1.582 3.59 3.458.506-2.5 2.447.62 3.385z"></path></svg>
-													<span>62</span>
-
-												</li>
-												<li>
-													<a href="#">نخبه</a>
-
-												</li>
-											</ul>
-										</div>
-
-									</div>
-
-
-
-								</div>
-								<div class="profile-content-all-photos__modal__content__desc">
-									<p>بهترین خدمات هتل حرفه ای Maitres و BARMEN در خانه در پاریس و ایل دو فرانسه</p>
-								</div>
-								<div class="profile-content-all-photos__modal__content__date">
-									<span>6 مارس 2021</span>
-								</div>
-							</div>
-						</div>
-
-					</div>
-				</div>
-
-			</div>
-		</div>
-	</div>
-
-	<div class="profile-content-all-photos__modal modal fade" id="click-photo-4" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-body">
-					<div class="profile-content-all-photos__modal__close" data-dismiss="modal">
-						<span>بستن</span>
-						<svg id="24x24_close" height="24" viewBox="0 0 24 24" width="24"><path d="M17.657 19.07L12 13.415 6.343 19.07 4.93 17.658 10.585 12 4.93 6.343 6.342 4.93 12 10.585l5.657-5.657L19.07 6.34 13.416 12l5.657 5.657-1.413 1.414z"></path></svg>
-
-					</div>
-					<div class="row" data-space="10">
-						<div class="col-lg-10 col-md-9 col-sm-8">
-							<div class="swiper-container">
-
-								<div class="swiper-wrapper">
-									<div class="swiper-slide">
-										<div class="profile-content-all-photos__modal__image">
-											<a href="#">
-												<img src="./assets/img/hamber.jpg" alt="">
-											</a>
-										</div>
-										<div class="profile-content-all-photos__modal__footer-slide">
-											<div class="profile-content-all-photos__modal__footer-slide__right">
-												<a href="#">
-													<svg id="18x18_grid" height="18" viewBox="0 0 18 18" width="18"><path d="M10 15v-5h5v5h-5zm0-12h5v5h-5V3zm-7 7h5v5H3v-5zm0-7h5v5H3V3z"></path></svg>
-													نمایش همه
-												</a>
-											</div>
-											<div class="profile-content-all-photos__modal__footer-slide__left">
-												<a href="#">
-													<svg id="18x18_share" height="18" viewBox="0 0 18 18" width="18"><path d="M17.714 6.43L13 10.356v-3.03c-1 0-5.097 1.47-6.286 3.62.274-3.08 4.286-5.5 6.286-5.5V2.5l4.714 3.93zM3 4v10h11v-2.5l1-1V15H2V3h8.5l-1 1H3z"></path></svg>
-													اشتراک گذاری
-												</a>
-											</div>
-										</div>
-									</div>
-									<div class="swiper-slide">
-
-										<div class="profile-content-all-photos__modal__image">
-											<a href="#">
-												<img src="./assets/img/hamber.jpg" alt="">
-											</a>
-										</div>
-										<div class="profile-content-all-photos__modal__footer-slide">
-											<div class="profile-content-all-photos__modal__footer-slide__right">
-												<a href="#">
-													<svg id="18x18_grid" height="18" viewBox="0 0 18 18" width="18"><path d="M10 15v-5h5v5h-5zm0-12h5v5h-5V3zm-7 7h5v5H3v-5zm0-7h5v5H3V3z"></path></svg>
-													نمایش همه
-												</a>
-											</div>
-											<div class="profile-content-all-photos__modal__footer-slide__left">
-												<a href="#">
-													<svg id="18x18_share" height="18" viewBox="0 0 18 18" width="18"><path d="M17.714 6.43L13 10.356v-3.03c-1 0-5.097 1.47-6.286 3.62.274-3.08 4.286-5.5 6.286-5.5V2.5l4.714 3.93zM3 4v10h11v-2.5l1-1V15H2V3h8.5l-1 1H3z"></path></svg>
-													اشتراک گذاری
-												</a>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="swiper-pagination"></div>
-								<div class="swiper-button-next"></div>
-								<div class="swiper-button-prev"></div>
-							</div>
-						</div>
-						<div class="col-lg-2 col-md-3 col-sm-4">
-							<div class="profile-content-all-photos__modal__content">
-								<div class="profile-content-all-photos__modal__content__title">
-									<div class="profile-content-all-photos__modal__content__title__avatar">
-										<a href="#"><img src="./assets/img/food.jpg" alt=""></a>
-									</div>
-									<div class="profile-content-all-photos__modal__content__title__info">
-										<div class="profile-content-all-photos__modal__content__title__info__name">
-											<a href="#">شیر روی سنگ ها</a>
-										</div>
-										<div class="profile-content-all-photos__modal__content__title__info__status">
-											<ul>
-												<li>
-													<svg id="24x24_friends" height="24" viewBox="0 0 24 24" width="24"><g><path d="M10.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946C1.618 12.48 2.586 11 4.018 11h4.964c1.432 0 2.4 1.48 1.842 2.817zM6.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path><path d="M21.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946c-.558-1.337.41-2.817 1.842-2.817h4.964c1.432 0 2.4 1.48 1.842 2.817zM17.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" opacity=".502"></path></g></svg>
-													<span>419</span>
-
-												</li>
-												<li>
-													<svg id="24x24_review" height="24" viewBox="0 0 24 24" width="24"><path d="M21 6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V6zm-5.88 10.428l-3.16-1.938-3.05 2.01.59-3.457L7 10.596l3.457-.505L11.96 6.5l1.582 3.59 3.458.506-2.5 2.447.62 3.385z"></path></svg>
-													<span>62</span>
-
-												</li>
-												<li>
-													<a href="#">نخبه</a>
-
-												</li>
-											</ul>
-										</div>
-
-									</div>
-
-
-
-								</div>
-								<div class="profile-content-all-photos__modal__content__desc">
-									<p>بهترین خدمات هتل حرفه ای Maitres و BARMEN در خانه در پاریس و ایل دو فرانسه</p>
-								</div>
-								<div class="profile-content-all-photos__modal__content__date">
-									<span>6 مارس 2021</span>
-								</div>
-							</div>
-						</div>
-
-					</div>
-				</div>
-
 			</div>
 		</div>
 	</div>
 
 </main>
+
+@section Scripts {
+	<script>
+
+		function setSliderIndex(index) {
+			// Initialize Swiper
+			var swiper = document.querySelector('.swiper-container').swiper;
+
+			swiper.slideTo(index);
+			swiper.autoplay.pause = true;
+		}
+
+		function setAsPrimary() {
+			var swiper = document.querySelector('.swiper-container').swiper;
+			var photoId = swiper.slides[swiper.activeIndex].id;
+
+			$('#photoId').val(photoId);
+		}
+
+		function deletePhoto() {
+			var swiper = document.querySelector('.swiper-container').swiper;
+			var photoId = swiper.slides[swiper.activeIndex].id;
+
+			$('#deleteId').val(photoId);
+		}
+	</script>
+}

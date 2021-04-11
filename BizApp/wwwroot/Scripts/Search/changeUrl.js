@@ -318,6 +318,8 @@ class Request extends AjaxRequest {
         _defineProperty(this, "_params", void 0);
 
         _defineProperty(this, "disposeFilter", async (path, params = {}) => {
+            
+           
             this._params = params;
             this.setUrlParams();
             const url = path + this.objectToUrl(params);
@@ -585,10 +587,10 @@ window.onpopstate = async () => {
    
 
     const urlParameters = window.location.href;
-    console.log(urlParameters);
+   
 
     if (request.totalAjax[urlParameters] && request.totalAjax[urlParameters].method === 'get') {
-        console.log('here');
+        
         const ajaxRequest = new AjaxRequest(false);
         const data = await ajaxRequest.get(urlParameters);
         request.renderData(data);

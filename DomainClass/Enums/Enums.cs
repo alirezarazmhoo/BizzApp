@@ -27,6 +27,23 @@
 	public enum StatusEnum
 	{
 		Accepted = 1,
-		Rejected = 0
+		Rejected = 0,
+		Waiting = 2
+	}
+	public enum VotesType
+	{
+		HelpFull , 
+		NotHelpFull ,
+		Cool , 
+		Funny,
+		Like  
+		
+	}
+	public enum VotesAction
+	{
+		Add,
+		Submission,
+		Undefinded
+
 	}
 }

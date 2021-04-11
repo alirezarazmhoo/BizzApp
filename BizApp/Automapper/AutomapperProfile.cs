@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BizApp.Areas.Admin.Models;
 using BizApp.Areas.Profile.Models;
+using BizApp.Areas.Profile.Models.Reviews;
+using BizApp.Areas.WebApi.Models;
 using BizApp.Models.Basic;
 using BizApp.Utility;
 using DomainClass;
@@ -10,7 +12,9 @@ using DomainClass.Businesses.Queries;
 using DomainClass.Commands;
 using DomainClass.Queries;
 using DomainClass.Review;
+using DomainClass.Review.Queries;
 using System.Linq;
+using static BizApp.Areas.Profile.Models.Reviews.UserReviewViewModel;
 
 namespace BizApp.Automapper
 {
@@ -90,6 +94,23 @@ namespace BizApp.Automapper
 			.ForMember(dest => dest.BusinessId, opt => opt.MapFrom(src => src.BusinessId))
 			.ForMember(dest => dest.UserProfilePicture, opt => opt.MapFrom(src => src.BizAppUser.ApplicationUserMedias.Where(s=>s.IsMainImage).Select(s=>s.UploadedPhoto).FirstOrDefault()))
 			.ReverseMap();
+
+			// User Photo
+			CreateMap<ApplicationUserMedia, RemoveUserPhotoViewModel>()
+				.ForMember(dest => dest.Path, opt => opt.MapFrom(src => src.UploadedPhoto))
+				.ReverseMap();
+
+			// Reviews
+			CreateMap<ReviewMediaQuery, ReviewMediaViewModel>().ReverseMap();
+			CreateMap<UserReviewPaginateQuery.BusinessQuery, ReviewBusinessViewModel>().ReverseMap();
+
+			CreateMap<UserReviewPaginateQuery, UserReviewViewModel>()
+				.ForMember(dest => dest.Media, opt => opt.MapFrom(src => src.Media))
+				.ForMember(dest => dest.Business, opt => opt.MapFrom(src => src.Business))
+				.ReverseMap();
+	
+			//CreateMap<ReviewMediaQuery, ReviewMediaViewModel>
+
 		}
 	}
 }

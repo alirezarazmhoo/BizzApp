@@ -24,14 +24,17 @@ namespace BizApp.Controllers
         public async Task<IActionResult> Index(SearchBussinessQuery searchViewModel)
         {
             searchViewModel.categories = await _UnitOfWork.CategoryRepo.GetChilds(searchViewModel.CategoryId);
-
+            searchViewModel.features = await _UnitOfWork.FeatureRepo.GetAllIsBoolValue();
+            searchViewModel.provinces = await _UnitOfWork.ProvinceRepo.GetAll();
+            searchViewModel.cities = await _UnitOfWork.CityRepo.GetAll();
+            ViewBag.CategoryId = searchViewModel.CategoryId;
             return View(searchViewModel);
         }
         public IActionResult AllBussiness(SearchBussinessQuery searchViewModel)
         {
             bool isAjax = Request.IsAjaxRequest();
             if (isAjax == false)
-                return RedirectToAction("Index",new {CategoryId=searchViewModel.CategoryId });
+                return RedirectToAction("Index",new {CategoryId=searchViewModel.CategoryId ,page=searchViewModel.page,catsFinder=searchViewModel.catsFinder});
             //PagedList<Business> bussiness = _UnitOfWork.BusinessRepo.GetBussiness(searchViewModel.CategoryId, searchViewModel.page);
             PagedList<Business> bussiness = _UnitOfWork.BusinessRepo.GetBussiness(searchViewModel);
             ViewBag.CategoryId = searchViewModel.CategoryId;

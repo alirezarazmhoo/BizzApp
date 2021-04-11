@@ -38,7 +38,7 @@
 								@foreach (var item in Model.MainPage_Category)
 								{
 									<li>
-										<a href="#">
+										<a href="~/Search/AllBussiness?CategoryId=@item.Id&page=1">
 											@{
 												<svg id="iconResult" class="svg-inline--fa fa-accusoft fa-w-20" aria-hidden="true" data-prefix="fab" data-icon="accusoft" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg=""><path fill="currentColor" d="@item.Image"></path></svg>
 
@@ -112,7 +112,7 @@
 					@foreach (var item in Model.MainPage_Category)
 					{
 						<li>
-							<a href="#">
+							<a href="~/Search/AllBussiness?CategoryId=@item.Id&page=1">
 
 								<svg id="iconResult" class="svg-inline--fa fa-accusoft fa-w-20" aria-hidden="true" data-prefix="fab" data-icon="accusoft" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg=""><path fill="currentColor" d="@item.Image"></path></svg>
 								@item.Name <svg id="14x14_triangle_down" height="17" viewBox="0 0 14 14" width="14">
@@ -127,7 +127,7 @@
 									@foreach (var item2 in item.CategoryChilds.Take(15))
 									{
 
-										<li><a href="#">@item2.Value</a></li>
+										<li><a href="~/Search/AllBussiness?CategoryId=@item2.Key&page=1">@item2.Value</a></li>
 									}
 
 								</ul>
