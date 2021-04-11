@@ -14,6 +14,7 @@ using DomainClass.Queries;
 using DomainClass.Review;
 using DomainClass.Review.Queries;
 using System.Linq;
+using static BizApp.Areas.Profile.Models.Reviews.UserReviewViewModel;
 
 namespace BizApp.Automapper
 {
@@ -100,8 +101,12 @@ namespace BizApp.Automapper
 				.ReverseMap();
 
 			// Reviews
-			CreateMap<ReviewPaginateQuery, UserReviewViewModel>()
+			CreateMap<ReviewMediaQuery, ReviewMediaViewModel>().ReverseMap();
+			CreateMap<UserReviewPaginateQuery.BusinessQuery, ReviewBusinessViewModel>().ReverseMap();
+
+			CreateMap<UserReviewPaginateQuery, UserReviewViewModel>()
 				.ForMember(dest => dest.Media, opt => opt.MapFrom(src => src.Media))
+				.ForMember(dest => dest.Business, opt => opt.MapFrom(src => src.Business))
 				.ReverseMap();
 	
 			//CreateMap<ReviewMediaQuery, ReviewMediaViewModel>

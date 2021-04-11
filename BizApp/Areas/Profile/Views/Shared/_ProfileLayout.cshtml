@@ -1,5 +1,4 @@
-﻿@model BizApp.Areas.Profile.Models.ProfileViewModel
-@using BizApp.Utility
+﻿@using BizApp.Utility
 @using Microsoft.AspNetCore.Identity
 @using BizApp.Extensions
 
@@ -12,7 +11,7 @@
 	// get username from url or get current user
 	var userName = Context.Request.Query["username"];
 	if (string.IsNullOrEmpty(userName))
-		userName = UserManager.GetUserName(User);
+		userName = UserManager.GetUserName(User); 
 
 	// get user information
 	var user = await UserProfileService.GetUserDetail(userName);

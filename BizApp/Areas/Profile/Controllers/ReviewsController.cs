@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
-using BizApp.Areas.Profile.Models.Reviews;
 using DataLayer.Infrastructure;
+using DomainClass.Review.Queries;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using PagedList.Core;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BizApp.Areas.Profile.Controllers
@@ -24,10 +25,11 @@ namespace BizApp.Areas.Profile.Controllers
 			if (string.IsNullOrEmpty(userName)) userName = User.Identity.Name;
 			if (string.IsNullOrEmpty(userName)) return NotFound();
 
-			var data = await _unitOfWork.ReviewRepo.GetUseReviews(userName, page);
-			var model = _mapper.Map<UserReviewViewModel>(data);
+			var model = await _unitOfWork.ReviewRepo.GetUseReviews(userName, page);
+			//var model = _mapper.Map<UserReviewViewModel>(data);
+			var paginatedLisModel = new PagedList<UserReviewPaginateQuery>(model.AsQueryable(), page, 10);
 
-			return View(model);
+			return View(paginatedLisModel);
 		}
 
 	}

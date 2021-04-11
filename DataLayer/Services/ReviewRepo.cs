@@ -111,13 +111,13 @@ namespace DataLayer.Services
 			return BusinessItem;
 		}
 
-		private IQueryable<ReviewPaginateQuery> GetPaginateReviewQuery(string userName, int page, int pageSize = 10)
+		private IQueryable<UserReviewPaginateQuery> GetPaginateReviewQuery(string userName, int page, int pageSize = 10)
 		{
 			var query =
 				DbContext.Reviews
 						.Where(w => w.StatusEnum == StatusEnum.Accepted && w.BizAppUser.UserName == userName)
 						.Paginate(page, pageSize)
-						.Select(s => new ReviewPaginateQuery
+						.Select(s => new UserReviewPaginateQuery
 						{
 							Id = s.Id,
 							Rate = s.Rate,
@@ -125,8 +125,9 @@ namespace DataLayer.Services
 							UsefulCount = s.UsefulCount,
 							FunnyCount = s.FunnyCount,
 							CoolCount = s.CoolCount,
+							CreatedAt = s.Date,
 							Status = s.StatusEnum,
-							Business = new ReviewPaginateQuery.BusinessQuery
+							Business = new UserReviewPaginateQuery.BusinessQuery
 							{
 								Id = s.Business.Id,
 								FeatureImage = s.Business.FeatureImage,
@@ -139,15 +140,17 @@ namespace DataLayer.Services
 							Media = s.ReviewMedias.Take(3)
 										.Select(m => new ReviewMediaQuery
 										{
+											ImagePath = m.Image,
 											CreatedAt = m.CreatedAt,
 											Description = m.Description
 										})
 										.OrderByDescending(x => x.CreatedAt)
+										.ToArray()
 						});
 
 			return query;
 		}
-		public async Task<IEnumerable<ReviewPaginateQuery>> GetUseReviews(string userName, int page)
+		public async Task<IEnumerable<UserReviewPaginateQuery>> GetUseReviews(string userName, int page)
 		{
 			var result = await GetPaginateReviewQuery(userName, page, _pageSize)
 							.Where(w => w.Status == StatusEnum.Waiting)

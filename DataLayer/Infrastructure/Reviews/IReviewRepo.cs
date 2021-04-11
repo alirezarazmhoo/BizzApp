@@ -15,7 +15,7 @@ namespace DataLayer.Infrastructure.Reviews
 		Task<CustomerBusinessMedia> GetCustomerBusinessMediaById(Guid id);
 		Task<int> BusinessReviewCount(Guid Id);
 		
-		Task<IEnumerable<ReviewPaginateQuery>> GetUseReviews(string userName, int page);
+		Task<IEnumerable<UserReviewPaginateQuery>> GetUseReviews(string userName, int page);
 
 		Task<IEnumerable<Review>> GetBusinessReviews(Guid Id);
 		Task AddReview(Review model, IFormFile[] files);

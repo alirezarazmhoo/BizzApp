@@ -4,13 +4,8 @@ using System.Collections.Generic;
 
 namespace DomainClass.Review.Queries
 {
-	public class ReviewPaginateQuery
+	public class UserReviewPaginateQuery
 	{
-		public ReviewPaginateQuery()
-		{
-			Business = new BusinessQuery();
-		}
-
 		public Guid Id { get; set; }
 		public int Rate { get; set; }
 		public int UsefulCount { get; set; }
@@ -18,8 +13,9 @@ namespace DomainClass.Review.Queries
 		public int CoolCount { get; set; }
 		public string Description { get; set; }
 		public StatusEnum Status { get; set; }
+		public DateTime CreatedAt { get; set; }
 
-		public IEnumerable<ReviewMediaQuery> Media { get; set; }
+		public ReviewMediaQuery[] Media { get; set; }
 		public BusinessQuery Business { get; set; }
 
 		public class BusinessQuery

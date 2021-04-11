@@ -1,8 +1,9 @@
-﻿@model BizApp.Areas.Profile.Models.Reviews.UserReviewViewModel
+﻿@model PagedList.Core.PagedList<DomainClass.Review.Queries.UserReviewPaginateQuery>
+@using BizApp.Utility;
 
-@{ 
+@{
 	ViewData["Title"] = "بررسی ها";
-	Layout = "~/Areas/Profile/Views/Shared/_ProfileLayout.cshtml"; 
+	Layout = "~/Areas/Profile/Views/Shared/_ProfileLayout.cshtml";
 }
 
 <div class="col-md-6 d-none d-sm-block ">
@@ -18,229 +19,130 @@
 					<option>تاریخ</option>
 				</select>
 			</div>*@
-		<div class="profile-content__comment__comments">
-			<div class="profile-content__comment__comments__info">
-				<div class="profile-content__comment__comments__info__image">
-					<a href="#">
-						<img src="./assets/img/pro-img1.jpg" alt="">
-					</a>
-				</div>
-				<div class="profile-content__comment__comments__info__text">
-					<div class="profile-content__comment__comments__info__text__name">
-						<a href="">لاردو</a>
+		@foreach (var review in Model)
+		{
+			<div class="profile-content__comment__comments">
+
+				<div class="profile-content__comment__comments__info">
+
+					<div class="profile-content__comment__comments__info__image">
+						<a href="#">
+							<img src="@review.Business.FeatureImage" alt="">
+						</a>
 					</div>
-					<div class="profile-content__comment__comments__info__text__category">
+					<div class="profile-content__comment__comments__info__text">
+						<div class="profile-content__comment__comments__info__text__name">
+							<a href="">@review.Business.Name</a>
+						</div>
+						<div class="profile-content__comment__comments__info__text__category">
+							<ul>
+								<li>££</li>
+								<li><a href="#">آمریکایی (جدید)</a></li>
+								<li>,</li>
+								<li><a href="#">صبحانه و ناهار</a></li>
+							</ul>
+
+						</div>
+						<div class="profile-content__comment__comments__info__text__location">
+							<span>@review.Business.CityName</span>
+						</div>
+
+
+					</div>
+				</div>
+				<div class="profile-content__comment__comments__Score">
+					<div class="profile-content__comment__comments__Score__star" data-star="@review.Rate">
+					</div>
+					<div class="profile-content__comment__comments__Score__data">
+						<span>@review.CreatedAt.ToPersianShortDate()</span>
+					</div>
+				</div>
+
+				<div class="profile-content__comment__comments__txt">
+					@review.Description
+				</div>
+				@if (review.Media.Length > 0)
+				{
+					<div class="profile-content__comment__comments__image">
+
+						@{
+							var firstImage = review.Media.FirstOrDefault();
+						}
+						<div class="profile-content__comment__comments__image__img">
+							<a href="#">
+								<img src="@firstImage.ImagePath" alt="">
+							</a>
+							<span>@firstImage.Description.Substring(0, 20)</span>
+						</div>
+
+						@if (review.Media.Length > 1)
+						{
+							<div class="row" data-space="10">
+								@for (int i = 1; i < 3; i++)
+								{
+									<div class="col-6">
+										<div class="profile-content__comment__comments__image__img">
+											<a href="#">
+												<img src="@review.Media[i].ImagePath" alt="" loading="lazy">
+											</a>
+											<span>@review.Media[i].Description.Substring(0, 20)</span>
+										</div>
+									</div>
+								}
+							</div>
+						}
+					</div>
+				}
+				<div class="profile-content__comment__comments__review">
+					<p>نظر شما در مورد این بررسی چیست...؟</p>
+				</div>
+				<div class="profile-content__comment__comments__button-cm">
+					<div class="profile-content__comment__comments__button-cm__right">
 						<ul>
-							<li>££</li>
-							<li><a href="#">ایتالیایی</a></li>
-							<li>,</li>
-							<li><a href="#">پیتزا</a></li>
-							<li>,</li>
-							<li><a href="#">شراب</a></li>
+							<li>
+								<a href="#">
+									<svg id="18x18_useful_outline" height="18" viewBox="0 0 18 18" width="18"><path d="M9 17c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM9 2C5.14 2 2 5.14 2 9s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm2 8.392V12H7v-1.608a3.982 3.982 0 0 1-2-3.445 4 4 0 0 1 8 0c0 1.477-.81 2.752-2 3.445zM8 5.25a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5zm1.003 9.747h-.006A1.997 1.997 0 0 1 7 13h4a1.997 1.997 0 0 1-1.997 1.997z"></path></svg>
+									مفید
+									@if (review.UsefulCount > 0)
+									{
+										<span>@review.UsefulCount</span>
+									}
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg id="18x18_funny_outline" height="18" viewBox="0 0 18 18" width="18"><path d="M9 17c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM9 2C5.14 2 2 5.14 2 9s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm0 12a4.87 4.87 0 0 1-4.787-4h9.574A4.87 4.87 0 0 1 9 14zm2.5-5.625a1.376 1.376 0 1 1 0-2.75 1.376 1.376 0 0 1 0 2.75zm-5 0a1.376 1.376 0 1 1 0-2.75 1.376 1.376 0 0 1 0 2.75z"></path></svg>
+									خنده دار
+									@if (review.FunnyCount > 0)
+									{
+										<span>@review.FunnyCount</span>
+									}
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg id="18x18_cool_outline" height="18" viewBox="0 0 18 18" width="18"><path d="M9 17c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM9 2C5.14 2 2 5.14 2 9s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm6.026 5.335C14.766 8.797 13.5 10 11.986 10h-.003c-1.218 0-2.282-.764-2.767-1.813-.088-.19-.344-.242-.432-.052C8.3 9.185 7.234 10 6.016 10h-.003C4.5 10 3.195 8.83 2.973 7.35l-.093-.84c-.053-.242.192-.51.477-.51h11.286c.294 0 .508.332.477.56l-.094.775zm-2.068 4.154A4.28 4.28 0 0 1 9 14.144a4.28 4.28 0 0 1-3.958-2.657A6.81 6.81 0 0 0 9 12.753a6.81 6.81 0 0 0 3.958-1.265z"></path></svg>
+									جذاب
+									@if (review.CoolCount > 0)
+									{
+										<span>@review.CoolCount</span>
+									}
+
+								</a>
+							</li>
 						</ul>
 					</div>
-					<div class="profile-content__comment__comments__info__text__location">
-						<span>197-201-2015 جاده ریچموند</span>
-						<span>London E8 3NJ</span>
-					</div>
-
-				</div>
-			</div>
-			<div class="profile-content__comment__comments__Score">
-				<div class="profile-content__comment__comments__Score__star" data-star="5">
-				</div>
-				<div class="profile-content__comment__comments__Score__data">
-					<span> 1399/9/27</span>
-				</div>
-			</div>
-			<div class="profile-content__comment__comments__check">
-				<svg id="18x18_check_in" height="18" viewBox="0 0 18 18" width="18"><path d="M18 9l-2.136-1.84.932-2.66-2.772-.525-.524-2.77-2.66.93L8.997 0 7.163 2.136 4.5 1.206l-.525 2.77-2.77.524.932 2.66L0 9l2.137 1.84-.932 2.66 2.77.525.526 2.77 2.664-.932L8.998 18l1.84-2.137 2.662.932.524-2.77 2.772-.524-.932-2.66L18 9zm-9.85 3.23L5.324 9.4l1.13-1.13 1.698 1.696 3.396-3.395 1.13 1.134-4.525 4.525z"></path></svg>
-				<span>1 چک در</span>
-			</div>
-			<div class="profile-content__comment__comments__txt">
-				<p>
-					پیتزا عالی بود ، لذت بردن از صحبت با صاحب را برای مدتی در حالی که من سفارش دادم ، و این باعث می شود که کل تجربه بهتر شود!
-					قطعاً برمی گردد!
-				</p>
-				<p>قطعاً برمی گردد!</p>
-			</div>
-			<div class="profile-content__comment__comments__review">
-				<p>این بررسی بود...؟</p>
-			</div>
-			<div class="profile-content__comment__comments__button-cm">
-				<div class="profile-content__comment__comments__button-cm__right">
-					<ul>
-						<li>
-							<a href="#">
-								<svg id="18x18_useful_outline" height="18" viewBox="0 0 18 18" width="18"><path d="M9 17c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM9 2C5.14 2 2 5.14 2 9s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm2 8.392V12H7v-1.608a3.982 3.982 0 0 1-2-3.445 4 4 0 0 1 8 0c0 1.477-.81 2.752-2 3.445zM8 5.25a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5zm1.003 9.747h-.006A1.997 1.997 0 0 1 7 13h4a1.997 1.997 0 0 1-1.997 1.997z"></path></svg>
-								مفید
-								<span>2</span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<svg id="18x18_funny_outline" height="18" viewBox="0 0 18 18" width="18"><path d="M9 17c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM9 2C5.14 2 2 5.14 2 9s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm0 12a4.87 4.87 0 0 1-4.787-4h9.574A4.87 4.87 0 0 1 9 14zm2.5-5.625a1.376 1.376 0 1 1 0-2.75 1.376 1.376 0 0 1 0 2.75zm-5 0a1.376 1.376 0 1 1 0-2.75 1.376 1.376 0 0 1 0 2.75z"></path></svg>
-								خنده دار
-
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<svg id="18x18_cool_outline" height="18" viewBox="0 0 18 18" width="18"><path d="M9 17c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM9 2C5.14 2 2 5.14 2 9s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm6.026 5.335C14.766 8.797 13.5 10 11.986 10h-.003c-1.218 0-2.282-.764-2.767-1.813-.088-.19-.344-.242-.432-.052C8.3 9.185 7.234 10 6.016 10h-.003C4.5 10 3.195 8.83 2.973 7.35l-.093-.84c-.053-.242.192-.51.477-.51h11.286c.294 0 .508.332.477.56l-.094.775zm-2.068 4.154A4.28 4.28 0 0 1 9 14.144a4.28 4.28 0 0 1-3.958-2.657A6.81 6.81 0 0 0 9 12.753a6.81 6.81 0 0 0 3.958-1.265z"></path></svg>
-								سرد
-								<span>1</span>
-
-							</a>
-						</li>
-					</ul>
-				</div>
-				<div class="profile-content__comment__comments__button-cm__left">
-					<ul>
-						<li><a href="#"><svg id="18x18_share" height="18" viewBox="0 0 18 18" width="18"><path d="M17.714 6.43L13 10.356v-3.03c-1 0-5.097 1.47-6.286 3.62.274-3.08 4.286-5.5 6.286-5.5V2.5l4.714 3.93zM3 4v10h11v-2.5l1-1V15H2V3h8.5l-1 1H3z"></path></svg></a></li>
-						<li><a href="#"><svg id="18x18_compliment" height="18" viewBox="0 0 18 18" width="18" class="__web-inspector-hide-shortcut__"><path d="M14.5 6.75a5.5 5.5 0 0 0-11 0 5.495 5.495 0 0 0 2.993 4.892L5.5 16.75l3.505-2 3.495 2-.993-5.108A5.495 5.495 0 0 0 14.5 6.75zm-5.5 4c-2.206 0-4-1.794-4-4s1.794-4 4-4 4 1.794 4 4-1.794 4-4 4z"></path></svg></a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-		<div class="profile-content__comment__comments">
-
-			<div class="profile-content__comment__comments__info">
-
-				<div class="profile-content__comment__comments__info__image">
-					<a href="#">
-						<img src="./assets/img/pro-img1.jpg" alt="">
-					</a>
-				</div>
-				<div class="profile-content__comment__comments__info__text">
-					<div class="profile-content__comment__comments__info__text__name">
-						<a href="">رستوران میل</a>
-					</div>
-					<div class="profile-content__comment__comments__info__text__category">
+					@*<div class="profile-content__comment__comments__button-cm__left">
 						<ul>
-							<li>££</li>
-							<li><a href="#">آمریکایی (جدید)</a></li>
-							<li>,</li>
-							<li><a href="#">صبحانه و ناهار</a></li>
-
+							<li><a href="#"><svg id="18x18_share" height="18" viewBox="0 0 18 18" width="18"><path d="M17.714 6.43L13 10.356v-3.03c-1 0-5.097 1.47-6.286 3.62.274-3.08 4.286-5.5 6.286-5.5V2.5l4.714 3.93zM3 4v10h11v-2.5l1-1V15H2V3h8.5l-1 1H3z"></path></svg></a></li>
+							<li><a href="#"><svg id="18x18_compliment" height="18" viewBox="0 0 18 18" width="18" class="__web-inspector-hide-shortcut__"><path d="M14.5 6.75a5.5 5.5 0 0 0-11 0 5.495 5.495 0 0 0 2.993 4.892L5.5 16.75l3.505-2 3.495 2-.993-5.108A5.495 5.495 0 0 0 14.5 6.75zm-5.5 4c-2.206 0-4-1.794-4-4s1.794-4 4-4 4 1.794 4 4-1.794 4-4 4z"></path></svg></a></li>
 						</ul>
-
-					</div>
-					<div class="profile-content__comment__comments__info__text__location">
-						<span>خیابان 200 مرکزی</span>
-						<span>سن پترزبورگ ، فلوریدا 33701</span>
-						<span>ایالات متحده</span>
-					</div>
-
-
+					</div>*@
 				</div>
-			</div>
-			<div class="profile-content__comment__comments__Score">
-				<div class="profile-content__comment__comments__Score__star" data-star="4">
-				</div>
-				<div class="profile-content__comment__comments__Score__data">
-					<span> 1399/9/27</span>
-				</div>
-			</div>
-
-			<div class="profile-content__comment__comments__txt">
-				<p>واقعاً این مکان سزاوار 4.5 ستاره است. غذا عالی بود ، صندلی های موجود خوب بود و ما چندین نفر را از طریق وعده های غذایی ما کنترل می کردند ، که بسیار راحت بود. تنها دلیل این که 5 عالی نیست این است که پیشخدمت ما خیلی آموزنده نبود (در مورد محصولات ویژه به ما نگفت ، فقط یک توصیه کرد و همین بود) ، اما او بسیار خوب و توجه بود.</p>
-				<span>سفارش:</span>
-				<ul>
-					<li>- هندوانه Bruschetta</li>
-					<li>- پرنده کثیف</li>
-					<li>- سوسیس و وفل بنی</li>
-				</ul>
-				<span>بروشته WATERMELON</span>
-				<ul>
-					<li>- این کاملا خوشمزه بود! هندوانه تازه که روی فتای زده شده با مقداری شربت آگاو سرو می شود DIVINE بود. نان درست به مقدار مناسب تفت داده شد و آن کرانچ کامل را به مخلوط اضافه کرد. ما بیکن قندی اضافه کردیم (زیرا چرا این کار را نمی کردی) و این شیرین اضافه شده عالی بود.</li>
-				</ul>
-				<span>پرنده خنده دار</span>
-				<ul>
-					<li>
-						- این اجرای آنها در ساندویچ مرغ سرخ شده نشویل ، مسلماً بهتر بود. گرچه این مورد در سس داغ خسته نمی شود ، اما با پنیر ذوب شده و یک سوسیس سوسیس که قسم می خورم کمی کاری دارد ، خسته می شود. مرغ گوشت سینه بود (یسس!) و خیلی خوب سرخ شد
-						- تنها نکته منفی این بود که کمی نسبت به بیسکویت در اندازه کوچک بود. بیسکویت کاملاً عالی بود. از خارج ترد ، از داخل نرم و کرکی است. فقط در اطراف یک غذای واقعا خوشمزه.
-					</li>
-				</ul>
-				<span>بنسیس سوسیس و وافل</span>
-				<ul>
-					<li>- وافل از خمیر ذرت شیرین درست شده (بسیار عالی) و با پته های سوسیس خانگی ، گوجه سبز سرخ شده تازه و دو تخم مرغ کاملاً شسته شده همراه شده است. آن را با شربت افرا بپاشید و به من اعتماد کنید ، دیگر هرگز نخواهید چیز دیگری بخورید.</li>
-				</ul>
 
 			</div>
-			<div class="profile-content__comment__comments__image">
-				<div class="profile-content__comment__comments__image__img">
-					<a href="#">  <img src="./assets/img/comments-img1.jpg" alt=""></a>
-					<span>پرنده کثیف</span>
-				</div>
+		}
 
-				<div class="row" data-space="10">
-					<div class="col-6">
-						<div class="profile-content__comment__comments__image__img">
-							<a href="#"><img src="./assets/img/comments-img3.jpg" alt=""></a>
-							<span>پرنده کثیف</span>
-						</div>
-					</div>
-					<div class="col-6">
-						<div class="profile-content__comment__comments__image__img">
-							<a href="#"><img src="./assets/img/comments-img3.jpg" alt=""></a>
-							<span>پرنده کثیف</span>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="profile-content__comment__comments__review">
-				<p>این بررسی بود...؟</p>
-			</div>
-			<div class="profile-content__comment__comments__button-cm">
-				<div class="profile-content__comment__comments__button-cm__right">
-					<ul>
-						<li>
-							<a href="#">
-								<svg id="18x18_useful_outline" height="18" viewBox="0 0 18 18" width="18"><path d="M9 17c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM9 2C5.14 2 2 5.14 2 9s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm2 8.392V12H7v-1.608a3.982 3.982 0 0 1-2-3.445 4 4 0 0 1 8 0c0 1.477-.81 2.752-2 3.445zM8 5.25a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5zm1.003 9.747h-.006A1.997 1.997 0 0 1 7 13h4a1.997 1.997 0 0 1-1.997 1.997z"></path></svg>
-								مفید
-								<span>2</span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<svg id="18x18_funny_outline" height="18" viewBox="0 0 18 18" width="18"><path d="M9 17c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM9 2C5.14 2 2 5.14 2 9s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm0 12a4.87 4.87 0 0 1-4.787-4h9.574A4.87 4.87 0 0 1 9 14zm2.5-5.625a1.376 1.376 0 1 1 0-2.75 1.376 1.376 0 0 1 0 2.75zm-5 0a1.376 1.376 0 1 1 0-2.75 1.376 1.376 0 0 1 0 2.75z"></path></svg>
-								خنده دار
-
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<svg id="18x18_cool_outline" height="18" viewBox="0 0 18 18" width="18"><path d="M9 17c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM9 2C5.14 2 2 5.14 2 9s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm6.026 5.335C14.766 8.797 13.5 10 11.986 10h-.003c-1.218 0-2.282-.764-2.767-1.813-.088-.19-.344-.242-.432-.052C8.3 9.185 7.234 10 6.016 10h-.003C4.5 10 3.195 8.83 2.973 7.35l-.093-.84c-.053-.242.192-.51.477-.51h11.286c.294 0 .508.332.477.56l-.094.775zm-2.068 4.154A4.28 4.28 0 0 1 9 14.144a4.28 4.28 0 0 1-3.958-2.657A6.81 6.81 0 0 0 9 12.753a6.81 6.81 0 0 0 3.958-1.265z"></path></svg>
-								سرد
-								<span>1</span>
-
-							</a>
-						</li>
-					</ul>
-				</div>
-				<div class="profile-content__comment__comments__button-cm__left">
-					<ul>
-						<li><a href="#"><svg id="18x18_share" height="18" viewBox="0 0 18 18" width="18"><path d="M17.714 6.43L13 10.356v-3.03c-1 0-5.097 1.47-6.286 3.62.274-3.08 4.286-5.5 6.286-5.5V2.5l4.714 3.93zM3 4v10h11v-2.5l1-1V15H2V3h8.5l-1 1H3z"></path></svg></a></li>
-						<li><a href="#"><svg id="18x18_compliment" height="18" viewBox="0 0 18 18" width="18" class="__web-inspector-hide-shortcut__"><path d="M14.5 6.75a5.5 5.5 0 0 0-11 0 5.495 5.495 0 0 0 2.993 4.892L5.5 16.75l3.505-2 3.495 2-.993-5.108A5.495 5.495 0 0 0 14.5 6.75zm-5.5 4c-2.206 0-4-1.794-4-4s1.794-4 4-4 4 1.794 4 4-1.794 4-4 4z"></path></svg></a></li>
-					</ul>
-				</div>
-			</div>
-			<div class="profile-content__comment__comments__form">
-				<div class="profile-content__comment__comments__form__top">
-					<div class="profile-content__comment__comments__form__top__image">
-						<img src="./assets/img/img-form-comment.jpg" alt="">
-					</div>
-					<div class="profile-content__comment__comments__form__top__text">
-						<p>نظر جیسون جی از رستوران Mill</p>
-						<span>صاحب مشاغل</span>
-					</div>
-				</div>
-				<div class="profile-content__comment__comments__form__bottom">
-					<p>2/9/2020 از شما ، ایزابل ، برای بررسی دقیق و بصیرت آمیز تجربه خود با ما متشکریم! بود…<a href="#">ادامه مطلب</a></p>
-				</div>
-			</div>
-		</div>
 		<div class="profile-content__comment__comments">
 
 			<div class="profile-content__comment__comments__info">
@@ -595,138 +497,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="profile-content__comment__comments">
 
-			<div class="profile-content__comment__comments__info">
-
-				<div class="profile-content__comment__comments__info__image">
-					<a href="#">
-						<img src="./assets/img/pro-img1.jpg" alt="">
-					</a>
-				</div>
-				<div class="profile-content__comment__comments__info__text">
-					<div class="profile-content__comment__comments__info__text__name">
-						<a href="">رستوران میل</a>
-					</div>
-					<div class="profile-content__comment__comments__info__text__category">
-						<ul>
-							<li>££</li>
-							<li><a href="#">آمریکایی (جدید)</a></li>
-							<li>,</li>
-							<li><a href="#">صبحانه و ناهار</a></li>
-
-						</ul>
-
-					</div>
-					<div class="profile-content__comment__comments__info__text__location">
-						<span>خیابان 200 مرکزی</span>
-						<span>سن پترزبورگ ، فلوریدا 33701</span>
-						<span>ایالات متحده</span>
-					</div>
-
-
-				</div>
-			</div>
-			<div class="profile-content__comment__comments__Score">
-				<div class="profile-content__comment__comments__Score__star" data-star="4">
-				</div>
-				<div class="profile-content__comment__comments__Score__data">
-					<span> 1399/9/27</span>
-				</div>
-			</div>
-
-			<div class="profile-content__comment__comments__txt">
-				<p>واقعاً این مکان سزاوار 4.5 ستاره است. غذا عالی بود ، صندلی های موجود خوب بود و ما چندین نفر را از طریق وعده های غذایی ما کنترل می کردند ، که بسیار راحت بود. تنها دلیل این که 5 عالی نیست این است که پیشخدمت ما خیلی آموزنده نبود (در مورد محصولات ویژه به ما نگفت ، فقط یک توصیه کرد و همین بود) ، اما او بسیار خوب و توجه بود.</p>
-				<span>سفارش:</span>
-				<ul>
-					<li>- هندوانه Bruschetta</li>
-					<li>- پرنده کثیف</li>
-					<li>- سوسیس و وفل بنی</li>
-				</ul>
-				<span>بروشته WATERMELON</span>
-				<ul>
-					<li>- این کاملا خوشمزه بود! هندوانه تازه که روی فتای زده شده با مقداری شربت آگاو سرو می شود DIVINE بود. نان درست به مقدار مناسب تفت داده شد و آن کرانچ کامل را به مخلوط اضافه کرد. ما بیکن قندی اضافه کردیم (زیرا چرا این کار را نمی کردی) و این شیرین اضافه شده عالی بود.</li>
-				</ul>
-				<span>پرنده خنده دار</span>
-				<ul>
-					<li>
-						- این اجرای آنها در ساندویچ مرغ سرخ شده نشویل ، مسلماً بهتر بود. گرچه این مورد در سس داغ خسته نمی شود ، اما با پنیر ذوب شده و یک سوسیس سوسیس که قسم می خورم کمی کاری دارد ، خسته می شود. مرغ گوشت سینه بود (یسس!) و خیلی خوب سرخ شد
-						- تنها نکته منفی این بود که کمی نسبت به بیسکویت در اندازه کوچک بود. بیسکویت کاملاً عالی بود. از خارج ترد ، از داخل نرم و کرکی است. فقط در اطراف یک غذای واقعا خوشمزه.
-					</li>
-				</ul>
-				<span>بنسیس سوسیس و وافل</span>
-				<ul>
-					<li>- وافل از خمیر ذرت شیرین درست شده (بسیار عالی) و با پته های سوسیس خانگی ، گوجه سبز سرخ شده تازه و دو تخم مرغ کاملاً شسته شده همراه شده است. آن را با شربت افرا بپاشید و به من اعتماد کنید ، دیگر هرگز نخواهید چیز دیگری بخورید.</li>
-				</ul>
-
-			</div>
-			<div class="profile-content__comment__comments__image">
-				<div class="profile-content__comment__comments__image__img">
-					<a href="#">
-						<img src="./assets/img/comments-img1.jpg" alt="">
-					</a>
-					<span>پرنده کثیف</span>
-				</div>
-
-				<div class="row" data-space="10">
-					<div class="col-6">
-						<div class="profile-content__comment__comments__image__img">
-							<a href="#">
-								<img src="./assets/img/comments-img3.jpg" alt="">
-							</a>
-							<span>پرنده کثیف</span>
-						</div>
-					</div>
-					<div class="col-6">
-						<div class="profile-content__comment__comments__image__img">
-							<a href="#">
-								<img src="./assets/img/comments-img3.jpg" alt="">
-							</a>
-							<span>پرنده کثیف</span>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="profile-content__comment__comments__review">
-				<p>این بررسی بود...؟</p>
-			</div>
-			<div class="profile-content__comment__comments__button-cm">
-				<div class="profile-content__comment__comments__button-cm__right">
-					<ul>
-						<li>
-							<a href="#">
-								<svg id="18x18_useful_outline" height="18" viewBox="0 0 18 18" width="18"><path d="M9 17c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM9 2C5.14 2 2 5.14 2 9s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm2 8.392V12H7v-1.608a3.982 3.982 0 0 1-2-3.445 4 4 0 0 1 8 0c0 1.477-.81 2.752-2 3.445zM8 5.25a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5zm1.003 9.747h-.006A1.997 1.997 0 0 1 7 13h4a1.997 1.997 0 0 1-1.997 1.997z"></path></svg>
-								مفید
-								<span>2</span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<svg id="18x18_funny_outline" height="18" viewBox="0 0 18 18" width="18"><path d="M9 17c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM9 2C5.14 2 2 5.14 2 9s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm0 12a4.87 4.87 0 0 1-4.787-4h9.574A4.87 4.87 0 0 1 9 14zm2.5-5.625a1.376 1.376 0 1 1 0-2.75 1.376 1.376 0 0 1 0 2.75zm-5 0a1.376 1.376 0 1 1 0-2.75 1.376 1.376 0 0 1 0 2.75z"></path></svg>
-								خنده دار
-
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<svg id="18x18_cool_outline" height="18" viewBox="0 0 18 18" width="18"><path d="M9 17c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM9 2C5.14 2 2 5.14 2 9s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm6.026 5.335C14.766 8.797 13.5 10 11.986 10h-.003c-1.218 0-2.282-.764-2.767-1.813-.088-.19-.344-.242-.432-.052C8.3 9.185 7.234 10 6.016 10h-.003C4.5 10 3.195 8.83 2.973 7.35l-.093-.84c-.053-.242.192-.51.477-.51h11.286c.294 0 .508.332.477.56l-.094.775zm-2.068 4.154A4.28 4.28 0 0 1 9 14.144a4.28 4.28 0 0 1-3.958-2.657A6.81 6.81 0 0 0 9 12.753a6.81 6.81 0 0 0 3.958-1.265z"></path></svg>
-								سرد
-								<span>1</span>
-
-							</a>
-						</li>
-					</ul>
-				</div>
-				<div class="profile-content__comment__comments__button-cm__left">
-					<ul>
-						<li><a href="#"><svg id="18x18_share" height="18" viewBox="0 0 18 18" width="18"><path d="M17.714 6.43L13 10.356v-3.03c-1 0-5.097 1.47-6.286 3.62.274-3.08 4.286-5.5 6.286-5.5V2.5l4.714 3.93zM3 4v10h11v-2.5l1-1V15H2V3h8.5l-1 1H3z"></path></svg></a></li>
-						<li><a href="#"><svg id="18x18_compliment" height="18" viewBox="0 0 18 18" width="18" class="__web-inspector-hide-shortcut__"><path d="M14.5 6.75a5.5 5.5 0 0 0-11 0 5.495 5.495 0 0 0 2.993 4.892L5.5 16.75l3.505-2 3.495 2-.993-5.108A5.495 5.495 0 0 0 14.5 6.75zm-5.5 4c-2.206 0-4-1.794-4-4s1.794-4 4-4 4 1.794 4 4-1.794 4-4 4z"></path></svg></a></li>
-					</ul>
-				</div>
-			</div>
-
-		</div>
 		<div class="profile-content__comment__comments">
 
 			<div class="profile-content__comment__comments__info">
