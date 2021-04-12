@@ -58,22 +58,22 @@ namespace DataLayer.Services
 			var BusinessItem = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Id.Equals(id));
 			if(BusinessItem != null)
 			{
-			 return new Tuple<string, double, double,List<LocationHours>>(BusinessItem.Address , BusinessItem.Longitude , BusinessItem.Latitude, await GetLocationHours(id));
+			 return new Tuple<string, double, double,List<LocationHours>>(BusinessItem.Address , BusinessItem.Longitude , BusinessItem.Latitude, await GetLocationHours(id) );
 			}
 			else
 			{
 			return null; 
 			}
 		}
-		public async Task<List<Tuple<string,string,int,int,Guid,string>>> GetNearByBusinessSponsored(Guid id)
+		public async Task<List<Tuple<string,string,int,int,Guid,string,string>>> GetNearByBusinessSponsored(Guid id)
 		{
-			var BusinessItem = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Id.Equals(id));
-			List<Tuple<string, string, int, int, Guid, string>> MainList = new List<Tuple<string, string, int, int, Guid, string>>();
+			var BusinessItem = await DbContext.Businesses.Include(s => s.District).FirstOrDefaultAsync(s => s.Id.Equals(id));
+			List<Tuple<string, string, int, int, Guid, string, string>> MainList = new List<Tuple<string, string, int, int, Guid, string, string>>();
 			if (BusinessItem != null)
 			{
 				foreach (var item in await DbContext.Businesses.Where(s => s.DistrictId == BusinessItem.DistrictId && s.IsSponsor).Take(2).ToListAsync())
 				{
-					MainList.Add(new Tuple<string, string, int, int, Guid, string>(item.Name,item.FeatureImage,item.Rate,await GetTotalReview(item.Id),item.Id, item.Description));
+					MainList.Add(new Tuple<string, string, int, int, Guid, string,string>(item.Name,item.FeatureImage,item.Rate,await GetTotalReview(item.Id),item.Id, item.Description , item.District.Name));
 				}
 				return MainList; 
 			}
@@ -158,18 +158,19 @@ namespace DataLayer.Services
 		public class LocationHours
 		{
 			public WeekDaysEnum Day { get; set; }
+			public string DayName { get; set; }
 			public TimeSpan? FromTime { get; set; }
 			public TimeSpan? ToTime { get; set;  }
 		}
-		private async  Task<List<LocationHours>> GetLocationHours(Guid id)
+		private async Task<List<LocationHours>> GetLocationHours(Guid id)
 		{
 			List<LocationHours> locationHours = new List<LocationHours>();
 			var Times = await DbContext.BusinessTimes.Where(s => s.BusinessId.Equals(id)).ToListAsync();
 			foreach (var item in Times)
 			{
-				locationHours.Add(new LocationHours() { Day = item.Day , FromTime = item.FromTime , ToTime = item.ToTime  });
+				locationHours.Add(new LocationHours() { Day = item.Day, FromTime = item.FromTime, ToTime = item.ToTime });
 			}
-			return locationHours; 
+			return locationHours;
 		}
 		private  async Task<List<string>> GetBusinessFeaturesTitle(Guid id)
 		{

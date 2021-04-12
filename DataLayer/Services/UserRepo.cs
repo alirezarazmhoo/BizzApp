@@ -37,5 +37,20 @@ namespace DataLayer.Services
 		{
 			return await DbContext.Users.FirstOrDefaultAsync(f => f.UserName == userName);
 		}
+
+		public async Task<string> GetUserName(string userId)
+		{
+			var Item = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(userId));
+			if(Item != null)
+			{
+
+			return Item.FullName; 
+			}
+			else
+			{
+				return "بدون نام"; 
+			}
+		}
+
 	}
 }

@@ -136,5 +136,31 @@ namespace BizApp.Controllers
 			}
 
 		}
+		[HttpPost]
+		public async Task<JsonResult> ChangeLike(Guid Id)
+		{
+			var UserId = "8ad1f65a-c47d-4f1a-a601-5c64c186c09b";
+			var UserName = await _unitOfWork.UserRepo.GetUserName(UserId);
+			try
+			{
+				string type;
+				if (await _unitOfWork.ReviewRepo.ChangeLikeCount(Id, UserId) == DomainClass.Enums.VotesAction.Add)
+				{
+					type = "add";
+				}
+				else
+				{
+					type = "submission";
+
+				}
+				await _unitOfWork.SaveAsync();
+				return Json(new { success = true, type , username = UserName });
+			}
+			catch (Exception)
+			{
+				return Json(new { success = false });
+
+			}
+		}
 	}
 }

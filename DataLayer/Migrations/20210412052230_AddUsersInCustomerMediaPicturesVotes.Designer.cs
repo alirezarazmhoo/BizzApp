@@ -4,14 +4,16 @@ using DataLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210412052230_AddUsersInCustomerMediaPicturesVotes")]
+    partial class AddUsersInCustomerMediaPicturesVotes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +41,7 @@ namespace DataLayer.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 4, 12, 14, 43, 0, 887, DateTimeKind.Local).AddTicks(2413));
+                        .HasDefaultValue(new DateTime(2021, 4, 12, 9, 52, 30, 42, DateTimeKind.Local).AddTicks(5321));
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -271,8 +273,8 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a3bf35de-749d-4b9d-ae51-62242678b77e",
-                            CreateDate = new DateTime(2021, 4, 12, 14, 43, 0, 890, DateTimeKind.Local).AddTicks(8437),
+                            ConcurrencyStamp = "22714bd6-bbe1-4d75-9f0c-ffadbcf9c88d",
+                            CreateDate = new DateTime(2021, 4, 12, 9, 52, 30, 46, DateTimeKind.Local).AddTicks(1794),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             Gender = 0,
@@ -282,10 +284,10 @@ namespace DataLayer.Migrations
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIOkt8LZt2yfs7Aazh4+TNuY+VIWbeKU/VfxC4WqIrCaxIHdTunTkaXwQ8vV6QI/Bw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELG+spCHis2rJFhoEXbnQ/DCrwNU4y5oRL1UgPRvN7V2EQ/e2nv7QX3MUYO84e6D4g==",
                             PhoneNumberConfirmed = false,
                             PhotoChanged = false,
-                            SecurityStamp = "5d298df7-ae87-4521-8b9f-bcc402f3c864",
+                            SecurityStamp = "16528aa4-17d8-4695-90b9-c7e3437556a8",
                             TwoFactorEnabled = false,
                             UserName = "mainadmin"
                         });
@@ -515,9 +517,10 @@ namespace DataLayer.Migrations
 
             modelBuilder.Entity("DomainClass.Businesses.BusinessTime", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<Guid>("BusinessId")
                         .HasColumnType("uniqueidentifier");
@@ -915,6 +918,27 @@ namespace DataLayer.Migrations
                     b.ToTable("UsersInCustomerBusinessMediaLikes");
                 });
 
+            modelBuilder.Entity("DomainClass.Review.UsersInCustomerMediaPicturesVotes", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BizAppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("CustomerBusinessMediaPicturesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BizAppUserId");
+
+                    b.HasIndex("CustomerBusinessMediaPicturesId");
+
+                    b.ToTable("UsersInCustomerMediaPicturesVotes");
+                });
+
             modelBuilder.Entity("DomainClass.Review.UsersInReviewLike", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1260,7 +1284,7 @@ namespace DataLayer.Migrations
 
             modelBuilder.Entity("DomainClass.Businesses.BusinessTime", b =>
                 {
-                    b.HasOne("DomainClass.Businesses.Business", "Business")
+                    b.HasOne("DomainClass.Businesses.Business", null)
                         .WithMany("BusinessTimes")
                         .HasForeignKey("BusinessId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1385,6 +1409,19 @@ namespace DataLayer.Migrations
                     b.HasOne("DomainClass.Review.CustomerBusinessMedia", null)
                         .WithMany("UsersInCustomerBusinessMediaLikes")
                         .HasForeignKey("CustomerBusinessMediaId");
+
+                    b.HasOne("DomainClass.Review.CustomerBusinessMediaPictures", "CustomerBusinessMediaPictures")
+                        .WithMany()
+                        .HasForeignKey("CustomerBusinessMediaPicturesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DomainClass.Review.UsersInCustomerMediaPicturesVotes", b =>
+                {
+                    b.HasOne("DomainClass.BizAppUser", "BizAppUser")
+                        .WithMany()
+                        .HasForeignKey("BizAppUserId");
 
                     b.HasOne("DomainClass.Review.CustomerBusinessMediaPictures", "CustomerBusinessMediaPictures")
                         .WithMany()

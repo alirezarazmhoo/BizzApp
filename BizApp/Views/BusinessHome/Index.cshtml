@@ -1,8 +1,1222 @@
-﻿
+﻿@model BizApp.Models.Basic.BusinessHomePageViewModel
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_AllPagesLayout.cshtml";
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/_AllPagesLayout.cshtml";
 }
+<section class="intro-stay-gold">
+	@await Html.PartialAsync("/Views/BusinessHome/Partials/Slider_Partial.cshtml", Model.businessHomePage_SliderViewModel)
+	@await Html.PartialAsync("/Views/BusinessHome/Partials/Summary_Partial.cshtml", Model.businessHomePage_SummaryViewModel)
+</section>
 
-<h2>Index</h2>
+<section class="stay-gold-content">
+	<div class="container">
+		<div class="stay-gold-content__wrapper">
+			<div class="row">
+				<div class="col-lg-8">
+					<div class="item-location__content__location__button">
+						<ul>
+							<li>
+								<a href="#">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="icon_svg">
+										<path d="M17.87 22a.93.93 0 01-.46-.12L12 19.08l-5.41 2.84a1 1 0 01-1-.08 1 1 0 01-.4-1l1-6-4.39-4.26a1 1 0 01.56-1.7L8.4 8l2.7-5.48a1 1 0 011.8 0L15.6 8l6 .88a1 1 0 01.56 1.7l-4.38 4.27 1 6a1 1 0 01-1 1.17l.09-.02zM12 17c.163.002.323.04.47.11l4.07 2.15-.78-4.54a1 1 0 01.29-.89l3.3-3.21-4.56-.72a1 1 0 01-.79-.54l-2-4.14-2 4.14a1 1 0 01-.75.54l-4.56.67L8 13.78a1 1 0 01.29.89l-.78 4.54 4.07-2.15A1.12 1.12 0 0112 17z"></path>
+									</svg>یک نظر ثبت کنید
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="icon_svg">
+										<path d="M16 2a1 1 0 01.95.68L17.72 5H20a3 3 0 013 3v11a3 3 0 01-3 3H4a3 3 0 01-3-3V8a3 3 0 013-3h2.28l.77-2.32A1 1 0 018 2h8zm-.72 2H8.72L8 6.32A1 1 0 017 7H4a1 1 0 00-1 1v11a1 1 0 001 1h16a1 1 0 001-1V8a1 1 0 00-1-1h-3a1 1 0 01-.95-.68L15.28 4zM12 7.5a5.5 5.5 0 015.5 5.5 5.51 5.51 0 01-5.5 5.5 5.5 5.5 0 010-11zm0 2a3.5 3.5 0 100 7 3.5 3.5 0 000-7z"></path>
+									</svg>تصویر ثبت کنید
+								</a>
+							</li>
+							@*<li>
+					<a href="#">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="icon_svg">
+							<path d="M13 5.414V17a1 1 0 01-2 0V5.414L9.707 6.707a1 1 0 01-1.414-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 11-1.414 1.414L13 5.414zM17 11a1 1 0 010-2h3a2 2 0 012 2v9a2 2 0 01-2 2H4a2 2 0 01-2-2v-9a2 2 0 012-2h3a1 1 0 110 2H4v9h16v-9h-3z"></path>
+						</svg>تقسیم کردن
+					</a>
+				</li>*@
+							<li>
+								<a href="#">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="icon_svg">
+										<path d="M12 16.202l-5.445 3.63A1 1 0 015 19V5a1 1 0 011-1h12a1 1 0 011 1v14a1 1 0 01-1.555.832L12 16.202zM7 6v11.131l4.445-2.963a1 1 0 011.11 0L17 17.13V6H7z"></path>
+									</svg>افزودن به علاقه مندی
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="item-location__content__information">
+						<ul>
+							<li>
+								<a href="#">
+									<svg width="24" height="24" class="icon_svg">
+										<path d="M21 6a3 3 0 00-3-3H6a3 3 0 00-3 3v12a3 3 0 003 3h12a3 3 0 003-3V6zm-5.881 10.428l-3.158-1.938L8.91 16.5l.59-3.457L7 10.596l3.457-.505L11.961 6.5l1.581 3.591 3.458.505-2.5 2.447.619 3.385z"></path>
+									</svg>مشارکت
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg width="24" height="24" class="icon_svg">
+										<path d="M21.318 16.771l-3.952-2.278a.602.602 0 00-.661.117l-2.147 2.288a1.159 1.159 0 01-.704.314s-1.471.041-4.251-2.692c-2.78-2.733-2.79-4.231-2.79-4.231a1.194 1.194 0 01.286-.724l1.979-2.113a.661.661 0 00.109-.683L6.964 2.683c-.099-.209-.309-.244-.468-.078L2.847 6.46c-.159.166-.311.49-.338.72 0 0-.461 3.969 5.096 9.431 5.556 5.463 9.452 4.87 9.452 4.87.226-.034.541-.198.699-.365l3.646-3.858c.159-.166.121-.386-.084-.487z"></path>
+									</svg>زنگ زدن
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg width="24" height="24" class="icon_svg">
+										<path d="M21.586 10.586l-8.172-8.172a2 2 0 00-2.828 0l-8.172 8.172a2 2 0 000 2.828l8.172 8.172a2 2 0 002.828 0l8.172-8.172a2 2 0 000-2.828zM13 15v-3h-3v3H8v-5h5V7l4 4-4 4z"></path>
+									</svg>جهت ها
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg width="24" height="24" class="icon_svg">
+										<path d="M18 21H6a3 3 0 01-3-3V6a3 3 0 013-3h5v2H6c-.551 0-1 .449-1 1v12c0 .551.449 1 1 1h12c.551 0 1-.449 1-1v-5h2v5a3 3 0 01-3 3zm-4.466-8.935L12.12 10.65l4.265-4.265L13 3h8v8l-3.201-3.201-4.265 4.266z"></path>
+									</svg>وب سایت
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="stay-gold-content__wrapper__covid-19">
+						<div class="stay-gold-content__wrapper__covid-19__title">
+							<h4>ویژگی های این کسب و کار</h4>
+						</div>
+						@*<div class="stay-gold-content__wrapper__covid-19__update">
+				<div class="stay-gold-content__wrapper__covid-19__update__title">
+					<span>خدمات به روز شده</span>
+				</div>
+				<div class="stay-gold-content__wrapper__covid-19__update__list">
+					<ul>
+						<li>
+							<svg width="24" height="24" class="icon_svg-green"><path d="M9.46 17.52a1 1 0 01-.71-.29l-4-4a1.004 1.004 0 111.42-1.42l3.25 3.26 8.33-8.34a1.004 1.004 0 011.42 1.42l-9 9a1 1 0 01-.71.37z"></path></svg>
+							صندلی های فضای باز
+						</li>
+						<li>
+							<svg width="24" height="24" class="icon_svg-green"><path d="M9.46 17.52a1 1 0 01-.71-.29l-4-4a1.004 1.004 0 111.42-1.42l3.25 3.26 8.33-8.34a1.004 1.004 0 011.42 1.42l-9 9a1 1 0 01-.71.37z"></path></svg>
+							تحویل
+						</li>
+						<li>
+							<svg width="24" height="24" class="icon_svg-green"><path d="M9.46 17.52a1 1 0 01-.71-.29l-4-4a1.004 1.004 0 111.42-1.42l3.25 3.26 8.33-8.34a1.004 1.004 0 011.42 1.42l-9 9a1 1 0 01-.71.37z"></path></svg>
+							ناهار خوری نشسته
+						</li>
+						<li>
+							<svg width="24" height="24" class="icon_svg-red"><path d="M13.41 12l5.3-5.29a1.004 1.004 0 10-1.42-1.42L12 10.59l-5.29-5.3a1.004 1.004 0 00-1.42 1.42l5.3 5.29-5.3 5.29a1 1 0 000 1.42 1 1 0 001.42 0l5.29-5.3 5.29 5.3a1 1 0 001.42 0 1 1 0 000-1.42L13.41 12z"></path></svg>
+							خرید در فروشگاه
+						</li>
+						<li>
+							<svg width="24" height="24" class="icon_svg-red"><path d="M13.41 12l5.3-5.29a1.004 1.004 0 10-1.42-1.42L12 10.59l-5.29-5.3a1.004 1.004 0 00-1.42 1.42l5.3 5.29-5.3 5.29a1 1 0 000 1.42 1 1 0 001.42 0l5.29-5.3 5.29 5.3a1 1 0 001.42 0 1 1 0 000-1.42L13.41 12z"></path></svg>
+							وانت حاشیه ای
+						</li>
+					</ul>
+				</div>
+			</div>*@
+
+						@await Html.PartialAsync("/Views/BusinessHome/Partials/Features_Partial.cshtml", Model.businessHomePage_FeatureViewModel)
+
+					</div>
+					@*<div class="stay-gold-content__wrapper__menu">
+			<div class="stay-gold-content__wrapper__menu__title-menu">
+				<h4>منو</h4>
+			</div>
+			<div class="swiper-container">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">
+						<figure class="stay-gold-content__wrapper__menu__image">
+							<img src="./assets/img/img-menu1.jpg" alt="">
+						</figure>
+						<div class="stay-gold-content__wrapper__menu__title">
+							<p>گوشت خوک کشیده</p>
+						</div>
+						<div class="stay-gold-content__wrapper__menu__detail">
+							<span>13 عکس</span>
+							<span>20 بازدید</span>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<figure class="stay-gold-content__wrapper__menu__image">
+							<img src="./assets/img/img-menu2.jpg" alt="">
+						</figure>
+						<div class="stay-gold-content__wrapper__menu__title">
+							<p>گوشت خوک کشیده</p>
+						</div>
+						<div class="stay-gold-content__wrapper__menu__detail">
+							<span>13 عکس</span>
+							<span>20 بازدید</span>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<figure class="stay-gold-content__wrapper__menu__image">
+							<img src="./assets/img/img-menu3.jpg" alt="">
+						</figure>
+						<div class="stay-gold-content__wrapper__menu__title">
+							<p>گوشت خوک کشیده</p>
+						</div>
+						<div class="stay-gold-content__wrapper__menu__detail">
+							<span>13 عکس</span>
+							<span>20 بازدید</span>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<figure class="stay-gold-content__wrapper__menu__image">
+							<img src="./assets/img/img-menu4.jpg" alt="">
+						</figure>
+						<div class="stay-gold-content__wrapper__menu__title">
+							<p>گوشت خوک کشیده</p>
+						</div>
+						<div class="stay-gold-content__wrapper__menu__detail">
+							<span>13 عکس</span>
+							<span>20 بازدید</span>
+						</div>
+					</div>
+				</div>
+				<div class="swiper-btn-next">
+					<svg width="24" height="24" class="icon_svg"><path d="M9.75 17.58a1 1 0 01-.7-.28 1 1 0 010-1.42l3.8-3.88L9 8.12a1 1 0 111.41-1.42L15 11.3a1 1 0 010 1.4l-4.5 4.58a1 1 0 01-.75.3z"></path></svg>
+
+				</div>
+			</div>
+			<div class="stay-gold-content__wrapper__menu__full">
+				<a href="#">
+					<svg width="24" height="24" class="icon_svg"><path d="M17 1a4 4 0 014 4v14a4 4 0 01-4 4H4a1 1 0 01-1-1V2a1 1 0 011-1zM7 3H5v18h2V3zm10 0H9v18h8a2 2 0 002-2V5a2 2 0 00-2-2zm-2 8a1 1 0 110 2h-2a1 1 0 110-2h2zm2-3a1 1 0 110 2h-6a1 1 0 110-2h6z"></path></svg>
+					منوی کامل
+				</a>
+			</div>
+		</div>*@
+					@await Html.PartialAsync("/Views/BusinessHome/Partials/DirectionAndHours_Partial.cshtml", Model.businessHomePage_HoursAndLocationViewModel)
+					@await Html.PartialAsync("/Views/BusinessHome/Partials/Sponsers_Partial.cshtml", Model.businessHomePage_NearSponseredViewModel)
+					<div class="stay-gold-content__wrapper__and-more">
+						<div class="stay-gold-content__wrapper__and-more__title">
+							<h4>امکانات و موارد دیگر</h4>
+						</div>
+						<div class="stay-gold-content__wrapper__and-more__list">
+							<ul>
+								<li>
+									<svg width="24" height="24" class="icon_svg"><path d="M19 10V4h-6v10H9.444a3.485 3.485 0 00-4.888 0H2v3h1.55A3.49 3.49 0 007 20a3.49 3.49 0 003.45-3h3.1c.24 1.69 1.69 3 3.45 3 1.76 0 3.21-1.31 3.45-3H22v-5l-3-2zM7 18a1.5 1.5 0 11.001-3.001A1.5 1.5 0 017 18zm8-12h2v3h-2V6zm2 12c-.83 0-1.5-.67-1.5-1.5S16.17 15 17 15s1.5.67 1.5 1.5S17.83 18 17 18z"></path><path d="M6 7V6c0-.551.449-1 1-1h1c.551 0 1 .449 1 1v1H6m2-4H7a3 3 0 00-3 3v1H2v7h11V7h-2V6a3 3 0 00-3-3" opacity=".502"></path></svg>
+									تحویل ارائه می دهد
+								</li>
+								<li>
+									<svg width="24" height="24" class="icon_svg"><path d="M18 21H6a3 3 0 01-3-3V6a3 3 0 013-3 1 1 0 012 0h8a1 1 0 012 0 3 3 0 013 3v12a3 3 0 01-3 3zm1-13H5v10c0 .551.449 1 1 1h12c.551 0 1-.449 1-1V8zm-6 5h4v4h-4v-4z"></path></svg>
+									امکان رزرو وجود ندارد
+								</li>
+								<li>
+									<svg width="24" height="24" class="icon_svg"><path d="M19.698 7.748L9.895 17.994l-5.603-5.855a1.069 1.069 0 010-1.463.96.96 0 011.401 0l4.202 4.391 8.403-8.783a.96.96 0 011.4 0c.387.405.387 1.06 0 1.464z"></path></svg>
+									کارت های اعتباری را می پذیرد
+								</li>
+								<li>
+									<svg width="24" height="24" class="icon_svg"><path d="M20.549 5.427l-.276 1.227a.665.665 0 01-.405.473l-3.436 1.359a.666.666 0 01-.619-.069l-1.041-.707-.275 1.228a.667.667 0 01-.405.473l-3.437 1.359a.668.668 0 01-.619-.069l-1.04-.707-.276 1.228a.665.665 0 01-.405.473l-3.437 1.358a.663.663 0 01-.618-.068l-1.041-.707-.003.001C3.033 8.19 5.417 4.253 9.437 2.663c4.02-1.59 8.452-.347 11.115 2.762l-.003.002zM11 18.597v-6.672l2-.791v7.463A5.654 5.654 0 0117.223 22H6.777A5.654 5.654 0 0111 18.597z"></path></svg>
+									Outdoor Seating
+								</li>
+							</ul>
+						</div>
+						<div class="stay-gold-content__wrapper__and-more__button">
+							<a href="#">14 ویژگی بیشتر</a>
+						</div>
+					</div>
+					<div class="stay-gold-content__wrapper__about">
+						<div class="stay-gold-content__wrapper__about__title">
+							<h4>درباره تجارت</h4>
+						</div>
+						<div class="stay-gold-content__wrapper__about__desc">
+							<p>BBQ به سبک مرکزی تگزاس ، ساندویچ های مخصوص به سبک دلی ، غذای محلی و آبجو</p>
+						</div>
+						<div class="stay-gold-content__wrapper__about__button">
+							<a href="#" data-toggle="modal" data-target="#click-more">14 ویژگی بیشتر</a>
+						</div>
+					</div>
+					<div class="stay-gold-content__wrapper__ask">
+						<div class="stay-gold-content__wrapper__ask__title">
+							<h4>از انجمن بپرسید</h4>
+							<a href="#">یک سوال بپرسید<svg width="24" height="24" class="icon_svg"><path d="M19 11h-6V5a1 1 0 10-2 0v6H5a1 1 0 100 2h6v6a1 1 0 102 0v-6h6a1 1 0 100-2z"></path></svg></a>
+
+						</div>
+						<div class="stay-gold-content__wrapper__ask__desc">
+							<div class="stay-gold-content__wrapper__ask__desc__item">
+								<div class="stay-gold-content__wrapper__ask__desc__item__question">
+									<span>سوال:</span>
+									<p>آیا این مکان لطیف است؟</p>
+								</div>
+								<div class="stay-gold-content__wrapper__ask__desc__item__answer">
+									<span>پاسخ:</span>
+									<p>وست اوکلند در دهه اخیر به طور پیوسته لطف کرده است. این مکان متعلق به افرادی است که از این محله هستند یا در این محله زندگی می کنند. اینکه لطیف کننده باشد یا مهم نباشد. آنچه برای ما مهم است تهیه غذای عالی است ... <a href="#">بیشتر</a></p>
+								</div>
+								<div class="stay-gold-content__wrapper__ask__desc__sub">
+									<span>جیسون اچ ، صاحب مشاغل <p>23 روز پیش</p><p> 1 person found this helpful</p></span>
+								</div>
+								<div class="stay-gold-content__wrapper__ask__desc__button">
+									<a href="#">
+										مشاهده 1 پاسخ دیگر
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="stay-gold-content__wrapper__ask__desc">
+							<div class="stay-gold-content__wrapper__ask__desc__item">
+								<div class="stay-gold-content__wrapper__ask__desc__item__question">
+									<span>سوال:</span>
+									<p>آیا این مکان لطیف است؟</p>
+								</div>
+								<div class="stay-gold-content__wrapper__ask__desc__item__answer">
+									<span>پاسخ:</span>
+									<p>وست اوکلند در دهه اخیر به طور پیوسته لطف کرده است. این مکان متعلق به افرادی است که از این محله هستند یا در این محله زندگی می کنند. اینکه لطیف کننده باشد یا مهم نباشد. آنچه برای ما مهم است تهیه غذای عالی است ... <a href="#">بیشتر</a></p>
+								</div>
+								<div class="stay-gold-content__wrapper__ask__desc__sub">
+									<span>جیسون اچ ، صاحب مشاغل <p>23 روز پیش</p><p> 1 person found this helpful</p></span>
+								</div>
+								<div class="stay-gold-content__wrapper__ask__desc__button">
+									<a href="#">
+										مشاهده 1 پاسخ دیگر
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="stay-gold-content__wrapper__ask__see-all">
+							<a href="#">هر 3 سوال را ببینید</a>
+						</div>
+					</div>
+					<div class="stay-gold-content__wrapper__recommended">
+						<div class="stay-gold-content__wrapper__recommended__title">
+							<h4>نظرات پیشنهادی</h4>
+						</div>
+						<div class="stay-gold-content__wrapper__recommended__alert">
+							<svg width="24" height="24" class="icon_svg"><path d="M12 1c6.075 0 11 4.925 11 11a11 11 0 01-11 11C5.925 23 1 18.075 1 12S5.925 1 12 1zm0 2a9 9 0 100 18 9 9 0 000-18zm0 7.33a1 1 0 011 1V16a1 1 0 11-2 0v-4.67a1 1 0 011-1zm0-3.18a1 1 0 110 2 1 1 0 010-2z"></path></svg>
+							<p>
+								<span>اعتماد شما نگرانی اصلی ماست</span> ، بنابراین شرکت ها نمی توانند برای تغییر یا حذف پست ها هزینه پرداخت کنند.<a href="#">اطلاعات بیشتر در مورد آن</a>
+							</p>
+							<div class="stay-gold-content__wrapper__recommended__alert__close">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="icon_svg">
+									<path d="M13.41 12l5.3-5.29a1.004 1.004 0 10-1.42-1.42L12 10.59l-5.29-5.3a1.004 1.004 0 00-1.42 1.42l5.3 5.29-5.3 5.29a1 1 0 000 1.42 1 1 0 001.42 0l5.29-5.3 5.29 5.3a1 1 0 001.42 0 1 1 0 000-1.42L13.41 12z"></path>
+								</svg>
+							</div>
+						</div>
+						<div class="stay-gold-content__wrapper__recommended__search">
+							<div class="stay-gold-content__wrapper__recommended__search__input">
+								<input type="text" name="" placeholder="جستجوی پست ها">
+								<button><svg width="16" height="16" class="icon_svg"><path d="M14.62 13.21l-2-2a6.47 6.47 0 10-1.42 1.42l2 2a1 1 0 00.71.3 1 1 0 00.7-1.71l.01-.01zM4.23 10.54a4.46 4.46 0 116.31 0 4.45 4.45 0 01-6.31 0z"></path></svg></button>
+							</div>
+							<div class="stay-gold-content__wrapper__recommended__search__sort">
+
+								<select class="selectpicker form-control">
+									<option>مرتب سازی Yelp</option>
+									<option>مرتب سازی Yelp</option>
+									<option>مرتب سازی Yelp</option>
+								</select>
+							</div>
+						</div>
+						<div class="stay-gold-content__wrapper__recommended__score">
+							<div class="stay-gold-content__wrapper__recommended__score__avator">
+								<div class="stay-gold-content__wrapper__recommended__score__avator__image">
+									<a href="#"><img src="./assets/img/avator1.jpg" alt=""></a>
+								</div>
+								<div class="stay-gold-content__wrapper__recommended__score__avator__text">
+									<div class="stay-gold-content__wrapper__recommended__score__avator__text__title">
+										<a href="#">سامان اچ</a>
+									</div>
+									<div class="stay-gold-content__wrapper__recommended__score__avator__text__location">
+										<span>هلند</span>
+									</div>
+									<div class="stay-gold-content__wrapper__recommended__score__avator__text__info">
+										<ul>
+											<li>
+												<svg width="16" height="16" class="icon_svg"><path d="M11.23 1H4.77A3.77 3.77 0 001 4.77v6.46A3.77 3.77 0 004.77 15h6.46A3.77 3.77 0 0015 11.23V4.77A3.77 3.77 0 0011.23 1zM8 8.63a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM7 11h2.1a2 2 0 011.9 2H5a2 2 0 012-2zm6.05.23a1.71 1.71 0 01-.15.71 4 4 0 00-2.17-2.58 3.42 3.42 0 00.82-2.23 3.5 3.5 0 10-7 0 3.46 3.46 0 00.83 2.23 4 4 0 00-2.18 2.58 1.71 1.71 0 01-.2-.71V4.77C3 3.792 3.792 3 4.77 3h6.46c.978 0 1.77.792 1.77 1.77l.05 6.46z"></path></svg>
+												0
+											</li>
+											<li>
+												<svg width="16" height="16" class="icon_svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.23 1H4.77A3.77 3.77 0 001 4.77v6.46A3.77 3.77 0 004.77 15h6.46A3.77 3.77 0 0015 11.23V4.77A3.77 3.77 0 0011.23 1zM13 11.23A1.77 1.77 0 0111.23 13H4.77A1.77 1.77 0 013 11.23V4.77C3 3.792 3.792 3 4.77 3h6.46c.977 0 1.77.792 1.77 1.77v6.46zM9.18 6.65l1.64.24a.51.51 0 01.41.34.51.51 0 01-.13.51L9.91 8.9l.29 1.61a.49.49 0 01-.2.49.51.51 0 01-.3.12.46.46 0 01-.23-.06L8 10.29l-1.47.77a.5.5 0 01-.72-.53l.28-1.63L4.9 7.74a.51.51 0 01-.13-.51.51.51 0 01.41-.34l1.64-.24.73-1.49a.52.52 0 01.9 0l.73 1.49z"></path></svg>
+												1
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="stay-gold-content__wrapper__recommended__score__star">
+								<div class="stay-gold-content__wrapper__recommended__score__star__icon" data-star="5">
+									<input type="radio" name="star" id="star_5">
+									<label for="star_5" data-star="5"></label>
+									<input type="radio" name="star" id="star_4">
+									<label for="star_4" data-star="4"></label>
+									<input type="radio" name="star" id="star_3">
+									<label for="star_3" data-star="3"></label>
+									<input type="radio" name="star" id="star_2">
+									<label for="star_2" data-star="2"></label>
+									<input type="radio" name="star" id="star_1">
+									<label for="star_1" data-star="1"></label>
+								</div>
+								<div class="stay-gold-content__wrapper__recommended__score__star__text">
+									<a href="#">بررسی خود را در مورد Stay Gold Deli شروع کنید.</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="stay-gold-content__wrapper__comment">
+						<div class="stay-gold-content__wrapper__comment__avatar">
+							<div class="stay-gold-content__wrapper__comment__avatar__image">
+								<a href="#"><img src="./assets/img/comment-avatar.jpg" alt=""></a>
+							</div>
+							<div class="stay-gold-content__wrapper__comment__avatar__bio">
+								<div class="stay-gold-content__wrapper__comment__avatar__bio__title">
+									<div class="stay-gold-content__wrapper__comment__avatar__bio__title__name">
+										<a href="#">شریل ام.</a>
+									</div>
+									<div class="stay-gold-content__wrapper__comment__avatar__bio__title__elite">
+										<a href="#">نخبگان '2021</a>
+									</div>
+								</div>
+								<div class="stay-gold-content__wrapper__comment__avatar__bio__location">
+									<span>منطقه خلیج سانفرانسیسکو ، کالیفرنیا</span>
+								</div>
+								<div class="stay-gold-content__wrapper__comment__avatar__bio__actions">
+									<ul>
+										<li>
+											<svg width="16" height="16" class="icon_svg"><path d="M11.23 1H4.77A3.77 3.77 0 001 4.77v6.46A3.77 3.77 0 004.77 15h6.46A3.77 3.77 0 0015 11.23V4.77A3.77 3.77 0 0011.23 1zM8 8.63a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM7 11h2.1a2 2 0 011.9 2H5a2 2 0 012-2zm6.05.23a1.71 1.71 0 01-.15.71 4 4 0 00-2.17-2.58 3.42 3.42 0 00.82-2.23 3.5 3.5 0 10-7 0 3.46 3.46 0 00.83 2.23 4 4 0 00-2.18 2.58 1.71 1.71 0 01-.2-.71V4.77C3 3.792 3.792 3 4.77 3h6.46c.978 0 1.77.792 1.77 1.77l.05 6.46z"></path></svg>
+											179
+										</li>
+										<li>
+											<svg width="16" height="16" class="icon_svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.23 1H4.77A3.77 3.77 0 001 4.77v6.46A3.77 3.77 0 004.77 15h6.46A3.77 3.77 0 0015 11.23V4.77A3.77 3.77 0 0011.23 1zM13 11.23A1.77 1.77 0 0111.23 13H4.77A1.77 1.77 0 013 11.23V4.77C3 3.792 3.792 3 4.77 3h6.46c.977 0 1.77.792 1.77 1.77v6.46zM9.18 6.65l1.64.24a.51.51 0 01.41.34.51.51 0 01-.13.51L9.91 8.9l.29 1.61a.49.49 0 01-.2.49.51.51 0 01-.3.12.46.46 0 01-.23-.06L8 10.29l-1.47.77a.5.5 0 01-.72-.53l.28-1.63L4.9 7.74a.51.51 0 01-.13-.51.51.51 0 01.41-.34l1.64-.24.73-1.49a.52.52 0 01.9 0l.73 1.49z"></path></svg>
+											1304
+										</li>
+										<li>
+											<svg width="16" height="16" class="icon_svg"><path d="M5.076 6.674a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path><path d="M11.231 1H4.769A3.774 3.774 0 001 4.769v6.462A3.774 3.774 0 004.769 15h6.462A3.774 3.774 0 0015 11.231V4.769A3.774 3.774 0 0011.231 1zM4.769 3h6.462A1.77 1.77 0 0113 4.769v3.58l-.957-.759a4.35 4.35 0 00-5.624.172L3 10.834V4.77A1.77 1.77 0 014.769 3zm6.462 10H4.769a1.75 1.75 0 01-.902-.255l3.89-3.494a2.352 2.352 0 013.042-.094L13 10.902v.329A1.77 1.77 0 0111.231 13z"></path></svg>
+											5254
+										</li>
+
+									</ul>
+								</div>
+
+							</div>
+						</div>
+						<div class="stay-gold-content__wrapper__comment__score">
+							<div class="stay-gold-content__wrapper__comment__score__star" data-star="4"></div>
+							<div class="stay-gold-content__wrapper__comment__score__date">
+								<span>20/9/18</span>
+							</div>
+						</div>
+						<div class="stay-gold-content__wrapper__comment__photo">
+							<svg width="16" height="16" class="icon_svg"><path d="M11.23 1A3.77 3.77 0 0115 4.77v6.46A3.77 3.77 0 0111.23 15H4.77a3.77 3.77 0 01-3.43-2.31l-.06-.06a3.61 3.61 0 01-.28-1.4V4.77A3.77 3.77 0 014.77 1h6.46zM3 4.77V11l5.73-5.44a1 1 0 011.38 0L13 8.3V4.77A1.77 1.77 0 0011.23 3H4.77A1.77 1.77 0 003 4.77zM11.23 13A1.77 1.77 0 0013 11.23v-.17l-3.58-3.4L4 12.81c.238.122.502.187.77.19h6.46zM5.02 6.83a1.2 1.2 0 110-2.4 1.2 1.2 0 010 2.4z"></path></svg>
+							<a href="#">
+								2 عکس
+							</a>
+						</div>
+						<div class="stay-gold-content__wrapper__comment__text">
+							<p>
+								من برای مدتی این مکان را علامت گذاری کرده ام و بعد از دیدن قسمت اخیر Bay Area Check لطفا به من یادآوری شود ... نظرات عالی و به نظر می رسد یک مکان سرگرم کننده باشد ... به عنوان یکی از شخصیت های محبوب من ، Stefon از Weekend Update SNL می گوید: " آنها همه چیز را مرتباً دارند !! "... اغذیه فروشی ، شیطان پین بال دزد ، BBQ ، باغ آبجو ، مواد غذایی ...
+
+							</p>
+							<p>متأسفانه ، در این دوره های متوسط Stay Gold Deli فقط خرید و تحویل کالا را ارائه می دهد</p>
+							<p>
+								انبانمسآة»ب
+								<br>
+								سینه در اینجا "طلا" است مطمئنا ... چاشنی سبک ، دودی ، نرم ، فوق العاده چرب و در دهان شما ذوب می شود. وعده بسیار سخاوتمندانه (4 برش ضخیم) با گزینه 2 سس (خردل یا سس قرمز) در کنار آن بود - سس قرمز همراهی کاملی داشت - کمتر شیرین و تقریباً مورد نیاز نیست
+							</p>
+							<p>
+								تمشتیمتزت
+								<br>
+								= سالاد ستاره دلی - کوه یخی خرد شده ، گوجه فرنگی خرد شده ، پیاز قرمز خرد شده و فلفل دلمه ای خرد شده (فلفل دلمه ای و ملایم) با سس سرکه گیاهی ایتالیایی - همکار گفت: "من سالاد باغ زیتون را بهتر دوست دارم" 5
+
+							</p>
+						</div>
+						<div class="stay-gold-content__wrapper__comment__image ">
+							<div class="row" data-space="15">
+								<div class="col-6">
+									<div class="stay-gold-content__wrapper__comment__image__item  stay-gold-content__wrapper__comment__image__item--two-image">
+										<a href="#">
+											<img src="./assets/img/comment-image.jpg" alt="">
+											<span>صفحه دنده ای</span>
+										</a>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div class="stay-gold-content__wrapper__comment__image ">
+							<div class="row" data-space="15">
+								<div class="col-6">
+									<div class="stay-gold-content__wrapper__comment__image__item  stay-gold-content__wrapper__comment__image__item--two-image">
+										<a href="#">
+											<img src="./assets/img/comment-image.jpg" alt="">
+											<span>صفحه دنده ای</span>
+										</a>
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="stay-gold-content__wrapper__comment__image__item  stay-gold-content__wrapper__comment__image__item--two-image">
+										<a href="#">
+											<img src="./assets/img/comment-image.jpg" alt="">
+											<span>پسر خوک را بکشید !!! کاملاً بهترین چیزی که در خارج از نیواورلئان داشته ام!</span>
+										</a>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div class="stay-gold-content__wrapper__comment__image ">
+							<div class="row" data-space="15">
+								<div class="col-3">
+									<div class="stay-gold-content__wrapper__comment__image__item  stay-gold-content__wrapper__comment__image__item--there-image">
+										<a href="#">
+											<img src="./assets/img/comment-image.jpg" alt="">
+										</a>
+									</div>
+								</div>
+								<div class="col-3">
+									<div class="stay-gold-content__wrapper__comment__image__item  stay-gold-content__wrapper__comment__image__item--there-image">
+										<a href="#">
+											<img src="./assets/img/comment-image.jpg" alt="">
+
+										</a>
+									</div>
+								</div>
+								<div class="col-3">
+									<div class="stay-gold-content__wrapper__comment__image__item  stay-gold-content__wrapper__comment__image__item--there-image">
+										<a href="#">
+											<img src="./assets/img/comment-image.jpg" alt="">
+
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="stay-gold-content__wrapper__comment__image ">
+							<div class="row" data-space="15">
+								<div class="col-3">
+									<div class="stay-gold-content__wrapper__comment__image__item  stay-gold-content__wrapper__comment__image__item--there-image">
+										<a href="#">
+											<img src="./assets/img/comment-image.jpg" alt="">
+										</a>
+									</div>
+								</div>
+								<div class="col-3">
+									<div class="stay-gold-content__wrapper__comment__image__item  stay-gold-content__wrapper__comment__image__item--there-image">
+										<a href="#">
+											<img src="./assets/img/comment-image.jpg" alt="">
+
+										</a>
+									</div>
+								</div>
+								<div class="col-3">
+									<div class="stay-gold-content__wrapper__comment__image__item  stay-gold-content__wrapper__comment__image__item--there-image">
+										<a href="#">
+											<img src="./assets/img/comment-image.jpg" alt="">
+
+										</a>
+									</div>
+								</div>
+								<div class="col-3">
+									<div class="stay-gold-content__wrapper__comment__image__item  stay-gold-content__wrapper__comment__image__item--there-image">
+										<a href="#">
+											<img src="./assets/img/comment-image.jpg" alt="">
+
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="stay-gold-content__wrapper__comment__see-all">
+							<a href="#">
+								برای Stay Gold Deli تمام عکسهای Vince V. را ببینید
+							</a>
+						</div>
+						<div class="stay-gold-content__wrapper__comment__actions">
+							<ul>
+								<li>
+									<a href="#">
+										<svg width="16" height="16" class="icon_svg"><path d="M8 1a7 7 0 110 14A7 7 0 018 1zm0 2a5 5 0 100 10A5 5 0 008 3zM4.785 5.803A3.5 3.5 0 1110 10.06v.74a1.5 1.5 0 01-1.5 1.5h-1A1.5 1.5 0 016 10.8v-.74a3.5 3.5 0 01-1.215-4.257zM8 5.7a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"></path></svg>
+										<span>مفید</span>
+										1
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<svg width="16" height="16" class="icon_svg"><path d="M8 1a7 7 0 110 14A7 7 0 018 1zm0 2a5 5 0 100 10A5 5 0 008 3zm3.43 6a.15.15 0 01.14.18 3.62 3.62 0 01-7.14 0A.15.15 0 014.57 9zm-1.07-2.553c.34.197.55.56.55.953h-2.2a1.1 1.1 0 011.65-.953zM6.19 6.3a1.1 1.1 0 011.1 1.1h-2.2a1.1 1.1 0 011.1-1.1z"></path></svg>
+										<span>خنده دار</span>
+
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<svg width="16" height="16" class="icon_svg"><path d="M8 1a7 7 0 110 14A7 7 0 018 1zm0 2a5 5 0 100 10A5 5 0 008 3zm2.58 7.32a.15.15 0 01.16.23A3.43 3.43 0 018 12a3.43 3.43 0 01-2.74-1.42.15.15 0 01.16-.23 9.82 9.82 0 005.16-.03zm1.66-3.66a.26.26 0 01.25.34L12 8.5a1.78 1.78 0 01-1.7 1.21l-.15-.007A1.78 1.78 0 018.62 8.51L8.45 8A.48.48 0 008 7.67l-.086.009A.48.48 0 007.55 8l-.17.5A1.78 1.78 0 015.7 9.71l-.152-.005A1.78 1.78 0 014 8.5L3.51 7a.26.26 0 01.25-.34z"></path></svg>
+										<span>سرد</span>
+										1
+
+									</a>
+								</li>
+							</ul>
+						</div>
+
+
+
+					</div>
+					<div class="item-location__content__number-page">
+						<div class="item-location__content__number-page__number">
+							<ul>
+								<li>
+									<a href="#"></a><svg width="24" height="24" class="icon_svg">
+										<path d="M9.75 17.58a1 1 0 01-.7-.28 1 1 0 010-1.42l3.8-3.88L9 8.12a1 1 0 111.41-1.42L15 11.3a1 1 0 010 1.4l-4.5 4.58a1 1 0 01-.75.3z"></path>
+									</svg>
+								</li>
+								<li><a href="#">1</a></li>
+								<li><a href="#">2</a></li>
+								<li><a href="#">3</a></li>
+								<li><a href="#">4</a></li>
+								<li><a href="#">5</a></li>
+								<li><a href="#">6</a></li>
+								<li><a href="#">7</a></li>
+								<li><a href="#">8</a></li>
+								<li><a href="#">9</a></li>
+								<li>
+									<a href="#">
+										<svg width="24" height="24" class="icon_svg">
+											<path d="M14.25 17.58a1 1 0 01-.71-.3L9 12.7a1 1 0 010-1.4l4.5-4.58A1 1 0 0115 6.7a1 1 0 010 1.42L11.15 12 15 15.88a1 1 0 010 1.42 1 1 0 01-.75.28z"></path>
+										</svg>
+									</a>
+								</li>
+							</ul>
+						</div>
+						<div class="category-content__item__number-page__cunter">
+							<span>1 از 1</span>
+						</div>
+					</div>
+					<div class="item-location__content__other  item-location__content__other--new">
+						<a href="#">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="icon_svg">
+								<path d="M8 10.5a1 1 0 01-.7-.29l-3.06-3a1 1 0 111.41-1.42L8 8.1l2.35-2.31a1 1 0 111.41 1.42l-3.06 3a1 1 0 01-.7.29z"></path>
+							</svg>4 پست دیگر که در حال حاضر توصیه نمی شوند
+						</a>
+					</div>
+					<div class="stay-gold-content__wrapper__consider">
+						<div class="stay-gold-content__wrapper__consider__title">
+							<h4>شما همچنین می توانید در نظر بگیرید</h4>
+							<span>حمایت شده</span>
+							<svg width="16" height="16" class="icon_svg"><path d="M8 1a7 7 0 110 14A7 7 0 018 1zm0 2a5 5 0 100 10A5 5 0 008 3zm0 3.86a1 1 0 011 1v3a1 1 0 11-2 0v-3a1 1 0 011-1zm0-2.74a1 1 0 110 2 1 1 0 010-2z"></path></svg>
+						</div>
+						<div class="stay-gold-content__wrapper__consider__content">
+							<div class="stay-gold-content__wrapper__consider__content__image">
+								<a href="#"><img src="./assets/img/content1.jpg" alt=""></a>
+							</div>
+							<div class="stay-gold-content__wrapper__consider__content__text">
+								<div class="stay-gold-content__wrapper__consider__content__text">
+									<div class="stay-gold-content__wrapper__consider__content__text__title">
+										<a href="#">بقالی پیمونت</a>
+										<div class="stay-gold-content__wrapper__consider__content__text__title__more">
+											<a href="#"><svg width="24" height="24" class="icon_svg"><path d="M12 13.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm8 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm-16 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path></svg></a>
+										</div>
+									</div>
+									<div class="stay-gold-content__wrapper__consider__content__text__favorite">
+										<div class="stay-gold-content__wrapper__consider__content__text__favorite__star" data-star="4"></div>
+										<span>389</span>
+										<div class="stay-gold-content__wrapper__consider__content__text__favorite__location">
+											<svg width="18" height="18" class="icon_svg"><path d="M14 7A5 5 0 004 7c0 1.97 1.15 3.658 2.806 4.472h-.169L9 16l2.363-4.528h-.169C12.85 10.658 14 8.97 14 7zM9 5a2 2 0 11.001 3.999A2 2 0 019 5z"></path></svg>
+											<span>1.4 مایل</span>
+											<p>دور از اقامت طلا بمانید</p>
+										</div>
+									</div>
+									<div class="stay-gold-content__wrapper__consider__content__text__desc">
+										<p>  <span>دن دبلیو گفت</span>"بنابراین من حدود 7 سال است که در این محله زندگی می کنم و بالاخره مجبور شدم به روزرسانی کنم تا این بررسی را انجام دهم. سالها طول کشید اما من الان این مکان را دوست دارم. بله ارزانترین مواد غذایی نیست و به معنای واقعی کلمه سالها طول کشید ..."<a href="#">ادامه مطلب</a></p>
+									</div>
+									<div class="stay-gold-content__wrapper__consider__content__text__sub-desc">
+										<span>در بقالی</span>
+									</div>
+
+								</div>
+							</div>
+						</div>
+						<div class="stay-gold-content__wrapper__consider__content">
+							<div class="stay-gold-content__wrapper__consider__content__image">
+								<a href="#"><img src="./assets/img/content1.jpg" alt=""></a>
+							</div>
+							<div class="stay-gold-content__wrapper__consider__content__text">
+								<div class="stay-gold-content__wrapper__consider__content__text">
+									<div class="stay-gold-content__wrapper__consider__content__text__title">
+										<a href="#">بقالی پیمونت</a>
+										<div class="stay-gold-content__wrapper__consider__content__text__title__more">
+											<a href="#"><svg width="24" height="24" class="icon_svg"><path d="M12 13.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm8 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm-16 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path></svg></a>
+										</div>
+									</div>
+									<div class="stay-gold-content__wrapper__consider__content__text__favorite">
+										<div class="stay-gold-content__wrapper__consider__content__text__favorite__star" data-star="4"></div>
+										<span>389</span>
+										<div class="stay-gold-content__wrapper__consider__content__text__favorite__location">
+											<svg width="18" height="18" class="icon_svg"><path d="M14 7A5 5 0 004 7c0 1.97 1.15 3.658 2.806 4.472h-.169L9 16l2.363-4.528h-.169C12.85 10.658 14 8.97 14 7zM9 5a2 2 0 11.001 3.999A2 2 0 019 5z"></path></svg>
+											<span>1.4 مایل</span>
+											<p>دور از اقامت طلا بمانید</p>
+										</div>
+									</div>
+									<div class="stay-gold-content__wrapper__consider__content__text__desc">
+										<p>  <span>دن دبلیو گفت</span>"بنابراین من حدود 7 سال است که در این محله زندگی می کنم و بالاخره مجبور شدم به روزرسانی کنم تا این بررسی را انجام دهم. سالها طول کشید اما من الان این مکان را دوست دارم. بله ارزانترین مواد غذایی نیست و به معنای واقعی کلمه سالها طول کشید ..."<a href="#">ادامه مطلب</a></p>
+									</div>
+									<div class="stay-gold-content__wrapper__consider__content__text__sub-desc">
+										<span>در بقالی</span>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="col-lg-4">
+					<div class="stay-gold-content__wrapper__item">
+						<div class="item-location__item__account">
+							<ul>
+								<li>
+									<a href="#">
+										<i>
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="icon_svg">
+												<path d="M20.47 3.07a.5.5 0 01.53.46v6a.5.5 0 01-.39.49.58.58 0 01-.19 0 .47.47 0 01-.35-.15L17.8 7.6l-5 5a1 1 0 01-1.41 0 1 1 0 010-1.41l5-5-2.27-2.27a.5.5 0 01.35-.85h6zM20 21H4a1 1 0 01-1-1V4a1 1 0 011-1h6a1 1 0 010 2H5v14h14v-5a1 1 0 012 0v6a1 1 0 01-1 1z"></path>
+											</svg>
+										</i> gebrauchtwagenzentrumberlin.de
+									</a>
+								</li>
+								<li>
+									<i>
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="icon_svg">
+											<path d="M13.59 23.07A7 7 0 018.64 21L3 15.36a7 7 0 010-9.9l1.39-1.41a1 1 0 011.42 0l5 5a1 1 0 010 1.41 2.001 2.001 0 002.83 2.83 1 1 0 011.41 0l4.95 5a1 1 0 010 1.42L18.54 21a7 7 0 01-4.95 2.07zM5.1 6.17l-.71.71a5 5 0 000 7.07l5.66 5.66a5 5 0 007.07 0l.71-.71-3.63-3.63a4 4 0 01-4.86-.61 4 4 0 01-.61-4.86L5.1 6.17zm12.78 5.95a1 1 0 01-1-1 4 4 0 00-4-4 1 1 0 010-2 6 6 0 016 6 1 1 0 01-1 1zm4.19 0a1 1 0 01-1-1 8.19 8.19 0 00-8.19-8.19 1 1 0 010-2c5.625.006 10.184 4.565 10.19 10.19a1 1 0 01-1 1z"></path>
+										</svg>
+									</i>030 25049925
+								</li>
+								<li>
+									<a href="#">
+										<i>
+											<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" class="icon_svg">
+												<path d="M11 22a3 3 0 01-2.12-.88l-8-8a3 3 0 010-4.24l8-8a3 3 0 014.24 0l8 8a3 3 0 010 4.24l-8 8A3 3 0 0111 22zm0-20a1 1 0 00-.71.29l-8 8a1 1 0 000 1.42l8 8a1 1 0 001.42 0l8-8a1 1 0 000-1.42l-8-8A1 1 0 0011 2zm4.85 8.15a.48.48 0 010 .66l-3 3a.47.47 0 01-.35.15.43.43 0 01-.19 0 .5.5 0 01-.31-.46v-2.05a1 1 0 01-.25.05h-2a1 1 0 00-1 1v1a1 1 0 11-2 0v-1a3 3 0 013-3h2a1 1 0 01.25.05V7.5a.5.5 0 01.31-.5.47.47 0 01.54.15l3 3z"></path>
+											</svg>
+										</i>Wegbeschreibung
+									</a>
+									<p>ایشبورندام 104 ، 13403 برلین</p>
+								</li>
+							</ul>
+						</div>
+						<div class="stay-gold-content__wrapper__item__sidebar">
+							<div class="stay-gold-content__wrapper__item__sidebar__title">
+								<div class="stay-gold-content__wrapper__item__sidebar__title__name">
+									<h4>شما همچنین می توانید در نظر بگیرید</h4>
+								</div>
+								<div class="stay-gold-content__wrapper__item__sidebar__title__sponsore">
+									<span>حمایت شده</span>
+									<svg width="16" height="16" class="icon_svg"><path d="M8 1a7 7 0 110 14A7 7 0 018 1zm0 2a5 5 0 100 10A5 5 0 008 3zm0 3.86a1 1 0 011 1v3a1 1 0 11-2 0v-3a1 1 0 011-1zm0-2.74a1 1 0 110 2 1 1 0 010-2z"></path></svg>
+								</div>
+							</div>
+							<div class="stay-gold-content__wrapper__item__sidebar__list">
+								<ul>
+									<li>
+										<div class="stay-gold-content__wrapper__item__sidebar__list__avatar">
+											<div class="stay-gold-content__wrapper__item__sidebar__list__avatar__image">
+												<a href="#"><img src="./assets/img/stay-gold-sidebar.jpg" alt=""></a>
+											</div>
+											<div class="stay-gold-content__wrapper__item__sidebar__list__avatar__bio">
+												<div class="stay-gold-content__wrapper__item__sidebar__list__avatar__bio__name">
+													<a href="#">میلان شرکت سلامی شرکت</a>
+												</div>
+												<div class="stay-gold-content__wrapper__item__sidebar__list__avatar__bio__score">
+													<div class="stay-gold-content__wrapper__item__sidebar__list__avatar__bio__score__star" data-star="4"></div>
+													<div class="stay-gold-content__wrapper__item__sidebar__list__avatar__bio__score__count">
+														<span>22</span>
+													</div>
+												</div>
+												<div class="stay-gold-content__wrapper__item__sidebar__list__avatar__bio__sub-score">
+													<span>2.3 مایل</span>
+												</div>
+											</div>
+										</div>
+										<div class="stay-gold-content__wrapper__item__sidebar__list__desc">
+											<p>"هرگز نمی دانستم که این مارک وجود دارد. روی بسته 8 اونسی شراب Chianti آنها اتفاق افتاده است ..."<a href="#">ادامه مطلب</a></p>
+										</div>
+
+									</li>
+									<li>
+										<div class="stay-gold-content__wrapper__item__sidebar__list__avatar">
+											<div class="stay-gold-content__wrapper__item__sidebar__list__avatar__image">
+												<a href="#"><img src="./assets/img/stay-gold-sidebar.jpg" alt=""></a>
+											</div>
+											<div class="stay-gold-content__wrapper__item__sidebar__list__avatar__bio">
+												<div class="stay-gold-content__wrapper__item__sidebar__list__avatar__bio__name">
+													<a href="#">میلان شرکت سلامی شرکت</a>
+												</div>
+												<div class="stay-gold-content__wrapper__item__sidebar__list__avatar__bio__score">
+													<div class="stay-gold-content__wrapper__item__sidebar__list__avatar__bio__score__star" data-star="4"></div>
+													<div class="stay-gold-content__wrapper__item__sidebar__list__avatar__bio__score__count">
+														<span>22</span>
+													</div>
+												</div>
+												<div class="stay-gold-content__wrapper__item__sidebar__list__avatar__bio__sub-score">
+													<span>2.3 مایل</span>
+												</div>
+											</div>
+										</div>
+										<div class="stay-gold-content__wrapper__item__sidebar__list__desc">
+											<p>"هرگز نمی دانستم که این مارک وجود دارد. روی بسته 8 اونسی شراب Chianti آنها اتفاق افتاده است ..."<a href="#">ادامه مطلب</a></p>
+										</div>
+
+									</li>
+								</ul>
+
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+
+
+	</div>
+</section>
+
+<div class="stay-gold-content__modal modal fade" id="click-more" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div class="stay-gold-content__modal__header">
+					<div class="stay-gold-content__modal__header__title">
+						<h2>از تجارت</h2>
+					</div>
+					<div class="stay-gold-content__modal__header__close">
+						<a href="#" data-dismiss="modal"><svg width="24" height="24" class="icon_svg"><path d="M13.41 12l5.3-5.29a1.004 1.004 0 10-1.42-1.42L12 10.59l-5.29-5.3a1.004 1.004 0 00-1.42 1.42l5.3 5.29-5.3 5.29a1 1 0 000 1.42 1 1 0 001.42 0l5.29-5.3 5.29 5.3a1 1 0 001.42 0 1 1 0 000-1.42L13.41 12z"></path></svg></a>
+					</div>
+				</div>
+				<div class="stay-gold-content__modal__body">
+					<div class="stay-gold-content__modal__body__content">
+						<div class="stay-gold-content__modal__body__content__title">
+							<h5>تخصصها</h5>
+						</div>
+						<div class="stay-gold-content__modal__body__content__desc">
+							<p>BBQ به سبک مرکزی تگزاس ، ساندویچ های مخصوص به سبک دلی ، غذای محلی و آبجو</p>
+						</div>
+					</div>
+					<div class="stay-gold-content__modal__body__content">
+						<div class="stay-gold-content__modal__body__content__title">
+							<h5>تاریخ</h5>
+						</div>
+						<div class="stay-gold-content__modal__body__content__desc">
+							<p>در سال 2016 تاسیس شده است.</p>
+							<p>Stay Gold در سال 2016 افتتاح شد. ما دارای محصولات ویژه فصلی چرخشی همراه با آبجو و شراب به طور منظم با جفت شدن BBQ هستیم. ما همیشه در حال رشد و جستجوی بهترین روش ها برای تهیه یک محیط و محصول استثنایی برای جامعه خود هستیم.</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="stay-gold-content__modal__footer">
+					<div class="stay-gold-content__modal__footer__close">
+						<a href="#" data-dismiss="modal">بستن</a>
+					</div>
+					<div class="stay-gold-content__modal__footer__report">
+						<a href="#" data-toggle="tooltip" title="ریپورت">
+							<svg width="18" height="18" class="icon_svg"><path d="M6 10V3c4.976 1.098 4.024-1 8 0v7c-4.024-.976-3.024 1.024-8 0zM4 2h1v14H4V2z"></path></svg>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<section class="collections-including">
+	<div class="container">
+		<div class="collections-including__item">
+			<div class="collections-including__item__title">
+				<h4>مجموعه هایی از جمله اقامت در Deli Gold</h4>
+			</div>
+			<div class="collections-including__item__slider">
+				<div class="swiper-container">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide">
+							<div class="collections-including__item__slider__image">
+								<a href="#"><img src="./assets/img/collection-image.jpg" alt=""></a>
+								<div class="collections-including__item__slider__image__save">
+									<span>
+										<svg width="24" height="24" class="icon_svg"><path d="M16 2H8a3 3 0 00-3 3v17l7-5 7 5V5a3 3 0 00-3-3z"></path></svg>
+										57
+									</span>
+								</div>
+							</div>
+							<div class="collections-including__item__slider__text">
+								<p>بررسی کنید (بیرون!) لطفا ، منطقه خلیج</p>
+								<span>توسط ری بی.</span>
+							</div>
+						</div>
+						<div class="swiper-slide">
+							<div class="collections-including__item__slider__image">
+								<a href="#"><img src="./assets/img/collection-image.jpg" alt=""></a>
+								<div class="collections-including__item__slider__image__save">
+									<span>
+										<svg width="24" height="24" class="icon_svg"><path d="M16 2H8a3 3 0 00-3 3v17l7-5 7 5V5a3 3 0 00-3-3z"></path></svg>
+										57
+									</span>
+								</div>
+							</div>
+							<div class="collections-including__item__slider__text">
+								<p>بررسی کنید (بیرون!) لطفا ، منطقه خلیج</p>
+								<span>توسط ری بی.</span>
+							</div>
+						</div>
+						<div class="swiper-slide">
+							<div class="collections-including__item__slider__image">
+								<a href="#"><img src="./assets/img/collection-image.jpg" alt=""></a>
+								<div class="collections-including__item__slider__image__save">
+									<span>
+										<svg width="24" height="24" class="icon_svg"><path d="M16 2H8a3 3 0 00-3 3v17l7-5 7 5V5a3 3 0 00-3-3z"></path></svg>
+										57
+									</span>
+								</div>
+							</div>
+							<div class="collections-including__item__slider__text">
+								<p>بررسی کنید (بیرون!) لطفا ، منطقه خلیج</p>
+								<span>توسط ری بی.</span>
+							</div>
+						</div>
+						<div class="swiper-slide">
+							<div class="collections-including__item__slider__image">
+								<a href="#"><img src="./assets/img/collection-image.jpg" alt=""></a>
+								<div class="collections-including__item__slider__image__save">
+									<span>
+										<svg width="24" height="24" class="icon_svg"><path d="M16 2H8a3 3 0 00-3 3v17l7-5 7 5V5a3 3 0 00-3-3z"></path></svg>
+										57
+									</span>
+								</div>
+							</div>
+							<div class="collections-including__item__slider__text">
+								<p>بررسی کنید (بیرون!) لطفا ، منطقه خلیج</p>
+								<span>توسط ری بی.</span>
+							</div>
+						</div>
+						<div class="swiper-slide">
+							<div class="collections-including__item__slider__image">
+								<a href="#"><img src="./assets/img/collection-image.jpg" alt=""></a>
+								<div class="collections-including__item__slider__image__save">
+									<span>
+										<svg width="24" height="24" class="icon_svg"><path d="M16 2H8a3 3 0 00-3 3v17l7-5 7 5V5a3 3 0 00-3-3z"></path></svg>
+										57
+									</span>
+								</div>
+							</div>
+							<div class="collections-including__item__slider__text">
+								<p>بررسی کنید (بیرون!) لطفا ، منطقه خلیج</p>
+								<span>توسط ری بی.</span>
+							</div>
+						</div>
+						<div class="swiper-slide">
+							<div class="collections-including__item__slider__image">
+								<a href="#"><img src="./assets/img/collection-image.jpg" alt=""></a>
+								<div class="collections-including__item__slider__image__save">
+									<span>
+										<svg width="24" height="24" class="icon_svg"><path d="M16 2H8a3 3 0 00-3 3v17l7-5 7 5V5a3 3 0 00-3-3z"></path></svg>
+										57
+									</span>
+								</div>
+							</div>
+							<div class="collections-including__item__slider__text">
+								<p>بررسی کنید (بیرون!) لطفا ، منطقه خلیج</p>
+								<span>توسط ری بی.</span>
+							</div>
+						</div>
+					</div>
+					<div class="swiper-btn-next">
+						<svg width="24" height="24" class="icon_svg"><path d="M9.75 17.58a1 1 0 01-.7-.28 1 1 0 010-1.42l3.8-3.88L9 8.12a1 1 0 111.41-1.42L15 11.3a1 1 0 010 1.4l-4.5 4.58a1 1 0 01-.75.3z"></path></svg>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="stay-gold-people">
+	<div class="container">
+		<div class="stay-gold-people__content">
+			<div class="stay-gold-people__content__title">
+				<h4>افراد نیز مشاهده کردند</h4>
+			</div>
+			<div class="stay-gold-people__content__slider">
+				<div class="swiper-container">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide">
+							<div class="stay-gold-people__content__slider__item">
+								<div class="stay-gold-people__content__slider__item__image">
+									<a href="#">
+										<img src="./assets/img/stay-gold-people.jpg" alt="">
+									</a>
+								</div>
+								<div class="stay-gold-people__content__slider__item__title">
+									<a href="#">بازار بین المللی راتو</a>
+								</div>
+								<div class="stay-gold-people__content__slider__item__score">
+									<div class="stay-gold-people__content__slider__item__score__star" data-star="4"></div>
+									<div class="stay-gold-people__content__slider__item__score__count">
+										<span>344</span>
+									</div>
+								</div>
+								<div class="stay-gold-people__content__slider__item__sub-score">
+									<span>$$</span>
+									<span>خواربار فروشی</span>
+								</div>
+							</div>
+						</div>
+						<div class="swiper-slide">
+							<div class="stay-gold-people__content__slider__item">
+								<div class="stay-gold-people__content__slider__item__image">
+									<a href="#">
+										<img src="./assets/img/stay-gold-people.jpg" alt="">
+									</a>
+								</div>
+								<div class="stay-gold-people__content__slider__item__title">
+									<a href="#">بازار بین المللی راتو</a>
+								</div>
+								<div class="stay-gold-people__content__slider__item__score">
+									<div class="stay-gold-people__content__slider__item__score__star" data-star="4"></div>
+									<div class="stay-gold-people__content__slider__item__score__count">
+										<span>344</span>
+									</div>
+								</div>
+								<div class="stay-gold-people__content__slider__item__sub-score">
+									<span>$$</span>
+									<span>خواربار فروشی</span>
+								</div>
+							</div>
+						</div>
+						<div class="swiper-slide">
+							<div class="stay-gold-people__content__slider__item">
+								<div class="stay-gold-people__content__slider__item__image">
+									<a href="#">
+										<img src="./assets/img/stay-gold-people.jpg" alt="">
+									</a>
+								</div>
+								<div class="stay-gold-people__content__slider__item__title">
+									<a href="#">بازار بین المللی راتو</a>
+								</div>
+								<div class="stay-gold-people__content__slider__item__score">
+									<div class="stay-gold-people__content__slider__item__score__star" data-star="4"></div>
+									<div class="stay-gold-people__content__slider__item__score__count">
+										<span>344</span>
+									</div>
+								</div>
+								<div class="stay-gold-people__content__slider__item__sub-score">
+									<span>$$</span>
+									<span>خواربار فروشی</span>
+								</div>
+							</div>
+						</div>
+						<div class="swiper-slide">
+							<div class="stay-gold-people__content__slider__item">
+								<div class="stay-gold-people__content__slider__item__image">
+									<a href="#">
+										<img src="./assets/img/stay-gold-people.jpg" alt="">
+									</a>
+								</div>
+								<div class="stay-gold-people__content__slider__item__title">
+									<a href="#">بازار بین المللی راتو</a>
+								</div>
+								<div class="stay-gold-people__content__slider__item__score">
+									<div class="stay-gold-people__content__slider__item__score__star" data-star="4"></div>
+									<div class="stay-gold-people__content__slider__item__score__count">
+										<span>344</span>
+									</div>
+								</div>
+								<div class="stay-gold-people__content__slider__item__sub-score">
+									<span>$$</span>
+									<span>خواربار فروشی</span>
+								</div>
+							</div>
+						</div>
+						<div class="swiper-slide">
+							<div class="stay-gold-people__content__slider__item">
+								<div class="stay-gold-people__content__slider__item__image">
+									<a href="#">
+										<img src="./assets/img/stay-gold-people.jpg" alt="">
+									</a>
+								</div>
+								<div class="stay-gold-people__content__slider__item__title">
+									<a href="#">بازار بین المللی راتو</a>
+								</div>
+								<div class="stay-gold-people__content__slider__item__score">
+									<div class="stay-gold-people__content__slider__item__score__star" data-star="4"></div>
+									<div class="stay-gold-people__content__slider__item__score__count">
+										<span>344</span>
+									</div>
+								</div>
+								<div class="stay-gold-people__content__slider__item__sub-score">
+									<span>$$</span>
+									<span>خواربار فروشی</span>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="swiper-btn-next">
+						<svg width="24" height="24" class="icon_svg"><path d="M9.75 17.58a1 1 0 01-.7-.28 1 1 0 010-1.42l3.8-3.88L9 8.12a1 1 0 111.41-1.42L15 11.3a1 1 0 010 1.4l-4.5 4.58a1 1 0 01-.75.3z"></path></svg>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</section>
+<section class="stay-gold-footer">
+	<div class="container">
+
+		<div class="stay-gold-footer__wrapper">
+			<div class="row">
+				<div class="col-md-4">
+					<div class="stay-gold-footer__wrapper__content">
+						<div class="stay-gold-footer__wrapper__content__item">
+							<div class="stay-gold-footer__wrapper__content__item__title">
+								<h4>بهترین اوکلند</h4>
+							</div>
+							<div class="stay-gold-footer__wrapper__content__item__list">
+								<ul>
+									<li><a href="#">کارهایی که باید در اوکلند انجام شود</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="stay-gold-footer__wrapper__content__item">
+							<div class="stay-gold-footer__wrapper__content__item__title">
+								<h4>بهترین اوکلند</h4>
+							</div>
+							<div class="stay-gold-footer__wrapper__content__item__list">
+								<ul>
+									<li><a href="#">کارهایی که باید در اوکلند انجام شود</a></li>
+									<li><a href="#">کارهایی که باید در اوکلند انجام شود</a></li>
+									<li><a href="#">کارهایی که باید در اوکلند انجام شود</a></li>
+									<li><a href="#">کارهایی که باید در اوکلند انجام شود</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="col-md-4">
+					<div class="stay-gold-footer__wrapper__content">
+						<div class="stay-gold-footer__wrapper__content__item">
+							<div class="stay-gold-footer__wrapper__content__item__title">
+								<h4>در نزدیکی مرور کنید</h4>
+							</div>
+							<div class="stay-gold-footer__wrapper__content__item__list">
+								<ul>
+									<li>
+										<a href="#">
+											<svg width="18" height="18" class="icon_svg"><path d="M13.188 17a1.56 1.56 0 01-1.55-1.55V9.619h1.426c-1.255-.959-1.993-2.804-1.919-4.723 0-1.181.516-2.362 1.476-3.543a.912.912 0 011.033-.295.958.958 0 01.591.885v7.676h.493v5.831c0 .886-.664 1.55-1.55 1.55zM5.993 8.438v1.108h.996v5.83c0 .831-.588 1.46-1.391 1.535-.041.006-.08.015-.122.015l-.016-.002-.021.002c-.886 0-1.55-.664-1.55-1.55v-5.83h.996V8.438C4 8.217 3.262 7.331 3.262 6.224V1.943c0-.295.295-.59.59-.59s.517.295.517.59V5.56h.59V1.943c0-.295.222-.59.517-.59.295 0 .517.295.517.59V5.56h.59V1.943c0-.295.221-.59.517-.59.295 0 .516.295.516.59v4.355c0 1.033-.664 1.919-1.623 2.14z"></path></svg>
+											رستوران ها
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<svg width="18" height="18" class="icon_svg"><path d="M15.549 3.659c.566-.647.106-1.659-.753-1.659H3.204c-.859 0-1.319 1.012-.753 1.659L8 9v5H6a1 1 0 000 2h6a1 1 0 000-2h-2V9l5.549-5.341zM11 3a1 1 0 110 2 1 1 0 010-2z"></path></svg>
+
+											زندگی شبانه
+										</a>
+									</li>
+									<li>
+										<svg width="18" height="18" class="icon_svg"><path d="M12 5V1H6v4H3v10a2 2 0 002 2h8a2 2 0 002-2V5h-3zM7 2h4v3H7V2z"></path></svg>
+										خريد كردن
+										<a href="#"></a>
+									</li>
+									<li>
+										<a href="#">
+											<svg width="18" height="18" class="icon_svg"><path d="M15 11a2 2 0 11-.001-3.999A2 2 0 0115 11zm-6 0a2 2 0 11-.001-3.999A2 2 0 019 11zm-6 0a2 2 0 11-.001-3.999A2 2 0 013 11z"></path></svg>
+											نمایش همه
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="stay-gold-footer__wrapper__content__item">
+							<div class="stay-gold-footer__wrapper__content__item__title">
+								<h4>بهترین اوکلند</h4>
+							</div>
+							<div class="stay-gold-footer__wrapper__content__item__list">
+								<ul>
+									<li><a href="#">کارهایی که باید در اوکلند انجام شود</a></li>
+									<li><a href="#">کارهایی که باید در اوکلند انجام شود</a></li>
+									<li><a href="#">کارهایی که باید در اوکلند انجام شود</a></li>
+									<li><a href="#">کارهایی که باید در اوکلند انجام شود</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="col-md-4">
+					<div class="stay-gold-footer__wrapper__content">
+						<div class="stay-gold-footer__wrapper__content__item">
+							<div class="stay-gold-footer__wrapper__content__item__title">
+								<h4>ناهار خوری در اوکلند</h4>
+							</div>
+							<div class="stay-gold-footer__wrapper__content__item__list">
+								<ul>
+									<li>
+										<a href="#">
+											<svg width="18" height="18" class="icon_svg"><path d="M15.913 14.224a1.324 1.324 0 00-.3-.466h.009l-3.377-3.376a5.492 5.492 0 00.802-2.857 5.523 5.523 0 10-5.522 5.52 5.491 5.491 0 002.856-.801l3.369 3.369.004.003c.132.131.293.231.471.298.143.053.296.086.458.086.727 0 1.317-.589 1.317-1.316 0-.163-.033-.317-.087-.46zM7.525 10.94a3.422 3.422 0 01-3.418-3.416 3.422 3.422 0 013.418-3.417 3.422 3.422 0 013.416 3.417 3.421 3.421 0 01-3.416 3.416z"></path></svg>
+											برای رزرو جستجو کنید
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<svg width="18" height="18" class="icon_svg"><path d="M13.6 16H4.4C3.077 16 2 14.879 2 13.5v-9C2 3.121 3.077 2 4.4 2H5a1 1 0 012 0h4a1 1 0 012 0h.6C14.923 2 16 3.121 16 4.5v9c0 1.379-1.077 2.5-2.4 2.5zM15 7H3v6.5c0 .828.627 1.5 1.4 1.5h9.2c.773 0 1.4-.672 1.4-1.5V7zm-5 3h3v3h-3v-3z"></path></svg>
+											یک میز در اوکلند رزرو کنید
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="stay-gold-footer__wrapper__content__item">
+							<div class="stay-gold-footer__wrapper__content__item__title">
+								<h4>بهترین اوکلند</h4>
+							</div>
+							<div class="stay-gold-footer__wrapper__content__item__list">
+								<ul>
+									<li><a href="#">کارهایی که باید در اوکلند انجام شود</a></li>
+									<li><a href="#">کارهایی که باید در اوکلند انجام شود</a></li>
+									<li><a href="#">کارهایی که باید در اوکلند انجام شود</a></li>
+									<li><a href="#">کارهایی که باید در اوکلند انجام شود</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="stay-gold-asked">
+	<div class="container">
+		<div class="stay-gold-asked__wrapper">
+			<div class="stay-gold-asked__wrapper__title">
+				<h4>سوالات متداول درباره Stay Gold Deli</h4>
+			</div>
+			<div class="stay-gold-asked__wrapper__ask">
+				<div class="stay-gold-asked__wrapper__ask__quastion">
+					<p>آیا Stay Gold Deli صندلی فضای باز دارد؟</p>
+				</div>
+				<div class="stay-gold-asked__wrapper__ask__answer">
+					<p>بله ، Stay Gold Deli دارای صندلی های فضای باز است.</p>
+				</div>
+			</div>
+			<div class="stay-gold-asked__wrapper__ask">
+				<div class="stay-gold-asked__wrapper__ask__quastion">
+					<p>آیا Stay Gold Deli صندلی فضای باز دارد؟</p>
+				</div>
+				<div class="stay-gold-asked__wrapper__ask__answer">
+					<p>بله ، Stay Gold Deli دارای صندلی های فضای باز است.</p>
+				</div>
+			</div>
+			<div class="stay-gold-asked__wrapper__ask">
+				<div class="stay-gold-asked__wrapper__ask__quastion">
+					<p>آیا Stay Gold Deli صندلی فضای باز دارد؟</p>
+				</div>
+				<div class="stay-gold-asked__wrapper__ask__answer">
+					<p>بله ، Stay Gold Deli دارای صندلی های فضای باز است.</p>
+				</div>
+			</div>
+			<div class="stay-gold-asked__wrapper__ask">
+				<div class="stay-gold-asked__wrapper__ask__quastion">
+					<p>آیا Stay Gold Deli صندلی فضای باز دارد؟</p>
+				</div>
+				<div class="stay-gold-asked__wrapper__ask__answer">
+					<p>بله ، Stay Gold Deli دارای صندلی های فضای باز است.</p>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</section>
+
+
 

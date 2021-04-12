@@ -36,6 +36,8 @@ namespace BizApp.Controllers
 			List<BusinessHomePage_ReviewsViewModel> businessHomePage_ReviewsViewModel = new List<BusinessHomePage_ReviewsViewModel>();
 			List<BusinessHomePage_FaqViewModel> businessHomePage_FaqViewModels = new List<BusinessHomePage_FaqViewModel>();
 			List<BusinessHomePage_RelatedBusinessViewModel> businessHomePage_RelatedBusinessViewModels = new List<BusinessHomePage_RelatedBusinessViewModel>();
+			BusinessHomePage_HoursAndLocationViewModel businessHomePage_HoursAndLocationViewModel = new BusinessHomePage_HoursAndLocationViewModel();
+			List<DataLayer.Services.BusinessHomePageRepo.LocationHours> locationHours = new List<DataLayer.Services.BusinessHomePageRepo.LocationHours>(); 
 			#endregion
 			#region Resource
 			var SliderItem = await _UnitOfWork.BusinessHomePageRepo.GetSlider(BusinessId);
@@ -46,6 +48,7 @@ namespace BizApp.Controllers
 			var ReviewsItem = await _UnitOfWork.BusinessHomePageRepo.GetBusinessReview(BusinessId);
 			var CommunityItems = await _UnitOfWork.BusinessHomePageRepo.GetBusinessFaq(BusinessId);
 			var RelatedBusinessItem = await _UnitOfWork.BusinessHomePageRepo.GetRelatedBusiness(BusinessId);
+			var LocationAndHours = await _UnitOfWork.BusinessHomePageRepo.GetBusinessLocationHours(BusinessId);
 			#endregion
 			#region Slider
 			businessHomePage_SliderViewModel.Images = SliderItem;
@@ -56,6 +59,7 @@ namespace BizApp.Controllers
 			businessHomePage_SummaryViewModel.Reviews = SummaryItem.Item3;
 			businessHomePage_SummaryViewModel.IsClaimed = SummaryItem.Item4;
 			businessHomePage_SummaryViewModel.TotalPhotos = SummaryItem.Item5;
+			businessHomePage_SummaryViewModel.Description = SummaryItem.Item6; 
 			#endregion
 			#region Featrues
 			businessHomePage_FeatureViewModel.BoldFeature = FeaturesItem.Item1;
@@ -64,7 +68,7 @@ namespace BizApp.Controllers
 			#region NearSponseredBusiness
 			foreach (var item in SponseredBusinessItem)
 			{
-				businessHomePage_NearSponseredViewModel.Add(new BusinessHomePage_NearSponseredViewModel() { Name = item.Item1, Image = item.Item2, Rate = item.Item3, Review = item.Item4, Id = item.Item5, Descripton = item.Item6 });
+				businessHomePage_NearSponseredViewModel.Add(new BusinessHomePage_NearSponseredViewModel() { Name = item.Item1, Image = item.Item2, Rate = item.Item3, Review = item.Item4, Id = item.Item5, Descripton = item.Item6  , DistricName = item.Item7});
 			}
 			#endregion
 			#region Description
@@ -93,6 +97,17 @@ namespace BizApp.Controllers
 				businessHomePage_RelatedBusinessViewModels.Add(new BusinessHomePage_RelatedBusinessViewModel() { Image = string.IsNullOrEmpty(item.FeatureImage) == false ? "/Upload/DefaultPicutres/Bussiness/Business.jpg" : item.FeatureImage }); 
 			}
 			#endregion
+			#region LocationAndHours
+			businessHomePage_HoursAndLocationViewModel.Address = LocationAndHours.Item1;
+			businessHomePage_HoursAndLocationViewModel.Lon = LocationAndHours.Item2;
+			businessHomePage_HoursAndLocationViewModel.Lat = LocationAndHours.Item3;
+			foreach (var item in LocationAndHours.Item4)
+			{
+				item.DayName = GetDayName.GetName(item.Day);
+				locationHours.Add(item);
+			}
+			businessHomePage_HoursAndLocationViewModel.LocationHours = locationHours; 
+			#endregion
 			#region FinalResults
 			businessHomePageViewModel.businessHomePage_SliderViewModel = businessHomePage_SliderViewModel;
 			businessHomePageViewModel.businessHomePage_SummaryViewModel = businessHomePage_SummaryViewModel;
@@ -102,9 +117,10 @@ namespace BizApp.Controllers
 			businessHomePageViewModel.businessHomePage_RightPageBusinessInfoViewModel = businessHomePage_RightPageBusinessInfoViewModel;
 			businessHomePageViewModel.businessHomePage_ReviewsViewModel = businessHomePage_ReviewsViewModel;
 			businessHomePageViewModel.businessHomePage_FaqViewModels = businessHomePage_FaqViewModels;
-			businessHomePageViewModel.businessHomePage_RelatedBusinessViewModels = businessHomePage_RelatedBusinessViewModels; 
+			businessHomePageViewModel.businessHomePage_RelatedBusinessViewModels = businessHomePage_RelatedBusinessViewModels;
+			businessHomePageViewModel.businessHomePage_HoursAndLocationViewModel = businessHomePage_HoursAndLocationViewModel; 
 			#endregion
-			return View();
+			return View(businessHomePageViewModel);
 		}
 		[HttpPost]
 		public async Task<JsonResult> SendMessageToBusiness(MessageToBusiness model )

@@ -4,14 +4,16 @@ using DataLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210412101131_RemoveBusinessTimes")]
+    partial class RemoveBusinessTimes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +41,7 @@ namespace DataLayer.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 4, 12, 14, 43, 0, 887, DateTimeKind.Local).AddTicks(2413));
+                        .HasDefaultValue(new DateTime(2021, 4, 12, 14, 41, 30, 921, DateTimeKind.Local).AddTicks(9499));
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -271,8 +273,8 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a3bf35de-749d-4b9d-ae51-62242678b77e",
-                            CreateDate = new DateTime(2021, 4, 12, 14, 43, 0, 890, DateTimeKind.Local).AddTicks(8437),
+                            ConcurrencyStamp = "5d1ee4b8-a8f5-4ecb-a811-52f1b1ed43a6",
+                            CreateDate = new DateTime(2021, 4, 12, 14, 41, 30, 926, DateTimeKind.Local).AddTicks(4262),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             Gender = 0,
@@ -282,10 +284,10 @@ namespace DataLayer.Migrations
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIOkt8LZt2yfs7Aazh4+TNuY+VIWbeKU/VfxC4WqIrCaxIHdTunTkaXwQ8vV6QI/Bw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELyRFMf8/y9FeEPJYSgy/UTiYYLhUQufkdDEwXAMBRXkjWaUbh7KhJlnXCvtWp7cPg==",
                             PhoneNumberConfirmed = false,
                             PhotoChanged = false,
-                            SecurityStamp = "5d298df7-ae87-4521-8b9f-bcc402f3c864",
+                            SecurityStamp = "97500300-fe0d-41df-b762-0747799c59f8",
                             TwoFactorEnabled = false,
                             UserName = "mainadmin"
                         });
@@ -535,7 +537,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("BusinessId");
 
-                    b.ToTable("BusinessTimes");
+                    b.ToTable("BusinessTime");
                 });
 
             modelBuilder.Entity("DomainClass.Businesses.MessageToBusiness", b =>

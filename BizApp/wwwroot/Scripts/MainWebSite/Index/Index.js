@@ -236,7 +236,6 @@ function changeFunny(element) {
 	});
 }
 function changeCool(element) {
-
 	$.ajax({
 		type: "Post",
 		url: '/Review/ChangeCoolCount?Id=' + $(element).data('assigned-id') + '',
@@ -255,3 +254,34 @@ function changeCool(element) {
 		}
 	});
 }
+
+function changeLike(element) {
+	//var t = $(element).attr('data-original-title').split("مالک سالن بیلیارد اصفهان").join("");
+
+	//alert(t);
+$.ajax({
+	type: "Post",
+	url: '/Review/ChangeLike?Id=' + $(element).data('assigned-id') + '',
+	dataType: "json",
+	contentType: false,
+	processData: false,
+	success: function (response) {
+		if (response.type == "add") {
+			var number = parseInt($(element).text()) + 1;
+			$(element).children('div').text(number);
+			var previousNames = $(element).attr('data-original-title');
+			var currentName = '<br>' + response.username + '';
+			var resault = previousNames + currentName; 
+			$(element).attr('data-original-title', resault);
+		}
+		else {
+			var number = parseInt($(element).text()) - 1;
+			$(element).children('div').text(number);
+			var previousNames = $(element).attr('data-original-title');
+			var newNames = previousNames.split(response.username).join("");
+			$(element).attr('data-original-title', newNames);
+		}
+	}
+});
+}
+

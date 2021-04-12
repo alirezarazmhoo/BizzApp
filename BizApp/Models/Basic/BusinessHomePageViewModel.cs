@@ -14,6 +14,7 @@ namespace BizApp.Models.Basic
 		public BusinessHomePage_FeatureViewModel businessHomePage_FeatureViewModel { get; set; }
 		public BusinessHomePage_DescriptionViewModel businessHomePage_DescriptionViewModel { get; set; }
 		public BusinessHomePage_RightPageBusinessInfoViewModel businessHomePage_RightPageBusinessInfoViewModel { get; set; }
+		public BusinessHomePage_HoursAndLocationViewModel businessHomePage_HoursAndLocationViewModel { get; set; }
 		public ICollection< BusinessHomePage_ReviewsViewModel> businessHomePage_ReviewsViewModel { get; set; }
 		public ICollection<BusinessHomePage_FaqViewModel> businessHomePage_FaqViewModels { get; set; }
 		public ICollection<BusinessHomePage_NearSponseredViewModel> businessHomePage_NearSponseredViewModel { get; set;  }
@@ -34,6 +35,7 @@ namespace BizApp.Models.Basic
 		public int Reviews { get; set; }
 		public bool IsClaimed { get; set; }
 		public int TotalPhotos { get; set;  }
+		public string Description { get; set; }
 	}
 	#endregion
 	#region BusinessFeatures
@@ -52,6 +54,7 @@ namespace BizApp.Models.Basic
 		public int Rate { get; set;  }
 		public int Review { get; set; }
         public string Descripton { get; set; }
+		public string DistricName { get; set; }
 	}
 	#endregion
 	#region Description 
@@ -102,6 +105,14 @@ namespace BizApp.Models.Basic
 		public int Review { get; set;  }
 	}
 	#endregion
-
+	#region HoursAndLocations
+	public class BusinessHomePage_HoursAndLocationViewModel
+	{
+		public string Address { get; set;  }
+		public double Lon { get; set;  }
+		public double Lat { get; set;  }
+		public List<DataLayer.Services.BusinessHomePageRepo.LocationHours> LocationHours { get; set;  }
+	}
+	#endregion
 
 }

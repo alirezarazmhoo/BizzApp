@@ -26,5 +26,6 @@ namespace DataLayer.Infrastructure.Reviews
 		Task<VotesAction> ChangeHelpFull(Guid Id, string UserId);
 		Task<VotesAction> ChangeFunnyCount(Guid Id, string UserId);
 		Task<VotesAction> ChangeCoolCount(Guid Id, string UserId);
+		Task<VotesAction> ChangeLikeCount(Guid Id, string UserId); 
 	}
 }

@@ -111,7 +111,6 @@ namespace DataLayer.Services
 			var BusinessItem = await DbContext.Reviews.Where(s => s.BusinessId.Equals(Id)).CountAsync();
 			return BusinessItem;
 		}
-
 		private IQueryable<UserReviewPaginateQuery> GetPaginateReviewQuery(string userName, int page, int pageSize = 10)
 		{
 			var query =
@@ -159,7 +158,6 @@ namespace DataLayer.Services
 
 			return result;
 		}
-
 		public async Task<IEnumerable<Review>> GetBusinessReviews(Guid Id)
 		{
 			var BusinessItem = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Id.Equals(Id));
@@ -238,7 +236,6 @@ namespace DataLayer.Services
 				}
 			}
 		}
-	
 		public async Task<IEnumerable<Business>> GuessReview(string id , int? cityId)
 		{
 			var UserItem = await DbContext.Users.FirstOrDefaultAsync(s=>s.Id.Equals(id));
@@ -282,7 +279,6 @@ namespace DataLayer.Services
 			}
 
 		}
-
 		public async Task<VotesAction> ChangeHelpFull(Guid Id, string UserId)
 		{
 			var Item = await DbContext.Reviews.FirstOrDefaultAsync(s => s.Id.Equals(Id));
@@ -374,6 +370,42 @@ namespace DataLayer.Services
 					if (ReviewVoteItem != null)
 					{
 						DbContext.UsersInReviewVotes.Remove(ReviewVoteItem);
+					}
+					return VotesAction.Submission;
+
+				}
+			}
+			else
+			{
+				return VotesAction.Undefinded;
+			}
+		}
+		public async Task<VotesAction> ChangeLikeCount(Guid Id, string UserId)
+		{
+			var Item = await DbContext.CustomerBusinessMediaPictures.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+			var UserItem = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(UserId));
+			UsersInCustomerBusinessMediaLike usersInCustomerBusinessMediaLike = new UsersInCustomerBusinessMediaLike();
+			if (Item != null && UserItem != null)
+			{
+				if (!await DbContext.UsersInCustomerBusinessMediaLikes.
+					AnyAsync(s => s.BizAppUserId == UserId && 
+					s.CustomerBusinessMediaPicturesId == Id))
+				{
+					Item.LikeCount += 1;
+					usersInCustomerBusinessMediaLike.CustomerBusinessMediaPicturesId = Item.Id;
+					usersInCustomerBusinessMediaLike.BizAppUserId = UserId;
+					   await DbContext.UsersInCustomerBusinessMediaLikes.AddAsync(usersInCustomerBusinessMediaLike);
+					return VotesAction.Add;
+				}
+				else
+				{
+					Item.LikeCount -= 1;
+					var VoteItem = await DbContext.UsersInCustomerBusinessMediaLikes.
+						FirstOrDefaultAsync(s => s.BizAppUserId == UserId 
+						&& s.CustomerBusinessMediaPicturesId == Id);
+					if (VoteItem != null)
+					{
+						DbContext.UsersInCustomerBusinessMediaLikes.Remove(VoteItem);
 					}
 					return VotesAction.Submission;
 

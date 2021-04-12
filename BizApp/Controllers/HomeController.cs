@@ -106,6 +106,7 @@ namespace BizApp.Controllers
 						{
 							MainPage_RecentActivityUserMediaBusinesses.Add(new MainPage_RecentActivityUserMediaBusiness()
 							{
+								
 								Description = item2.Description,
 								Id = item2.Id,
 								Image = item2.Image,

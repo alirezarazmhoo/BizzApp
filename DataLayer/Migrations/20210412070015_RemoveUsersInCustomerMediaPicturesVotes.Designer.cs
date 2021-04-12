@@ -4,14 +4,16 @@ using DataLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210412070015_RemoveUsersInCustomerMediaPicturesVotes")]
+    partial class RemoveUsersInCustomerMediaPicturesVotes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +41,7 @@ namespace DataLayer.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 4, 12, 14, 43, 0, 887, DateTimeKind.Local).AddTicks(2413));
+                        .HasDefaultValue(new DateTime(2021, 4, 12, 11, 30, 14, 575, DateTimeKind.Local).AddTicks(5481));
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -271,8 +273,8 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a3bf35de-749d-4b9d-ae51-62242678b77e",
-                            CreateDate = new DateTime(2021, 4, 12, 14, 43, 0, 890, DateTimeKind.Local).AddTicks(8437),
+                            ConcurrencyStamp = "cbd5dc21-8a47-4bd4-9669-32f797c7b8ee",
+                            CreateDate = new DateTime(2021, 4, 12, 11, 30, 14, 579, DateTimeKind.Local).AddTicks(2408),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             Gender = 0,
@@ -282,10 +284,10 @@ namespace DataLayer.Migrations
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIOkt8LZt2yfs7Aazh4+TNuY+VIWbeKU/VfxC4WqIrCaxIHdTunTkaXwQ8vV6QI/Bw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENHQvdGPrkA6fXxRTsp7Xub1Sav6mEYaukKvl51lPMDUCsACK7JbAsKpa7fqvURJ3A==",
                             PhoneNumberConfirmed = false,
                             PhotoChanged = false,
-                            SecurityStamp = "5d298df7-ae87-4521-8b9f-bcc402f3c864",
+                            SecurityStamp = "1bc56af3-40c3-4295-921e-c11fc3a9b35c",
                             TwoFactorEnabled = false,
                             UserName = "mainadmin"
                         });
@@ -515,9 +517,10 @@ namespace DataLayer.Migrations
 
             modelBuilder.Entity("DomainClass.Businesses.BusinessTime", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<Guid>("BusinessId")
                         .HasColumnType("uniqueidentifier");
@@ -1260,7 +1263,7 @@ namespace DataLayer.Migrations
 
             modelBuilder.Entity("DomainClass.Businesses.BusinessTime", b =>
                 {
-                    b.HasOne("DomainClass.Businesses.Business", "Business")
+                    b.HasOne("DomainClass.Businesses.Business", null)
                         .WithMany("BusinessTimes")
                         .HasForeignKey("BusinessId")
                         .OnDelete(DeleteBehavior.Cascade)

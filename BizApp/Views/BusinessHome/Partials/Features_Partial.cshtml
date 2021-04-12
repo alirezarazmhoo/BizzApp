@@ -1,0 +1,34 @@
+﻿@model BizApp.Models.Basic.BusinessHomePage_FeatureViewModel
+
+<div class="stay-gold-content__wrapper__covid-19__health">
+	<div class="stay-gold-content__wrapper__covid-19__health__title">
+		<span>
+			@Model.BoldFeature
+			<p>
+				براساس اطلاعات کسب و کار یا کاربران ما<svg width="16" height="16" class="icon_svg"><path d="M8 1a7 7 0 110 14A7 7 0 018 1zm0 2a5 5 0 100 10A5 5 0 008 3zm0 3.86a1 1 0 011 1v3a1 1 0 11-2 0v-3a1 1 0 011-1zm0-2.74a1 1 0 110 2 1 1 0 010-2z"></path></svg>
+
+			</p>
+			<div class="stay-gold-content__wrapper__covid-19__health__title__popover">
+				<p>ما این اطلاعات را مستقیماً از طریق کسب و کار و با نظرسنجی از کاربران تهیه کرده ایم.</p>
+				<a href="#">ایجاد یک پیشنهاد</a>
+			</div>
+		</span>
+
+	</div>
+	<div class="stay-gold-content__wrapper__covid-19__health__list">
+		<ul>
+			@{
+				foreach (var item in Model.Features)
+				{
+					<li>
+						<svg width="24" height="24" class="icon_svg-green"><path d="M9.46 17.52a1 1 0 01-.71-.29l-4-4a1.004 1.004 0 111.42-1.42l3.25 3.26 8.33-8.34a1.004 1.004 0 011.42 1.42l-9 9a1 1 0 01-.71.37z"></path></svg>
+						@item
+					</li>
+
+				}
+			}
+
+
+		</ul>
+	</div>
+</div>

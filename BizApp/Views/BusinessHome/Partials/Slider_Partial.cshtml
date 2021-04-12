@@ -1,0 +1,21 @@
+﻿@model BizApp.Models.Basic.BusinessHomePage_SliderViewModel
+
+
+@{
+	if (Model.Images.Count() > 0)
+	{
+		<div class="intro-stay-gold__image">
+			<div class="intro-stay-gold__image__wrapper">
+				@foreach (var item in Model.Images.Take(3))
+				{
+					<a href="#"><img src="@item" alt=""></a>
+
+				}
+			</div>
+		</div>
+	}
+
+
+}
+
+
