@@ -29,6 +29,6 @@ namespace DataLayer.Infrastructure
 		Task<CategoryTerm> GetCategoryTerm(int id);
 		Task<List<Category>> GetChosens();
 		Task<List<Category>> GetUnChosens();
-
+		Task<IEnumerable<Category>> GetAllParents(int id);
 	}
 }

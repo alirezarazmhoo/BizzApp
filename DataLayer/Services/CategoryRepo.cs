@@ -413,5 +413,15 @@ namespace DataLayer.Services
             var Items = await DbContext.Categories.Include(s => s.Terms).Where(s => s.Order == 0 && !s.ParentCategoryId.HasValue).ToListAsync();
             return Items;
         }
-    }
+
+		public async Task<IEnumerable<Category>> GetAllParents(int id)
+		{
+            var result = await
+                DbContext.CategoryWithParents
+                    .FromSqlRaw("EXEC [dbo].[sp_GetAllCategoryWithParentsById] @id = {0}", id)
+                    .ToListAsync();
+
+            return result;
+		}
+	}
 }

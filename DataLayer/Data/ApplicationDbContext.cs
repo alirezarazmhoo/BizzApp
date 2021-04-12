@@ -29,6 +29,7 @@ namespace DataLayer.Data
 		public virtual DbSet<City> Cities { get; set; }
 		public virtual DbSet<District> Districts { get; set; }
 		public virtual DbSet<Feature> Features { get; set; }
+		public virtual DbSet<Category> CategoryWithParents { get; set; }
 		public virtual DbSet<HierarchyNamesCategory> CategoryHierarchyNames { get; set; }
 		public virtual DbSet<CategoryTerm> CategoryTerms { get; set; }
 		public DbSet<Slider> Sliders { get; set; }

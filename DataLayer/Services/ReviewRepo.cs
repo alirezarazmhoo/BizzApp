@@ -111,6 +111,12 @@ namespace DataLayer.Services
 			var BusinessItem = await DbContext.Reviews.Where(s => s.BusinessId.Equals(Id)).CountAsync();
 			return BusinessItem;
 		}
+
+		private async Task<bool> IsOwner(Guid id, string currentUserId)
+		{
+			var photo = await DbContext.Reviews.FirstOrDefaultAsync(w => w.Id == id);
+			return photo.BizAppUserId == currentUserId;
+		}
 		private IQueryable<UserReviewPaginateQuery> GetPaginateReviewQuery(string userName, int page, int pageSize = 10)
 		{
 			var query =
@@ -134,7 +140,9 @@ namespace DataLayer.Services
 								CityId = s.Business.District.CityId,
 								CityName = s.Business.District.City.Name,
 								Name = s.Business.Name,
-								OwnerFullName = s.Business.Owner.FullName
+								OwnerFullName = s.Business.Owner.FullName,
+								CategoryId = s.Business.CategoryId
+								//Categories = s.Business.Category.Parents(s.Business.CategoryId).ToDictionary(f => f.Id, f => f.Name)
 								//OwnerUserName = s.Business.Owner.UserName
 							},
 							Media = s.ReviewMedias.Take(3)
@@ -153,8 +161,17 @@ namespace DataLayer.Services
 		public async Task<IEnumerable<UserReviewPaginateQuery>> GetUseReviews(string userName, int page)
 		{
 			var result = await GetPaginateReviewQuery(userName, page, _pageSize)
-							.Where(w => w.Status == StatusEnum.Waiting)
+							//.Where(w => w.Status == StatusEnum.Waiting)
 							.ToListAsync();
+
+			// add business categories
+			if (result.Count > 0)
+			{
+				foreach (var model in result)
+				{
+					//model.Business.
+				}
+			}
 
 			return result;
 		}
