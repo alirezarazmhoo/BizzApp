@@ -169,7 +169,9 @@ namespace DataLayer.Services
 			{
 				foreach (var model in result)
 				{
-					//model.Business.
+					//model.Business.Categories.Add(
+					//	DbContext.CategoryWithParents.
+					//);
 				}
 			}
 

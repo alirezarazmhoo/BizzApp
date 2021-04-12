@@ -4,14 +4,16 @@ using DataLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210412114811_CreateGetAllCategoryWithParentsSp")]
+    partial class CreateGetAllCategoryWithParentsSp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +41,7 @@ namespace DataLayer.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 4, 12, 16, 22, 43, 512, DateTimeKind.Local).AddTicks(2231));
+                        .HasDefaultValue(new DateTime(2021, 4, 12, 16, 18, 10, 844, DateTimeKind.Local).AddTicks(9665));
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -271,8 +273,8 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5a990538-360f-4768-9bd1-a3b2cd26959c",
-                            CreateDate = new DateTime(2021, 4, 12, 16, 22, 43, 517, DateTimeKind.Local).AddTicks(9842),
+                            ConcurrencyStamp = "0e88516a-00e4-4968-ab26-a3bfef2c38b4",
+                            CreateDate = new DateTime(2021, 4, 12, 16, 18, 10, 849, DateTimeKind.Local).AddTicks(6789),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             Gender = 0,
@@ -282,10 +284,10 @@ namespace DataLayer.Migrations
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFLRpWq8u96K2J/I74PPd9Vp0hMYwVOKfbDn8PtOmUsYNxGZKE6QwCkCkbfpa04QJg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOZOrRY0OnljTnhKGnlhTDNmnh3m95bSzlXKdOH5gUojmu5zJtx7kx/zfA4DaWuCTA==",
                             PhoneNumberConfirmed = false,
                             PhotoChanged = false,
-                            SecurityStamp = "ba6b9788-77b4-4710-b7c2-62a3f633a230",
+                            SecurityStamp = "98627cf5-babe-4b65-a1eb-3a66efe69ec3",
                             TwoFactorEnabled = false,
                             UserName = "mainadmin"
                         });
