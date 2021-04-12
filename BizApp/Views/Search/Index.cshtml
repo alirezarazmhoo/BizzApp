@@ -41,6 +41,7 @@
         background-color: #666;
         color: white;
     }
+
     .collapsible {
         background-color: #f5f5f5;
         color: black;
@@ -58,13 +59,13 @@
             color: white;
         }
 
-    .collapsible:after {
-        content: '\002B';
-        color: white;
-        font-weight: bold;
-        float: left;
-        margin-left: 5px;
-    }
+        .collapsible:after {
+            content: '\002B';
+            color: white;
+            font-weight: bold;
+            float: left;
+            margin-left: 5px;
+        }
 
     .activeProv:after {
         content: "\2212";
@@ -77,6 +78,7 @@
         transition: max-height 0.2s ease-out;
         background-color: #f1f1f1;
     }
+
         .contentPro .form-check-label {
             color: #2b273c;
             font-weight: 400;
@@ -84,6 +86,7 @@
             line-height: 20px;
             margin-left: 8px;
         }
+
         .contentPro .form-check-input {
             margin-top: 0;
             margin-left: 10px;
@@ -91,6 +94,7 @@
             width: 20px;
             height: 20px;
         }
+
         .contentPro .form-check-label {
             color: #2b273c;
             font-weight: 400;
@@ -98,11 +102,12 @@
             line-height: 20px;
             margin-left: 8px;
         }
-    #click-featu .category-content
-    {
-        display:block !important;
-        padding:0 !important;
+
+    #click-featu .category-content {
+        display: block !important;
+        padding: 0 !important;
     }
+
     #click-cat .category-content {
         display: block !important;
         padding: 0 !important;
@@ -145,7 +150,7 @@
                     <span class="span">14:18</span>
                 </div>
             </div>
-            <div class="category-content__item-filter__property" >
+            <div class="category-content__item-filter__property">
                 <div class="category-content__item-filter__property__title">
                     <h3>دسته بندی</h3>
                 </div>
@@ -188,39 +193,7 @@
                     <a href="#" onclick="OpenProvModal()">نمایش همه</a>
                 </div>
             </div>
-            <div class="category-content__item-filter__distance">
-                <div class="category-content__item-filter__distance__title">
-                    <h3>مسافت</h3>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
-                           value="option2">
-                    <label class="form-check-label" for="exampleRadios2">
-                        از دید پرنده
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
-                           value="option2">
-                    <label class="form-check-label" for="exampleRadios2">
-                        از دید پرنده
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
-                           value="option2">
-                    <label class="form-check-label" for="exampleRadios2">
-                        از دید پرنده
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
-                           value="option2">
-                    <label class="form-check-label" for="exampleRadios2">
-                        از دید پرنده
-                    </label>
-                </div>
-            </div>
+
         </div>
     </div>
     <div class="category-content__item">
@@ -398,9 +371,9 @@
         </div>
     </div>
 </div>
-<div class=" modal fade" id="click-prov" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+<div class=" modal fade" id="click-prov" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content" >
+        <div class="modal-content">
             <div class="modal-body">
                 <div class="recent-activities__modal__close" data-dismiss="modal">
                     <span>بستن</span>
@@ -425,103 +398,104 @@
             </div>
         </div>
     </div>
-    </div>
-    @section Scripts
+</div>
+@section Scripts
 {
-        <script>
-            var coll = document.getElementsByClassName("collapsible");
-            var i;
-            for (i = 0; i < coll.length; i++) {
-                coll[i].addEventListener("click", function () {
-                    this.classList.toggle("activeProv");
-                    var content = this.nextElementSibling;
-                    if (content.style.maxHeight) {
-                        content.style.maxHeight = null;
-                    } else {
-                        content.style.maxHeight = content.scrollHeight + "px";
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function () {
+                this.classList.toggle("activeProv");
+                var content = this.nextElementSibling;
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        }
+    </script>
+    <script>
+        window.arr1 = [];
+    </script>
+    <script src="~/Scripts/Search/changeUrl.js"></script>
+    <script>
+        function OpenCategoryModal() {
+            $('#click-cat').modal('show');
+            var parseQueryString = function () {
+                var str = window.location.search;
+                var objURL = {};
+                str.replace(
+                    new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+                    function ($0, $1, $2, $3) {
+                        objURL[$1] = $3;
                     }
+                );
+                return objURL;
+            };
+            var params = parseQueryString();
+            if (params["catsFinder"] != undefined) {
+                $('#click-cat .category-content .form-check-label').each(function () {
+
+                    if (decodeURIComponent(params["catsFinder"].toString()).includes($.trim($(this).text().replaceAll(" ", "-"))))
+
+                        $(this).prev().prop('checked', 'checked')
                 });
             }
-        </script>
-        <script>
-            window.arr1 = [];
-        </script>
-        <script src="~/Scripts/Search/changeUrl.js"></script>
-        <script>
-            function OpenCategoryModal() {
-                $('#click-cat').modal('show');
-                var parseQueryString = function () {
-                    var str = window.location.search;
-                    var objURL = {};
-                    str.replace(
-                        new RegExp("([^?=&]+)(=([^&]*))?", "g"),
-                        function ($0, $1, $2, $3) {
-                            objURL[$1] = $3;
-                        }
-                    );
-                    return objURL;
-                };
-                var params = parseQueryString();
-                if (params["catsFinder"] != undefined) {
-                    $('#click-cat .category-content .form-check-label').each(function () {
+        }
+        function OpenFeatureModal() {
+            $('#click-featu').modal('show');
+            var parseQueryString = function () {
+                var str = window.location.search;
+                var objURL = {};
+                str.replace(
+                    new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+                    function ($0, $1, $2, $3) {
+                        objURL[$1] = $3;
+                    }
+                );
+                return objURL;
+            };
+            var params = parseQueryString();
+            if (params["featuFinder"] != undefined) {
+                $('#click-featu .category-content .form-check-label').each(function () {
+                    if (decodeURIComponent(params["featuFinder"].toString()).includes($.trim($(this).text().replaceAll(" ", "-"))))
+                        $(this).prev().prop('checked', 'checked')
+                });
+            }
+        }
+        function OpenProvModal() {
+            $('#click-prov').modal('show');
+            var parseQueryString = function () {
+                var str = window.location.search;
+                var objURL = {};
+                str.replace(
+                    new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+                    function ($0, $1, $2, $3) {
+                        objURL[$1] = $3;
+                    }
+                );
+                return objURL;
+            };
 
-                        if (decodeURIComponent(params["catsFinder"].toString()).includes($.trim($(this).text().replaceAll(" ", "-"))))
-
-                            $(this).prev().prop('checked', 'checked')
+            var params = parseQueryString();
+            if (decodeURIComponent(params["districtFinder"]).toString() != undefined) {
+                var match = decodeURIComponent(params["districtFinder"]).toString().split(',');
+                $('.contentPro .form-check-input').prop('checked', false);
+                for (var a in match) {
+                    $('#click-prov .Prov-content  .collapsible').each(function () {
+                        if (match[a] == $.trim($(this).text().replaceAll(" ", "-")))
+                            $(this).nextAll().has(":checkbox").first().find(":checkbox").prop('checked', true);
                     });
                 }
             }
-            function OpenFeatureModal() {
-                $('#click-featu').modal('show');
-                var parseQueryString = function () {
-                    var str = window.location.search;
-                    var objURL = {};
-                    str.replace(
-                        new RegExp("([^?=&]+)(=([^&]*))?", "g"),
-                        function ($0, $1, $2, $3) {
-                            objURL[$1] = $3;
-                        }
-                    );
-                    return objURL;
-                };
-                var params = parseQueryString();
-                if (params["featuFinder"] != undefined) {
-                    $('#click-featu .category-content .form-check-label').each(function () {
-                        if (decodeURIComponent(params["featuFinder"].toString()).includes($.trim($(this).text().replaceAll(" ", "-"))))
-                            $(this).prev().prop('checked', 'checked')
-                    });
-                }
-            }
-            function OpenProvModal() {
-                $('#click-prov').modal('show');
-                //var parseQueryString = function () {
-                //    var str = window.location.search;
-                //    var objURL = {};
-                //    str.replace(
-                //        new RegExp("([^?=&]+)(=([^&]*))?", "g"),
-                //        function ($0, $1, $2, $3) {
-                //            objURL[$1] = $3;
-                //        }
-                //    );
-                //    return objURL;
-                //};
-                //var params = parseQueryString();
-                //if (params["featuFinder"] != undefined) {
-                //    $('#click-featu .category-content .form-check-label').each(function () {
-                //        if (decodeURIComponent(params["featuFinder"].toString()).includes($.trim($(this).text().replaceAll(" ", "-"))))
-                //            $(this).prev().prop('checked', 'checked')
-                //    });
-                //}
-            }
-        </script>
-        <script>
+        }
+    </script>
+    <script>
             var pageN = 1;
             const markerHtmlStyles = "background-color:#000; width: 3rem; height: 3rem; display: block;  left: -1.5rem;  top: -1.5rem;  position: relative;  border-radius: 3rem 3rem 0;  transform: rotate(45deg);  border: 1px solid #FFFFFF";
-            $(document).ready(function () {
-
-                //GetData("/Search/AllBussiness?CategoryId=1058&page=1", "AllBussiness", null, 1);
-                //history.pushState(null, null, "/Search/Index?CategoryId=1058&page=1");
-                var catsFinder = "";
+        $(document).ready(function () {
                 var parseQueryString = function () {
                     var str = window.location.search;
                     // find href and then concat other category
@@ -534,13 +508,38 @@
                     );
                     return objURL;
                 };
-                var params = parseQueryString();
-                if (params["catsFinder"] != undefined) {
-                    catsFinder = params["catsFinder"];
-                    disposeFilterForType(pageN, catsFinder);
+            var params = parseQueryString();
+            if (params["catsFinder"] != undefined) {
+
+                var match = decodeURIComponent(params["catsFinder"]).toString().split(',');
+                for (var a in match) {
+                    $(".category-content__item-filter__property").find(".lbl-cat").each(function () {
+                        if (match[a] == $.trim($(this).text().replaceAll(" ", "-")))
+                            $(this).toggleClass("active-lbl-cat");
+                    });
                 }
-                else
-                    disposeFilterForType(pageN);
+            }
+            if (params["featuFinder"] != undefined) {
+                var match = decodeURIComponent(params["featuFinder"]).toString().split(',');
+                for (var a in match) {
+                    $(".category-content__item-filter__property").find(".form-check").each(function () {
+                       
+                        if ($.trim(match[a].replaceAll("-", " ")) == $.trim($(this).find('.form-check-label').text()))
+                            $(this).find(":checkbox").prop('checked', true);
+                    });
+                }
+            }
+            if (params["districtFinder"] != undefined) {
+                var match = decodeURIComponent(params["districtFinder"]).toString().split(',');
+                for (var a in match) {
+                    $(".category-content__item-filter__areas").find(".form-check").each(function () {
+
+                        if ($.trim(match[a].replaceAll("-", " ")) == $.trim($(this).find('.form-check-label').text()))
+                            $(this).find(":checkbox").prop('checked', true);
+                    });
+                }
+            }
+            disposeFilterForType(pageN, params["catsFinder"], params["featuFinder"], params["districtFinder"]);
 
             });
             function SearchByCat(cats) {
@@ -562,10 +561,11 @@
                 }
                 disposeFilterRemover('/Search/AllBussiness', { CategoryId: '@ViewBag.CategoryId', page: p, catsFinder: catsFinder, featuFinder: featuFinder, districtFinder: districtFinder })
             }
-            function addParameterToUrl(cats, featu) {
+            function addParameterToUrl(cats, featu,dist) {
 
                 var catsFinder = "";
                 var featuFinder = "";
+                var distFinder = "";
                 const urlParameters = window.location.href;
                 var parseQueryString = function () {
                     var str = window.location.search;
@@ -581,11 +581,11 @@
                 };
                 var params = parseQueryString();
                 if (cats != null) {
-                    
+
                     if (params["catsFinder"] == undefined)
                         catsFinder = cats;
                     else {
-                       debugger
+
                         var urlCats = decodeURIComponent(params["catsFinder"].toString());
                         if (urlCats == cats+",") {
                             urlCats = urlCats.replace(urlCats, '');
@@ -599,7 +599,7 @@
                             }
                         }
 
-                    
+
                     if (catsFinder == "")
                         return undefined;
                     else
@@ -628,77 +628,101 @@
                         return featuFinder;
 
                 }
+                if (dist != null) {
+                    if (params["districtFinder"] == undefined)
+                        distFinder = dist;
+                    else {
+
+                        if (!decodeURIComponent(params["districtFinder"].toString()).includes($.trim(dist)))
+                            distFinder = params["districtFinder"] + "," + dist;
+                        else {
+
+                            var strdist = decodeURIComponent(params["districtFinder"].toString());
+                            distFinder = strdist.replace($.trim(dist), '');
+                            distFinder = distFinder.trim().replace(/,{1,}$/, '');
+                        }
+
+                    }
+                    if (distFinder == "")
+                        return undefined;
+                    else
+                        return distFinder;
+
+                }
             }
-        </script>
-        <script>
-    function ChangePage(page) {
-        pageN = page;
-        disposeFilterForType(page);
-    }
-    function SearchByCategoty() {
+    </script>
+    <script>
+        function ChangePage(page) {
+            pageN = page;
+            disposeFilterForType(page);
+        }
+        function SearchByCategoty() {
             var catsFinder = "";
             $('#click-cat .category-content input[type=checkbox]:checked').each(function () {
 
-                catsFinder += $(this).next().text().replaceAll(" ", "-")+",";
+                catsFinder += $(this).next().text().replaceAll(" ", "-") + ",";
             });
             catsFinder = catsFinder.slice(0, -1);
             disposeFilterForType(pageN, catsFinder);
             $("#click-cat").modal('hide');
             $('.modal-backdrop').remove();
-            }
-    function SearchByFeature() {
-                var featuFinder = "";
-                $('#click-featu .category-content input[type=checkbox]:checked').each(function () {
-
-                    featuFinder += $(this).next().text().replaceAll(" ", "-") + ",";
-                });
-                featuFinder = featuFinder.slice(0, -1);
-                disposeFilterForType(pageN, undefined, featuFinder);
-                $("#click-featu").modal('hide');
-                $('.modal-backdrop').remove();
-            }
-    function SearchByPro() {
-                var districtFinder = "";
-                $('#click-prov .Prov-content input[type=checkbox]:checked').each(function () {
-                    districtFinder += $(this).next().text().replaceAll(" ", "-") + ",";
-                });
-                districtFinder = districtFinder.slice(0, -1);
-                disposeFilterForType(pageN, undefined, undefined, districtFinder);
-                $("#click-prov").modal('hide');
-                $('.modal-backdrop').remove();
-            }
-        </script>
-        <script>
-            var header = document.getElementById("myDIV");
-            var lbls = header.getElementsByClassName("lbl-cat");
-            for (var i = 0; i < lbls.length; i++) {
-                lbls[i].addEventListener("click", function () {
-                    var current = document.getElementsByClassName("active-lbl-cat");
-                    current[0].className = current[0].className.replace(" active-lbl-cat", "");
-                    this.className += " active-lbl-cat";
-                });
-            }
-        </script>
-        <script>
-            $('.category-content__item-filter__property .form-check-featu').change(function () {
-                var featursFinder = addParameterToUrl(null, $(this).next().text().replaceAll(" ", "-"));
-                disposeFilterForType(pageN, undefined, featursFinder);
+        }
+        function SearchByFeature() {
+            var featuFinder = "";
+            $('#click-featu .category-content input[type=checkbox]:checked').each(function () {
+                featuFinder += $(this).next().text().replaceAll(" ", "-") + ",";
             });
-            $('.category-content__item-filter__areas .form-check-featu').change(function () {
-                var pro = $(this).next().text().replaceAll(" ", "-");
-                var districtFinder = addParameterToUrl(null, pro);
-                //$(".Prov-content").find(".lbl-cat").each(function () {
-                //    if ($.trim($(this).text().replaceAll(" ", "-")) == $.trim(cats))
-                //        $(this).toggleClass("active-lbl-cat");
-                //});
-                $(".Prov-content .collapsible").each(function () {
-                    if ($(this).text().replaceAll(" ", "-") == $.trim(pro)) {
-                        $(this).find('.contentPro').prop("checked", "checked")
-                       
-                    }
-                })
-                disposeFilterForType(pageN, undefined, undefined, districtFinder);
+            featuFinder = featuFinder.slice(0, -1);
+            disposeFilterForType(pageN, undefined, featuFinder);
+            $("#click-featu").modal('hide');
+            $('.modal-backdrop').remove();
+        }
+        function SearchByPro() {
+            var districtFinder = "";
+            $('#click-prov .Prov-content input[type=checkbox]:checked').each(function () {
+                districtFinder += $(this).next().text().replaceAll(" ", "-") + ",";
             });
-        </script>
+            districtFinder = districtFinder.slice(0, -1);
+            disposeFilterForType(pageN, undefined, undefined, districtFinder);
+            $("#click-prov").modal('hide');
+            $('.modal-backdrop').remove();
+        }
+    </script>
+    <script>
+        //var header = document.getElementById("myDIV");
+        //var lbls = header.getElementsByClassName("lbl-cat");
+        //for (var i = 0; i < lbls.length; i++) {
+        //    lbls[i].addEventListener("click", function () {
+        //        var current = document.getElementsByClassName("active-lbl-cat");
+        //        current[0].className = current[0].className.replace(" active-lbl-cat", "");
+        //        this.className += " active-lbl-cat";
+        //    });
+        //}
+    </script>
+    <script>
+        $('.category-content__item-filter__property .form-check-featu').change(function () {
+            var featursFinder = addParameterToUrl(null, $(this).next().text().replaceAll(" ", "-"));
+            disposeFilterForType(pageN, undefined, featursFinder);
+        });
+        $('.category-content__item-filter__areas .form-check-featu').change(function () {
+            //var pro = $(this).next().text().replaceAll(" ", "-");
+            var pro = addParameterToUrl(null, null, $(this).next().text().replaceAll(" ", "-"));
 
-    }
+            disposeFilterForType(pageN, undefined, undefined, pro);
+
+            //var districtFinder = addParameterToUrl(null, pro);
+            //$(".Prov-content").find(".lbl-cat").each(function () {
+            //    if ($.trim($(this).text().replaceAll(" ", "-")) == $.trim(cats))
+            //        $(this).toggleClass("active-lbl-cat");
+            //});
+            //$(".Prov-content .collapsible").each(function () {
+            //    if ($(this).text().replaceAll(" ", "-") == $.trim(pro)) {
+            //        $(this).find('.contentPro').prop("checked", "checked")
+
+            //    }
+            //})
+            //disposeFilterForType(pageN, undefined, undefined, districtFinder);
+        });
+    </script>
+
+}

@@ -34,7 +34,7 @@ namespace BizApp.Controllers
         {
             bool isAjax = Request.IsAjaxRequest();
             if (isAjax == false)
-                return RedirectToAction("Index",new {CategoryId=searchViewModel.CategoryId ,page=searchViewModel.page,catsFinder=searchViewModel.catsFinder});
+                return RedirectToAction("Index",new {CategoryId=searchViewModel.CategoryId ,page=searchViewModel.page,catsFinder=searchViewModel.catsFinder,featuFinder=searchViewModel.featuFinder,districtFinder=searchViewModel.districtFinder});
             //PagedList<Business> bussiness = _UnitOfWork.BusinessRepo.GetBussiness(searchViewModel.CategoryId, searchViewModel.page);
             PagedList<Business> bussiness = _UnitOfWork.BusinessRepo.GetBussiness(searchViewModel);
             ViewBag.CategoryId = searchViewModel.CategoryId;

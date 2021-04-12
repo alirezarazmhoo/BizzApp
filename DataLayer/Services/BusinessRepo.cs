@@ -410,6 +410,7 @@ namespace DataLayer.Services
             int CatId = searchViewModel.CategoryId;
             var allCategories = DbContext.Categories;
             var allChildCategory = allCategories.Where(w => w.ParentCategoryId == searchViewModel.CategoryId);
+            cats.Add(CatId);
             if (String.IsNullOrEmpty(searchViewModel.catsFinder))
             {
                 foreach (var categoryItem in allChildCategory.ToList())

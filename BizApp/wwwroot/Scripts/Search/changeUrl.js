@@ -277,7 +277,7 @@ class AjaxRequest extends SetUrlParams {
 
         _defineProperty(this, "ajax", async () => {
             const result = await this.xhr();
-            console.log(result);
+            //console.log(result);
             if (result.status !== 200) Promise.prototype.catch(() => `status code error : statusCode = ${result.status}
                         ${result.responseText}`);
 
@@ -464,6 +464,7 @@ class Request extends AjaxRequest {
             var markerArray = [];
             var mymap = null;
             var marker = null;
+            
             document.getElementById('weathermap').innerHTML = "<div id='mapid' style='width: 100%; height: 100%;'></div>";
             var planes = [];
             var lat = 0;
