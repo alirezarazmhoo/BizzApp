@@ -63,6 +63,10 @@
     <Compile Remove="Migrations\20210413110543_AddBusinessTime.Designer.cs" />
     <Compile Remove="Migrations\20210413111228_AddBusinessTime.cs" />
     <Compile Remove="Migrations\20210413111228_AddBusinessTime.Designer.cs" />
+    <Compile Remove="Migrations\20210413112540_Testttt.cs" />
+    <Compile Remove="Migrations\20210413112540_Testttt.Designer.cs" />
+    <Compile Remove="Migrations\20210413113551_DeleteHirerachyNamesCategoryTable.cs" />
+    <Compile Remove="Migrations\20210413113551_DeleteHirerachyNamesCategoryTable.Designer.cs" />
 
   </ItemGroup>
 

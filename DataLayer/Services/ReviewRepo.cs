@@ -3,6 +3,7 @@ using DataLayer.Extensions;
 using DataLayer.Infrastructure.Reviews;
 using DomainClass.Businesses;
 using DomainClass.Enums;
+using DomainClass.Queries;
 using DomainClass.Review;
 using DomainClass.Review.Queries;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace DataLayer.Services
@@ -169,7 +169,16 @@ namespace DataLayer.Services
 			{
 				foreach (var model in result)
 				{
-					//model.Business.Categories = DbContext.CategoryWithParents.FromSqlRaw("EXEC [dbo].[sp_GetAllCategoryWithParentsById] @id = {0}", model.Business.CategoryId).ToDictionary(k => k.Id, v => v.Name);
+					model.Business.Categories =
+						DbContext.Categories
+							.FromSqlRaw("EXEC [dbo].[sp_GetAllCategoryWithParentsById] @id = {0}", model.Business.CategoryId)
+							.Select(s => new CategoryWithParentsQuery
+							{
+								Id = s.Id,
+								Name = s.Name
+							})
+							.OrderByDescending(x => x.Id)
+							.ToDictionary(k => k.Id, v => v.Name);
 				}
 			}
 

@@ -22,30 +22,28 @@ namespace DataLayer.Data
 		public virtual DbSet<BusinessCallNumber> BusinessCallNumbers { get; set; }
 		public virtual DbSet<BusinessFeature> BusinessFeatures { get; set; }
 		public virtual DbSet<BusinessGallery> BusinessGalleries { get; set; }
-		public virtual DbSet<BusinessTime> BusinessTimes{ get; set; }		
+		public virtual DbSet<BusinessTime> BusinessTimes { get; set; }
 		public virtual DbSet<Category> Categories { get; set; }
 		public virtual DbSet<CategoryFeature> CategoryFeatures { get; set; }
 		public virtual DbSet<Province> Provinces { get; set; }
 		public virtual DbSet<City> Cities { get; set; }
 		public virtual DbSet<District> Districts { get; set; }
 		public virtual DbSet<Feature> Features { get; set; }
-		//public virtual DbSet<Category> CategoryWithParents { get; set; }
-		public virtual DbSet<HierarchyNamesCategory> CategoryHierarchyNames { get; set; }
 		public virtual DbSet<CategoryTerm> CategoryTerms { get; set; }
-		public DbSet<Slider> Sliders { get; set; }
-		public virtual DbSet<ApplicationUserMedia>  ApplicationUserMedias { get; set; }
-		public virtual DbSet<Review>  Reviews { get; set; }
-		public virtual DbSet<ReviewMedia>   ReviewMedias { get; set; }
-		public virtual DbSet<UsersInReviewLike>  UsersInReviewLikes { get; set; }
-		public virtual DbSet<CustomerBusinessMedia>  CustomerBusinessMedias { get; set; }
-		public virtual DbSet<UsersInCustomerBusinessMediaLike>   UsersInCustomerBusinessMediaLikes { get; set; }
-		public virtual DbSet<CustomerBusinessMediaPictures>  CustomerBusinessMediaPictures { get; set; }
-		public virtual DbSet<BusinessFaq>  BusinessFaqs { get; set; }
-		public virtual DbSet<BusinessFaqAnswer>  BusinessFaqAnswers { get; set; }
+		public virtual DbSet<Slider> Sliders { get; set; }
+		public virtual DbSet<ApplicationUserMedia> ApplicationUserMedias { get; set; }
+		public virtual DbSet<Review> Reviews { get; set; }
+		public virtual DbSet<ReviewMedia> ReviewMedias { get; set; }
+		public virtual DbSet<UsersInReviewLike> UsersInReviewLikes { get; set; }
+		public virtual DbSet<CustomerBusinessMedia> CustomerBusinessMedias { get; set; }
+		public virtual DbSet<UsersInCustomerBusinessMediaLike> UsersInCustomerBusinessMediaLikes { get; set; }
+		public virtual DbSet<CustomerBusinessMediaPictures> CustomerBusinessMediaPictures { get; set; }
+		public virtual DbSet<BusinessFaq> BusinessFaqs { get; set; }
+		public virtual DbSet<BusinessFaqAnswer> BusinessFaqAnswers { get; set; }
 		public virtual DbSet<MessageToBusiness> MessageToBusinesses { get; set; }
 		public virtual DbSet<UsersInCommunityVotes> UsersInCommunityVotes { get; set; }
-		public virtual DbSet<UsersInReviewVotes>  UsersInReviewVotes { get; set; }
-	
+		public virtual DbSet<UsersInReviewVotes> UsersInReviewVotes { get; set; }
+
 		#endregion
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
@@ -57,7 +55,7 @@ namespace DataLayer.Data
 			// default value for IsEnabled in users
 			builder.Entity<BizAppUser>()
 				.Property(b => b.IsEnabled).HasDefaultValue(true);
-			
+
 			// default value for Call Number in business
 			builder.Entity<Business>()
 				.Property(b => b.CallNumber).HasDefaultValue(0);
