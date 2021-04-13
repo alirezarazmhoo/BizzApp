@@ -416,12 +416,13 @@ namespace DataLayer.Services
 
 		public async Task<IEnumerable<Category>> GetAllParents(int id)
 		{
-            var result = await
-                DbContext.CategoryWithParents
-                    .FromSqlRaw("EXEC [dbo].[sp_GetAllCategoryWithParentsById] @id = {0}", id)
-                    .ToListAsync();
+            //var result = await
+            //    DbContext.CategoryWithParents
+            //        .FromSqlRaw("EXEC [dbo].[sp_GetAllCategoryWithParentsById] @id = {0}", id)
+            //        .ToListAsync();
 
-            return result;
+            //return result;
+            throw new Exception() ; 
 		}
 	}
 }

@@ -169,7 +169,7 @@ namespace DataLayer.Services
 			{
 				foreach (var model in result)
 				{
-					model.Business.Categories = DbContext.CategoryWithParents.FromSqlRaw("EXEC [dbo].[sp_GetAllCategoryWithParentsById] @id = {0}", model.Business.CategoryId).ToDictionary(k => k.Id, v => v.Name);
+					//model.Business.Categories = DbContext.CategoryWithParents.FromSqlRaw("EXEC [dbo].[sp_GetAllCategoryWithParentsById] @id = {0}", model.Business.CategoryId).ToDictionary(k => k.Id, v => v.Name);
 				}
 			}
 
