@@ -39,7 +39,7 @@ namespace DataLayer.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 4, 13, 10, 51, 2, 631, DateTimeKind.Local).AddTicks(9709));
+                        .HasDefaultValue(new DateTime(2021, 4, 13, 15, 45, 53, 136, DateTimeKind.Local).AddTicks(9263));
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -271,8 +271,8 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "388ffc33-874f-4dbf-91ee-8b1de6c32723",
-                            CreateDate = new DateTime(2021, 4, 13, 10, 51, 2, 635, DateTimeKind.Local).AddTicks(5470),
+                            ConcurrencyStamp = "b3e47686-ceb7-4ab3-a7c1-34a1453bfb65",
+                            CreateDate = new DateTime(2021, 4, 13, 15, 45, 53, 141, DateTimeKind.Local).AddTicks(1389),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             Gender = 0,
@@ -282,10 +282,10 @@ namespace DataLayer.Migrations
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPpSAK6XmOfKv8i/5atxh/yC2O9/zzF3Udxt1YmcgCY2uWYYyg5AyyIhAovOwe+yAA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHO4ieYxNMEwvxEdckC82i5xgCdNDJCLSSluCiQSBUhQl9pCA5XErP0sVh9a3zDV/A==",
                             PhoneNumberConfirmed = false,
                             PhotoChanged = false,
-                            SecurityStamp = "c9ee5387-b4c6-4bec-99bd-553988b2b1ed",
+                            SecurityStamp = "8a3cd73b-651c-42c7-97d6-dc4a4f2b2440",
                             TwoFactorEnabled = false,
                             UserName = "mainadmin"
                         });
@@ -613,7 +613,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("ParentCategoryId");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("DomainClass.CategoryFeature", b =>

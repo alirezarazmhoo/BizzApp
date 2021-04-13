@@ -105,7 +105,9 @@ namespace DataLayer.Services
 				.Include(s => s.ReviewMedias)
 				.Include(s => s.BizAppUser)
 				.ThenInclude(s => s.ApplicationUserMedias)
-				.Include(s => s.Business).Where(s => s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted && s.BusinessId.Equals(id))
+				.Include(s => s.Business)
+			
+				.Where(s => s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted && s.BusinessId.Equals(id))
 				.ToListAsync();
 			return Items;
 		}
@@ -141,8 +143,6 @@ namespace DataLayer.Services
 				await DbContext.SaveChangesAsync();
 			}
 		}
-
-
 		public async Task<IEnumerable<CustomerBusinessMediaPictures>> GetBusinessGallery(Guid id)
 		{
 			var BusinessItem = await DbContext.Businesses.FirstOrDefaultAsync(s=>s.Id.Equals(id));
@@ -187,7 +187,18 @@ namespace DataLayer.Services
 			return Sum1 + Sum2; 
 		}
 	
-
+		public async Task<int> GetTotalUserMedia(string id)
+		{
+			var userItem = await DbContext.Users.FirstOrDefaultAsync(s=>s.Id.Equals(id));
+			if(userItem != null)
+			{
+				return await DbContext.CustomerBusinessMediaPictures.Where(s => s.CustomerBusinessMedia.BizAppUserId.Equals(id)).CountAsync();
+			}
+			else
+			{
+				return 0;
+			}
+		}
 
 
 	}

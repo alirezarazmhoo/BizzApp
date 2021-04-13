@@ -1,0 +1,135 @@
+﻿@model IEnumerable<BizApp.Models.Basic.BusinessHomePage_ReviewsViewModel>
+
+
+
+<div class="stay-gold-content__wrapper__recommended">
+	<div class="stay-gold-content__wrapper__recommended__title">
+		<h4>نظرات کاربران</h4>
+	</div>
+	<div class="stay-gold-content__wrapper__recommended__alert">
+		<svg width="24" height="24" class="icon_svg"><path d="M12 1c6.075 0 11 4.925 11 11a11 11 0 01-11 11C5.925 23 1 18.075 1 12S5.925 1 12 1zm0 2a9 9 0 100 18 9 9 0 000-18zm0 7.33a1 1 0 011 1V16a1 1 0 11-2 0v-4.67a1 1 0 011-1zm0-3.18a1 1 0 110 2 1 1 0 010-2z"></path></svg>
+		<p>
+			<span>اعتماد شما نگرانی اصلی ماست</span> ، بنابراین شرکت ها نمی توانند برای تغییر یا حذف پست ها هزینه پرداخت کنند.<a href="#">اطلاعات بیشتر در مورد آن</a>
+		</p>
+		<div class="stay-gold-content__wrapper__recommended__alert__close">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="icon_svg">
+				<path d="M13.41 12l5.3-5.29a1.004 1.004 0 10-1.42-1.42L12 10.59l-5.29-5.3a1.004 1.004 0 00-1.42 1.42l5.3 5.29-5.3 5.29a1 1 0 000 1.42 1 1 0 001.42 0l5.29-5.3 5.29 5.3a1 1 0 001.42 0 1 1 0 000-1.42L13.41 12z"></path>
+			</svg>
+		</div>
+	</div>
+</div>
+<div class="stay-gold-content__wrapper__comment" style="margin-top:15px">
+	@foreach (var item in Model)
+	{
+		<div class="stay-gold-content__wrapper__comment__avatar">
+			<div class="stay-gold-content__wrapper__comment__avatar__image">
+
+				<a href="#"><img src="@item.UserPicture" alt=""></a>
+			</div>
+			<div class="stay-gold-content__wrapper__comment__avatar__bio">
+				<div class="stay-gold-content__wrapper__comment__avatar__bio__title">
+					<div class="stay-gold-content__wrapper__comment__avatar__bio__title__name">
+						<a href="#">@item.UserName</a>
+					</div>
+					<div class="stay-gold-content__wrapper__comment__avatar__bio__title__elite">
+						<a href="#">@item.FullName</a>
+					</div>
+				</div>
+				<div class="stay-gold-content__wrapper__comment__avatar__bio__location">
+					<span>@item.DistricName</span>
+				</div>
+				<div class="stay-gold-content__wrapper__comment__avatar__bio__actions">
+					<ul>
+						<li>
+							<svg width="16" height="16" class="icon_svg"><path d="M11.23 1H4.77A3.77 3.77 0 001 4.77v6.46A3.77 3.77 0 004.77 15h6.46A3.77 3.77 0 0015 11.23V4.77A3.77 3.77 0 0011.23 1zM8 8.63a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM7 11h2.1a2 2 0 011.9 2H5a2 2 0 012-2zm6.05.23a1.71 1.71 0 01-.15.71 4 4 0 00-2.17-2.58 3.42 3.42 0 00.82-2.23 3.5 3.5 0 10-7 0 3.46 3.46 0 00.83 2.23 4 4 0 00-2.18 2.58 1.71 1.71 0 01-.2-.71V4.77C3 3.792 3.792 3 4.77 3h6.46c.978 0 1.77.792 1.77 1.77l.05 6.46z"></path></svg>
+							@item.TotalPictures
+						</li>
+						<li>
+							<svg width="16" height="16" class="icon_svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.23 1H4.77A3.77 3.77 0 001 4.77v6.46A3.77 3.77 0 004.77 15h6.46A3.77 3.77 0 0015 11.23V4.77A3.77 3.77 0 0011.23 1zM13 11.23A1.77 1.77 0 0111.23 13H4.77A1.77 1.77 0 013 11.23V4.77C3 3.792 3.792 3 4.77 3h6.46c.977 0 1.77.792 1.77 1.77v6.46zM9.18 6.65l1.64.24a.51.51 0 01.41.34.51.51 0 01-.13.51L9.91 8.9l.29 1.61a.49.49 0 01-.2.49.51.51 0 01-.3.12.46.46 0 01-.23-.06L8 10.29l-1.47.77a.5.5 0 01-.72-.53l.28-1.63L4.9 7.74a.51.51 0 01-.13-.51.51.51 0 01.41-.34l1.64-.24.73-1.49a.52.52 0 01.9 0l.73 1.49z"></path></svg>
+							@item.TotalReviews
+						</li>
+						<li>
+							<svg width="16" height="16" class="icon_svg"><path d="M5.076 6.674a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path><path d="M11.231 1H4.769A3.774 3.774 0 001 4.769v6.462A3.774 3.774 0 004.769 15h6.462A3.774 3.774 0 0015 11.231V4.769A3.774 3.774 0 0011.231 1zM4.769 3h6.462A1.77 1.77 0 0113 4.769v3.58l-.957-.759a4.35 4.35 0 00-5.624.172L3 10.834V4.77A1.77 1.77 0 014.769 3zm6.462 10H4.769a1.75 1.75 0 01-.902-.255l3.89-3.494a2.352 2.352 0 013.042-.094L13 10.902v.329A1.77 1.77 0 0111.231 13z"></path></svg>
+							3
+						</li>
+
+					</ul>
+				</div>
+
+			</div>
+		</div>
+		<div class="stay-gold-content__wrapper__comment__score">
+			<div class="stay-gold-content__wrapper__comment__score__star" data-star="@item.Rate"></div>
+			<div class="stay-gold-content__wrapper__comment__score__date">
+				<span>@item.Date</span>
+			</div>
+		</div>
+		<div class="stay-gold-content__wrapper__comment__photo">
+			<svg width="16" height="16" class="icon_svg"><path d="M11.23 1A3.77 3.77 0 0115 4.77v6.46A3.77 3.77 0 0111.23 15H4.77a3.77 3.77 0 01-3.43-2.31l-.06-.06a3.61 3.61 0 01-.28-1.4V4.77A3.77 3.77 0 014.77 1h6.46zM3 4.77V11l5.73-5.44a1 1 0 011.38 0L13 8.3V4.77A1.77 1.77 0 0011.23 3H4.77A1.77 1.77 0 003 4.77zM11.23 13A1.77 1.77 0 0013 11.23v-.17l-3.58-3.4L4 12.81c.238.122.502.187.77.19h6.46zM5.02 6.83a1.2 1.2 0 110-2.4 1.2 1.2 0 010 2.4z"></path></svg>
+			<a href="#">
+				@item.ReviewTotalPictures
+			</a>
+		</div>
+
+		<div class="stay-gold-content__wrapper__comment__text">
+			<p>
+				@item.Text
+			</p>
+
+		</div>
+	
+	
+			foreach (var item2 in item.ReviewPictures)
+			{
+		
+				<div class="stay-gold-content__wrapper__comment__image ">
+					<div class="row" data-space="15">
+						<div class="col-6">
+							<div class="stay-gold-content__wrapper__comment__image__item  stay-gold-content__wrapper__comment__image__item--two-image">
+								<a href="#">
+									<img src="@item2" alt="">
+								</a>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			}
+		
+	}
+
+	<div class="stay-gold-content__wrapper__comment__see-all">
+		<a href="#">
+			همه عکس های ثبت شده را مشاهده کنید
+		</a>
+	</div>
+	<div class="stay-gold-content__wrapper__comment__actions">
+		<ul>
+			<li>
+				<a href="#">
+					<svg width="16" height="16" class="icon_svg"><path d="M8 1a7 7 0 110 14A7 7 0 018 1zm0 2a5 5 0 100 10A5 5 0 008 3zM4.785 5.803A3.5 3.5 0 1110 10.06v.74a1.5 1.5 0 01-1.5 1.5h-1A1.5 1.5 0 016 10.8v-.74a3.5 3.5 0 01-1.215-4.257zM8 5.7a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"></path></svg>
+					<span>مفید</span>
+					1
+				</a>
+			</li>
+			<li>
+				<a href="#">
+					<svg width="16" height="16" class="icon_svg"><path d="M8 1a7 7 0 110 14A7 7 0 018 1zm0 2a5 5 0 100 10A5 5 0 008 3zm3.43 6a.15.15 0 01.14.18 3.62 3.62 0 01-7.14 0A.15.15 0 014.57 9zm-1.07-2.553c.34.197.55.56.55.953h-2.2a1.1 1.1 0 011.65-.953zM6.19 6.3a1.1 1.1 0 011.1 1.1h-2.2a1.1 1.1 0 011.1-1.1z"></path></svg>
+					<span>خنده دار</span>
+
+				</a>
+			</li>
+			<li>
+				<a href="#">
+					<svg width="16" height="16" class="icon_svg"><path d="M8 1a7 7 0 110 14A7 7 0 018 1zm0 2a5 5 0 100 10A5 5 0 008 3zm2.58 7.32a.15.15 0 01.16.23A3.43 3.43 0 018 12a3.43 3.43 0 01-2.74-1.42.15.15 0 01.16-.23 9.82 9.82 0 005.16-.03zm1.66-3.66a.26.26 0 01.25.34L12 8.5a1.78 1.78 0 01-1.7 1.21l-.15-.007A1.78 1.78 0 018.62 8.51L8.45 8A.48.48 0 008 7.67l-.086.009A.48.48 0 007.55 8l-.17.5A1.78 1.78 0 015.7 9.71l-.152-.005A1.78 1.78 0 014 8.5L3.51 7a.26.26 0 01.25-.34z"></path></svg>
+					<span>سرد</span>
+					1
+
+				</a>
+			</li>
+		</ul>
+	</div>
+
+
+
+</div>

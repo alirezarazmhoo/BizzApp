@@ -43,10 +43,26 @@
     <Compile Remove="Migrations\20210314074806_unnullableBusinessCategory.Designer.cs" />
     <Compile Remove="Migrations\20210410093721_Nemche.cs" />
     <Compile Remove="Migrations\20210410093721_Nemche.Designer.cs" />
+    <Compile Remove="Migrations\20210412101131_RemoveBusinessTimes.cs" />
+    <Compile Remove="Migrations\20210412101131_RemoveBusinessTimes.Designer.cs" />
+    <Compile Remove="Migrations\20210412101301_AddBusinessTimes.cs" />
+    <Compile Remove="Migrations\20210412101301_AddBusinessTimes.Designer.cs" />
     <Compile Remove="Migrations\20210412113543_CreateGetAllCategoryWithParentsSp.cs" />
     <Compile Remove="Migrations\20210412113543_CreateGetAllCategoryWithParentsSp.Designer.cs" />
+    <Compile Remove="Migrations\20210412115244_CreateGetAllCatsWithParentsSp.cs" />
+    <Compile Remove="Migrations\20210412115244_CreateGetAllCatsWithParentsSp.Designer.cs" />
     <Compile Remove="Migrations\20210413055144_ChangeUnknownPrimary.cs" />
     <Compile Remove="Migrations\20210413055144_ChangeUnknownPrimary.Designer.cs" />
+    <Compile Remove="Migrations\20210413062103_FixMigration.cs" />
+    <Compile Remove="Migrations\20210413062103_FixMigration.Designer.cs" />
+    <Compile Remove="Migrations\20210413105520_test3.cs" />
+    <Compile Remove="Migrations\20210413105520_test3.Designer.cs" />
+    <Compile Remove="Migrations\20210413110000_CreateGetWithParentSp.cs" />
+    <Compile Remove="Migrations\20210413110000_CreateGetWithParentSp.Designer.cs" />
+    <Compile Remove="Migrations\20210413110543_AddBusinessTime.cs" />
+    <Compile Remove="Migrations\20210413110543_AddBusinessTime.Designer.cs" />
+    <Compile Remove="Migrations\20210413111228_AddBusinessTime.cs" />
+    <Compile Remove="Migrations\20210413111228_AddBusinessTime.Designer.cs" />
 
   </ItemGroup>
 

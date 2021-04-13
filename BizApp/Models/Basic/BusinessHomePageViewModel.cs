@@ -36,6 +36,7 @@ namespace BizApp.Models.Basic
 		public bool IsClaimed { get; set; }
 		public int TotalPhotos { get; set;  }
 		public string Description { get; set; }
+		public string Date { get; set;  }
 	}
 	#endregion
 	#region BusinessFeatures
@@ -76,23 +77,30 @@ namespace BizApp.Models.Basic
 	public class BusinessHomePage_ReviewsViewModel
 	{
 		public string Id { get; set;  }
+		public string FullName { get; set; }
 		public string UserName { get; set; }
+		public string UserPicture { get; set; }
 		public string DistricName { get; set; }
 		public int TotalPictures { get; set; }
 		public int TotalReviews { get; set; }
+		public int ReviewTotalPictures { get; set; }
 		public int Rate { get; set;  }
 		public string Date { get; set;  }
 		public string Text { get; set;  }
 		public int Cool { get; set; }
 		public int UseFull { get; set; }
 		public int Funny { get; set; }
+		public ICollection<string> ReviewPictures { get; set; }
 	}
 
 	#endregion
 	#region BusinessFaq
 	public class BusinessHomePage_FaqViewModel
 	{
+		public Guid Id { get; set; }
+		public  int AnswersCount { get; set;  }
 		public string Question { get; set; }
+		public string Date { get; set; }
 		public ICollection<string> Answers { get; set; }
 	}
 	#endregion
@@ -101,6 +109,7 @@ namespace BizApp.Models.Basic
 	{
 		public string Image { get; set; }
 		public string Name { get; set;  }
+		public string Description { get; set;  }
 		public int Rate { get; set;  }
 		public int Review { get; set;  }
 	}

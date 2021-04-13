@@ -82,19 +82,22 @@ namespace BizApp.Controllers
 			#region Reviews
 			foreach (var item in ReviewsItem)
 			{
-				businessHomePage_ReviewsViewModel.Add(new BusinessHomePage_ReviewsViewModel() { Cool = item.CoolCount , Date = DateChanger.ToPersianDateString(item.Date) , DistricName = item.BizAppUser.Address , Funny = item.FunnyCount , Rate = item.Rate , Text = item.Description , UseFull = item.UsefulCount , TotalReviews = item.BizAppUser.Reviews.Count , TotalPictures = 0 , UserName = item.BizAppUser.FullName , Id = item.BizAppUser.Id});
+				string UserPicture = string.IsNullOrEmpty(item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s=>s.UploadedPhoto).FirstOrDefault()) == true ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault();
+				businessHomePage_ReviewsViewModel.Add(new BusinessHomePage_ReviewsViewModel() { Cool = item.CoolCount , Date = DateChanger.ToPersianDateString(item.Date) , DistricName = item.BizAppUser.Address , Funny = item.FunnyCount , Rate = item.Rate , Text = item.Description , UseFull = item.UsefulCount , TotalReviews = item.BizAppUser.Reviews.Count , TotalPictures = await _UnitOfWork.BusinessHomePageRepo.GetTotalUserMedia(item.BizAppUserId) , UserName = item.BizAppUser.FullName , Id = item.BizAppUser.Id , UserPicture = UserPicture  , FullName = item.BizAppUser.FullName , ReviewTotalPictures = item.ReviewMedias.Count, ReviewPictures = item.ReviewMedias.Select(s=>s.Image).ToList()});
 			}
 			#endregion
 			#region AsktheCommunity
 			foreach (var item in CommunityItems)
 			{
-				businessHomePage_FaqViewModels.Add(new BusinessHomePage_FaqViewModel() { Question = item.Question, Answers = item.BusinessFaqAnswers.Select(s => s.Text).ToList()}) ;
+				string Date = item.Date == DateTime.MinValue ? "نامشخص" : item.Date.ToPersianDateString();
+
+				businessHomePage_FaqViewModels.Add(new BusinessHomePage_FaqViewModel() { Question = item.Question, Answers = item.BusinessFaqAnswers.Select(s => s.Text).ToList(), Date = Date, AnswersCount = item.BusinessFaqAnswers.Count()  ,Id = item.Id}) ;
 			}
 			#endregion
 			#region RelatedBusiness
 			foreach (var item in RelatedBusinessItem)
 			{
-				businessHomePage_RelatedBusinessViewModels.Add(new BusinessHomePage_RelatedBusinessViewModel() { Image = string.IsNullOrEmpty(item.FeatureImage) == false ? "/Upload/DefaultPicutres/Bussiness/Business.jpg" : item.FeatureImage }); 
+				businessHomePage_RelatedBusinessViewModels.Add(new BusinessHomePage_RelatedBusinessViewModel() { Image = string.IsNullOrEmpty(item.FeatureImage) == false ? "/Upload/DefaultPicutres/Bussiness/Business.jpg" : item.FeatureImage , Description = item.Description }); 
 			}
 			#endregion
 			#region LocationAndHours
