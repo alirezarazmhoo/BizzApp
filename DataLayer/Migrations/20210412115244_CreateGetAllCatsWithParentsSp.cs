@@ -7,6 +7,15 @@ namespace DataLayer.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreateDate",
+                table: "ApplicationUser",
+                nullable: false,
+                defaultValue: new DateTime(2021, 4, 13, 10, 21, 43, 523, DateTimeKind.Local).AddTicks(301),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldDefaultValue: new DateTime(2021, 4, 12, 16, 22, 43, 512, DateTimeKind.Local).AddTicks(2231));
+
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
@@ -22,23 +31,23 @@ namespace DataLayer.Migrations
                 AS
                 BEGIN
 	                ;WITH name_tree AS 
-                (
-                   SELECT id, ParentCategoryId, Name
-                   FROM Categories
-                   WHERE id = 1044 -- this is the starting point you want in your recursion
+                    (
+                       SELECT id, ParentCategoryId, Name
+                       FROM Categories
+                       WHERE id = 1044 -- this is the starting point you want in your recursion
 
-                   UNION ALL
+                       UNION ALL
 
-                   SELECT C.id, C.ParentCategoryId, c.Name
-                   FROM Categories c
-	                   JOIN name_tree p on C.id = P.ParentCategoryId  -- this is the recursion
-	                   -- Since your parent id is not NULL the recursion will happen continously.
-	                   -- For that we apply the condition C.id<>C.ParentCategoryId 
-		                AND C.id<>C.ParentCategoryId 
-                ) 
-                -- Here you can insert directly to a temp table without CREATE TABLE synthax
-                SELECT *
-                FROM name_tree
+                       SELECT C.id, C.ParentCategoryId, c.Name
+                       FROM Categories c
+	                       JOIN name_tree p on C.id = P.ParentCategoryId  -- this is the recursion
+	                       -- Since your parent id is not NULL the recursion will happen continously.
+	                       -- For that we apply the condition C.id<>C.ParentCategoryId 
+		                    AND C.id<>C.ParentCategoryId 
+                    ) 
+                    -- Here you can insert directly to a temp table without CREATE TABLE synthax
+                    SELECT *
+                    FROM name_tree
                 END";
 
 			migrationBuilder.Sql(createSpQuery);
@@ -47,6 +56,15 @@ namespace DataLayer.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreateDate",
+                table: "ApplicationUser",
+                type: "datetime2",
+                nullable: false,
+                defaultValue: new DateTime(2021, 4, 12, 16, 22, 43, 512, DateTimeKind.Local).AddTicks(2231),
+                oldClrType: typeof(DateTime),
+                oldDefaultValue: new DateTime(2021, 4, 13, 10, 21, 43, 523, DateTimeKind.Local).AddTicks(301));
+
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
@@ -54,7 +72,8 @@ namespace DataLayer.Migrations
                 columns: new[] { "ConcurrencyStamp", "CreateDate", "PasswordHash", "SecurityStamp" },
                 values: new object[] { "0e88516a-00e4-4968-ab26-a3bfef2c38b4", new DateTime(2021, 4, 12, 16, 18, 10, 849, DateTimeKind.Local).AddTicks(6789), "AQAAAAEAACcQAAAAEOZOrRY0OnljTnhKGnlhTDNmnh3m95bSzlXKdOH5gUojmu5zJtx7kx/zfA4DaWuCTA==", "98627cf5-babe-4b65-a1eb-3a66efe69ec3" });
 
-			migrationBuilder.Sql("DROP PROCEDURE dbo.sp_GetCategoryWithParentsById");
+
+			migrationBuilder.Sql("DROP PROCEDURE dbo.sp_GetAllCategoryWithParentsById");
 		}
 	}
 }

@@ -45,6 +45,8 @@
     <Compile Remove="Migrations\20210410093721_Nemche.Designer.cs" />
     <Compile Remove="Migrations\20210412113543_CreateGetAllCategoryWithParentsSp.cs" />
     <Compile Remove="Migrations\20210412113543_CreateGetAllCategoryWithParentsSp.Designer.cs" />
+    <Compile Remove="Migrations\20210413055144_ChangeUnknownPrimary.cs" />
+    <Compile Remove="Migrations\20210413055144_ChangeUnknownPrimary.Designer.cs" />
 
   </ItemGroup>
 
