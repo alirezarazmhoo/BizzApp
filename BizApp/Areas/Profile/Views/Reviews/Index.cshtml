@@ -26,20 +26,31 @@
 				<div class="profile-content__comment__comments__info">
 
 					<div class="profile-content__comment__comments__info__image">
-						<a href="#">
+						<a href="/businessHome?id=@review.Business.Id">
 							<img src="@review.Business.FeatureImage" alt="">
 						</a>
 					</div>
 					<div class="profile-content__comment__comments__info__text">
 						<div class="profile-content__comment__comments__info__text__name">
-							<a href="">@review.Business.Name</a>
+							<a href="/businessHome?id=@review.Business.Id">@review.Business.Name</a>
 						</div>
 						<div class="profile-content__comment__comments__info__text__category">
 							<ul>
-								<li>££</li>
-								<li><a href="#">آمریکایی (جدید)</a></li>
-								<li>,</li>
-								<li><a href="#">صبحانه و ناهار</a></li>
+								@{
+									var categories = review.Business.Categories.OrderBy(x => x.Key);
+									var last = categories.Last();
+
+									foreach (var category in categories)
+									{
+										<li>
+											<a href="/search/allBussiness?CategoryId=@category.Key&page=1/">@category.Value</a>
+										</li>
+										@if (category.Key != last.Key)
+										{
+											<li>،</li>
+										}
+									}
+								}
 							</ul>
 
 						</div>
