@@ -171,32 +171,25 @@ namespace DataLayer.Services
 				{
 					try
 					{
-						model.Business.Categories =
+						var dd = 
 							DbContext.Categories
 								.FromSqlRaw("EXEC [dbo].[sp_GetAllCategoryWithParentsById] @id = {0}", model.Business.CategoryId)
 								.Select(s => new CategoryWithParentsQuery
-								{
-									Id = s.Id,
-									Name = s.Name
-								})
+								 {
+									 Id = s.Id,
+									 Name = s.Name,
+									 ParentCategoryId = s.ParentCategoryId
+								 })
 								.OrderByDescending(x => x.Id)
 								.ToDictionary(k => k.Id, v => v.Name);
+
+						model.Business.Categories = dd;
 					}
 					catch (Exception ex)
 					{
 
 						throw;
 					}
-					model.Business.Categories =
-						DbContext.Categories
-							.FromSqlRaw("EXEC [dbo].[sp_GetAllCategoryWithParentsById] @id = {0}", model.Business.CategoryId)
-							.Select(s => new CategoryWithParentsQuery
-							{
-								Id = s.Id,
-								Name = s.Name
-							})
-							.OrderByDescending(x => x.Id)
-							.ToDictionary(k => k.Id, v => v.Name);
 				}
 			}
 

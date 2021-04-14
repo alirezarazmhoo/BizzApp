@@ -43,6 +43,8 @@ namespace DataLayer.Data
 		public virtual DbSet<MessageToBusiness> MessageToBusinesses { get; set; }
 		public virtual DbSet<UsersInCommunityVotes> UsersInCommunityVotes { get; set; }
 		public virtual DbSet<UsersInReviewVotes> UsersInReviewVotes { get; set; }
+		public virtual DbSet<BusinessQoute> BusinessQoutes { get; set; }
+		public virtual DbSet<BusinessQouteUser> BusinessQouteUsers { get; set; }
 
 		#endregion
 		protected override void OnModelCreating(ModelBuilder builder)
@@ -79,6 +81,11 @@ namespace DataLayer.Data
 
 			// Gender default value
 			builder.Entity<BizAppUser>().Property(p => p.Gender).HasDefaultValue(GenderEnum.Male);
+
+			// relation qoutes and userQoues
+			builder.Entity<BusinessQouteUser>().HasOne(p => p.BusinessQoute).WithMany(b => b.Qoutes)
+				.HasForeignKey(p => p.BusinessQouteId)
+				.OnDelete(DeleteBehavior.NoAction);
 
 			// relation between user and business owner
 			//builder.Entity<Business>().HasOne(b => b.Owner).WithMany(u => u.)

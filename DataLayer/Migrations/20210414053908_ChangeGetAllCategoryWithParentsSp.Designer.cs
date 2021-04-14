@@ -4,14 +4,16 @@ using DataLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210414053908_ChangeGetAllCategoryWithParentsSp")]
+    partial class ChangeGetAllCategoryWithParentsSp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +41,7 @@ namespace DataLayer.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 4, 14, 11, 3, 35, 971, DateTimeKind.Local).AddTicks(4641));
+                        .HasDefaultValue(new DateTime(2021, 4, 14, 10, 9, 7, 656, DateTimeKind.Local).AddTicks(8319));
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -271,8 +273,8 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "52a8cba0-7ce4-4d72-9400-1447f9390281",
-                            CreateDate = new DateTime(2021, 4, 14, 11, 3, 35, 979, DateTimeKind.Local).AddTicks(7564),
+                            ConcurrencyStamp = "b33dbf3a-2e13-4648-97e7-5d691ba8c20d",
+                            CreateDate = new DateTime(2021, 4, 14, 10, 9, 7, 662, DateTimeKind.Local).AddTicks(4572),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             Gender = 0,
@@ -282,10 +284,10 @@ namespace DataLayer.Migrations
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOhmO8NvTa0//fOLZ46vt5+VJjGI/yMfOWyujAmDItyswrqKDgWZATqih5eDx0WC0A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIqdFxKL8E1qFzX4yKHoR/gIYN0Ba8a873RvXmZZM3jOkKCU5BhtpfSDzfXD3iOH4Q==",
                             PhoneNumberConfirmed = false,
                             PhotoChanged = false,
-                            SecurityStamp = "8f00edf8-936b-4738-8550-4c67cccf2afa",
+                            SecurityStamp = "a70a295f-8336-48ef-a41b-c85fa1949bea",
                             TwoFactorEnabled = false,
                             UserName = "mainadmin"
                         });
@@ -511,66 +513,6 @@ namespace DataLayer.Migrations
                     b.HasIndex("BusinessId");
 
                     b.ToTable("BusinessGalleries");
-                });
-
-            modelBuilder.Entity("DomainClass.Businesses.BusinessQoute", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Answer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Ask")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR(500)");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsSelectedAnswer")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("BusinessQoutes");
-                });
-
-            modelBuilder.Entity("DomainClass.Businesses.BusinessQouteUser", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("AnswerQoute")
-                        .IsRequired()
-                        .HasColumnName("NVARCHAR(1000)")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BizAppUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid>("BusinessId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("BusinessQouteId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BizAppUserId");
-
-                    b.HasIndex("BusinessId");
-
-                    b.HasIndex("BusinessQouteId");
-
-                    b.ToTable("BusinessQouteUsers");
                 });
 
             modelBuilder.Entity("DomainClass.Businesses.BusinessTime", b =>
@@ -1301,36 +1243,6 @@ namespace DataLayer.Migrations
                         .WithMany("Galleries")
                         .HasForeignKey("BusinessId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DomainClass.Businesses.BusinessQoute", b =>
-                {
-                    b.HasOne("DomainClass.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DomainClass.Businesses.BusinessQouteUser", b =>
-                {
-                    b.HasOne("DomainClass.BizAppUser", "User")
-                        .WithMany()
-                        .HasForeignKey("BizAppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DomainClass.Businesses.Business", "Business")
-                        .WithMany()
-                        .HasForeignKey("BusinessId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DomainClass.Businesses.BusinessQoute", "BusinessQoute")
-                        .WithMany("Qoutes")
-                        .HasForeignKey("BusinessQouteId")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
