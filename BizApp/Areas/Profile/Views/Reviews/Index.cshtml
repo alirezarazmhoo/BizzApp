@@ -6,25 +6,23 @@
 	Layout = "~/Areas/Profile/Views/Shared/_ProfileLayout.cshtml";
 }
 
+@section head{ 
+<style>
+	a:not([href]):not([tabindex]) {
+		cursor: pointer;
+	}
+</style>
+}
+
 <div class="col-md-6 d-none d-sm-block ">
 	<div class="profile-content__comment">
 		<div class="profile-content__comment__title">
 			<h2>بررسی ها</h2>
 		</div>
-		@*<div class="profile-content__comment__filter">
-				<span>مرتب سازی بر اساس </span>
-				<select class="selectpicker form-control">
-					<option>تاریخ</option>
-					<option>تاریخ</option>
-					<option>تاریخ</option>
-				</select>
-			</div>*@
 		@foreach (var review in Model)
 		{
 			<div class="profile-content__comment__comments">
-
 				<div class="profile-content__comment__comments__info">
-
 					<div class="profile-content__comment__comments__info__image">
 						<a href="/businessHome?id=@review.Business.Id">
 							<img src="@review.Business.FeatureImage" alt="">
@@ -57,8 +55,6 @@
 						<div class="profile-content__comment__comments__info__text__location">
 							<span>@review.Business.CityName</span>
 						</div>
-
-
 					</div>
 				</div>
 				<div class="profile-content__comment__comments__Score">
@@ -111,33 +107,39 @@
 					<div class="profile-content__comment__comments__button-cm__right">
 						<ul>
 							<li>
-								<a href="#">
+								<a onclick="changeUsefulButton_Clicked('@review.Id')">
 									<svg id="18x18_useful_outline" height="18" viewBox="0 0 18 18" width="18"><path d="M9 17c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM9 2C5.14 2 2 5.14 2 9s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm2 8.392V12H7v-1.608a3.982 3.982 0 0 1-2-3.445 4 4 0 0 1 8 0c0 1.477-.81 2.752-2 3.445zM8 5.25a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5zm1.003 9.747h-.006A1.997 1.997 0 0 1 7 13h4a1.997 1.997 0 0 1-1.997 1.997z"></path></svg>
 									مفید
-									@if (review.UsefulCount > 0)
-									{
-										<span>@review.UsefulCount</span>
-									}
+									<span id="usefulSpan@(review.Id)">
+										@if (review.UsefulCount > 0) 
+										{ 
+											@review.UsefulCount.ToString(); 
+										}
+									</span>
 								</a>
 							</li>
 							<li>
-								<a href="#">
+								<a onclick="changeFunnyButton_Clicked('@review.Id')">
 									<svg id="18x18_funny_outline" height="18" viewBox="0 0 18 18" width="18"><path d="M9 17c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM9 2C5.14 2 2 5.14 2 9s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm0 12a4.87 4.87 0 0 1-4.787-4h9.574A4.87 4.87 0 0 1 9 14zm2.5-5.625a1.376 1.376 0 1 1 0-2.75 1.376 1.376 0 0 1 0 2.75zm-5 0a1.376 1.376 0 1 1 0-2.75 1.376 1.376 0 0 1 0 2.75z"></path></svg>
 									خنده دار
-									@if (review.FunnyCount > 0)
-									{
-										<span>@review.FunnyCount</span>
-									}
+									<span id="funnySpan@(review.Id)">
+										@if (review.FunnyCount > 0) 
+										{ 
+											@review.FunnyCount.ToString(); 
+										}
+									</span>
 								</a>
 							</li>
 							<li>
-								<a href="#">
+								<a onclick="changeCoolButton_Clicked('@review.Id')">
 									<svg id="18x18_cool_outline" height="18" viewBox="0 0 18 18" width="18"><path d="M9 17c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM9 2C5.14 2 2 5.14 2 9s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm6.026 5.335C14.766 8.797 13.5 10 11.986 10h-.003c-1.218 0-2.282-.764-2.767-1.813-.088-.19-.344-.242-.432-.052C8.3 9.185 7.234 10 6.016 10h-.003C4.5 10 3.195 8.83 2.973 7.35l-.093-.84c-.053-.242.192-.51.477-.51h11.286c.294 0 .508.332.477.56l-.094.775zm-2.068 4.154A4.28 4.28 0 0 1 9 14.144a4.28 4.28 0 0 1-3.958-2.657A6.81 6.81 0 0 0 9 12.753a6.81 6.81 0 0 0 3.958-1.265z"></path></svg>
 									جذاب
-									@if (review.CoolCount > 0)
-									{
-										<span>@review.CoolCount</span>
-									}
+									<span id="coolSpan@(review.Id)">
+										@if (review.CoolCount > 0)
+										{
+											@review.CoolCount.ToString();
+										}
+									</span>
 
 								</a>
 							</li>
@@ -173,3 +175,44 @@
 		}
 	</div>
 </div>
+
+@section Scripts {
+	<script type="text/javascript">
+
+		function changeResultValue(spanId, type) {
+			var resultSpan = $('#' + spanId);
+
+			var currentValue = resultSpan.html();
+			var number = parseInt(currentValue) ?? 0;
+
+			number = (type == 'add') ? number + 1 : number - 1;
+			var result = (number > 0) ? number.toString() : '';
+
+			resultSpan.html(result);
+		}
+
+		function changeFunnyButton_Clicked(id) {
+			var url = '/review/changefunnycount';
+
+			$.post(url, { id: id }, function (data) {
+				changeResultValue('funnySpan' + id, data.type);
+			});
+		}
+
+		function changeCoolButton_Clicked(id) {
+			var url = '/review/changecoolcount';
+
+			$.post(url, { id: id }, function (data) {
+				changeResultValue('coolSpan' + id, data.type);
+			});
+		}
+
+		function changeUsefulButton_Clicked(id) {
+			var url = '/review/changeusefullcount';
+
+			$.post(url, { id: id }, function (data) {
+				changeResultValue('usefulSpan' + id, data.type);
+			});
+		}
+	</script>
+}
