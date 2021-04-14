@@ -9,6 +9,8 @@ namespace BizApp.Models.Basic
 	#region Main
 	public class BusinessHomePageViewModel
 	{
+		public Guid BusinessId { get; set; }
+		public string BusinessName { get; set; }
 		public BusinessHomePage_SliderViewModel businessHomePage_SliderViewModel { get; set; }
 		public BusinessHomePage_SummaryViewModel businessHomePage_SummaryViewModel { get; set;  }
 		public BusinessHomePage_FeatureViewModel businessHomePage_FeatureViewModel { get; set; }
@@ -61,6 +63,7 @@ namespace BizApp.Models.Basic
 	#region Description 
 	public class BusinessHomePage_DescriptionViewModel
 	{
+		public string BusinessName { get; set; }
 		public string Descripton { get; set; }
 	}
 	#endregion
@@ -90,7 +93,9 @@ namespace BizApp.Models.Basic
 		public int Cool { get; set; }
 		public int UseFull { get; set; }
 		public int Funny { get; set; }
+		public Guid ReviewId { get; set;  }
 		public ICollection<string> ReviewPictures { get; set; }
+
 	}
 
 	#endregion
@@ -114,6 +119,7 @@ namespace BizApp.Models.Basic
 		public int Review { get; set;  }
 	}
 	#endregion
+
 	#region HoursAndLocations
 	public class BusinessHomePage_HoursAndLocationViewModel
 	{

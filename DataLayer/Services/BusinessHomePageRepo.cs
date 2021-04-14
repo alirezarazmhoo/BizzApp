@@ -162,6 +162,40 @@ namespace DataLayer.Services
 			public TimeSpan? FromTime { get; set; }
 			public TimeSpan? ToTime { get; set;  }
 		}
+		public async Task<IEnumerable<Business>> PepoleAlsoViewd(Guid id)
+		{
+			var businessItem = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Id.Equals(id));
+			var DistricId = 0;
+			if (businessItem != null)
+			{
+				var Items = await DbContext.Reviews.Include(s => s.Business).Where(s => s.BusinessId != businessItem.Id && s.Business.CategoryId == businessItem.CategoryId).ToListAsync();
+				if (DistricId != 0)
+				{
+					return Items.Where(s => s.Business.DistrictId == businessItem.DistrictId).Select(s => s.Business).ToList();
+				}
+				else
+				{
+					return Items.Select(s => s.Business).ToList();
+
+				}
+			}
+			else
+			{
+				return new List<Business>();
+			}
+		}
+		public async Task<int> GetTotalUserMedia(string id)
+		{
+			var userItem = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(id));
+			if (userItem != null)
+			{
+				return await DbContext.CustomerBusinessMediaPictures.Where(s => s.CustomerBusinessMedia.BizAppUserId.Equals(id)).CountAsync();
+			}
+			else
+			{
+				return 0;
+			}
+		}
 		private async Task<List<LocationHours>> GetLocationHours(Guid id)
 		{
 			List<LocationHours> locationHours = new List<LocationHours>();
@@ -186,20 +220,5 @@ namespace DataLayer.Services
 			int Sum2 = await DbContext.CustomerBusinessMedias.Where(s => s.BusinessId.Equals(id)).CountAsync();
 			return Sum1 + Sum2; 
 		}
-	
-		public async Task<int> GetTotalUserMedia(string id)
-		{
-			var userItem = await DbContext.Users.FirstOrDefaultAsync(s=>s.Id.Equals(id));
-			if(userItem != null)
-			{
-				return await DbContext.CustomerBusinessMediaPictures.Where(s => s.CustomerBusinessMedia.BizAppUserId.Equals(id)).CountAsync();
-			}
-			else
-			{
-				return 0;
-			}
-		}
-
-
 	}
 }

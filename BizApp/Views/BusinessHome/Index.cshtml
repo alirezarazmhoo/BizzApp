@@ -35,8 +35,8 @@
 										</svg>تقسیم کردن
 									</a>
 								</li>*@
-							<li>
-								<a href="#">
+							<li onclick="AddOrRemvoeFavorit(this)" data-assigned-id="@Model.BusinessId" style="cursor:pointer">
+								<a>
 									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="icon_svg">
 										<path d="M12 16.202l-5.445 3.63A1 1 0 015 19V5a1 1 0 011-1h12a1 1 0 011 1v14a1 1 0 01-1.555.832L12 16.202zM7 6v11.131l4.445-2.963a1 1 0 011.11 0L17 17.13V6H7z"></path>
 									</svg>افزودن به علاقه مندی
@@ -78,7 +78,7 @@
 					</div>
 					<div class="stay-gold-content__wrapper__covid-19">
 						<div class="stay-gold-content__wrapper__covid-19__title">
-							<h4>ویژگی های این کسب و کار</h4>
+							<h4>ویژگی های @Model.BusinessName</h4>
 						</div>
 						@await Html.PartialAsync("/Views/BusinessHome/Partials/Features_Partial.cshtml", Model.businessHomePage_FeatureViewModel)
 					</div>
@@ -162,10 +162,28 @@
 			</div>
 		</div>
 	</div>
+	
+	<div class="modal fade" id="favoritModal" role="dialog">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<p id="addToFavoritResult"></p>
+				</div>
+			</div>
+		</div>
+	</div>
 </section>
-@await Html.PartialAsync("/Views/BusinessHome/Partials/PepoleAlsoViewed_Partial.cshtml")
+@await Html.PartialAsync("/Views/BusinessHome/Partials/PepoleAlsoViewed_Partial.cshtml", Model.businessHomePage_RelatedBusinessViewModels)
 @await Html.PartialAsync("/Views/BusinessHome/Partials/Footer_Partial.cshtml")
 @await Html.PartialAsync("/Views/BusinessHome/Partials/FooterFaqs_Partial.cshtml", Model.businessHomePage_FaqViewModels)
 
-
+<script>
+	window.onload = Load;
+	function Load() {
+		BusinessHomeLoadMap(@Model.businessHomePage_HoursAndLocationViewModel.Lon, @Model.businessHomePage_HoursAndLocationViewModel.Lat);
+	}
+</script>
 
