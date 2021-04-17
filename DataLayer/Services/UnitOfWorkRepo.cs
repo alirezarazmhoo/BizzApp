@@ -29,6 +29,7 @@ namespace DataLayer.Services
 		private readonly BusinessReviewCountRepo  businessReviewCountRepo;
 		private readonly BusinessHomePageRepo  businessHomePageRepo;
 		private readonly AskTheCommunityRepo  askTheCommunityRepo;
+		private readonly UserFavoritsRepo  userFavoritsRepo;
 
 
 		public UnitOfWorkRepo(ApplicationDbContext DbContext, UserManager<BizAppUser> userManager)
@@ -58,6 +59,8 @@ namespace DataLayer.Services
         public IUserProfileRepo ProfileRepo => profileRepo ?? new UserProfileRepo(_DbContext);
 		public IBusinessHomePageRepo BusinessHomePageRepo => businessHomePageRepo ?? new BusinessHomePageRepo(_DbContext);
 		public IAskTheCommunityRepo  AskTheCommunityRepo =>  askTheCommunityRepo ?? new AskTheCommunityRepo(_DbContext);
+		public IUserFavoritsRepo  UserFavoritsRepo =>  userFavoritsRepo ?? new UserFavoritsRepo(_DbContext);
+
 		public async Task SaveAsync()
 		{
 			await _DbContext.SaveChangesAsync();

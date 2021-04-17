@@ -22,9 +22,10 @@ namespace BizApp.Controllers
 			_UnitOfWork = unitOfWork;
 			_mapper = mapper;
 		}
-		public async  Task<IActionResult> Index()
+		public async  Task<IActionResult> Index(Guid Id)
 		{
-			var BusinessId = new Guid("4e9b06be-2a73-4c40-fea1-08d8e04ff1b3");
+			//var BusinessId = new Guid("4e9b06be-2a73-4c40-fea1-08d8e04ff1b3");
+			var BusinessId = Id;
 			#region Objects
 			BusinessHomePageViewModel businessHomePageViewModel = new BusinessHomePageViewModel();
 			BusinessHomePage_SliderViewModel businessHomePage_SliderViewModel = new BusinessHomePage_SliderViewModel();
@@ -49,6 +50,7 @@ namespace BizApp.Controllers
 			var CommunityItems = await _UnitOfWork.BusinessHomePageRepo.GetBusinessFaq(BusinessId);
 			var RelatedBusinessItem = await _UnitOfWork.BusinessHomePageRepo.GetRelatedBusiness(BusinessId);
 			var LocationAndHours = await _UnitOfWork.BusinessHomePageRepo.GetBusinessLocationHours(BusinessId);
+			var BusinessName = await _UnitOfWork.BusinessRepo.GetBusinessName(BusinessId);
 			#endregion
 			#region Slider
 			businessHomePage_SliderViewModel.Images = SliderItem;
@@ -73,6 +75,7 @@ namespace BizApp.Controllers
 			#endregion
 			#region Description
 			businessHomePage_DescriptionViewModel.Descripton = string.IsNullOrEmpty(BusinessOtherInfoItem.Item1) == true ? "فاقد توضیحات" : BusinessOtherInfoItem.Item1;
+			businessHomePage_DescriptionViewModel.BusinessName = BusinessName;
 			#endregion
 			#region RightPageBusinessInfo
 			businessHomePage_RightPageBusinessInfoViewModel.WebSiteUrl = BusinessOtherInfoItem.Item2;
@@ -83,7 +86,7 @@ namespace BizApp.Controllers
 			foreach (var item in ReviewsItem)
 			{
 				string UserPicture = string.IsNullOrEmpty(item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s=>s.UploadedPhoto).FirstOrDefault()) == true ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault();
-				businessHomePage_ReviewsViewModel.Add(new BusinessHomePage_ReviewsViewModel() { Cool = item.CoolCount , Date = DateChanger.ToPersianDateString(item.Date) , DistricName = item.BizAppUser.Address , Funny = item.FunnyCount , Rate = item.Rate , Text = item.Description , UseFull = item.UsefulCount , TotalReviews = item.BizAppUser.Reviews.Count , TotalPictures = await _UnitOfWork.BusinessHomePageRepo.GetTotalUserMedia(item.BizAppUserId) , UserName = item.BizAppUser.FullName , Id = item.BizAppUser.Id , UserPicture = UserPicture  , FullName = item.BizAppUser.FullName , ReviewTotalPictures = item.ReviewMedias.Count, ReviewPictures = item.ReviewMedias.Select(s=>s.Image).ToList()});
+				businessHomePage_ReviewsViewModel.Add(new BusinessHomePage_ReviewsViewModel() { ReviewId = item.Id ,Cool = item.CoolCount , Date = DateChanger.ToPersianDateString(item.Date) , DistricName = item.BizAppUser.Address , Funny = item.FunnyCount , Rate = item.Rate , Text = item.Description , UseFull = item.UsefulCount , TotalReviews = item.BizAppUser.Reviews.Count , TotalPictures = await _UnitOfWork.BusinessHomePageRepo.GetTotalUserMedia(item.BizAppUserId) , UserName = item.BizAppUser.FullName , Id = item.BizAppUser.Id , UserPicture = UserPicture  , FullName = item.BizAppUser.FullName , ReviewTotalPictures = item.ReviewMedias.Count, ReviewPictures = item.ReviewMedias.Select(s=>s.Image).ToList()});
 			}
 			#endregion
 			#region AsktheCommunity
@@ -121,7 +124,9 @@ namespace BizApp.Controllers
 			businessHomePageViewModel.businessHomePage_ReviewsViewModel = businessHomePage_ReviewsViewModel;
 			businessHomePageViewModel.businessHomePage_FaqViewModels = businessHomePage_FaqViewModels;
 			businessHomePageViewModel.businessHomePage_RelatedBusinessViewModels = businessHomePage_RelatedBusinessViewModels;
-			businessHomePageViewModel.businessHomePage_HoursAndLocationViewModel = businessHomePage_HoursAndLocationViewModel; 
+			businessHomePageViewModel.businessHomePage_HoursAndLocationViewModel = businessHomePage_HoursAndLocationViewModel;
+			businessHomePageViewModel.BusinessId = BusinessId;
+			businessHomePageViewModel.BusinessName = BusinessName; 
 			#endregion
 			return View(businessHomePageViewModel);
 		}

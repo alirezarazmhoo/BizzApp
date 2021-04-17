@@ -22,7 +22,8 @@ namespace DataLayer.Infrastructure
 		Task<IEnumerable<Business>> GetRelatedBusiness(Guid id);
 		Task MessageToBusiness(MessageToBusiness model);
 		Task<int> GetTotalUserMedia(string id);
-		Task<IEnumerable<CustomerBusinessMediaPictures>> GetBusinessGallery(Guid id); 
+		Task<IEnumerable<CustomerBusinessMediaPictures>> GetBusinessGallery(Guid id);
+		Task<IEnumerable<Business>> PepoleAlsoViewd(Guid id); 
 
 	}
 }

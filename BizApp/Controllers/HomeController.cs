@@ -75,6 +75,7 @@ namespace BizApp.Controllers
 				MainPage_RecentActivityContent.CoolCount = item.CoolCount;
 				MainPage_RecentActivityContent.FunnyCount = item.FunnyCount;
 				MainPage_RecentActivityContent.Id = item.Id;
+				MainPage_RecentActivityContent.BusinessId = item.BusinessId;
 				MainPage_RecentActivityContent.Image = item.Business.FeatureImage;
 				MainPage_RecentActivityContent.Name = item.Business.Name;
 				MainPage_RecentActivityContent.Rate = item.Rate;
@@ -97,6 +98,7 @@ namespace BizApp.Controllers
 					MainPage_RecentActivityCreator.Image = item.BizAppUser.ApplicationUserMedias.FirstOrDefault(s => s.IsMainImage) == null ? string.Empty : item.BizAppUser.ApplicationUserMedias.FirstOrDefault(s => s.IsMainImage).UploadedPhoto;
 					MainPage_RecentActivityContent.Image = item.Business.FeatureImage;
 					MainPage_RecentActivityContent.Name = item.Business.Name;
+					MainPage_RecentActivityContent.BusinessId = item.BusinessId;
 					MainPage_RecentActivityContent.Text = string.IsNullOrEmpty(item.Business.Description) ? "بدون توضیحات" : item.Business.Description;
 					MainPage_RecentActivityContent.Rate = item.Business.Rate == 0 ? 1 : item.Business.Rate;
 					MainPage_RecentActivityContent.Id = item.CustomerBusinessMediaPictures.FirstOrDefault().CustomerBusinessMediaId;

@@ -18,11 +18,10 @@ namespace DataLayer.Infrastructure
 		ISliderRepo SliderRepo { get; }
 		IReviewRepo  ReviewRepo { get; }
 		IUserPhotoRepo UserPhotoRepo { get; }
-
 		IBusinessReviewCountRepo BusinessReviewCountRepo { get; }
 		IBusinessHomePageRepo  BusinessHomePageRepo { get; }
 		IAskTheCommunityRepo  AskTheCommunityRepo { get; }
-
+		IUserFavoritsRepo UserFavoritsRepo { get; }
 
 		Task SaveAsync();
 	}
