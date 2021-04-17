@@ -2,11 +2,13 @@
 using BizApp.Utility;
 using DataLayer.Infrastructure;
 using DomainClass.Review;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace BizApp.Controllers
@@ -14,9 +16,14 @@ namespace BizApp.Controllers
 	public class ReviewController : Controller
 	{
 		private readonly IUnitOfWorkRepo _unitOfWork;
-		public ReviewController(IUnitOfWorkRepo unitOfWork)
+		private readonly IHttpContextAccessor _httpContextAccessor;
+
+
+		public ReviewController(IUnitOfWorkRepo unitOfWork , IHttpContextAccessor httpContextAccessor)
 		{
 			_unitOfWork = unitOfWork;
+			_httpContextAccessor = httpContextAccessor;
+	
 		}
 		public async Task<IActionResult> Index()
 		{
@@ -62,9 +69,17 @@ namespace BizApp.Controllers
 		[HttpPost]
 		public async Task<JsonResult> ChangeUseFullCount(Guid Id)
 		{
-			var UserId = "8ad1f65a-c47d-4f1a-a601-5c64c186c09b";
+		
 			try {
 				string type;
+				if (!User.Identity.IsAuthenticated)
+				{
+				
+					type = "authorize";
+					return Json(new { success = true, type });
+
+				}
+			    var UserId = GetUserId();
 				if (await _unitOfWork.ReviewRepo.ChangeHelpFull(Id, UserId) == DomainClass.Enums.VotesAction.Add)
 				{
 					type = "add";
@@ -87,10 +102,18 @@ namespace BizApp.Controllers
 		[HttpPost]
 		public async Task<JsonResult> ChangeFunnyCount(Guid Id)
 		{
-			var UserId = "8ad1f65a-c47d-4f1a-a601-5c64c186c09b";
 			try
 			{
+			
 				string type;
+				if (!User.Identity.IsAuthenticated)
+				{
+				
+					type = "authorize";
+					return Json(new { success = true, type });
+
+				}
+			var UserId = GetUserId();
 				if (await _unitOfWork.ReviewRepo.ChangeFunnyCount(Id, UserId) == DomainClass.Enums.VotesAction.Add)
 				{
 					type = "add";
@@ -113,10 +136,19 @@ namespace BizApp.Controllers
 		[HttpPost]
 		public async Task<JsonResult> ChangeCoolCount(Guid Id)
 		{
-			var UserId = "8ad1f65a-c47d-4f1a-a601-5c64c186c09b";
+			
 			try
 			{
 				string type;
+				if (!User.Identity.IsAuthenticated)
+				{
+					
+					type = "authorize";
+					return Json(new { success = true, type });
+
+				}
+				var UserId = GetUserId();
+
 				if (await _unitOfWork.ReviewRepo.ChangeCoolCount(Id, UserId) == DomainClass.Enums.VotesAction.Add)
 				{
 					type = "add";
@@ -139,11 +171,19 @@ namespace BizApp.Controllers
 		[HttpPost]
 		public async Task<JsonResult> ChangeLike(Guid Id)
 		{
-			var UserId = "8ad1f65a-c47d-4f1a-a601-5c64c186c09b";
-			var UserName = await _unitOfWork.UserRepo.GetUserName(UserId);
+
 			try
 			{
 				string type;
+				if (!User.Identity.IsAuthenticated)
+				{
+					//return Redirect("/Identity/Account/Login");
+					type = "authorize";
+					return Json(new { success = true, type });
+
+				}
+				var UserId = GetUserId();
+			   var UserName = await _unitOfWork.UserRepo.GetUserName(UserId);
 				if (await _unitOfWork.ReviewRepo.ChangeLikeCount(Id, UserId) == DomainClass.Enums.VotesAction.Add)
 				{
 					type = "add";
@@ -162,5 +202,11 @@ namespace BizApp.Controllers
 
 			}
 		}
+
+		private string GetUserId()
+		{
+			return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+		}
+
 	}
 }

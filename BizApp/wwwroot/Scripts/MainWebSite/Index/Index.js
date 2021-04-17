@@ -196,7 +196,7 @@ function ShowModal(elem) {
 
 //addUsefull
 function changeUsefull(element) {
-
+	
 	$.ajax({
 		type: "Post",
 		url: '/Review/ChangeUseFullCount?Id=' + $(element).data('assigned-id') + '',
@@ -204,9 +204,13 @@ function changeUsefull(element) {
 		contentType: false,
 		processData: false,
 		success: function (response) {
+
 			if (response.type == "add") {
 				var number = parseInt($(element).prev().text()) + 1;
 				$(element).prev().text(number);
+			}
+			else if (response.type == "authorize") {
+				window.location = "/Identity/Account/Login";
 			}
 			else {
 				var number = parseInt($(element).prev().text()) - 1;
@@ -228,6 +232,9 @@ function changeFunny(element) {
 				var number = parseInt($(element).prev().text()) + 1;
 				$(element).prev().text(number);
 			}
+			else if (response.type == "authorize") {
+				window.location = "/Identity/Account/Login";
+			}
 			else {
 				var number = parseInt($(element).prev().text()) - 1;
 				$(element).prev().text(number);
@@ -246,6 +253,9 @@ function changeCool(element) {
 			if (response.type == "add") {
 				var number = parseInt($(element).prev().text()) + 1;
 				$(element).prev().text(number);
+			}
+			else if (response.type == "authorize") {
+				window.location = "/Identity/Account/Login";
 			}
 			else {
 				var number = parseInt($(element).prev().text()) - 1;
@@ -273,6 +283,9 @@ $.ajax({
 			var currentName = '<br>' + response.username + '';
 			var resault = previousNames + currentName; 
 			$(element).attr('data-original-title', resault);
+		}
+		else if (response.type == "authorize") {
+			window.location = "/Identity/Account/Login";
 		}
 		else {
 			var number = parseInt($(element).text()) - 1;

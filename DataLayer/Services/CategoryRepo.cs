@@ -2,6 +2,7 @@
 using DataLayer.Extensions;
 using DataLayer.Infrastructure;
 using DomainClass;
+using DomainClass.Businesses;
 using DomainClass.Businesses.Queries;
 using DomainClass.Commands;
 using DomainClass.Queries;
@@ -22,7 +23,6 @@ namespace DataLayer.Services
         private readonly string IconWebType;
         private readonly string FeatureImageType;
         private readonly string PngIconType;
-
         public CategoryRepo(ApplicationDbContext DbContext) : base(DbContext)
         {
             IconType = "icon";
@@ -184,7 +184,6 @@ namespace DataLayer.Services
                 await DbContext.SaveChangesAsync();
             }
         }
-
         public async Task UpdateAsync(UpdateCategoryCommand command, IFormFile pngIcon, IFormFile featureImage)
         {
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -284,12 +283,10 @@ namespace DataLayer.Services
                 scope.Complete();
             }
         }
-
         public async Task<bool> HasChild(int Id)
         {
             return await DbContext.Categories.AnyAsync(s => s.ParentCategoryId == Id);
         }
-
         public async Task<List<Category>> GetChilds(int Id)
         {
             var allCategories = DbContext.Categories.ToList();
@@ -308,7 +305,6 @@ namespace DataLayer.Services
             }
             return cats;
         }
-
         public async Task<int> GetChildCount(int Id)
         {
             return await FindByCondition(f => f.ParentCategoryId == Id).CountAsync();
@@ -427,7 +423,6 @@ namespace DataLayer.Services
             var Items = await DbContext.Categories.Include(s => s.Terms).Where(s => s.Order == 0 && !s.ParentCategoryId.HasValue).ToListAsync();
             return Items;
         }
-
 		public async Task<IEnumerable<Category>> GetAllParents(int id)
 		{
             //var result = await
@@ -438,5 +433,45 @@ namespace DataLayer.Services
             //return result;
             throw new Exception() ; 
 		}
-	}
+        public async Task<List<Category>> GetPopular(double Longitude , double Latitude)
+		{
+            double longitude = 0;
+            double latitiude = 0;  
+            var BusinessItems = await DbContext.Businesses.Include(s=>s.Category).ThenInclude(s=>s.Terms).ToListAsync();
+            List<Business> businesses = new List<Business>();
+            List<Category> categories = new List<Category>();
+			foreach (var item in BusinessItems)
+			{
+                longitude = item.Longitude;
+                latitiude = item.Latitude;
+                var t = (Math.Pow(Longitude - longitude, 2) + Math.Pow(Latitude - latitiude, 2));
+
+                if ((Math.Pow(Longitude - longitude, 2) + Math.Pow(Latitude - latitiude, 2)) < 10)
+				{
+                    businesses.Add(item);
+                }
+			}
+            if(businesses.Count >0)
+			{
+				foreach (var item in businesses)
+				{
+                    categories.Add(item.Category);
+                }
+                return categories; 
+			}
+			else
+			{
+                return new List<Category>();
+			}
+		}
+        public class InputCategroy
+        {
+            public double longitude { get; set; }
+            public double latitude { get; set; }
+            public string id { get; set; }
+        }
+
+
+
+    }
 }

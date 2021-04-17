@@ -20,7 +20,6 @@ namespace BizApp.Controllers
 		private readonly ILogger<HomeController> _logger;
 		private readonly IUnitOfWorkRepo _UnitOfWork;
 		private readonly IMapper _mapper;
-
 		public HomeController(ILogger<HomeController> logger, IUnitOfWorkRepo unitOfWork, IMapper mapper)
 		{
 			_logger = logger;
@@ -128,7 +127,6 @@ namespace BizApp.Controllers
 			#endregion
 			return View(MainPageViewModel);
 		}
-
 		private async Task<List<Tuple<string, string, int>>> GetMoreCategoies()
 		{
 			var Items = await _UnitOfWork.CategoryRepo.GetUnChosens();

@@ -57,5 +57,47 @@ namespace BizApp.Areas.WebApi.Controllers
 			throw;
 			}
 		}
+
+		[Route("GetPopular")]
+		public async Task<IEnumerable<CategoryDto>> GetPopular(double latitude , double longitude)
+		{
+			List<CategoryDto> categoryDto = new List<CategoryDto>();
+			if (latitude == 0 || longitude == 0)
+			{
+				var items = await _UnitOfWork.CategoryRepo.GetUnChosens();
+				foreach (var item in items)
+				{
+					string Image = string.IsNullOrEmpty(item.Terms.Where(s => s.Key.Equals("png-icon")).Select(s => s.Value).FirstOrDefault()) == true ? "/Upload/DefaultPicutres/Category/categorydefault.jpg" : item.Terms.Where(s => s.Key.Equals("png-icon")).Select(s => s.Value).FirstOrDefault();
+					categoryDto.Add(new CategoryDto() { Id = item.Id,  Image = Image, Name = item.Name });
+				}
+				return categoryDto;
+			}
+			else
+			{
+			var Items =   await	_UnitOfWork.CategoryRepo.GetPopular( longitude , latitude );
+
+				if (Items.Count > 0)
+				{
+					foreach (var item in Items)
+					{
+						string Image = string.IsNullOrEmpty(item.Terms.Where(s => s.Key.Equals("png-icon")).Select(s => s.Value).FirstOrDefault()) == true ? "/Upload/DefaultPicutres/Category/categorydefault.jpg" : item.Terms.Where(s => s.Key.Equals("png-icon")).Select(s => s.Value).FirstOrDefault();
+						categoryDto.Add(new CategoryDto() { Id = item.Id, Image = Image, Name = item.Name });
+					}
+					return categoryDto;
+				}
+				else
+				{
+					var items = await _UnitOfWork.CategoryRepo.GetUnChosens();
+					foreach (var item in items)
+					{
+						string Image = string.IsNullOrEmpty(item.Terms.Where(s => s.Key.Equals("png-icon")).Select(s => s.Value).FirstOrDefault()) == true ? "/Upload/DefaultPicutres/Category/categorydefault.jpg" : item.Terms.Where(s => s.Key.Equals("png-icon")).Select(s => s.Value).FirstOrDefault();
+						categoryDto.Add(new CategoryDto() { Id = item.Id, Image = Image, Name = item.Name });
+					}
+					return categoryDto;
+				}
+
+			}
+
+		}
 	}
 }

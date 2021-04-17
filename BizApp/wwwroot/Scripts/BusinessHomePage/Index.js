@@ -97,6 +97,9 @@ function AddOrRemvoeFavorit(element) {
 				$("#addToFavoritResult").text("با موفقیت به لیست علاقه مندی افزوده شد");
 				$("#favoritModal").modal('show');
 			}
+			else if (response.type == "authorize") {
+				window.location = "/Identity/Account/Login";
+			}
 			else {
 				$("#addToFavoritResult").text("با موفقیت از لیست علاقه مندی حذف شد");
 				$("#favoritModal").modal('toggle');
