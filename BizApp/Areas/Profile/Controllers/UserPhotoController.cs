@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BizApp.Areas.Profile.Models;
+using BizApp.Extensions;
 using DataLayer.Infrastructure;
 using DomainClass;
 using DomainClass.Enums;
@@ -53,6 +54,7 @@ namespace BizApp.Areas.Profile.Controllers
 		}
 
 		[HttpGet, ActionName("index")]
+		[ActivityActionFilter]
 		public async Task<IActionResult> Index(string userName, int page = 1)
 		{
 			// get user photos 
@@ -94,6 +96,7 @@ namespace BizApp.Areas.Profile.Controllers
 
 		[HttpPost, ActionName("upload")]
 		[Authorize]
+		[ActivityActionFilter]
 		public async Task<IActionResult> HandleUpload(IFormFile file)
 		{
 			// get user id
