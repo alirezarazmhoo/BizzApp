@@ -464,7 +464,9 @@ class Request extends AjaxRequest {
             var markerArray = [];
             var mymap = null;
             var marker = null;
-            
+            //if (mymap !== undefined && mymap !== null) {
+            //    mymap.remove(); 
+            //}
             document.getElementById('weathermap').innerHTML = "<div id='mapid' style='width: 100%; height: 100%;'></div>";
             var planes = [];
             var lat = 0;

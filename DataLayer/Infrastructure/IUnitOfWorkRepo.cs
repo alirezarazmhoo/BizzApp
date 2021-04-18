@@ -7,6 +7,7 @@ namespace DataLayer.Infrastructure
 	{
 		IBusinessRepo BusinessRepo { get; }
 		IProvinceRepo ProvinceRepo { get; }
+		IBusinessQouteRepo BusinessQouteRepo { get; }
 		ICityRepo CityRepo { get; }
 		IUserRepo UserRepo { get; }
 		IUserProfileRepo ProfileRepo { get; }

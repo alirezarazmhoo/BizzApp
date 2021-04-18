@@ -58,6 +58,7 @@ function CreateModal(target, mode) {
     }
 }
 function PostAjax(ActionName, Parameters, redirecturl) {
+    
     var fd = new FormData();
     for (var i = 0; i < Parameters.length; i++) {
         if (Parameters[i].special === 'combo') {

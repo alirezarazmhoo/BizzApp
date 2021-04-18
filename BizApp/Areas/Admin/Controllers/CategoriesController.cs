@@ -196,5 +196,11 @@ namespace BizApp.Areas.Admin.Controllers
 
 		}
 
+		public async Task<IActionResult> GetAll()
+		{
+			var categoryItem = await _UnitOfWork.CategoryRepo.GetAll();
+			return Json(new { success = true,categoryItem=categoryItem});
+		}
+
 	}
 }

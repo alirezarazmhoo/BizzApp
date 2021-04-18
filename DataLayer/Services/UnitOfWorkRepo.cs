@@ -14,6 +14,7 @@ namespace DataLayer.Services
 		private readonly UserManager<BizAppUser> _userManager;
 		private readonly ClaimsPrincipal _currentUser;
 		private readonly ProvinceRepo provinceRepo;
+		private readonly BusinessQouteRepo businessQouteRepo;
 		private readonly DistrictRepo districtRepo;
 		private readonly CityRepo cityRepo;
 		private readonly CategoryRepo categoryRepo;
@@ -44,6 +45,7 @@ namespace DataLayer.Services
 		}
 
 		public IProvinceRepo ProvinceRepo => provinceRepo ?? new ProvinceRepo(_DbContext);
+		public IBusinessQouteRepo BusinessQouteRepo => businessQouteRepo ?? new BusinessQouteRepo(_DbContext);
 		public ICityRepo CityRepo => cityRepo ?? new CityRepo(_DbContext);
 		public IDistrictRepo DistrictRepo => districtRepo ?? new DistrictRepo(_DbContext);
 		public ICateogryRepo  CategoryRepo =>  categoryRepo ?? new CategoryRepo(_DbContext);

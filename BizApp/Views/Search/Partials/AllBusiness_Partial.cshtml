@@ -7,7 +7,7 @@
     
 </style>
 @{int j = 1;}
-@foreach (var item in Model)
+@foreach (var item in Model.OrderByDescending(x=>x.IsSponsor))
 {
     int pageNumber = (((Model.PageNumber * 10) - 10 ) + (int)j);
     
@@ -26,16 +26,16 @@
                     </div>
                     <div class="category-content__item__cat-product__content__text__desc__icon">
                         <div class="category-content__item__cat-product__content__text__desc__icon__star"
-                             data-star="3.5"></div>
-                        <span>1</span>
+                             data-star="@item.Rate"></div>
+                        <span>@item.Rate</span>
                     </div>
                     <div class="category-content__item__cat-product__content__text__desc__link">
-                        <a href="#">ماشینهای دست دوم</a>
+                        <a href="#">@item.Address</a>
                     </div>
                 </div>
                 <div class="category-content__item__cat-product__content__text__adress">
-                    <span>104. ایچبورندام</span>
-                    <span>برلین</span>
+                    <span>@item.Reviews</span>
+                    @*<span>برلین</span>*@
                 </div>
             </div>
         </div>

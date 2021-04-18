@@ -47,6 +47,10 @@ namespace BizApp.Automapper
 				.ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.Id))
 				.ForMember(dest => dest.ParentCategoryId, opt => opt.MapFrom(src => src.ParentCategoryId))
 				.ReverseMap();
+			//BussinessQoute
+			CreateMap<BusinessQoute, BusinessQouteViewModel>()
+				.ForMember(dest => dest.BusinessQouteId, opt => opt.MapFrom(src => src.Id))
+				.ReverseMap();
 
 			CreateMap<CreateUpdateMainCategoryViewModel, CreateCategoryCommand>();
 			CreateMap<CreateUpdateMainCategoryViewModel, UpdateCategoryCommand>()
