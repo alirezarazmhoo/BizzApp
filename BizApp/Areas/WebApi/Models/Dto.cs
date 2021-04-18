@@ -18,7 +18,23 @@ namespace BizApp.Areas.WebApi.Models
 		public double latitude { get; set; }
 		public string id { get; set; }
 	}
+	public class BusinessOnMap
+	{
+		public double longitude { get; set; }
+		public double latitude { get; set; }
+		public Guid id { get; set; }
+	}
+	public class BusinessPopop
+	{
+		public Guid id { get; set;  }
+		public string name { get; set; }
+		public int rate { get; set;  }
+		public int totalreview { get; set;  }
+		public string address { get; set; }
+		public string districname { get; set;  }
+		public string description { get; set; }
+		public string image { get; set;  }
+	}
 
 
-	
 }

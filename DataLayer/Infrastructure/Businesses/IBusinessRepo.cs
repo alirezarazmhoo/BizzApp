@@ -26,7 +26,6 @@ namespace DataLayer.Infrastructure
 		bool DeleteFeatureImage(Guid id, string filePath);
 		PagedList<Business> GetBussiness(SearchBussinessQuery searchViewModel);
 		Task<string> GetBusinessName(Guid Id);
-
-
+		Task<IEnumerable<Business>> GetBusinessOnMap(int Id, double Longitude, double Latitude); 
 	}
 }

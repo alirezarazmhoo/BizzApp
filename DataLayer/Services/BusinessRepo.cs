@@ -237,7 +237,6 @@ namespace DataLayer.Services
             //Update(model);
             //await DbContext.SaveChangesAsync();
         }
-
         public async Task<List<BusinessListQuery>> GetAll()
         {
             return
@@ -300,7 +299,7 @@ namespace DataLayer.Services
         }
         public async Task<Business> GetById(Guid id)
         {
-            return await FindByCondition(f => f.Id == id).Include(s => s.Galleries).FirstOrDefaultAsync();
+            return await FindByCondition(f => f.Id == id).Include(s => s.Galleries).Include(s=>s.Reviews).Include(s=>s.District).FirstOrDefaultAsync();
         }
         public async Task Remove(Business model)
         {
@@ -517,5 +516,30 @@ namespace DataLayer.Services
             }
         }
 
+        public async Task<IEnumerable<Business>> GetBusinessOnMap(int Id ,double Longitude , double Latitude)
+		{
+            var CategroyItem = await DbContext.Categories.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+            List<Business> businesses = new List<Business>();
+            double longitude = 0;
+            double latitiude = 0;
+            if (CategroyItem != null)
+			{
+                var BusinessItems = await DbContext.Businesses.Where(s => s.CategoryId.Equals(CategroyItem.Id)).ToListAsync();
+				foreach (var item in BusinessItems)
+				{
+                    longitude = item.Longitude;
+                    latitiude = item.Latitude;
+                    if ((Math.Pow(Longitude - longitude, 2) + Math.Pow(Latitude - latitiude, 2)) < 10)
+                    {
+                        businesses.Add(item);
+                    }
+                }
+                return businesses; 
+            }
+			else
+			{
+                return new List<Business>(); 
+			}
+		}
     }
 }

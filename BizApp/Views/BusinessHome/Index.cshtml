@@ -162,7 +162,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="modal fade" id="favoritModal" role="dialog">
 		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
@@ -179,6 +179,8 @@
 @await Html.PartialAsync("/Views/BusinessHome/Partials/PepoleAlsoViewed_Partial.cshtml", Model.businessHomePage_RelatedBusinessViewModels)
 @await Html.PartialAsync("/Views/BusinessHome/Partials/Footer_Partial.cshtml")
 @await Html.PartialAsync("/Views/BusinessHome/Partials/FooterFaqs_Partial.cshtml", Model.businessHomePage_FaqViewModels)
+@await Html.PartialAsync("/Views/BusinessHome/Partials/SendMessage_Partial.cshtml")
+
 
 <script>
 	window.onload = Load;

@@ -459,7 +459,7 @@ namespace DataLayer.Services
 			{
                 longitude = item.Longitude;
                 latitiude = item.Latitude;
-                var t = (Math.Pow(Longitude - longitude, 2) + Math.Pow(Latitude - latitiude, 2));
+
 
                 if ((Math.Pow(Longitude - longitude, 2) + Math.Pow(Latitude - latitiude, 2)) < 10)
 				{

@@ -103,8 +103,29 @@ function AddOrRemvoeFavorit(element) {
 			else {
 				$("#addToFavoritResult").text("با موفقیت از لیست علاقه مندی حذف شد");
 				$("#favoritModal").modal('toggle');
-
 			}
 		}
 	});
 }
+
+function sendMessageToBusiness() {
+	var fd = new FormData();
+	fd.append('FullName', $("#fullName").val());
+	fd.append('Mobile', $("#mobile").val());
+	fd.append('Message', $("#message").val());
+	fd.append('Title', $("#title").val());
+	fd.append('BusinessId', $("#businessId").val());
+	$.ajax({
+		type: "Post",
+		url: '/BusinessHome/SendMessageToBusiness',
+		dataType: "json",
+		data: fd,
+		contentType: false,
+		processData: false,
+		success: function (response) {
+		}
+	});
+}
+
+
+
