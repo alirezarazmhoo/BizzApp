@@ -96,6 +96,7 @@ namespace BizApp.Models.Basic
 		public int UseFulCount { get; set; }
 		public int FunnyCount { get; set;  }
 		public int CoolCount { get; set; }
+		public Guid BusinessId { get; set; }
 	}
 	public enum ActivityType
 	{

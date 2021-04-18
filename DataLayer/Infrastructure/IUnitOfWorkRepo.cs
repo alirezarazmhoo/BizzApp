@@ -7,6 +7,7 @@ namespace DataLayer.Infrastructure
 	{
 		IBusinessRepo BusinessRepo { get; }
 		IProvinceRepo ProvinceRepo { get; }
+		IBusinessQouteRepo BusinessQouteRepo { get; }
 		ICityRepo CityRepo { get; }
 		IUserRepo UserRepo { get; }
 		IUserProfileRepo ProfileRepo { get; }
@@ -18,11 +19,10 @@ namespace DataLayer.Infrastructure
 		ISliderRepo SliderRepo { get; }
 		IReviewRepo  ReviewRepo { get; }
 		IUserPhotoRepo UserPhotoRepo { get; }
-
 		IBusinessReviewCountRepo BusinessReviewCountRepo { get; }
 		IBusinessHomePageRepo  BusinessHomePageRepo { get; }
 		IAskTheCommunityRepo  AskTheCommunityRepo { get; }
-
+		IUserFavoritsRepo UserFavoritsRepo { get; }
 
 		Task SaveAsync();
 	}

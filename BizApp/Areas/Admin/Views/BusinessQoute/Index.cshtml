@@ -1,0 +1,334 @@
+﻿@model PagedList.Core.IPagedList<BizApp.Areas.Admin.Models.BusinessQouteViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+@section head {
+    <link href="~/css/autocomplete.css" rel="stylesheet" />
+}
+
+    <div class="header-secondary row gray-bg">
+        <div class="col-lg-12">
+            <div class="page-heading clearfix">
+                <h1 class="page-title pull-left">سوال ها</h1><a class="btn btn-primary btn-sm btn-add openmodal" href="#" data-toggle="modal" data-target="#myModal">سوال جدید</a>
+            </div>
+            <!-- Breadcrumb -->
+            <ol class="breadcrumb breadcrumb-2">
+                <li><a href="#"><i class="fa fa-home"></i> خانه</a></li>
+                <li class="active"><strong>سوال ها</strong></li>
+            </ol>
+
+        </div>
+    </div>
+
+    <div class="row filter-wrapper visible-box" id="filter-box">
+        <div class="col-lg-12">
+            <div class="filter-header">
+                <h3 class="title">جستجو</h3>
+            </div>
+            @using (Html.BeginForm("Index", "BusinessQoute", FormMethod.Get))
+            {
+                <div class="form-inline">
+                    <div class="form-group">
+                        <input name="searchString" placeholder="سوال را وارد کنید" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-default">جستجو</button>
+                    </div>
+                    <div class="form-group">
+                        <a href="/admin/BusinessQoute/" class="btn btn-default">مشاهده همه</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="main-content">
+
+        <div class="row">
+            <div class="col-lg-12 animatedParent animateOnce z-index-50">
+                <div class="panel panel-default animated fadeInUp">
+                    <div class="panel-heading clearfix">
+                        <h3 class="panel-title">سوال ها</h3>
+                        <ul class="panel-tool-options">
+                            <li><a data-rel="collapse" href="#"><i class="icon-down-open"></i></a></li>
+
+                        </ul>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-border table-hover dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            ردیف
+                                        </th>
+                                        <th>
+                                            سوال
+                                        </th>
+                                        <th>
+                                            عملیات
+                                        </th>
+                                    </tr>
+                                    @{ int rowNo = 0; }
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @(++rowNo)
+                                            </td>
+                                            <td>
+                                                @item.Ask
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#QuestionModal" onclick="AssignButtonClicked(this)" data-assigned-id="@item.BusinessQouteId">حذف</button> |
+                                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EditModal" id="@item.BusinessQouteId"> ویرایش</button>
+                                            </td>
+                                        </tr>
+                                    }
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-5">
+                            </div>
+                            <div class="col-sm-7">
+                                <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+                                    <ul class="pagination">
+
+                                        <li>
+                                            <pager list="@Model" asp-controller="BusinessQoute" asp-action="Index" asp-area="admin" />
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="myModal" role="dialog" style="height:auto;overflow-y:visible">
+        <div class="modal-dialog modal-lg" >
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">ثبت جدید</h4>
+                </div>
+                <div style="margin-top: 5px; margin-right: 84%;">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+                    <button type="button" class="btn btn-success" onclick="Save();">ثبت</button>
+                </div>
+                <div class="modal-body" style="height:auto">
+                    <form id="register">
+                        <input id="BusinessQouteId" name="BusinessQouteId" hidden />
+                        <input id="Answer" name="Answer" hidden />
+                        <div class="form-group" style="margin-right:5px">
+                            <label for="Ask"> سوال :</label>
+                            @*<input display="سوال" id="Ask" name="Ask" placeholder="سوال را وارد کنید" class="form-control" style="width:100%" required>*@
+                            <textarea display="سوال" id="Ask" name="Ask" placeholder="سوال را وارد کنید" class="form-control" style="width:100%" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="autocomplete-ajax">انتخاب دسته بندی</label>
+                            <div>
+                                <input type="text" placeholder="حداقل 3 کاراکتر تایپ کنید" @*value="@Model.CategoryName"*@ id="autocomplete-ajax" class="form-control" />
+                                <div id="categorySelection">دسته انتخاب شده: هیچ</div>
+                                <input id="CategoryId" name="CategoryId" hidden />
+                            </div>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input form-check-featu" id="IsSelectedAnswer">
+                            <label class="form-check-label" for="IsSelectedAnswer">پاسخ گزینه ای است (چنانچه مایل به درج سوال به صورت تشریحی می باشی لطفا این تیک را کلیلک نکنید )</label>
+                        </div>
+
+
+                        <div id="addAnswerButton"></div>
+                        <div id="allAnswer"></div>
+                        <div id="allAnswerError"></div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="border-top:0px !important">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="Error"></div>
+    <div id="Success"></div>
+    <div id="Question"></div>
+    @section Scripts {
+        <script src="~/lib/autocomplete/jquery.autocomplete.js"></script>
+        <script>
+            var count = 1;
+            var count2 = 1;
+            function RemoveDiv(e) {
+                count -= 1;
+                $(e).prev().remove();
+                $(e).remove();
+            }
+            window.onload = Load;
+            function Load() {
+                CreateAllModals();
+                $(".openmodal").click(function () {
+                    $("#allAnswer").html("");
+                    count = 1;
+                    count2 = 1;
+                    clear('register', ["input"]);
+                    clear('register', ["textarea"]);
+                });
+                $('#autocomplete-ajax').autocomplete({
+                    serviceUrl: '/admin/categories/getHierarchyNames',
+                    minChars: 3,
+                    paramName: 'searchString',
+                    transformResult: function (response) {
+                        var result = JSON.parse(response);
+                        return {
+                            suggestions: $.map(result, function (dataItem) {
+                                return { data: dataItem.value, value: dataItem.text };
+                            })
+                        };
+                    },
+                    type: "get",
+                    onSelect: function (suggestion) {
+                        $('#categorySelection').html('<b>دسته انتخاب شده: </b><i>' + suggestion.value + '</i>');
+                        $('#CategoryId').val(suggestion.data);
+                    },
+                    onInvalidateSelection: function () {
+                        $('#categorySelection').html('دسته انتخاب شده: هیچ');
+                        $('#CategoryId').attr('value', 0);
+                    },
+                    showNoSuggestionNotice: true,
+                    noSuggestionNotice: "متاسفانه موردی پیدا نشد"
+                });
+                $(".btn-warning").click(function () {
+
+                    var id = this.id;
+                    var fd = new FormData();
+                    fd.append('ItemId', id);
+                    $.ajax({
+                        type: "Post",
+                        url: "/admin/BusinessQoute/GetById",
+                        data: fd,
+                        dataType: "json",
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            if (response.success) {
+                                $("#myModal #allAnswer").html("");
+                                $.each(response.listItem, function () {
+                                    if (this.key == "IsSelectedAnswer") {
+                                        if (this.value == 'True') {
+                                            $('#myModal #IsSelectedAnswer').prop("checked", true);
+                                            $('#myModal #addAnswerButton').html("<button type = 'button' class='btn btn-success' id='answerAdd'> + </button>");
+                                        }
+                                        else
+                                            $('#myModal #IsSelectedAnswer').prop("checked", false)
+                                    }
+                                    if (this.key == "Answer") {
+                                        var array = this.value.split("&");
+                                        var str = "";
+                                        count2 = array.length;
+                                        $.each(array, function (i) {                                            
+                                            str += "</br><div class='form-group' style='margin-right:5px;float: right;width: 81%;'><textarea rows='1' value=" + array[i] + " display='گزینه' id='answer-" + count2 + "' name='answer-" + count2 + "' placeholder='گزینه " + count + " را وارد کنید' class='form-control'  required>" + array[i] + "</textarea></div><button type = 'button' class='btn btn-danger' onclick='RemoveDiv(this)' style='margin-top: 14px;'> - </button>";
+                                        });
+                                        $("#myModal #allAnswer").append(str);
+                                    }
+                                    $('#' + this.key + '').val(this.value);
+                                });
+                                $("#autocomplete-ajax").val(response.categoryItem);
+                                $('#myModal').modal('show');
+                                count = count2;
+                                $("#answerAdd").on("click", function () {
+                                    let isInputEmpty = false;
+                                    document.querySelector('#allAnswer').querySelectorAll('textarea').forEach(input => {
+                                        if (input.value == '') {
+                                            isInputEmpty = true
+                                            $('#allAnswerError').html("لطفا مقدار فیلد را پر نمایید.");
+                                        }
+                                    })
+                                    if (!isInputEmpty) {
+                                        count += 1;
+                                        var str = "</br><div class='form-group' style='margin-right:5px;float: right;width: 81%;'><textarea rows='1' display='گزینه' id='answer-" + count + "' name='answer-" + count + "' placeholder='گزینه " + count + " را وارد کنید' class='form-control'  required></textarea></div><button type = 'button' class='btn btn-danger' onclick='RemoveDiv(this)' style='margin-top: 22px;'> - </button>";
+                                        $("#allAnswer").append(str);
+                                        $('#allAnswerError').html("");
+                                        var form = $("#register")
+                                            .removeData("validator")
+                                            .removeData("unobtrusiveValidation");
+                                        $.validator.unobtrusive.parse(form);
+                                    }
+                                });
+                            }
+                            else {
+                                $("#textError").text(response.responseText);
+                                $("#ErrorModal").modal('show');
+                            }
+                        },
+                        error: function (response) {
+                            $("#LoadingModal").modal('show');
+                        }
+                    });
+                   
+                });
+                $('.pagination > li:first-child > a, .pagination > li:first-child > span').html('قبلی')
+                $('.pagination>li:last-child>a, .pagination>li:last-child>span').html('بعدی')
+                $('.modal-body input[type="checkbox"]').change(function () {
+                    if ($(this).is(':checked')) {
+                        var str = "</br><div class='form-group' style='margin-right:5px;float: right;width: 81%;'><textarea rows='1' display='گزینه' id='answer-" + count + "' name='answer-" + count + "' placeholder='گزینه " + count + " را وارد کنید' class='form-control'  required></textarea></div><button type = 'button' class='btn btn-success' id='answerAdd'> + </button><button type = 'button' class='btn btn-danger' onclick='RemoveDivTime(this)' > - </button>";
+                        $("#allAnswer").append(str);
+                        $("#answerAdd").on("click", function () {
+                            let isInputEmpty = false;
+                            document.querySelector('#allAnswer').querySelectorAll('textarea').forEach(input => {
+                                if (input.value == '') {
+                                    isInputEmpty = true
+                                    $('#allAnswerError').html("لطفا مقدار فیلد را پر نمایید.");
+                                }
+                            })
+                            if (!isInputEmpty) {
+                                count += 1;
+                                var str = "</br><div class='form-group' style='margin-right:5px;float: right;width: 81%;'><textarea rows='1' display='گزینه' id='answer-" + count + "' name='answer-" + count + "' placeholder='گزینه " + count + " را وارد کنید' class='form-control'  required></textarea></div><button type = 'button' class='btn btn-danger' onclick='RemoveDiv(this)' style='margin-top: 22px;'> - </button>";
+                                $("#allAnswer").append(str);
+                                $('#allAnswerError').html("");
+                                var form = $("#register")
+                                    .removeData("validator")
+                                    .removeData("unobtrusiveValidation");
+                                $.validator.unobtrusive.parse(form);
+                            }
+                        });
+                        $("#IsSelectedAnswer").val(true);
+                    }
+                    else {
+                        $("#allAnswer").html("");
+                        $("#IsSelectedAnswer").val(false);
+                    }
+                });
+              
+            }
+
+            function Save() {
+                if (checkvalidity('register') === 0) {
+                    return;
+                }
+                else {
+                    $("#myModal").modal('toggle');
+                    var allAnswer = "";
+                    $("#allAnswer ").find("textarea").each(function () {
+                        allAnswer += $(this).val() + "&";
+                    });
+                    allAnswer = allAnswer.slice(0, -1);
+                    $("#Answer").val(allAnswer);
+                    var Parameters = [{ id: "CategoryId", htmlname: "CategoryId", special: "" }, { id: "Ask", htmlname: "Ask", special: "" }, { id: "BusinessQouteId", htmlname: "BusinessQouteId", special: "" }, { id: "Answer", htmlname: "Answer", special: "" }, { id: "IsSelectedAnswer", htmlname: "IsSelectedAnswer", special: "" },];
+                    PostAjax('/admin/BusinessQoute/CreateOrUpdate', Parameters, "/admin/BusinessQoute/Index");
+                }
+            }
+            function AssignButtonClicked(elem) {
+                $('#BusinessQouteId').val($(elem).data('assigned-id'));
+            }
+            function Remove() {
+                var Parameters = [{ id: "BusinessQouteId", htmlname: "BusinessQouteId", special: "" }];
+                PostAjax('/admin/BusinessQoute/Remove', Parameters, "/admin/BusinessQoute/Index");
+            }
+        </script>
+
+    }

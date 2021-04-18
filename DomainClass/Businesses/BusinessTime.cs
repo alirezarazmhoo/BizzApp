@@ -10,6 +10,7 @@ namespace DomainClass.Businesses
 		public int Id { get; set; }
 		[Required]
 		public Guid BusinessId { get; set; }
+		public Business Business { get; set; }
 		[Required]
 		public WeekDaysEnum Day { get; set; }
 		[Required]

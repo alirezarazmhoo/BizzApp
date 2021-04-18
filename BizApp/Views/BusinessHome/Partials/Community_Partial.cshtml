@@ -1,0 +1,53 @@
+﻿@model IEnumerable< BizApp.Models.Basic.BusinessHomePage_FaqViewModel>
+
+<div class="stay-gold-content__wrapper__ask">
+	<div class="stay-gold-content__wrapper__ask__title">
+		<h4>سوالات متدوال</h4>
+		<a href="#">یک سوال بپرسید<svg width="24" height="24" class="icon_svg"><path d="M19 11h-6V5a1 1 0 10-2 0v6H5a1 1 0 100 2h6v6a1 1 0 102 0v-6h6a1 1 0 100-2z"></path></svg></a>
+
+	</div>
+	<div class="stay-gold-content__wrapper__ask__desc">
+		<div class="stay-gold-content__wrapper__ask__desc__item">
+
+			@foreach (var item in Model)
+			{
+				<div class="stay-gold-content__wrapper__ask__desc__item__question">
+					<span>سوال:</span>
+					<p>@item.Question</p>
+				</div>
+				<div class="stay-gold-content__wrapper__ask__desc__item__answer">
+					<span>پاسخ:</span>
+					@{
+						if (item.Answers.Count > 0)
+						{
+							<p>@item.Answers.FirstOrDefault()</p>
+
+
+						}
+						else
+						{
+
+						<p class="text-danger">بدون پاسخ</p>
+						}
+
+					}
+				</div>
+				<div class="stay-gold-content__wrapper__ask__desc__sub">
+					<span><p>@item.Date</p></span>
+				</div>
+				<div class="stay-gold-content__wrapper__ask__desc__button">
+					<a href="#">
+						مشاهده @item.AnswersCount پاسخ دیگر
+					</a>
+				</div>
+			}
+
+
+		</div>
+	</div>
+	<div class="stay-gold-content__wrapper__ask__see-all">
+		<a href="#">مشاهده کلیه سوالات</a>
+	</div>
+</div>
+
+

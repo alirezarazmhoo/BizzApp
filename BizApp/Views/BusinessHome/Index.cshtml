@@ -1,8 +1,191 @@
-﻿
+﻿@model BizApp.Models.Basic.BusinessHomePageViewModel
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_AllPagesLayout.cshtml";
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/_AllPagesLayout.cshtml";
 }
+<section class="intro-stay-gold">
+	@await Html.PartialAsync("/Views/BusinessHome/Partials/Slider_Partial.cshtml", Model.businessHomePage_SliderViewModel)
+	@await Html.PartialAsync("/Views/BusinessHome/Partials/Summary_Partial.cshtml", Model.businessHomePage_SummaryViewModel)
+</section>
+<section class="stay-gold-content">
+	<div class="container">
+		<div class="stay-gold-content__wrapper">
+			<div class="row">
+				<div class="col-lg-8">
+					<div class="item-location__content__location__button">
+						<ul>
+							<li>
+								<a href="/Review/Index?Id=@Model.BusinessId">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="icon_svg">
+										<path d="M17.87 22a.93.93 0 01-.46-.12L12 19.08l-5.41 2.84a1 1 0 01-1-.08 1 1 0 01-.4-1l1-6-4.39-4.26a1 1 0 01.56-1.7L8.4 8l2.7-5.48a1 1 0 011.8 0L15.6 8l6 .88a1 1 0 01.56 1.7l-4.38 4.27 1 6a1 1 0 01-1 1.17l.09-.02zM12 17c.163.002.323.04.47.11l4.07 2.15-.78-4.54a1 1 0 01.29-.89l3.3-3.21-4.56-.72a1 1 0 01-.79-.54l-2-4.14-2 4.14a1 1 0 01-.75.54l-4.56.67L8 13.78a1 1 0 01.29.89l-.78 4.54 4.07-2.15A1.12 1.12 0 0112 17z"></path>
+									</svg>یک نظر ثبت کنید
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="icon_svg">
+										<path d="M16 2a1 1 0 01.95.68L17.72 5H20a3 3 0 013 3v11a3 3 0 01-3 3H4a3 3 0 01-3-3V8a3 3 0 013-3h2.28l.77-2.32A1 1 0 018 2h8zm-.72 2H8.72L8 6.32A1 1 0 017 7H4a1 1 0 00-1 1v11a1 1 0 001 1h16a1 1 0 001-1V8a1 1 0 00-1-1h-3a1 1 0 01-.95-.68L15.28 4zM12 7.5a5.5 5.5 0 015.5 5.5 5.51 5.51 0 01-5.5 5.5 5.5 5.5 0 010-11zm0 2a3.5 3.5 0 100 7 3.5 3.5 0 000-7z"></path>
+									</svg>تصویر ثبت کنید
+								</a>
+							</li>
+							@*<li>
+									<a href="#">
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="icon_svg">
+											<path d="M13 5.414V17a1 1 0 01-2 0V5.414L9.707 6.707a1 1 0 01-1.414-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 11-1.414 1.414L13 5.414zM17 11a1 1 0 010-2h3a2 2 0 012 2v9a2 2 0 01-2 2H4a2 2 0 01-2-2v-9a2 2 0 012-2h3a1 1 0 110 2H4v9h16v-9h-3z"></path>
+										</svg>تقسیم کردن
+									</a>
+								</li>*@
+							<li onclick="AddOrRemvoeFavorit(this)" data-assigned-id="@Model.BusinessId" style="cursor:pointer">
+								<a>
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="icon_svg">
+										<path d="M12 16.202l-5.445 3.63A1 1 0 015 19V5a1 1 0 011-1h12a1 1 0 011 1v14a1 1 0 01-1.555.832L12 16.202zM7 6v11.131l4.445-2.963a1 1 0 011.11 0L17 17.13V6H7z"></path>
+									</svg>افزودن به علاقه مندی
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="item-location__content__information">
+						<ul>
+							<li>
+								<a href="#">
+									<svg width="24" height="24" class="icon_svg">
+										<path d="M21 6a3 3 0 00-3-3H6a3 3 0 00-3 3v12a3 3 0 003 3h12a3 3 0 003-3V6zm-5.881 10.428l-3.158-1.938L8.91 16.5l.59-3.457L7 10.596l3.457-.505L11.961 6.5l1.581 3.591 3.458.505-2.5 2.447.619 3.385z"></path>
+									</svg>مشارکت
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg width="24" height="24" class="icon_svg">
+										<path d="M21.318 16.771l-3.952-2.278a.602.602 0 00-.661.117l-2.147 2.288a1.159 1.159 0 01-.704.314s-1.471.041-4.251-2.692c-2.78-2.733-2.79-4.231-2.79-4.231a1.194 1.194 0 01.286-.724l1.979-2.113a.661.661 0 00.109-.683L6.964 2.683c-.099-.209-.309-.244-.468-.078L2.847 6.46c-.159.166-.311.49-.338.72 0 0-.461 3.969 5.096 9.431 5.556 5.463 9.452 4.87 9.452 4.87.226-.034.541-.198.699-.365l3.646-3.858c.159-.166.121-.386-.084-.487z"></path>
+									</svg>زنگ زدن
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg width="24" height="24" class="icon_svg">
+										<path d="M21.586 10.586l-8.172-8.172a2 2 0 00-2.828 0l-8.172 8.172a2 2 0 000 2.828l8.172 8.172a2 2 0 002.828 0l8.172-8.172a2 2 0 000-2.828zM13 15v-3h-3v3H8v-5h5V7l4 4-4 4z"></path>
+									</svg>جهت ها
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<svg width="24" height="24" class="icon_svg">
+										<path d="M18 21H6a3 3 0 01-3-3V6a3 3 0 013-3h5v2H6c-.551 0-1 .449-1 1v12c0 .551.449 1 1 1h12c.551 0 1-.449 1-1v-5h2v5a3 3 0 01-3 3zm-4.466-8.935L12.12 10.65l4.265-4.265L13 3h8v8l-3.201-3.201-4.265 4.266z"></path>
+									</svg>وب سایت
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="stay-gold-content__wrapper__covid-19">
+						<div class="stay-gold-content__wrapper__covid-19__title">
+							<h4>ویژگی های @Model.BusinessName</h4>
+						</div>
+						@await Html.PartialAsync("/Views/BusinessHome/Partials/Features_Partial.cshtml", Model.businessHomePage_FeatureViewModel)
+					</div>
+					@*<div class="stay-gold-content__wrapper__menu">
+							<div class="stay-gold-content__wrapper__menu__title-menu">
+								<h4>منو</h4>
+							</div>
+							<div class="swiper-container">
+								<div class="swiper-wrapper">
 
-<h2>Index</h2>
+									<div class="swiper-slide">
+										<figure class="stay-gold-content__wrapper__menu__image">
+											<img src="./assets/img/img-menu2.jpg" alt="">
+										</figure>
+										<div class="stay-gold-content__wrapper__menu__title">
+											<p>گوشت خوک کشیده</p>
+										</div>
+										<div class="stay-gold-content__wrapper__menu__detail">
+											<span>13 عکس</span>
+											<span>20 بازدید</span>
+										</div>
+									</div>
+
+								</div>
+								<div class="swiper-btn-next">
+									<svg width="24" height="24" class="icon_svg"><path d="M9.75 17.58a1 1 0 01-.7-.28 1 1 0 010-1.42l3.8-3.88L9 8.12a1 1 0 111.41-1.42L15 11.3a1 1 0 010 1.4l-4.5 4.58a1 1 0 01-.75.3z"></path></svg>
+								</div>
+							</div>
+							<div class="stay-gold-content__wrapper__menu__full">
+								<a href="#">
+									<svg width="24" height="24" class="icon_svg"><path d="M17 1a4 4 0 014 4v14a4 4 0 01-4 4H4a1 1 0 01-1-1V2a1 1 0 011-1zM7 3H5v18h2V3zm10 0H9v18h8a2 2 0 002-2V5a2 2 0 00-2-2zm-2 8a1 1 0 110 2h-2a1 1 0 110-2h2zm2-3a1 1 0 110 2h-6a1 1 0 110-2h6z"></path></svg>
+									منوی کامل
+								</a>
+							</div>
+						</div>*@
+					@await Html.PartialAsync("/Views/BusinessHome/Partials/DirectionAndHours_Partial.cshtml", Model.businessHomePage_HoursAndLocationViewModel)
+					@await Html.PartialAsync("/Views/BusinessHome/Partials/Sponsers_Partial.cshtml", Model.businessHomePage_NearSponseredViewModel)
+					@await Html.PartialAsync("/Views/BusinessHome/Partials/Description_Partial.cshtml", Model.businessHomePage_DescriptionViewModel)
+					@await Html.PartialAsync("/Views/BusinessHome/Partials/Community_Partial.cshtml", Model.businessHomePage_FaqViewModels)
+					@await Html.PartialAsync("/Views/BusinessHome/Partials/Review_Partial.cshtml", Model.businessHomePage_ReviewsViewModel)
+					@*<div class="item-location__content__number-page">
+							<div class="item-location__content__number-page__number">
+								<ul>
+									<li>
+										<a href="#"></a><svg width="24" height="24" class="icon_svg">
+											<path d="M9.75 17.58a1 1 0 01-.7-.28 1 1 0 010-1.42l3.8-3.88L9 8.12a1 1 0 111.41-1.42L15 11.3a1 1 0 010 1.4l-4.5 4.58a1 1 0 01-.75.3z"></path>
+										</svg>
+									</li>
+									<li><a href="#">1</a></li>
+									<li><a href="#">2</a></li>
+									<li><a href="#">3</a></li>
+									<li><a href="#">4</a></li>
+									<li><a href="#">5</a></li>
+									<li><a href="#">6</a></li>
+									<li><a href="#">7</a></li>
+									<li><a href="#">8</a></li>
+									<li><a href="#">9</a></li>
+									<li>
+										<a href="#">
+											<svg width="24" height="24" class="icon_svg">
+												<path d="M14.25 17.58a1 1 0 01-.71-.3L9 12.7a1 1 0 010-1.4l4.5-4.58A1 1 0 0115 6.7a1 1 0 010 1.42L11.15 12 15 15.88a1 1 0 010 1.42 1 1 0 01-.75.28z"></path>
+											</svg>
+										</a>
+									</li>
+								</ul>
+							</div>
+							<div class="category-content__item__number-page__cunter">
+								<span>1 از 1</span>
+							</div>
+						</div>
+						<div class="item-location__content__other  item-location__content__other--new">
+							<a href="#">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="icon_svg">
+									<path d="M8 10.5a1 1 0 01-.7-.29l-3.06-3a1 1 0 111.41-1.42L8 8.1l2.35-2.31a1 1 0 111.41 1.42l-3.06 3a1 1 0 01-.7.29z"></path>
+								</svg>4 پست دیگر که در حال حاضر توصیه نمی شوند
+							</a>
+						</div>*@
+					@await Html.PartialAsync("/Views/BusinessHome/Partials/Adds_Partial.cshtml", Model.businessHomePage_RelatedBusinessViewModels)
+				</div>
+				@await Html.PartialAsync("/Views/BusinessHome/Partials/LeftPage_Partial.cshtml", Model.businessHomePage_RightPageBusinessInfoViewModel)
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="favoritModal" role="dialog">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<p id="addToFavoritResult"></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+@await Html.PartialAsync("/Views/BusinessHome/Partials/PepoleAlsoViewed_Partial.cshtml", Model.businessHomePage_RelatedBusinessViewModels)
+@await Html.PartialAsync("/Views/BusinessHome/Partials/Footer_Partial.cshtml")
+@await Html.PartialAsync("/Views/BusinessHome/Partials/FooterFaqs_Partial.cshtml", Model.businessHomePage_FaqViewModels)
+@await Html.PartialAsync("/Views/BusinessHome/Partials/SendMessage_Partial.cshtml")
+
+
+<script>
+	window.onload = Load;
+	function Load() {
+		BusinessHomeLoadMap(@Model.businessHomePage_HoursAndLocationViewModel.Lon, @Model.businessHomePage_HoursAndLocationViewModel.Lat);
+	}
+</script>
 

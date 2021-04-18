@@ -26,6 +26,8 @@ namespace DomainClass
 		public string LongDescription { get; set; }
 		public bool PhotoChanged { get; set; }
 		public string PostalCode { get; set; }
+		public double Latitude { get; set; }
+		public double Longitude { get; set; }
 
 		public virtual ICollection<Review.Review> Reviews { get; set; }
 		public virtual ICollection<CustomerBusinessMedia> CustomerBusinessMedia { get; set; }

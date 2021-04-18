@@ -14,6 +14,7 @@ namespace DataLayer.Services
 		private readonly UserManager<BizAppUser> _userManager;
 		private readonly ClaimsPrincipal _currentUser;
 		private readonly ProvinceRepo provinceRepo;
+		private readonly BusinessQouteRepo businessQouteRepo;
 		private readonly DistrictRepo districtRepo;
 		private readonly CityRepo cityRepo;
 		private readonly CategoryRepo categoryRepo;
@@ -29,6 +30,7 @@ namespace DataLayer.Services
 		private readonly BusinessReviewCountRepo  businessReviewCountRepo;
 		private readonly BusinessHomePageRepo  businessHomePageRepo;
 		private readonly AskTheCommunityRepo  askTheCommunityRepo;
+		private readonly UserFavoritsRepo  userFavoritsRepo;
 
 
 		public UnitOfWorkRepo(ApplicationDbContext DbContext, UserManager<BizAppUser> userManager)
@@ -43,6 +45,7 @@ namespace DataLayer.Services
 		}
 
 		public IProvinceRepo ProvinceRepo => provinceRepo ?? new ProvinceRepo(_DbContext);
+		public IBusinessQouteRepo BusinessQouteRepo => businessQouteRepo ?? new BusinessQouteRepo(_DbContext);
 		public ICityRepo CityRepo => cityRepo ?? new CityRepo(_DbContext);
 		public IDistrictRepo DistrictRepo => districtRepo ?? new DistrictRepo(_DbContext);
 		public ICateogryRepo  CategoryRepo =>  categoryRepo ?? new CategoryRepo(_DbContext);
@@ -58,6 +61,8 @@ namespace DataLayer.Services
         public IUserProfileRepo ProfileRepo => profileRepo ?? new UserProfileRepo(_DbContext);
 		public IBusinessHomePageRepo BusinessHomePageRepo => businessHomePageRepo ?? new BusinessHomePageRepo(_DbContext);
 		public IAskTheCommunityRepo  AskTheCommunityRepo =>  askTheCommunityRepo ?? new AskTheCommunityRepo(_DbContext);
+		public IUserFavoritsRepo  UserFavoritsRepo =>  userFavoritsRepo ?? new UserFavoritsRepo(_DbContext);
+
 		public async Task SaveAsync()
 		{
 			await _DbContext.SaveChangesAsync();

@@ -5,6 +5,7 @@ using DomainClass.Queries;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static DataLayer.Services.CategoryRepo;
 
 namespace DataLayer.Infrastructure
 {
@@ -29,6 +30,9 @@ namespace DataLayer.Infrastructure
 		Task<CategoryTerm> GetCategoryTerm(int id);
 		Task<List<Category>> GetChosens();
 		Task<List<Category>> GetUnChosens();
+		Task<List<MenuCategoryViewModel>> GetAllInSearchPage();
 
+		Task<IEnumerable<Category>> GetAllParents(int id);
+		Task<List<Category>> GetPopular(double Longitude, double Latitude); 
 	}
 }

@@ -10,5 +10,31 @@ namespace BizApp.Areas.WebApi.Models
 		public int Id { get; set; }
 		public string Name { get; set; }
 		public string Icon { get; set; }
+		public string Image { get; set; }
 	}
+	public class InputCategroy
+	{
+		public double longitude { get; set; }
+		public double latitude { get; set; }
+		public string id { get; set; }
+	}
+	public class BusinessOnMap
+	{
+		public double longitude { get; set; }
+		public double latitude { get; set; }
+		public Guid id { get; set; }
+	}
+	public class BusinessPopop
+	{
+		public Guid id { get; set;  }
+		public string name { get; set; }
+		public int rate { get; set;  }
+		public int totalreview { get; set;  }
+		public string address { get; set; }
+		public string districname { get; set;  }
+		public string description { get; set; }
+		public string image { get; set;  }
+	}
+
+
 }

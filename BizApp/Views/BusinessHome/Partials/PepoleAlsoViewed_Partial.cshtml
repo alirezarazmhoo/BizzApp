@@ -1,0 +1,50 @@
+﻿@model IEnumerable<BizApp.Models.Basic.BusinessHomePage_RelatedBusinessViewModel>
+
+
+
+<section class="stay-gold-people">
+	<div class="container">
+		<div class="stay-gold-people__content">
+			<div class="stay-gold-people__content__title">
+				<h4>افراد نیز مشاهده کردند</h4>
+			</div>
+			<div class="stay-gold-people__content__slider">
+				<div class="swiper-container">
+					<div class="swiper-wrapper">
+						@foreach (var item in Model)
+						{
+							<div class="swiper-slide">
+								<div class="stay-gold-people__content__slider__item">
+									<div class="stay-gold-people__content__slider__item__image">
+										<a href="#">
+											<img src="@item.Image" alt="">
+										</a>
+									</div>
+									<div class="stay-gold-people__content__slider__item__title">
+										<a href="#">@item.Name</a>
+									</div>
+									<div class="stay-gold-people__content__slider__item__score">
+										<div class="stay-gold-people__content__slider__item__score__star" data-star="@item.Rate"></div>
+										<div class="stay-gold-people__content__slider__item__score__count">
+											<span>@item.Review</span>
+										</div>
+									</div>
+									<div class="stay-gold-people__content__slider__item__sub-score">
+										<span>$$</span>
+										<span>@item.Description</span>
+									</div>
+								</div>
+							</div>
+						}
+			
+					</div>
+					<div class="swiper-btn-next">
+						<svg width="24" height="24" class="icon_svg"><path d="M9.75 17.58a1 1 0 01-.7-.28 1 1 0 010-1.42l3.8-3.88L9 8.12a1 1 0 111.41-1.42L15 11.3a1 1 0 010 1.4l-4.5 4.58a1 1 0 01-.75.3z"></path></svg>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</section>

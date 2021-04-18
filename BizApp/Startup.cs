@@ -31,8 +31,6 @@ namespace BizApp
 
 			//services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Data Source=45.159.113.39,2014;Initial Catalog=BizApp;User ID=BizzApp;Password=BizzApp2021;MultipleActiveResultSets=true"));
 
-			//services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Data Source=(LocalDb)\\.;Initial Catalog=BizApp;Integrated Security=SSPI;"));
-
 			services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
 			services.AddDefaultIdentity<BizAppUser>(options =>
@@ -50,6 +48,7 @@ namespace BizApp
 
 			services.AddTransient<IUnitOfWorkRepo, UnitOfWorkRepo>();
 			services.AddTransient<IUserProfileRepo, UserProfileRepo>();
+			services.AddTransient<ICateogryRepo, CategoryRepo>();
 
 			var config = new MapperConfiguration(c =>
 			{

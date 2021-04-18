@@ -1,0 +1,57 @@
+﻿@model BizApp.Models.Basic.BusinessHomePage_SummaryViewModel
+
+
+
+<div class="container">
+	<div class="intro-stay-gold__text">
+		<div class="intro-stay-gold__text__title">
+			<h1>@Model.Title</h1>
+		</div>
+		<div class="intro-stay-gold__text__favorite">
+			<div class="intro-stay-gold__text__favorite__star " data-star="@Model.Rate"></div>
+			<div class="intro-stay-gold__text__favorite__review">
+				<span>@Model.Reviews بازخورد</span>
+			</div>
+		</div>
+		<div class="intro-stay-gold__text__claimed">
+			<svg width="16" height="16" class="icon_svg">
+				<path fill-rule="evenodd" clip-rule="evenodd"
+					  d="M1 8a7 7 0 1114 0A7 7 0 011 8zm7 2.51l3.58-3.6a1 1 0 10-1.41-1.42l-2.89 2.9-.94-.94a1 1 0 10-1.42 1.41l1.67 1.65a1 1 0 001.41 0z">
+				</path>
+			</svg>
+			@if (Model.IsClaimed)
+			{
+			<span>
+				تایید شده
+				<div class="intro-stay-gold__text__claimed__popover">
+					<p>این کسب و کار توسط بیزآپ تایید شده <a href="#"></a></p>
+				</div>
+			</span>
+			}
+			<span class="daler">•  $$  •</span>
+		
+			@*<a href="#">خواربار,</a>
+			<a href="#">@Model. </a>*@
+			
+			@*<div class="intro-stay-gold__text__claimed__edit">
+				<a href="#">ویرایش</a>
+			</div>*@
+		</div>
+		<div class="intro-stay-gold__text__open">
+			@*<span>باز</span>*@
+			<p class="hours" style="width:70%">@Model.Description</p>
+
+			@*<p class="update">
+				<svg width="16" height="16" class="icon_svg">
+					<path d="M8 1a7 7 0 110 14A7 7 0 018 1zm0 2a5 5 0 100 10A5 5 0 008 3zm0 3.86a1 1 0 011 1v3a1 1 0 11-2 0v-3a1 1 0 011-1zm0-2.74a1 1 0 110 2 1 1 0 010-2z">
+					</path>
+				</svg>
+		
+			</p>*@
+		</div>
+
+	</div>
+	<div class="intro-stay-gold__button">
+		<a href="#">@Model.TotalPhotos عکس را ببینید</a>
+	</div>
+</div>

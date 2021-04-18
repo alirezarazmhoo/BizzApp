@@ -2,11 +2,13 @@
 using BizApp.Utility;
 using DataLayer.Infrastructure;
 using DomainClass.Review;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace BizApp.Controllers
@@ -14,14 +16,15 @@ namespace BizApp.Controllers
 	public class ReviewController : Controller
 	{
 		private readonly IUnitOfWorkRepo _unitOfWork;
-		public ReviewController(IUnitOfWorkRepo unitOfWork)
+		private readonly IHttpContextAccessor _httpContextAccessor;
+		public ReviewController(IUnitOfWorkRepo unitOfWork , IHttpContextAccessor httpContextAccessor)
 		{
 			_unitOfWork = unitOfWork;
+			_httpContextAccessor = httpContextAccessor;
 		}
-		public async Task<IActionResult> Index()
+		public async Task<IActionResult> Index(Guid Id)
 		{
-			var BusinessId = new Guid("4e9b06be-2a73-4c40-fea1-08d8e04ff1b3");
-
+			var BusinessId =Id;
 			#region Objects
 			ReviewViewModel reviewViewModel = new ReviewViewModel();
 			List<Review_ReviewListViewModel> review_ReviewListViewModel = new List<Review_ReviewListViewModel>();
@@ -32,9 +35,10 @@ namespace BizApp.Controllers
 			foreach (var item in Reviews)
 			{
 				var UserPhoto = item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault() == null ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault().UploadedPhoto;
-				review_ReviewListViewModel.Add(new Review_ReviewListViewModel() { Date = item.Date.ToPersianDateString(), FullName = item.BizAppUser.FullName, Image = UserPhoto, Rate = item.Rate, Text = item.Description });
+				review_ReviewListViewModel.Add(new Review_ReviewListViewModel() { Date = item.Date.ToPersianDateString(), FullName = item.BizAppUser.FullName, Image = UserPhoto, Rate = item.Rate, Text = item.Description , TotalReview = await _unitOfWork.ReviewRepo.GetUserTotalReview(item.BizAppUserId) , TotalBusinessMediaPicture = await _unitOfWork.ReviewRepo.GetUserTotalReviewMedia(item.BizAppUserId) , TotalReviewPicture =await _unitOfWork.ReviewRepo.GetUserTotalBusinessMedia(item.BizAppUserId) });
 			}
 			#region FinalResult
+			reviewViewModel.BusinessName = await _unitOfWork.BusinessRepo.GetBusinessName(BusinessId);
 			reviewViewModel.review_ReviewListViewModels = review_ReviewListViewModel;
 			#endregion
 			return View(reviewViewModel);
@@ -62,9 +66,17 @@ namespace BizApp.Controllers
 		[HttpPost]
 		public async Task<JsonResult> ChangeUseFullCount(Guid Id)
 		{
-			var UserId = "8ad1f65a-c47d-4f1a-a601-5c64c186c09b";
+		
 			try {
 				string type;
+				if (!User.Identity.IsAuthenticated)
+				{
+				
+					type = "authorize";
+					return Json(new { success = true, type });
+
+				}
+			    var UserId = GetUserId();
 				if (await _unitOfWork.ReviewRepo.ChangeHelpFull(Id, UserId) == DomainClass.Enums.VotesAction.Add)
 				{
 					type = "add";
@@ -87,10 +99,18 @@ namespace BizApp.Controllers
 		[HttpPost]
 		public async Task<JsonResult> ChangeFunnyCount(Guid Id)
 		{
-			var UserId = "8ad1f65a-c47d-4f1a-a601-5c64c186c09b";
 			try
 			{
+			
 				string type;
+				if (!User.Identity.IsAuthenticated)
+				{
+				
+					type = "authorize";
+					return Json(new { success = true, type });
+
+				}
+			var UserId = GetUserId();
 				if (await _unitOfWork.ReviewRepo.ChangeFunnyCount(Id, UserId) == DomainClass.Enums.VotesAction.Add)
 				{
 					type = "add";
@@ -113,10 +133,19 @@ namespace BizApp.Controllers
 		[HttpPost]
 		public async Task<JsonResult> ChangeCoolCount(Guid Id)
 		{
-			var UserId = "8ad1f65a-c47d-4f1a-a601-5c64c186c09b";
+			
 			try
 			{
 				string type;
+				if (!User.Identity.IsAuthenticated)
+				{
+					
+					type = "authorize";
+					return Json(new { success = true, type });
+
+				}
+				var UserId = GetUserId();
+
 				if (await _unitOfWork.ReviewRepo.ChangeCoolCount(Id, UserId) == DomainClass.Enums.VotesAction.Add)
 				{
 					type = "add";
@@ -135,6 +164,44 @@ namespace BizApp.Controllers
 
 			}
 
+		}
+		[HttpPost]
+		public async Task<JsonResult> ChangeLike(Guid Id)
+		{
+
+			try
+			{
+				string type;
+				if (!User.Identity.IsAuthenticated)
+				{
+					//return Redirect("/Identity/Account/Login");
+					type = "authorize";
+					return Json(new { success = true, type });
+
+				}
+				var UserId = GetUserId();
+			   var UserName = await _unitOfWork.UserRepo.GetUserName(UserId);
+				if (await _unitOfWork.ReviewRepo.ChangeLikeCount(Id, UserId) == DomainClass.Enums.VotesAction.Add)
+				{
+					type = "add";
+				}
+				else
+				{
+					type = "submission";
+
+				}
+				await _unitOfWork.SaveAsync();
+				return Json(new { success = true, type , username = UserName });
+			}
+			catch (Exception)
+			{
+				return Json(new { success = false });
+
+			}
+		}
+		private string GetUserId()
+		{
+			return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 		}
 	}
 }

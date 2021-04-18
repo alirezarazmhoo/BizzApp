@@ -1,0 +1,39 @@
+﻿@model BizApp.Models.Basic.BusinessHomePage_HoursAndLocationViewModel
+
+<div class="stay-gold-content__wrapper__location">
+	<div class="stay-gold-content__wrapper__location__title">
+		<h4>مکان و ساعتها</h4>
+	</div>
+	<div class="stay-gold-content__wrapper__location__content">
+		<div class="stay-gold-content__wrapper__location__content__right">
+			<div class="stay-gold-content__wrapper__location__content__right__map-location" id="businesshomemapid"></div>
+			<div class="stay-gold-content__wrapper__location__content__right__text">
+				<div class="stay-gold-content__wrapper__location__content__right__text__right">
+					<p>@Model.Address</p>
+
+				</div>
+				<div class="stay-gold-content__wrapper__location__content__right__text__left">
+					<a href="#">جهت یابی</a>
+				</div>
+			</div>
+		</div>
+		<div class="stay-gold-content__wrapper__location__content__left">
+			<ul>
+				@foreach (var item in Model.LocationHours)
+				{
+
+					<li>
+						<span>@item.DayName</span>
+						<span>از @item.FromTime تا @item.ToTime </span>
+					</li>
+				}
+
+			</ul>
+			@*<a href="#">
+				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" class="icon_svg">
+					<path d="M12.95 3.05c0-.512-.195-1.023-.586-1.414a1.996 1.996 0 00-2.829 0L8.121 3.05 2.464 8.707 1.05 12.95l4.243-1.414 5.657-5.657 1.414-1.415a1.99 1.99 0 00.586-1.414zm-8.197 7.611l-2.122.708.707-2.122 5.49-5.49 1.415 1.415-5.49 5.489z"></path>
+				</svg>ویرایش اطلاعات کسب و کار
+			</a>*@
+		</div>
+	</div>
+</div>

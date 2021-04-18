@@ -3,6 +3,7 @@ using DataLayer.Extensions;
 using DataLayer.Infrastructure.Reviews;
 using DomainClass.Businesses;
 using DomainClass.Enums;
+using DomainClass.Queries;
 using DomainClass.Review;
 using DomainClass.Review.Queries;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace DataLayer.Services
@@ -50,7 +50,7 @@ namespace DataLayer.Services
 				.Include(s => s.CustomerBusinessMediaPictures)
 				.Include(s => s.BizAppUser)
 				.ThenInclude(s => s.ApplicationUserMedias)
-				.Include(s => s.UsersInCustomerBusinessMediaLikes).Include(s => s.Business).Where(s => s.StatusEnum == StatusEnum.Accepted && s.CustomerBusinessMediaPictures.Where(s=>s.StatusEnum == StatusEnum.Accepted).Count()>0)
+				.Include(s => s.UsersInCustomerBusinessMediaLikes).Include(s => s.Business).Where(s => s.StatusEnum == StatusEnum.Accepted && s.CustomerBusinessMediaPictures.Where(s => s.StatusEnum == StatusEnum.Accepted).Count() > 0)
 				.Skip((pageNumber.Value - 1) * 3).Take(3).ToListAsync();
 			return Items;
 		}
@@ -112,6 +112,11 @@ namespace DataLayer.Services
 			return BusinessItem;
 		}
 
+		private async Task<bool> IsOwner(Guid id, string currentUserId)
+		{
+			var photo = await DbContext.Reviews.FirstOrDefaultAsync(w => w.Id == id);
+			return photo.BizAppUserId == currentUserId;
+		}
 		private IQueryable<UserReviewPaginateQuery> GetPaginateReviewQuery(string userName, int page, int pageSize = 10)
 		{
 			var query =
@@ -135,7 +140,9 @@ namespace DataLayer.Services
 								CityId = s.Business.District.CityId,
 								CityName = s.Business.District.City.Name,
 								Name = s.Business.Name,
-								OwnerFullName = s.Business.Owner.FullName
+								OwnerFullName = s.Business.Owner.FullName,
+								CategoryId = s.Business.CategoryId
+								//Categories = s.Business.Category.Parents(s.Business.CategoryId).ToDictionary(f => f.Id, f => f.Name)
 								//OwnerUserName = s.Business.Owner.UserName
 							},
 							Media = s.ReviewMedias.Take(3)
@@ -154,12 +161,38 @@ namespace DataLayer.Services
 		public async Task<IEnumerable<UserReviewPaginateQuery>> GetUseReviews(string userName, int page)
 		{
 			var result = await GetPaginateReviewQuery(userName, page, _pageSize)
-							.Where(w => w.Status == StatusEnum.Waiting)
+							//.Where(w => w.Status == StatusEnum.Waiting)
 							.ToListAsync();
+
+			// add business categories
+			if (result.Count > 0)
+			{
+				foreach (var model in result)
+				{
+					try
+					{
+						model.Business.Categories =
+							DbContext.Categories
+								.FromSqlRaw("EXEC [dbo].[sp_GetAllCategoryWithParentsById] @id = {0}", model.Business.CategoryId)
+								.Select(s => new CategoryWithParentsQuery
+								{
+									Id = s.Id,
+									Name = s.Name,
+									ParentCategoryId = s.ParentCategoryId
+								})
+								.ToDictionary(k => k.Id, v => v.Name);
+						//model.Business.Categories = dd;
+					}
+					catch (Exception ex)
+					{
+
+						throw;
+					}
+				}
+			}
 
 			return result;
 		}
-
 		public async Task<IEnumerable<Review>> GetBusinessReviews(Guid Id)
 		{
 			var BusinessItem = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Id.Equals(Id));
@@ -206,7 +239,7 @@ namespace DataLayer.Services
 				}
 			}
 
-			}
+		}
 		public async Task AddBusinessMedia(CustomerBusinessMedia model, IFormFile[] files)
 		{
 			if (await DbContext.Users.AnyAsync(s => s.Id.Equals(model.BizAppUserId)) && await DbContext.Businesses.AnyAsync(s => s.Id.Equals(model.BusinessId)))
@@ -238,27 +271,26 @@ namespace DataLayer.Services
 				}
 			}
 		}
-	
-		public async Task<IEnumerable<Business>> GuessReview(string id , int? cityId)
+		public async Task<IEnumerable<Business>> GuessReview(string id, int? cityId)
 		{
-			var UserItem = await DbContext.Users.FirstOrDefaultAsync(s=>s.Id.Equals(id));
+			var UserItem = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(id));
 			List<Business> FinalList = new List<Business>();
 			List<Review> Reviews = new List<Review>();
 			List<Business> Businesses = new List<Business>();
-			if(UserItem != null)
+			if (UserItem != null)
 			{
 				if (UserItem.CityId.HasValue)
 				{
-					 Reviews = await DbContext.Reviews.Where(s => s.StatusEnum == StatusEnum.Accepted && s.BizAppUserId.Equals( id)).ToListAsync();
-					 Businesses = await DbContext.Businesses.Where(s => s.District.City.Id == UserItem.CityId).ToListAsync();
+					Reviews = await DbContext.Reviews.Where(s => s.StatusEnum == StatusEnum.Accepted && s.BizAppUserId.Equals(id)).ToListAsync();
+					Businesses = await DbContext.Businesses.Where(s => s.District.City.Id == UserItem.CityId).ToListAsync();
 					foreach (var item in Businesses)
 					{
-						if(!Reviews.Any(s=>s.BusinessId == item.Id))
+						if (!Reviews.Any(s => s.BusinessId == item.Id))
 						{
 							FinalList.Add(item);
 						}
 					}
-				return FinalList; 
+					return FinalList;
 				}
 				else
 				{
@@ -275,14 +307,13 @@ namespace DataLayer.Services
 
 				}
 			}
-			
+
 			else
 			{
 				return new List<Business>();
 			}
 
 		}
-
 		public async Task<VotesAction> ChangeHelpFull(Guid Id, string UserId)
 		{
 			var Item = await DbContext.Reviews.FirstOrDefaultAsync(s => s.Id.Equals(Id));
@@ -296,24 +327,24 @@ namespace DataLayer.Services
 					usersInReviewVotes.BizAppUserId = UserId;
 					usersInReviewVotes.ReviewId = Id;
 					usersInReviewVotes.VotesType = VotesType.HelpFull;
-				 await	DbContext.UsersInReviewVotes.AddAsync(usersInReviewVotes);
+					await DbContext.UsersInReviewVotes.AddAsync(usersInReviewVotes);
 
-					return VotesAction.Add; 
+					return VotesAction.Add;
 				}
 				else
 				{
 					Item.UsefulCount -= 1;
 					var ReviewVoteItem = await DbContext.UsersInReviewVotes.FirstOrDefaultAsync(s => s.BizAppUserId == UserId && s.ReviewId == Id && s.VotesType == VotesType.HelpFull);
-					if(ReviewVoteItem != null)
+					if (ReviewVoteItem != null)
 					{
-						 DbContext.UsersInReviewVotes.Remove(ReviewVoteItem);
+						DbContext.UsersInReviewVotes.Remove(ReviewVoteItem);
 					}
 					return VotesAction.Submission;
 				}
 			}
 			else
 			{
-				return VotesAction.Undefinded; 
+				return VotesAction.Undefinded;
 			}
 		}
 		public async Task<VotesAction> ChangeFunnyCount(Guid Id, string UserId)
@@ -382,6 +413,78 @@ namespace DataLayer.Services
 			else
 			{
 				return VotesAction.Undefinded;
+			}
+		}
+		public async Task<VotesAction> ChangeLikeCount(Guid Id, string UserId)
+		{
+			var Item = await DbContext.CustomerBusinessMediaPictures.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+			var UserItem = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(UserId));
+			UsersInCustomerBusinessMediaLike usersInCustomerBusinessMediaLike = new UsersInCustomerBusinessMediaLike();
+			if (Item != null && UserItem != null)
+			{
+				if (!await DbContext.UsersInCustomerBusinessMediaLikes.
+					AnyAsync(s => s.BizAppUserId == UserId &&
+					s.CustomerBusinessMediaPicturesId == Id))
+				{
+					Item.LikeCount += 1;
+					usersInCustomerBusinessMediaLike.CustomerBusinessMediaPicturesId = Item.Id;
+					usersInCustomerBusinessMediaLike.BizAppUserId = UserId;
+					await DbContext.UsersInCustomerBusinessMediaLikes.AddAsync(usersInCustomerBusinessMediaLike);
+					return VotesAction.Add;
+				}
+				else
+				{
+					Item.LikeCount -= 1;
+					var VoteItem = await DbContext.UsersInCustomerBusinessMediaLikes.
+						FirstOrDefaultAsync(s => s.BizAppUserId == UserId
+						&& s.CustomerBusinessMediaPicturesId == Id);
+					if (VoteItem != null)
+					{
+						DbContext.UsersInCustomerBusinessMediaLikes.Remove(VoteItem);
+					}
+					return VotesAction.Submission;
+
+				}
+			}
+			else
+			{
+				return VotesAction.Undefinded;
+			}
+		}
+		public async Task<int> GetUserTotalReview(string Id)
+		{
+			var UserItem = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+			if(UserItem != null)
+			{
+				return await DbContext.Reviews.Where(s => s.BizAppUserId.Equals(UserItem.Id)).CountAsync();
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		public async Task<int> GetUserTotalReviewMedia(string Id)
+		{
+			var UserItem = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+			if (UserItem != null)
+			{
+				return await DbContext.ReviewMedias.Where(s => s.Review.BizAppUserId.Equals(UserItem.Id)).CountAsync();
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		public async Task<int> GetUserTotalBusinessMedia(string Id)
+		{
+			var UserItem = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+			if (UserItem != null)
+			{
+				return await DbContext.CustomerBusinessMediaPictures.Where(s => s.CustomerBusinessMedia.BizAppUserId.Equals(UserItem.Id)).CountAsync();
+			}
+			else
+			{
+				return 0;
 			}
 		}
 	}

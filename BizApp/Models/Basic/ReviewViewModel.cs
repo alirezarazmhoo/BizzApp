@@ -8,6 +8,7 @@ namespace BizApp.Models.Basic
 	#region Main
 	public class ReviewViewModel
 	{
+		public string BusinessName { get; set; }
 		public ICollection<Review_ReviewListViewModel> review_ReviewListViewModels { get; set;  }
 	}
 	#endregion
@@ -17,9 +18,12 @@ namespace BizApp.Models.Basic
 		public Guid Id { get; set;  }
 		public string Image { get; set;} 
 		public string FullName  { get; set;  }
-		public int Rate { get; set;  }
-		public string Date { get; set;  }
-		public string Text { get; set;  }
+		public int Rate { get; set;}
+		public string Date { get; set;}
+		public string Text { get; set;}
+		public int TotalReviewPicture { get; set; }
+		public int TotalReview { get; set; }
+		public int TotalBusinessMediaPicture { get; set;  }
 
 	}
 

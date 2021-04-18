@@ -1,4 +1,5 @@
 ﻿using DomainClass.Enums;
+using DomainClass.Queries;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -31,6 +32,14 @@ namespace DomainClass.Businesses.Queries
 		public string FeatureName { get; set; }
 		public string BusinessName { get; set; }
 
+	}
+	public class MenuCategoryViewModel
+	{
+		public int Id { get; set; }
+		public int? ParentCategoryId { get; set; }
+		public string Name { get; set; }
+		public string svgIcon { get; set; }
+		public GetCategoryByIdQuery GetWithTerms { get; set; }
 	}
 
 }
