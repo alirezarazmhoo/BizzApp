@@ -412,6 +412,7 @@ namespace DataLayer.Services
         {
             return await DbContext.CategoryTerms.FirstOrDefaultAsync(s => s.CategoryId.Equals(id));
         }
+        
         public async Task<List<Category>> GetChosens()
         {
             var Items = await DbContext.Categories.Include(s=>s.Terms).Where(s => s.Order != 0 && !s.ParentCategoryId.HasValue).ToListAsync();
@@ -423,6 +424,20 @@ namespace DataLayer.Services
             var Items = await DbContext.Categories.Include(s => s.Terms).Where(s => s.Order == 0 && !s.ParentCategoryId.HasValue).ToListAsync();
             return Items;
         }
+
+        public async Task<List<MenuCategoryViewModel>> GetAllInSearchPage()
+        {
+            return await 
+                DbContext.Categories
+                    .Select(x => new MenuCategoryViewModel { 
+                        Id = x.Id,
+                        ParentCategoryId = x.ParentCategoryId,
+                        Name = x.Name,
+                        svgIcon = x.Terms.FirstOrDefault(f => f.Key=="icon") == null ? string.Empty : x.Terms.FirstOrDefault(f => f.Key=="icon").Value 
+                    }).ToListAsync();
+        }
+    
+
 		public async Task<IEnumerable<Category>> GetAllParents(int id)
 		{
             //var result = await

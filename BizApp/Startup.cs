@@ -48,6 +48,7 @@ namespace BizApp
 
 			services.AddTransient<IUnitOfWorkRepo, UnitOfWorkRepo>();
 			services.AddTransient<IUserProfileRepo, UserProfileRepo>();
+			services.AddTransient<ICateogryRepo, CategoryRepo>();
 
 			var config = new MapperConfiguration(c =>
 			{

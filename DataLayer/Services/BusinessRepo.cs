@@ -490,7 +490,7 @@ namespace DataLayer.Services
                     }
                 }
             }
-            result = DbContext.Businesses.Where(x => cats.Contains(x.CategoryId) ).OrderByDescending(x => x.CreatedDate);
+            result = DbContext.Businesses.Where(x => cats.Contains(x.CategoryId) ).OrderByDescending(x => x.CreatedDate).ThenBy(x=>x.IsSponsor);
             if(districts.Count()>0)
             {
                 result = result.Where(x =>districts.Contains(x.DistrictId));
