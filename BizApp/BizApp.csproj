@@ -156,6 +156,9 @@
     <None Include="wwwroot\Designs\MainWebSite\assets\img\img-quastion.svg" />
     <None Include="wwwroot\Designs\MainWebSite\assets\img\LineGraph.svg" />
     <None Include="wwwroot\Designs\MainWebSite\assets\img\page-location.svg" />
+    <None Include="wwwroot\Designs\MainWebSite\assets\img\photo_review_325x200_v2.yji-9141622db285fa9c136a2ea8a879fbec.svg" />
+    <None Include="wwwroot\Designs\MainWebSite\assets\img\review-madal.svg" />
+    <None Include="wwwroot\Designs\MainWebSite\assets\img\Unconfirmed 802687.crdownload" />
     <None Include="wwwroot\Designs\MainWebSite\assets\js\footer-bundle.js" />
     <None Include="wwwroot\Designs\MainWebSite\assets\js\footer-bundle.js.map" />
     <None Include="wwwroot\Designs\MainWebSite\assets\js\header-bundle.js" />
