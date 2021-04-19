@@ -36,7 +36,10 @@ namespace DataLayer.Services
 		{
 			return await FindByCondition(f => f.Id == id).FirstOrDefaultAsync();
 		}
-
+		public async Task<List<BusinessQoute>> GetByCategoryId(int CategoryId)
+		{
+			return await FindByCondition(f => f.CategoryId==CategoryId).ToListAsync();
+		}
 		public void Remove(BusinessQoute BusinessQoute)
 		{
 			Delete(BusinessQoute);

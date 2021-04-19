@@ -6,40 +6,7 @@
 @inject DataLayer.Infrastructure.ICateogryRepo CateogryService
 @{
     var CategoryItems =await CateogryService.GetAllInSearchPage();
-    //var CategoryItems = await CateogryService.GetChosens();
-    //List<MainPage_Category> MainPage_Categories = new List<MainPage_Category>();
-    //foreach (var item in CategoryItems)
-    //{
-    //    MainPage_Categories.Add(new MainPage_Category() { Id = item.Id, Name = item.Name, CategoryChilds = await GetCategoyChilds(item.Id), Image = await GetCategoryTerm(item.Id), PngIcon = string.Empty }); ;
-    //}
-    //async Task<Dictionary<int, string>> GetCategoyChilds(int id)
-    //{
-    //    var Items = await CateogryService.GetChilds(id);
-    //    Dictionary<int, string> keyValuePairs = new Dictionary<int, string>();
-    //    foreach (var item in Items)
-    //    {
-    //        keyValuePairs.Add(item.Id, item.Name);
-    //    }
-    //    return keyValuePairs;
-    //}
-    //async Task<string> GetCategoryTerm(int id)
-    //{
-    //    var TermItem = await CateogryService.GetCategoryTerm(id);
-    //    if (TermItem != null)
-    //    {
-    //        return TermItem.Value;
-    //    }
-    //    return string.Empty;
-    //}
-    //async Task<string> GetCategoryTermIcon(int id)
-    //{
-    //    var TermItem = await CateogryService.GetCategoryTermIcon(id);
-    //    if (TermItem != null)
-    //    {
-    //        return TermItem.Value;
-    //    }
-    //    return string.Empty;
-    //}
+    
 }
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" id="top">

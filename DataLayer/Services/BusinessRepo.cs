@@ -301,6 +301,7 @@ namespace DataLayer.Services
         {
             return await FindByCondition(f => f.Id == id).Include(s => s.Galleries).Include(s=>s.Reviews).Include(s=>s.District).FirstOrDefaultAsync();
         }
+        
         public async Task Remove(Business model)
         {
             var MainItem = await GetById(model.Id);

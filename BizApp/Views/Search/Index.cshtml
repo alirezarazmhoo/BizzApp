@@ -22,7 +22,7 @@
         background-color: #f5f5f5;
         border-radius: 2px;
         cursor: pointer;
-        margin:5px;
+        margin: 5px;
     }
 
     .button-cat {
@@ -111,6 +111,122 @@
     #click-cat .category-content {
         display: block !important;
         padding: 0 !important;
+    }
+
+    .reqbtn {
+        border: 1px solid #bbbac0;
+        line-height: 40px;
+        font-size: 14px;
+        text-align: center;
+        padding: 0 16px;
+        border-radius: 4px;
+        transition: 0.8s;
+        font-weight: 500;
+        background-color: white;
+        margin-top: 5px;
+    }
+
+        .reqbtn:hover {
+            background-color: #e0e0e0;
+        }
+
+    .question {
+        font-size: 30px;
+        margin-bottom: 10px;
+    }
+
+    .answers {
+        margin-bottom: 20px;
+        text-align: left;
+        display: inline-block;
+    }
+
+        .answers label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+    .slide {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        z-index: 1;
+        opacity: 0;
+        transition: opacity 0.5s;
+    }
+
+    .active-slide {
+        opacity: 1;
+        z-index: 2;
+    }
+
+    .quiz-container {
+        position: relative;
+        height: 200px;
+        margin-top: 40px;
+    }
+    .containerCheckBox {
+        display: block;
+        position: relative;
+        padding-right: 35px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        font-size: 15px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+        /* Hide the browser's default radio button */
+    .containerCheckBox input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    /* Create a custom radio button */
+    .checkmark {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 25px;
+        width: 25px;
+        background-color: #eee;
+        border-radius: 50%;
+    }
+
+    /* On mouse-over, add a grey background color */
+    .containerCheckBox:hover input ~ .checkmark {
+        background-color: #ccc;
+    }
+
+    /* When the radio button is checked, add a blue background */
+    .containerCheckBox input:checked ~ .checkmark {
+        background-color: #2196F3;
+    }
+
+    /* Create the indicator (the dot/circle - hidden when not checked) */
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    /* Show the indicator (dot/circle) when checked */
+    .containerCheckBox input:checked ~ .checkmark:after {
+        display: block;
+    }
+
+    /* Style the indicator (dot/circle) */
+    .containerCheckBox .checkmark:after {
+        top: 9px;
+        left: 9px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: white;
     }
 </style>
 <section class="category-content">
@@ -399,8 +515,185 @@
         </div>
     </div>
 </div>
+<div class=" modal fade " id="click-quote" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content" style="padding: 20px;">
+            <div class="modal-body">
+                <div class="recent-activities__modal__close" data-dismiss="modal">
+                    <span>بستن</span>
+                </div>
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <h6>لطفا برای ثبت درخواست اول وارد سایت شوید</h6>
+                    <button onclick="window.location.href='/Identity/Account/Login'" class="reqbtn">ورود</button>
+                }
+                else
+                {
+                <div id="AllQuote"></div>
+                <input id="BussinessID" hidden/>
+                <button onclick="SearchPagesQuotes('Prev')" class="reqbtn" id="PrevBtn">قبل</button>
+                <button onclick="SearchPagesQuotes('Next')" class="reqbtn" id="NextBtn" disabled>بعد</button>
+                <button onclick="SubmitQuotes()" class="reqbtn" id="SubmitQuotes">تایید نهایی درخواست</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class=" modal fade " id="click-quote-result" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content" style="padding: 20px;">
+            <div class="modal-body">
+                <div class="recent-activities__modal__close" data-dismiss="modal">
+                    <span>بستن</span>
+                </div>
+               <h6>درخواست شما با موفقیت ثبت گردید</h6>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts
 {
+    <script>
+        var count = 1;
+        var count2 = 1;
+        var countPage = 1;
+        function OpenQuotes(e) {
+            $("#BussinessID").val($(e).data('id'));
+            countPage = 1;
+            count = 1;
+            count2 = 1;
+            var CategoryId = $(e).data('categoryid');
+            var fd = new FormData();
+            fd.append('CategoryId', CategoryId);
+            $.ajax({
+                type: "Post",
+                url: "/Search/GetByCategoryId",
+                data: fd,
+                dataType: "json",
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.success) {
+                        var str = "";
+                        $.each(response.businessQoutes, function () {
+                            var idBussinessQuotes = this.id;
+                            str += "<div id='countain_" + count2 + "'><h6>" + this.ask + "</h6><br />";
+                            if (this.isSelectedAnswer != true) {
+                                str += "<div id=" + idBussinessQuotes + "><textarea onkeyup='onkeypressTextArea(this)' class='form-control' id='ans_" + count + "'></textarea></div><br/>";
+                                count += 1;
+                            }
+                            else {
+                                var array = this.answer.split("&");
+                                $.each(array, function (i) {
+                                    //str += "<input class='form-control' type='radio' id='ans_" + count + "' name='name_" + count2 + "' value=" + array[i] + "><label for='ans_" + count + "' > " + array[i] + "</label ><br/>";
+                                    str += "<label id=" + idBussinessQuotes + " class='containerCheckBox'>" + array[i] + "<input type = 'radio'  id='ans_" + count + "' name = 'name_" + count2 + "' value=" + array[i] + "><span class='checkmark'></span></label>";
+                                    count += 1;
+                                });
+                            }
+                            count2 += 1;
+                            str += "</div>";
+                        });
+                        $('#click-quote').modal('show');
+                        $('#click-quote #AllQuote').html(str);
+                        for (var i = 1; i <= count2; i++) {
+                            $("#countain_" + i + "").hide();
+                        }
+                        $("#countain_1").show();
+                        $("#SubmitQuotes").hide();
+                        $("#PrevBtn").hide();
+                        $("#AllQuote input:radio").click(function () {
+                            SearchPagesQuotes("Next");
+                        });
+
+                    }
+                    else {
+                        $("#textError").text(response.responseText);
+                        $("#ErrorModal").modal('show');
+                    }
+                },
+                error: function (response) {
+                    $("#LoadingModal").modal('show');
+                }
+            });
+        }
+        function onkeypressTextArea(e) {
+            if ($(e).val() != "") {
+                $("#NextBtn").prop('disabled', false);
+                $("#SubmitQuotes").prop('disabled', false);
+            }
+            else {
+                $("#NextBtn").prop('disabled', true);
+                $("#SubmitQuotes").prop('disabled', true);
+            }
+        }
+        function SearchPagesQuotes(NextOrPrev) {
+            $("#PrevBtn").show();
+            if (NextOrPrev == "Next") {
+                countPage += 1;
+            }
+            else {
+                countPage -= 1;
+            }
+            var lenghtChecked = $("#countain_" + countPage + "").has(":checked").length;
+            var textAreaContain = $("#countain_" + countPage + "").find("textarea").val();
+            if (textAreaContain == "" || lenghtChecked == 0) {
+                $("#SubmitQuotes").prop('disabled', true);
+                $("#NextBtn").prop('disabled', true);
+            }
+            else {
+                $("#SubmitQuotes").prop('disabled', false);
+                $("#NextBtn").prop('disabled', false);
+            }
+            if (count2 != countPage) {
+                if (countPage == 1)
+                    $("#PrevBtn").hide();
+                $("#NextBtn").show();
+                $("#SubmitQuotes").hide();
+                for (var i = 1; i <= count2; i++) {
+                    $("#countain_" + i + "").hide();
+                }
+                $("#countain_" + countPage + "").show();
+                if (countPage + 1 == count2) {
+                    $("#NextBtn").hide();
+                    $("#SubmitQuotes").show();
+                }
+            }
+        }
+        function SubmitQuotes() {
+            var AllAnswerQoute = [];
+            $('#AllQuote input[type=radio]').each(function () {
+                if (this.checked) {
+                    var ans = $(this).parent().text() + "&" + $(this).parent().attr('id');
+                    AllAnswerQoute.push(ans);
+                }
+            });
+            $('#AllQuote textarea').each(function () {
+                var ans = this.value + "&" + $(this).parent().attr('id');
+                AllAnswerQoute.push(ans);
+            });
+            var BusinessId = $("#click-quote #BussinessID").val();
+            $.ajax({
+                type: "Post",
+                url: "/Search/AddBussinessQuoteUser",
+                data: { BusinessId, AllAnswerQoute },
+                dataType: "json",
+                success: function (response) {
+                    if (response.success) {
+                        $('#click-quote').modal('hide');
+                        $('#click-quote-result').modal('show');
+                    }
+                    else {
+                        $("#textError").text(response.responseText);
+                        $("#ErrorModal").modal('show');
+                    }
+                },
+                error: function (response) {
+                    $("#LoadingModal").modal('show');
+                }
+            });
+        }
+    </script>
     <script>
         var coll = document.getElementsByClassName("collapsible");
         var i;
@@ -437,9 +730,7 @@
             var params = parseQueryString();
             if (params["catsFinder"] != undefined) {
                 $('#click-cat .category-content .form-check-label').each(function () {
-
                     if (decodeURIComponent(params["catsFinder"].toString()).includes($.trim($(this).text().replaceAll(" ", "-"))))
-
                         $(this).prev().prop('checked', 'checked')
                 });
             }
@@ -524,7 +815,7 @@
                 var match = decodeURIComponent(params["featuFinder"]).toString().split(',');
                 for (var a in match) {
                     $(".category-content__item-filter__property").find(".form-check").each(function () {
-                       
+
                         if ($.trim(match[a].replaceAll("-", " ")) == $.trim($(this).find('.form-check-label').text()))
                             $(this).find(":checkbox").prop('checked', true);
                     });
@@ -725,5 +1016,4 @@
             //disposeFilterForType(pageN, undefined, undefined, districtFinder);
         });
     </script>
-
 }

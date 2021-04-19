@@ -428,7 +428,7 @@ namespace DataLayer.Services
         public async Task<List<MenuCategoryViewModel>> GetAllInSearchPage()
         {
             return await 
-                DbContext.Categories
+                DbContext.Categories.OrderByDescending(x=>x.Order).Take(4)
                     .Select(x => new MenuCategoryViewModel { 
                         Id = x.Id,
                         ParentCategoryId = x.ParentCategoryId,
