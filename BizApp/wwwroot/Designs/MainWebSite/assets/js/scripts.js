@@ -32,6 +32,21 @@ $(window).on('load', () => {
         },
 
     });
+    var photos_image_slider = new Swiper('.all-photos-content__modal .swiper-container', {
+        slidesPerView: 1,
+        autoplay: {
+            delay: 3000
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            type: 'fraction',
+          },
+
+    });
     var recent_image_slider = new Swiper('.recent-activities__modal .swiper-container', {
         slidesPerView: 1,
         autoplay: {
@@ -415,6 +430,7 @@ $(window).on('load', () => {
     })
     
     $("#dropzone").dropzone({ url: "/file/post" });
+    // $("#dropzone1").dropzone({ url: "/file/post" });
     
     var page_slider = new Swiper('.page-slider .swiper-container', {
         slidesPerView: 1,
@@ -428,10 +444,44 @@ $(window).on('load', () => {
         }
     });
 
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-      })
-});
+    $('[data-toggle="tooltip"]').tooltip()
 
+
+
+    $(document).on ('click', '[data-tab]', function () {
+        let $this = $ (this),
+        tab = $this.data ('tab'),
+        target = $this.data ('tab-target');
+
+        $ ('[data-tab][data-tab-target="' + target + '"]').removeClass ('active');
+        $this.addClass ('active');
+
+        $ ('[data-tab-content][data-tab-target="' + target + '"]').removeClass (
+        'active'
+        );
+        $ (
+        '[data-tab-content="' + tab + '"][data-tab-target="' + target + '"]'
+        ).addClass ('active');
+    
+    });
+
+
+    $(".review-content__arrow").on("click",function(){
+        $(".review-content").toggleClass("review-content--close-sidebar")
+    })
+
+
+    $(".review-content__wrapper__box-comment__score__star > label").on("mouseover",function(){
+        var data_title=$(this).data("title")
+        $(".review-content__wrapper__box-comment__score__text > span").html(data_title)
+    })
+
+    $(".review-content__wrapper__box-comment__score__star > label").on("mouseleave",function(){
+        
+        $(".review-content__wrapper__box-comment__score__text > span").html("رتبه بندی خود را انتخاب کنید")
+    })
+
+
+});
 
 //# sourceMappingURL=scripts.js.map

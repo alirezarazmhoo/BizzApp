@@ -1,6 +1,195 @@
 ﻿@model BizApp.Models.Basic.ReviewViewModel
+
+
 @{
-	ViewData["Title"] = "Index";
-	Layout = "~/Views/Shared/_AllPagesLayout.cshtml";
+	
+	Layout = null;
 }
 
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" id="top">
+<head>
+	<meta charset="utf-8">
+	<meta name="author" content="Luan Gjokaj, and Yelp contributors">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-15" />
+	<title>Yelp</title>
+	<meta name="description" content="Yelp is a static site generator with a modern development workflow, integrated web server, auto-reload, CSS preprocessors, and ES6 ready." />
+	<link rel="manifest" href="~/Designs/MainWebSite/manifest.json" />
+
+	<link rel="shortcut icon" href="~/Designs/MainWebSite/assets/img/favicon.ico" type="image/x-icon" />
+	<link rel="apple-touch-icon" sizes="512x512" href="~/Designs/MainWebSite/assets/img/icon-512.png" />
+	<link rel="apple-touch-icon" sizes="192x192" href="~/Designs/MainWebSite/assets/img/icon-192.png" />
+	<link rel="apple-touch-icon-precomposed" href="~/Designs/MainWebSite/assets/img/icon-192.png" />
+	<link rel="icon" sizes="192x192" href="~/Designs/MainWebSite/assets/img/icon-192.png" />
+	<meta property="og:site_name" content="Yelp" />
+	<meta property="og:title" content="Yelp" />
+	<meta property="og:image" content="" />
+	<meta property="og:url" content="https://www.Yelp.co" />
+	<meta property="article:author" content="http://facebook.com/luangjokaj" />
+	<!-- Main Style -->
+	<link href="~/Designs/MainWebSite/assets/css/styles.css" async defer rel="stylesheet">
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+	<script src="~/Designs/MainWebSite/assets/js/header-bundle.js"></script>
+</head>
+<body>
+
+
+	<section class="header-review">
+		<div class="header-review__wrapper">
+			<div class="header-review__wrapper__logo">
+				<a href="#"><img src="~/Designs/MainWebSite/assets/img/logo.png" alt=""></a>
+			</div>
+			@*<div class="header-review__wrapper__image">
+				<a href="#"><img src="~/Designs/MainWebSite/assets/img/review-recent.jpg" alt=""></a>
+			</div>*@
+		</div>
+	</section>
+
+	<section class="review-content">
+		<div class="review-content__arrow">
+			<svg width="16" height="16" class="icon_svg"><path d="M6.5 12.05a1 1 0 01-.7-.28 1 1 0 010-1.42L8.1 8 5.79 5.65a1 1 0 111.42-1.41l3 3.06a1 1 0 010 1.4l-3 3.06a1 1 0 01-.71.29z"></path></svg>
+		</div>
+		<div class="review-content__wrapper">
+
+			<div class="review-content__wrapper__title">
+				<h2>@Model.BusinessName</h2>
+				<a href="#">دستورالعمل های بررسی ما را بخوانید</a>
+			</div>
+			<div class="review-content__wrapper__box-comment">
+				<div class="review-content__wrapper__box-comment__score">
+					<div class="review-content__wrapper__box-comment__score__star">
+						<input type="radio" name="star" id="star_5">
+						<label for="star_5" data-star="5" data-title="بسیار عالی"></label>
+						<input type="radio" name="star" id="star_4">
+						<label for="star_4" data-star="4" data-title="عالی"></label>
+						<input type="radio" name="star" id="star_3">
+						<label for="star_3" data-star="3" data-title="خوب"></label>
+						<input type="radio" name="star" id="star_2">
+						<label for="star_2" data-star="2" data-title="آیا بهتر بوده است"></label>
+						<input type="radio" name="star" id="star_1">
+						<label for="star_1" data-star="1" data-title="خوب نیست"></label>
+					</div>
+					<div class="review-content__wrapper__box-comment__score__text">
+						<span>رتبه بندی خود را انتخاب کنید</span>
+					</div>
+			
+				</div>
+				<div class="review-content__wrapper__box-comment__desc">
+					<textarea placeholder="متن پیام را در این قسمت بنویسید ..."></textarea>
+				</div>
+			</div>
+			<div class="review-content__wrapper__attach">
+				<div class="review-content__wrapper__attach__title">
+					<h4>پیوست عکسها</h4>
+				</div>
+				<div class="review-content__wrapper__attach__box" id="add-image" data-toggle="modal" data-target="#add_image">
+					<div class="review-content__wrapper__attach__box__icon-add">
+						<svg width="24" height="24" class="icon_svg"><path d="M16 2a1 1 0 011 .68L17.72 5H20a3 3 0 013 3v11a3 3 0 01-3 3H4a3 3 0 01-3-3V8a3 3 0 013-3h2.28L7 2.68A1 1 0 018 2zm-.72 2H8.72L8 6.32A1 1 0 017 7H4a1 1 0 00-1 1v11a1 1 0 001 1h16a1 1 0 001-1V8a1 1 0 00-1-1h-3a1 1 0 01-.95-.68L15.28 4zM12 9a1 1 0 011 1v2.5h2.5a1 1 0 110 2H13V17a1 1 0 11-2 0v-2.5H8.5a1 1 0 110-2H11V10a1 1 0 011-1z"></path></svg>
+					</div>
+				</div>
+			</div>
+			<div class="review-content__wrapper__button">
+				<a href="#">ارسال نظر</a>
+			</div>
+		</div>
+		<div class="review-content__recent">
+
+			<div class="review-content__recent__title">
+				<h4>بررسیهای اخیر</h4>
+			</div>
+
+			@foreach (var item in Model.review_ReviewListViewModels)
+			{
+
+			<div class="review-content__recent__comment">
+				<div class="review-content__recent__comment__avatar">
+					<div class="review-content__recent__comment__avatar__image">
+						<a href="#"><img src="@item.Image" alt=""></a>
+					</div>
+					<div class="review-content__recent__comment__avatar__text">
+						<div class="review-content__recent__comment__avatar__text__name">
+							<span>@item.FullName</span>
+							<p>2o</p>
+						</div>
+						<div class="review-content__recent__comment__avatar__text__actions">
+							<ul>
+								<li>
+									<svg width="16" height="16" class="icon_svg"><path d="M11.23 1H4.77A3.77 3.77 0 001 4.77v6.46A3.77 3.77 0 004.77 15h6.46A3.77 3.77 0 0015 11.23V4.77A3.77 3.77 0 0011.23 1zM8 8.63a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM7 11h2.1a2 2 0 011.9 2H5a2 2 0 012-2zm6.05.23a1.71 1.71 0 01-.15.71 4 4 0 00-2.17-2.58 3.42 3.42 0 00.82-2.23 3.5 3.5 0 10-7 0 3.46 3.46 0 00.83 2.23 4 4 0 00-2.18 2.58 1.71 1.71 0 01-.2-.71V4.77C3 3.792 3.792 3 4.77 3h6.46c.978 0 1.77.792 1.77 1.77l.05 6.46z"></path></svg>
+								@item.TotalReviewPicture
+								</li>
+								<li>
+									<svg width="16" height="16" class="icon_svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.23 1H4.77A3.77 3.77 0 001 4.77v6.46A3.77 3.77 0 004.77 15h6.46A3.77 3.77 0 0015 11.23V4.77A3.77 3.77 0 0011.23 1zM13 11.23A1.77 1.77 0 0111.23 13H4.77A1.77 1.77 0 013 11.23V4.77C3 3.792 3.792 3 4.77 3h6.46c.977 0 1.77.792 1.77 1.77v6.46zM9.18 6.65l1.64.24a.51.51 0 01.41.34.51.51 0 01-.13.51L9.91 8.9l.29 1.61a.49.49 0 01-.2.49.51.51 0 01-.3.12.46.46 0 01-.23-.06L8 10.29l-1.47.77a.5.5 0 01-.72-.53l.28-1.63L4.9 7.74a.51.51 0 01-.13-.51.51.51 0 01.41-.34l1.64-.24.73-1.49a.52.52 0 01.9 0l.73 1.49z"></path></svg>
+									@item.TotalReview
+								</li>
+								<li>
+									<svg width="16" height="16" class="icon_svg"><path d="M5.076 6.674a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path><path d="M11.231 1H4.769A3.774 3.774 0 001 4.769v6.462A3.774 3.774 0 004.769 15h6.462A3.774 3.774 0 0015 11.231V4.769A3.774 3.774 0 0011.231 1zM4.769 3h6.462A1.77 1.77 0 0113 4.769v3.58l-.957-.759a4.35 4.35 0 00-5.624.172L3 10.834V4.77A1.77 1.77 0 014.769 3zm6.462 10H4.769a1.75 1.75 0 01-.902-.255l3.89-3.494a2.352 2.352 0 013.042-.094L13 10.902v.329A1.77 1.77 0 0111.231 13z"></path></svg>
+									@item.TotalBusinessMediaPicture
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="score">
+					<div class="score__star">
+						<div class="score__star__icon-star" data-star="@item.Rate"></div>
+						<div class="score__star__date">
+							<span>@item.Date</span>
+						</div>
+					</div>
+				</div>
+				<div class="review-content__recent__comment__desc">
+					<p>
+						@item.Text
+					</p>
+				</div>
+				@*<div class="review-content__recent__comment__more">
+					<p>...</p>
+				</div>*@
+				@*<div class="review-content__recent__comment__read-more">
+					<a href="#">ادامه مطلب</a>
+				</div>*@
+			</div>
+			}
+
+		</div>
+	</section>
+
+	<div class="review-content__modal modal fade" id="add_image" tabindex="-1" role="dialog">
+		<div class="modal-dialog  modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="review-content__modal__content">
+						<div class="review-content__modal__content__close" data-dismiss="modal">
+							<a href="#"><svg width="24" height="24" class="icon_svg"><path d="M13.41 12l5.3-5.29a1.004 1.004 0 10-1.42-1.42L12 10.59l-5.29-5.3a1.004 1.004 0 00-1.42 1.42l5.3 5.29-5.3 5.29a1 1 0 000 1.42 1 1 0 001.42 0l5.29-5.3 5.29 5.3a1 1 0 001.42 0 1 1 0 000-1.42L13.41 12z"></path></svg></a>
+						</div>
+						<form action="/file-upload" class="dropzone" id="dropzone1">
+							<div class="fallback">
+								<input name="file" type="file" multiple>
+							</div>
+							<div class="review-content__modal__content__image">
+								<img src="~/Designs/MainWebSite/assets/img/review-madal.svg" alt="">
+							</div>
+							<div class="dz-message" data-dz-message>
+								<span>تصاویر خود را در این قسمت بکشید</span>
+								<div class="hr-line"><span>یا</span></div>
+								<button type="button">آدرس دهی</button>
+							</div>
+						</form>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<script src="~/Designs/MainWebSite/assets/js/footer-bundle.js"></script>
+	<script src="~/Designs/MainWebSite/assets/js/scripts.js"></script>
+</body>
+</html>

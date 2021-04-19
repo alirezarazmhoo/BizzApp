@@ -451,5 +451,41 @@ namespace DataLayer.Services
 				return VotesAction.Undefinded;
 			}
 		}
+		public async Task<int> GetUserTotalReview(string Id)
+		{
+			var UserItem = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+			if(UserItem != null)
+			{
+				return await DbContext.Reviews.Where(s => s.BizAppUserId.Equals(UserItem.Id)).CountAsync();
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		public async Task<int> GetUserTotalReviewMedia(string Id)
+		{
+			var UserItem = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+			if (UserItem != null)
+			{
+				return await DbContext.ReviewMedias.Where(s => s.Review.BizAppUserId.Equals(UserItem.Id)).CountAsync();
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		public async Task<int> GetUserTotalBusinessMedia(string Id)
+		{
+			var UserItem = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+			if (UserItem != null)
+			{
+				return await DbContext.CustomerBusinessMediaPictures.Where(s => s.CustomerBusinessMedia.BizAppUserId.Equals(UserItem.Id)).CountAsync();
+			}
+			else
+			{
+				return 0;
+			}
+		}
 	}
 }

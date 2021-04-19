@@ -139,8 +139,8 @@ namespace DataLayer.Services
 		{
 			if(await DbContext.Businesses.AnyAsync(s => s.Id.Equals(model.BusinessId)))
 			{
+				model.Date = DateTime.Now; 
 				await DbContext.MessageToBusinesses.AddAsync(model);
-				await DbContext.SaveChangesAsync();
 			}
 		}
 		public async Task<IEnumerable<CustomerBusinessMediaPictures>> GetBusinessGallery(Guid id)

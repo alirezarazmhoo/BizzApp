@@ -109,6 +109,10 @@ function AddOrRemvoeFavorit(element) {
 }
 
 function sendMessageToBusiness() {
+	if ($('#mobile').val() === "" || $("#title").val() === "" ) {
+		$("#errorsendmessage").text("اطلاعات فرم ناقص است");
+		return; 
+	}
 	var fd = new FormData();
 	fd.append('FullName', $("#fullName").val());
 	fd.append('Mobile', $("#mobile").val());
@@ -123,6 +127,13 @@ function sendMessageToBusiness() {
 		contentType: false,
 		processData: false,
 		success: function (response) {
+			$("#fullName").val('');
+			$("#mobile").val('');
+			$("#message").val('');
+			$("#title").val('');
+			$("#sendmessagetobusinessmodal").modal('toggle');
+			$("#addToFavoritResult").text("پیام شما با موفقیت برای صاحب کسب و کار ارسال گردید");
+			$("#favoritModal").modal('show');
 		}
 	});
 }
