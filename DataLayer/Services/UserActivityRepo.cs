@@ -14,6 +14,11 @@ namespace DataLayer.Services
 		{
 		}
 
+		public Task<UserActivity> GetAllActivities(string userId, int page = 1)
+		{
+			throw new NotImplementedException();
+		}
+
 		public async Task AddAsync(string table, string tableKey, string currentUserId, string description)
 		{
 			var model = new UserActivity
@@ -27,7 +32,7 @@ namespace DataLayer.Services
 			if (string.IsNullOrEmpty(model.TableName)) return;
 
 			//await DbContext.UserActivities.AddAsync(model);
-			await DbContext.SaveChangesAsync();
+			//await DbContext.SaveChangesAsync();
 		}
 
 		public async Task Remove(string tableKey)

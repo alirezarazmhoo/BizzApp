@@ -23,6 +23,7 @@ namespace DataLayer.Infrastructure
 		IBusinessHomePageRepo  BusinessHomePageRepo { get; }
 		IAskTheCommunityRepo  AskTheCommunityRepo { get; }
 		IUserFavoritsRepo UserFavoritsRepo { get; }
+		IUserActivityRepo UserActivityRepo { get; }
 
 		Task SaveAsync();
 	}

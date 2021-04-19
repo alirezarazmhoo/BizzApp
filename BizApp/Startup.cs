@@ -47,6 +47,7 @@ namespace BizApp
 			//services.AddIdentity<BizAppUser, CustomRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
 			services.AddTransient<IUnitOfWorkRepo, UnitOfWorkRepo>();
+			services.AddTransient<IUserActivityRepo, UserActivityRepo>();
 			services.AddTransient<IUserProfileRepo, UserProfileRepo>();
 			services.AddTransient<ICateogryRepo, CategoryRepo>();
 
