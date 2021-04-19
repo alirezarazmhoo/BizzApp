@@ -114,47 +114,86 @@ namespace DataLayer.Services
 
 		private async Task<bool> IsOwner(Guid id, string currentUserId)
 		{
-			var photo = await DbContext.Reviews.FirstOrDefaultAsync(w => w.Id == id);
-			return photo.BizAppUserId == currentUserId;
+			var review = await DbContext.Reviews.FirstOrDefaultAsync(w => w.Id == id);
+			return review.BizAppUserId == currentUserId;
 		}
-		private IQueryable<UserReviewPaginateQuery> GetPaginateReviewQuery(string userName, int page, int pageSize = 10)
+		private IQueryable<UserReviewPaginateQuery> GetPaginateReviewQuery(string userName, int page, int pageSize = 10, string userId = null)
 		{
 			var query =
 				DbContext.Reviews
-						.Where(w => w.StatusEnum == StatusEnum.Accepted && w.BizAppUser.UserName == userName)
-						.Paginate(page, pageSize)
-						.Select(s => new UserReviewPaginateQuery
+					.Where(w => w.StatusEnum == StatusEnum.Accepted && w.BizAppUser.UserName == userName)
+					.Paginate(page, pageSize)
+					.Select(s => new UserReviewPaginateQuery
+					{
+						Id = s.Id,
+						Rate = s.Rate,
+						Description = s.Description,
+						UsefulCount = s.UsefulCount,
+						FunnyCount = s.FunnyCount,
+						CoolCount = s.CoolCount,
+						CreatedAt = s.Date,
+						Status = s.StatusEnum,
+						Business = new UserReviewPaginateQuery.BusinessQuery
 						{
-							Id = s.Id,
-							Rate = s.Rate,
-							Description = s.Description,
-							UsefulCount = s.UsefulCount,
-							FunnyCount = s.FunnyCount,
-							CoolCount = s.CoolCount,
-							CreatedAt = s.Date,
-							Status = s.StatusEnum,
-							Business = new UserReviewPaginateQuery.BusinessQuery
-							{
-								Id = s.Business.Id,
-								FeatureImage = s.Business.FeatureImage,
-								CityId = s.Business.District.CityId,
-								CityName = s.Business.District.City.Name,
-								Name = s.Business.Name,
-								OwnerFullName = s.Business.Owner.FullName,
-								CategoryId = s.Business.CategoryId
-								//Categories = s.Business.Category.Parents(s.Business.CategoryId).ToDictionary(f => f.Id, f => f.Name)
-								//OwnerUserName = s.Business.Owner.UserName
-							},
-							Media = s.ReviewMedias.Take(3)
-										.Select(m => new ReviewMediaQuery
-										{
-											ImagePath = m.Image,
-											CreatedAt = m.CreatedAt,
-											Description = m.Description
-										})
-										.OrderByDescending(x => x.CreatedAt)
-										.ToArray()
-						});
+							Id = s.Business.Id,
+							FeatureImage = s.Business.FeatureImage,
+							CityId = s.Business.District.CityId,
+							CityName = s.Business.District.City.Name,
+							Name = s.Business.Name,
+							OwnerFullName = s.Business.Owner.FullName,
+							CategoryId = s.Business.CategoryId
+							//Categories = s.Business.Category.Parents(s.Business.CategoryId).ToDictionary(f =>f.Id, f => f.Name)
+							//OwnerUserName = s.Business.Owner.UserName
+						},
+						Media = s.ReviewMedias.Take(3)
+									.Select(m => new ReviewMediaQuery
+									{
+										ImagePath = m.Image,
+										CreatedAt = m.CreatedAt,
+										Description = m.Description
+									})
+									.OrderByDescending(x => x.CreatedAt)
+									.ToArray()
+					});
+
+			if (userId != null)
+			{
+				query = DbContext.Reviews
+					.Where(w => (w.StatusEnum == StatusEnum.Accepted || w.StatusEnum == StatusEnum.Waiting) && w.BizAppUser.UserName == userName)
+					.Paginate(page, pageSize)
+					.Select(s => new UserReviewPaginateQuery
+					{
+						Id = s.Id,
+						Rate = s.Rate,
+						Description = s.Description,
+						UsefulCount = s.UsefulCount,
+						FunnyCount = s.FunnyCount,
+						CoolCount = s.CoolCount,
+						CreatedAt = s.Date,
+						Status = s.StatusEnum,
+						Business = new UserReviewPaginateQuery.BusinessQuery
+						{
+							Id = s.Business.Id,
+							FeatureImage = s.Business.FeatureImage,
+							CityId = s.Business.District.CityId,
+							CityName = s.Business.District.City.Name,
+							Name = s.Business.Name,
+							OwnerFullName = s.Business.Owner.FullName,
+							CategoryId = s.Business.CategoryId
+							//Categories = s.Business.Category.Parents(s.Business.CategoryId).ToDictionary(f =>f.Id, f => f.Name)
+							//OwnerUserName = s.Business.Owner.UserName
+						},
+						Media = s.ReviewMedias.Take(3)
+									.Select(m => new ReviewMediaQuery
+									{
+										ImagePath = m.Image,
+										CreatedAt = m.CreatedAt,
+										Description = m.Description
+									})
+									.OrderByDescending(x => x.CreatedAt)
+									.ToArray()
+					});
+			}
 
 			return query;
 		}
@@ -193,6 +232,11 @@ namespace DataLayer.Services
 
 			return result;
 		}
+		public async Task<IEnumerable<UserReviewPaginateQuery>> GetCurrentUserReviews(string userId, int page)
+		{
+			throw new NotImplementedException();
+		}
+
 		public async Task<IEnumerable<Review>> GetBusinessReviews(Guid Id)
 		{
 			var BusinessItem = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Id.Equals(Id));
@@ -454,7 +498,7 @@ namespace DataLayer.Services
 		public async Task<int> GetUserTotalReview(string Id)
 		{
 			var UserItem = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(Id));
-			if(UserItem != null)
+			if (UserItem != null)
 			{
 				return await DbContext.Reviews.Where(s => s.BizAppUserId.Equals(UserItem.Id)).CountAsync();
 			}

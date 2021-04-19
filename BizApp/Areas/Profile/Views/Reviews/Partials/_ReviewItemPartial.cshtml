@@ -59,7 +59,12 @@
 				<a href="#">
 					<img src="@firstImage.ImagePath" alt="">
 				</a>
-				<span>@firstImage.Description.Substring(0, 20)</span>
+				<span>
+					@if (!string.IsNullOrEmpty(firstImage.Description)) 
+					{ 
+						firstImage.Description.Substring(0, 20); 
+					}
+				</span>
 			</div>
 
 			@if (Model.Media.Length > 1)
@@ -72,7 +77,12 @@
 								<a href="#">
 									<img src="@Model.Media[i].ImagePath" alt="" loading="lazy">
 								</a>
-								<span>@Model.Media[i].Description.Substring(0, 20)</span>
+								<span>
+									@if (!string.IsNullOrEmpty(Model.Media[i].Description))
+									{
+										Model.Media[i].Description.Substring(0, 20);
+									}
+								</span>
 							</div>
 						</div>
 					}
