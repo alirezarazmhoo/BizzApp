@@ -16,10 +16,14 @@ namespace DataLayer.Services
 	{
 		private readonly string directoryPath;
 		private readonly string databasePath;
-		public UserPhotoRepo(ApplicationDbContext dbContext) : base(dbContext)
+		private readonly IUserActivityRepo _userActivity;
+
+		public UserPhotoRepo(ApplicationDbContext dbContext, IUserActivityRepo userActivity) : base(dbContext)
 		{
 			directoryPath = @"wwwroot\Upload\User\Profiles\";
 			databasePath = "/Upload/User/Profiles/";
+
+			_userActivity = userActivity;
 		}
 
 		private async Task<string> UploadPhoto(IFormFile file, string userId)
@@ -98,8 +102,12 @@ namespace DataLayer.Services
 			// add new items to database
 			await DbContext.ApplicationUserMedias.AddAsync(addedItem);
 
+			// add user activity
+			await _userActivity.AddAsync("ApplicationUserMedias", addedItem.Id.ToString(), userId, "اضافه کردن تصویر پروفایل");
+
 			// save changes in database 
 			await DbContext.SaveChangesAsync();
+
 
 			return UploadResult.Succeed;
 		}
@@ -119,8 +127,12 @@ namespace DataLayer.Services
 
 			// delete from database
 			DbContext.ApplicationUserMedias.Remove(photo);
+			
+			// delete created activity
+			await _userActivity.Remove(id.ToString());
 
 			await DbContext.SaveChangesAsync();
+
 		}
 		public async Task SetAsPrimary(Guid id, string userId)
 		{

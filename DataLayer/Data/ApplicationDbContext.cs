@@ -46,7 +46,7 @@ namespace DataLayer.Data
 		public virtual DbSet<BusinessQoute> BusinessQoutes { get; set; }
 		public virtual DbSet<BusinessQouteUser> BusinessQouteUsers { get; set; }
 		public virtual DbSet<UserFavorits> UserFavorits { get; set;  }
-		public virtual DbSet<UserActivity> UserActivities { get; set;  }
+		//public virtual DbSet<UserActivity> UserActivities { get; set;  }
 
 
 		#endregion

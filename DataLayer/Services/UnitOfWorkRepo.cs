@@ -12,6 +12,7 @@ namespace DataLayer.Services
 	{
 		private ApplicationDbContext _DbContext;
 		private readonly UserManager<BizAppUser> _userManager;
+		private readonly IUserActivityRepo _userActivity;
 		private readonly ClaimsPrincipal _currentUser;
 		private readonly ProvinceRepo provinceRepo;
 		private readonly BusinessQouteRepo businessQouteRepo;
@@ -33,13 +34,13 @@ namespace DataLayer.Services
 		private readonly UserFavoritsRepo  userFavoritsRepo;
 
 
-		public UnitOfWorkRepo(ApplicationDbContext DbContext, UserManager<BizAppUser> userManager)
+		public UnitOfWorkRepo(ApplicationDbContext DbContext, UserManager<BizAppUser> userManager, IUserActivityRepo userActivity)
 		{
 			_DbContext = DbContext;
 			_userManager = userManager;
+			_userActivity = userActivity;
 		}
-
-		public UnitOfWorkRepo(ApplicationDbContext dbContext, UserManager<BizAppUser> userManager, ClaimsPrincipal currentUser) : this(dbContext, userManager)
+		public UnitOfWorkRepo(ApplicationDbContext dbContext, UserManager<BizAppUser> userManager, IUserActivityRepo userActivity, ClaimsPrincipal currentUser) : this(dbContext, userManager, userActivity)
 		{
 			_currentUser = currentUser;
 		}
@@ -56,7 +57,7 @@ namespace DataLayer.Services
         public IUserRepo UserRepo => userRepo ?? new UserRepo(_DbContext);
 		public IReviewRepo  ReviewRepo =>  reviewRepo ?? new ReviewRepo(_DbContext);
         public IUserProfileRepo UserProfileRepo => userProfileRepo ?? new UserProfileRepo(_DbContext);
-        public IUserPhotoRepo UserPhotoRepo => userPhotoRepo ?? new UserPhotoRepo(_DbContext);
+        public IUserPhotoRepo UserPhotoRepo => userPhotoRepo ?? new UserPhotoRepo(_DbContext, _userActivity);
 		public IBusinessReviewCountRepo  BusinessReviewCountRepo => businessReviewCountRepo ?? new BusinessReviewCountRepo(_DbContext);
         public IUserProfileRepo ProfileRepo => profileRepo ?? new UserProfileRepo(_DbContext);
 		public IBusinessHomePageRepo BusinessHomePageRepo => businessHomePageRepo ?? new BusinessHomePageRepo(_DbContext);

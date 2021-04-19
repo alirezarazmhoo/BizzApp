@@ -1,11 +1,10 @@
-﻿using DataLayer.Services;
-using DomainClass;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace DataLayer.Infrastructure
 {
 	public interface IUserActivityRepo
 	{
-		Task Add(UserActivity userActivity, ActivityObject activityObject);
+		Task AddAsync(string table, string tableKey, string currentUserId, string description = null);
+		Task Remove(string tableKey);
 	}
 }

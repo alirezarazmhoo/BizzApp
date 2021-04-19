@@ -1,15 +1,28 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DomainClass
 {
 	public class UserActivity
 	{
+		[Key]
 		public Guid Id { get; set; }
+		[Required]
+		[Column(TypeName = "nvarchar(450)")]
 		public string UserId { get; set; }
-		public string IpAddress { get; set; }
+		[Required]
 		public DateTime CreatedAt { get; set; }
-		public string Table { get; set; }
-		public string TableId { get; set; }
+		[Required]
+		[Column(TypeName = "nvarchar(100)")]
+		public string TableName { get; set; }
+		[Required]
+		[Column(TypeName = "nvarchar(450)")]
+		public string TableKey { get; set; }
+		[Column(TypeName = "nvarchar(500)")]
+		public string Description { get; set; }
+
+		public virtual BizAppUser User { get; set; }
 
 	}
 }
