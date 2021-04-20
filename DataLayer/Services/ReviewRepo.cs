@@ -531,5 +531,41 @@ namespace DataLayer.Services
 				return 0;
 			}
 		}
+		public async Task PostReview(Review Model , IFormFile[] file)
+		{
+			int Average = 0;
+			var BusinessItem = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Id.Equals(Model.BusinessId));
+			if(BusinessItem !=null && await DbContext.Users.AnyAsync(s => s.Id.Equals(Model.BizAppUserId)))
+			{
+				Model.Date = DateTime.Now;
+				Model.StatusEnum = StatusEnum.Waiting;
+				Model.Rate =   Model.Rate == 0 ? 1 : Model.Rate;
+				await DbContext.Reviews.AddAsync(Model);
+				await DbContext.SaveChangesAsync();
+				if (file != null && file.Count() > 0)
+				{
+					foreach (var item in file)
+					{
+						var fileName = Guid.NewGuid().ToString().Replace('-', '0') + Path.GetExtension(item.FileName).ToLower();
+						var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Upload\Review\Files\", fileName);
+						using (var stream = new FileStream(filePath, FileMode.Create))
+						{
+							item.CopyTo(stream);
+						}
+						DbContext.ReviewMedias.Add(new ReviewMedia()
+						{
+							 CreatedAt = DateTime.Now , 
+							  Description = string.Empty , 
+							  ReviewId = Model.Id ,
+							  Image = "/Upload/Review/Files/" + fileName,					
+						});
+					}
+				}
+				var OtherReviews = await DbContext.Reviews.Where(s => s.BusinessId.Equals(Model.BusinessId)).ToListAsync();
+				Average = Convert.ToInt32( OtherReviews.Average(s => s.Rate));
+				BusinessItem.Rate = Average;
+				await DbContext.SaveChangesAsync();
+			}
+		}
 	}
 }

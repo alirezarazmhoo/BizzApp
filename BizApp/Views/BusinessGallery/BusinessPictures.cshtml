@@ -1,0 +1,168 @@
+﻿
+@{
+	ViewData["Title"] = "BusinessGallery";
+	Layout = "~/Views/Shared/_AllPagesLayout.cshtml";
+}
+
+<section class="all-photos-content">
+	<div class="container">
+		<div class="all-photos-content__wrapper">
+			<div class="all-photos-content__wrapper__title">
+				<h1>عکس های Al's New York Pizza</h1>
+			</div>
+			<div class="all-photos-content__wrapper__profile">
+				<div class="all-photos-content__wrapper__profile__avatar">
+					<div class="all-photos-content__wrapper__profile__avatar__image">
+						<a href="#"><img src="./assets/img/all-photo.jpg" alt=""></a>
+					</div>
+					<div class="all-photos-content__wrapper__profile__avatar__bio">
+						<div class="all-photos-content__wrapper__profile__avatar__bio__name">
+							<a href="#">پیتزا آل نیویورک</a>
+						</div>
+						<div class="all-photos-content__wrapper__profile__avatar__bio__score">
+							<div class="all-photos-content__wrapper__profile__avatar__bio__score__star" data-star="4"></div>
+							<div class="all-photos-content__wrapper__profile__avatar__bio__score__view">
+								<span>بررسی ها</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="all-photos-content__wrapper__profile__add">
+					<a href="#"><svg id="24x24_add_photo" height="24" width="24"><path d="M19 20H5a3 3 0 01-3-3V9a3 3 0 013-3h2.184A2.99 2.99 0 0110 4h4a2.99 2.99 0 012.816 2H19a3 3 0 013 3v8a3 3 0 01-3 3zM12.005 8.5a4.5 4.5 0 100 9 4.5 4.5 0 000-9zM13 14v1a1 1 0 01-2 0v-1h-1a1 1 0 010-2h1v-1a1 1 0 012 0v1h1a1 1 0 010 2h-1z"></path></svg>اضافه کردن عکس</a>
+				</div>
+			</div>
+			<div class="all-photos-content__wrapper__tabs">
+				<div class="all-photos-content__wrapper__tabs__list">
+					<svg id="24x24_chevron_right" height="24" width="24"><path d="M9.525 5.636L8.111 7.05l4.95 4.95-4.95 4.95 1.414 1.414L15.889 12 9.525 5.636z"></path></svg>
+
+					<ul>
+						<li class="active" data-tab="tab-1" data-tab-target="tab-gallery">همه  <span>(5)</span></li>
+						<li data-tab="tab-2" data-tab-target="tab-gallery">غذا  <span>(5)</span></li>
+						<li data-tab="tab-3" data-tab-target="tab-gallery">منو  <span>(5)</span></li>
+						<li data-tab="tab-4" data-tab-target="tab-gallery">بیرون  <span>(5)</span></li>
+					</ul>
+					<svg id="24x24_chevron_left" height="24" width="24"><path d="M14.475 18.364l1.414-1.414-4.95-4.95 4.95-4.95-1.414-1.414L8.111 12l6.364 6.364z"></path></svg>
+
+				</div>
+				<div class="all-photos-content__wrapper__tabs__search">
+					<div class="all-photos-content__wrapper__tabs__search__input">
+						<input type="text" placeholder="جستجو">
+					</div>
+					<div class="all-photos-content__wrapper__tabs__search__button">
+						<button><svg id="18x18_search_small" height="18" width="18"><path d="M15.913 14.224a1.324 1.324 0 00-.3-.466h.009l-3.377-3.376a5.492 5.492 0 00.802-2.857 5.523 5.523 0 10-5.522 5.52 5.491 5.491 0 002.856-.801l3.369 3.369.004.003c.132.131.293.231.471.298.143.053.296.086.458.086.727 0 1.317-.589 1.317-1.316 0-.163-.033-.317-.087-.46zM7.525 10.94a3.422 3.422 0 01-3.418-3.416 3.422 3.422 0 013.418-3.417 3.422 3.422 0 013.416 3.417 3.421 3.421 0 01-3.416 3.416z"></path></svg></button>
+					</div>
+				</div>
+			</div>
+			<div class="all-photos-content__wrapper__gallery active" data-tab-content="tab-1" data-tab-target="tab-gallery">
+				<ul>
+					<li>
+						<a href="#" data-toggle="modal" data-target="#click-image"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+
+				</ul>
+			</div>
+			<div class="all-photos-content__wrapper__gallery " data-tab-content="tab-2" data-tab-target="tab-gallery">
+				<ul>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+
+				</ul>
+			</div>
+			<div class="all-photos-content__wrapper__gallery " data-tab-content="tab-3" data-tab-target="tab-gallery">
+				<ul>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+
+				</ul>
+			</div>
+			<div class="all-photos-content__wrapper__gallery " data-tab-content="tab-4" data-tab-target="tab-gallery">
+				<ul>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="./assets/img/gallery-photos.jpg" alt=""></a>
+					</li>
+
+				</ul>
+			</div>
+			<div class="all-photos-content__wrapper__pagination">
+				<span>1 از 55</span>
+			</div>
+		</div>
+	</div>
+</section>

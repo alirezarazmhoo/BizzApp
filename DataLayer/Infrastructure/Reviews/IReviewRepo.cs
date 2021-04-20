@@ -30,6 +30,7 @@ namespace DataLayer.Infrastructure.Reviews
 		Task<VotesAction> ChangeLikeCount(Guid Id, string UserId);
 		Task<int> GetUserTotalReview(string Id);
 		Task<int> GetUserTotalReviewMedia(string Id);
-		Task<int> GetUserTotalBusinessMedia(string Id); 
+		Task<int> GetUserTotalBusinessMedia(string Id);
+		Task PostReview(Review Model, IFormFile[] file); 
 	}
 }

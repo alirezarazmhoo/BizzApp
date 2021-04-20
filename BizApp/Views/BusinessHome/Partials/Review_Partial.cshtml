@@ -21,7 +21,7 @@
 <div class="stay-gold-content__wrapper__comment" style="margin-top:15px">
 	@foreach (var item in Model)
 	{
-		<div class="stay-gold-content__wrapper__comment__avatar">
+		<div class="stay-gold-content__wrapper__comment__avatar" style="margin-top:20px">
 			<div class="stay-gold-content__wrapper__comment__avatar__image">
 
 				<a href="#"><img src="@item.UserPicture" alt=""></a>
@@ -79,22 +79,28 @@
 		</div>
 
 
-		foreach (var item2 in item.ReviewPictures)
-		{
-
 			<div class="stay-gold-content__wrapper__comment__image ">
 				<div class="row" data-space="15">
 					<div class="col-6">
-						<div class="stay-gold-content__wrapper__comment__image__item  stay-gold-content__wrapper__comment__image__item--two-image">
-							<a href="#">
-								<img src="@item2" alt="">
-							</a>
+						<div class="stay-gold-content__wrapper__comment__image ">
+							<div class="row" data-space="15">
+		@foreach (var item2 in item.ReviewPictures)
+		{
+								<div class="col-3" style="margin-left:10px">
+									<div class="stay-gold-content__wrapper__comment__image__item  stay-gold-content__wrapper__comment__image__item--there-image">
+										<a href="#">
+											<img src="@item2" alt="">
+										</a>
+									</div>
+								</div>
+						
+							
+					}
+							</div>
 						</div>
 					</div>
 				</div>
-
 			</div>
-		}
 
 
 		<div class="stay-gold-content__wrapper__comment__actions">

@@ -212,7 +212,7 @@ namespace DataLayer.Services
 		}
 		private async Task<int> GetTotalMediaReview(Guid id)
 		{
-			return await DbContext.CustomerBusinessMediaPictures.Where(s => s.CustomerBusinessMedia.BusinessId.Equals(id)).CountAsync();
+			return await DbContext.CustomerBusinessMediaPictures.Where(s => s.CustomerBusinessMedia.BusinessId.Equals(id) && s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted).CountAsync();
 		}
 		private async Task<int> GetTotalReview(Guid id)
 		{

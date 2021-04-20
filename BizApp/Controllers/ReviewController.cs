@@ -22,6 +22,8 @@ namespace BizApp.Controllers
 			_unitOfWork = unitOfWork;
 			_httpContextAccessor = httpContextAccessor;
 		}
+
+		[Authorize]
 		public async Task<IActionResult> Index(Guid Id)
 		{
 			var BusinessId =Id;
@@ -40,6 +42,7 @@ namespace BizApp.Controllers
 			#region FinalResult
 			reviewViewModel.BusinessName = await _unitOfWork.BusinessRepo.GetBusinessName(BusinessId);
 			reviewViewModel.review_ReviewListViewModels = review_ReviewListViewModel;
+			reviewViewModel.BussinessId = BusinessId; 
 			#endregion
 			return View(reviewViewModel);
 		}
@@ -198,6 +201,14 @@ namespace BizApp.Controllers
 				return Json(new { success = false });
 
 			}
+		}
+
+		[HttpPost]
+		public async Task<ActionResult> PostReview(Review model , IFormFile[] files)
+		{
+			model.BizAppUserId = GetUserId();
+			await _unitOfWork.ReviewRepo.PostReview(model ,files);
+			return RedirectToAction(nameof(GuessReivew));
 		}
 		private string GetUserId()
 		{
