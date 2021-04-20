@@ -433,13 +433,14 @@ namespace DataLayer.Services
             else
             {
                 string[] subcatsFinder = searchViewModel.catsFinder.Split(',');
-                var subcatFirstId = 0;
                 foreach (var sub in subcatsFinder)
                 {
                     if (sub.Replace("-", " ") != "")
                     {
-
-                        subcatFirstId = allCategories.FirstOrDefault(w => w.Name.Replace("\t", "") == sub.Replace("-", " ")).Id;
+                        var subcatFirstId = 0;
+                        var substrCat = sub.Replace("-", " ");
+                        var subCatFirst = DbContext.Categories.FirstOrDefault(w => w.Name.Replace("\t", "").Trim() == substrCat);
+                        subcatFirstId = subCatFirst.Id;
                         cats.Add(subcatFirstId);
                         foreach (var item2 in allCategories)
                         {
