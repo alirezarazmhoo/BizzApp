@@ -90,6 +90,7 @@ namespace BizApp.Areas.Profile.Controllers
 			var user = await GetUserDetail();
 
 			ViewBag.FullName = user.FullName;
+			ViewBag.UserName = user.UserName;
 
 			return View();
 		}

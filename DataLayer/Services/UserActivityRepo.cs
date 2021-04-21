@@ -1,4 +1,5 @@
 ﻿using DataLayer.Data;
+using DataLayer.Extensions;
 using DataLayer.Infrastructure;
 using DomainClass;
 using Microsoft.AspNetCore.Identity;
@@ -15,9 +16,9 @@ namespace DataLayer.Services
 		{
 		}
 
-		public Task<IList<UserActivity>> GetAllActivities(string userId, int page = 1)
+		public async Task<IList<UserActivity>> GetAllActivities(string userId, int page = 1)
 		{
-			throw new NotImplementedException();
+			return await DbContext.UserActivities.Paginate(page, 10).ToListAsync();
 		}
 
 		public async Task AddAsync(TableName table, string tableKey, string currentUserId, string description)
@@ -32,20 +33,18 @@ namespace DataLayer.Services
 
 			//if (string.IsNullOrEmpty(model.TableName)) return;
 
-			//await DbContext.UserActivities.AddAsync(model);
-			//await DbContext.SaveChangesAsync();
+			await DbContext.UserActivities.AddAsync(model);
+			await DbContext.SaveChangesAsync();
 		}
 
 		public async Task Remove(string tableKey)
 		{
-			//var userActivity = await DbContext.UserActivities.FirstOrDefaultAsync(f => f.TableKey == tableKey);
+			var userActivity = await DbContext.UserActivities.FirstOrDefaultAsync(f => f.TableKey == tableKey);
 
-			//if (userActivity == null) return;
+			if (userActivity == null) return;
 
-			//DbContext.UserActivities.Remove(userActivity);
-			//await DbContext.SaveChangesAsync();
-
-			throw new NotImplementedException();
+			DbContext.UserActivities.Remove(userActivity);
+			await DbContext.SaveChangesAsync();
 		}
 	}
 
