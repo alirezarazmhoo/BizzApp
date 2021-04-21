@@ -139,7 +139,7 @@
                         </div>
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input form-check-featu" id="IsSelectedAnswer">
-                            <label class="form-check-label" for="IsSelectedAnswer">پاسخ گزینه ای است (چنانچه مایل به درج سوال به صورت تشریحی می باشی لطفا این تیک را کلیلک نکنید )</label>
+                            <label class="form-check-label" for="IsSelectedAnswer">پاسخ گزینه ای است ،حداقل دو گزینه وارد نمایید(چنانچه مایل به درج سوال به صورت تشریحی می باشی لطفا این تیک را کلیلک نکنید )</label>
                         </div>
 
 
@@ -203,7 +203,7 @@
                     noSuggestionNotice: "متاسفانه موردی پیدا نشد"
                 });
                 $(".btn-warning").click(function () {
-
+                   
                     var id = this.id;
                     var fd = new FormData();
                     fd.append('ItemId', id);
@@ -230,10 +230,12 @@
                                         var array = this.value.split("&");
                                         var str = "";
                                         count2 = array.length;
-                                        $.each(array, function (i) {                                            
-                                            str += "</br><div class='form-group' style='margin-right:5px;float: right;width: 81%;'><textarea rows='1' value=" + array[i] + " display='گزینه' id='answer-" + count2 + "' name='answer-" + count2 + "' placeholder='گزینه " + count + " را وارد کنید' class='form-control'  required>" + array[i] + "</textarea></div><button type = 'button' class='btn btn-danger' onclick='RemoveDiv(this)' style='margin-top: 14px;'> - </button>";
-                                        });
-                                        $("#myModal #allAnswer").append(str);
+                                        if (array.length > 1) {
+                                            $.each(array, function (i) {
+                                                str += "</br><div class='form-group' style='margin-right:5px;float: right;width: 81%;'><textarea rows='1' value=" + array[i] + " display='گزینه' id='answer-" + count2 + "' name='answer-" + count2 + "' placeholder='گزینه " + count + " را وارد کنید' class='form-control'  required>" + array[i] + "</textarea></div><button type = 'button' class='btn btn-danger' onclick='RemoveDiv(this)' style='margin-top: 14px;'> - </button>";
+                                            });
+                                            $("#myModal #allAnswer").append(str);
+                                        }
                                     }
                                     $('#' + this.key + '').val(this.value);
                                 });
@@ -318,6 +320,8 @@
                     });
                     allAnswer = allAnswer.slice(0, -1);
                     $("#Answer").val(allAnswer);
+                    if ($("#IsSelectedAnswer").val() == "")
+                        $("#IsSelectedAnswer").val(false)
                     var Parameters = [{ id: "CategoryId", htmlname: "CategoryId", special: "" }, { id: "Ask", htmlname: "Ask", special: "" }, { id: "BusinessQouteId", htmlname: "BusinessQouteId", special: "" }, { id: "Answer", htmlname: "Answer", special: "" }, { id: "IsSelectedAnswer", htmlname: "IsSelectedAnswer", special: "" },];
                     PostAjax('/admin/BusinessQoute/CreateOrUpdate', Parameters, "/admin/BusinessQoute/Index");
                 }

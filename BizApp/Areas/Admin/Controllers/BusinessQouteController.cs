@@ -56,6 +56,8 @@ namespace BizApp.Areas.Admin.Controllers
 			{
 				try
 				{
+					if (BusinessQoute.IsSelectedAnswer == false)
+						BusinessQoute.Answer = "";
 					var model = _mapper.Map<DomainClass.Businesses.BusinessQoute>(BusinessQoute);
 					await _unitofwork.BusinessQouteRepo.AddOrUpdate(model);
 					await _unitofwork.SaveAsync();
