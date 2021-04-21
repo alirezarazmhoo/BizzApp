@@ -165,5 +165,13 @@ namespace DataLayer.Services
 		{
 			return await FindByCondition(f=> f.Id == id).FirstOrDefaultAsync();
 		}
+
+		public async Task<string> GetPathById(Guid id)
+		{
+			var fileDetail = await DbContext.ApplicationUserMedias.FirstOrDefaultAsync(f => f.Id == id);
+			if (fileDetail != null) return fileDetail.UploadedPhoto;
+
+			return null;
+		}
 	}
 }

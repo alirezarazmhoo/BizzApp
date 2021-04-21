@@ -42,7 +42,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-7 md-7">
-				@(ViewBag.UserName = !string.IsNullOrEmpty(userName) ? userName : currentUser)				
+				@{ViewBag.UserName = !string.IsNullOrEmpty(userName) ? userName : currentUser; }
 				<partial name="_HeaderPartial" />
 			</div>
 

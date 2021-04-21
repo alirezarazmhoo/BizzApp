@@ -50,6 +50,7 @@ namespace DataLayer.Data
 
 
 		#endregion
+		
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			base.OnModelCreating(builder);
@@ -97,25 +98,21 @@ namespace DataLayer.Data
 			// User Id Auto Generator 
 			//builder.Entity<BizAppUser>().Property(p => p.Id).HasDefaultValueSql("NEWID()");
 		}
-
 		public override int SaveChanges()
 		{
 			UpdateSoftDeleteStatuses();
 			return base.SaveChanges();
 		}
-
 		public override int SaveChanges(bool acceptAllChangesOnSuccess)
 		{
 			UpdateSoftDeleteStatuses();
 			return base.SaveChanges(acceptAllChangesOnSuccess);
 		}
-
 		public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
 		{
 			UpdateSoftDeleteStatuses();
 			return base.SaveChangesAsync(cancellationToken);
 		}
-
 		private void UpdateSoftDeleteStatuses()
 		{
 			bool isSoftDelete;
