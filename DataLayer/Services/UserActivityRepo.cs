@@ -4,6 +4,7 @@ using DomainClass;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DataLayer.Services
@@ -14,12 +15,12 @@ namespace DataLayer.Services
 		{
 		}
 
-		public Task<UserActivity> GetAllActivities(string userId, int page = 1)
+		public Task<IList<UserActivity>> GetAllActivities(string userId, int page = 1)
 		{
 			throw new NotImplementedException();
 		}
 
-		public async Task AddAsync(string table, string tableKey, string currentUserId, string description)
+		public async Task AddAsync(TableName table, string tableKey, string currentUserId, string description)
 		{
 			var model = new UserActivity
 			{
@@ -29,7 +30,7 @@ namespace DataLayer.Services
 				UserId = currentUserId
 			};
 
-			if (string.IsNullOrEmpty(model.TableName)) return;
+			//if (string.IsNullOrEmpty(model.TableName)) return;
 
 			//await DbContext.UserActivities.AddAsync(model);
 			//await DbContext.SaveChangesAsync();

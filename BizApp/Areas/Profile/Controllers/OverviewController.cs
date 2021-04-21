@@ -1,11 +1,12 @@
-﻿using AutoMapper;
-using BizApp.Areas.Profile.Models.UserActivities;
-using DataLayer.Infrastructure;
-using DomainClass;
+﻿using DataLayer.Infrastructure;
+using DomainClass.Review.Queries;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using PagedList.Core;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BizApp.Areas.Profile.Controllers
 {
@@ -13,43 +14,48 @@ namespace BizApp.Areas.Profile.Controllers
 	public class OverviewController : Controller
 	{
 		private readonly IUnitOfWorkRepo _unitOfWork;
-		private readonly IHttpContextAccessor _httpContextAccessor;
-		private readonly UserManager<BizAppUser> _userManager;
+		private readonly System.Security.Principal.IIdentity _currentUser;
 
-		public OverviewController(IUnitOfWorkRepo unitOfWork, UserManager<BizAppUser> userManager, IHttpContextAccessor httpContextAccessor)
+		public OverviewController(IUnitOfWorkRepo unitOfWork, IHttpContextAccessor httpContextAccessor)
 		{
 			_unitOfWork = unitOfWork;
-			_httpContextAccessor = httpContextAccessor;
-			_userManager = userManager;
+			_currentUser = httpContextAccessor.HttpContext.User.Identity;
 		}
-		public async System.Threading.Tasks.Task<IActionResult> IndexAsync(string userName = null, int page = 1)
+
+		[HttpGet]
+		public async Task<IActionResult> Index(string userName, int page = 1)
 		{
-			var currentUserName = _httpContextAccessor.HttpContext.User.Identity.Name;
-			userName = string.IsNullOrEmpty(userName) ? currentUserName : userName;
+			if (string.IsNullOrEmpty(userName) || userName.Equals(_currentUser.Name, StringComparison.OrdinalIgnoreCase))
+				return await Index(page);
 
-			if (string.IsNullOrEmpty(userName))
-				return Redirect("/identity/account/login");
-
-			var model = new UserActivityViewModel();
-			// check user seen others profile or self profile
-			if (!userName.Equals(currentUserName, StringComparison.OrdinalIgnoreCase))
+			try
 			{
-				// in this state just take user reviews
-				model.Reviews = await _unitOfWork.ReviewRepo.GetUseReviews(userName, 1);
-			}
-			else
-			{
-				// if current user wants seen self activities
-				var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-				var activities = _unitOfWork.UserActivityRepo.GetAllActivities(currentUser.Id, page);
+				// get user reviews
+				var reviews = await _unitOfWork.ReviewRepo.GetUseReviews(userName, 1);
+				var paginatedLisModel = new PagedList<UserReviewPaginateQuery>(reviews.AsQueryable(), 1, 10);
 
-				
+				return View("guest", paginatedLisModel);
 			}
+			catch (KeyNotFoundException)
+			{
+				return NotFound();
+			}
+		}
+
+		private async Task<IActionResult> Index(int page)
+		{
+			if (string.IsNullOrEmpty(_currentUser.Name)) return Redirect("/identity/account/login");
 
 			// get activities
+			var activities = await _unitOfWork.UserActivityRepo.GetAllActivities(_currentUser.Name, page);
+
+			foreach (var activity in activities)
+			{
+
+			}
 			//var activities = _unitOfWork.UserActivityRepo.GetAllActivities();
 
-			return View();
+			return View("index");
 		}
 	}
 }

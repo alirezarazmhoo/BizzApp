@@ -1,0 +1,15 @@
+﻿@model PagedList.Core.PagedList<DomainClass.Review.Queries.UserReviewPaginateQuery>
+
+@{
+	ViewData["Title"] = "بررسی ها";
+	Layout = "~/Areas/Profile/Views/Shared/_ProfileLayout.cshtml";
+}
+
+<partial name="~/Areas/profile/Views/Reviews/Partials/_AllReviewsPartial.cshtml" model="Model" />
+
+@{ var userName = Context.Request.Query["username"]; }
+
+
+@*<div class="profile-content__comment__more">
+	<a href="/profile/reviews?username=@userName">نظرات بیشتر توسط @userName </a>
+</div>*@

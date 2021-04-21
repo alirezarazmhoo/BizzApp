@@ -103,7 +103,7 @@ namespace DataLayer.Services
 			await DbContext.ApplicationUserMedias.AddAsync(addedItem);
 
 			// add user activity
-			await _userActivity.AddAsync("ApplicationUserMedias", addedItem.Id.ToString(), userId, "اضافه کردن تصویر پروفایل");
+			await _userActivity.AddAsync(TableName.UserPhotos, addedItem.Id.ToString(), userId, "اضافه کردن تصویر پروفایل");
 
 			// save changes in database 
 			await DbContext.SaveChangesAsync();

@@ -14,8 +14,7 @@ namespace DomainClass
 		[Required]
 		public DateTime CreatedAt { get; set; }
 		[Required]
-		[Column(TypeName = "nvarchar(100)")]
-		public string TableName { get; set; }
+		public TableName TableName { get; set; }
 		[Required]
 		[Column(TypeName = "nvarchar(450)")]
 		public string TableKey { get; set; }
@@ -24,5 +23,11 @@ namespace DomainClass
 
 		public virtual BizAppUser User { get; set; }
 
+	}
+
+	public enum TableName
+	{
+		Reviews,
+		UserPhotos
 	}
 }

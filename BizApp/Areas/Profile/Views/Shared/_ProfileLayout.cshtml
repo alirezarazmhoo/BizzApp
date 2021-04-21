@@ -18,6 +18,13 @@
 
 	// get current user information, its make be null
 	var currentUser = User.Identity.Name;
+
+	ViewBag.UserName = userName;
+	ViewBag.FullName = "بدون نام";
+	if (user != null)
+	{
+		ViewBag.FullName = user.FullName;
+	}
 }
 
 @section head {
