@@ -1,0 +1,226 @@
+﻿.leaflet-div-icon {
+    background: transparent;
+    border: none;
+}
+
+.leaflet-marker-icon .number {
+    position: relative;
+    top: -37px;
+    font-size: 16px;
+    width: 25px;
+    text-align: center;
+}
+
+.lbl-cat {
+    padding: 5px;
+    background-color: #f5f5f5;
+    border-radius: 2px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.button-cat {
+    color: #fff;
+    background: #d32323;
+    padding: 0 35px;
+    line-height: 36px;
+    border: none;
+    border-radius: 3px;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.active-lbl-cat, .lbl-cat:hover {
+    background-color: #666;
+    color: white;
+}
+
+.collapsible {
+    background-color: #f5f5f5;
+    color: black;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: right;
+    outline: none;
+    font-size: 15px;
+}
+
+    .activeProv, .collapsible:hover {
+        background-color: #666;
+        color: white;
+    }
+
+    .collapsible:after {
+        content: '\002B';
+        color: white;
+        font-weight: bold;
+        float: left;
+        margin-left: 5px;
+    }
+
+.activeProv:after {
+    content: "\2212";
+}
+
+.contentPro {
+    padding: 0 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    background-color: #f1f1f1;
+}
+
+    .contentPro .form-check-label {
+        color: #2b273c;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+        margin-left: 8px;
+    }
+
+    .contentPro .form-check-input {
+        margin-top: 0;
+        margin-left: 10px;
+        position: static;
+        width: 20px;
+        height: 20px;
+    }
+
+    .contentPro .form-check-label {
+        color: #2b273c;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+        margin-left: 8px;
+    }
+
+#click-featu .category-content {
+    display: block !important;
+    padding: 0 !important;
+}
+
+#click-cat .category-content {
+    display: block !important;
+    padding: 0 !important;
+}
+
+.reqbtn {
+    border: 1px solid #bbbac0;
+    line-height: 40px;
+    font-size: 14px;
+    text-align: center;
+    padding: 0 16px;
+    border-radius: 4px;
+    transition: 0.8s;
+    font-weight: 500;
+    background-color: white;
+    margin-top: 5px;
+}
+
+    .reqbtn:hover {
+        background-color: #e0e0e0;
+    }
+
+.question {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.answers {
+    margin-bottom: 20px;
+    text-align: left;
+    display: inline-block;
+}
+
+    .answers label {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+.slide {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.active-slide {
+    opacity: 1;
+    z-index: 2;
+}
+
+.quiz-container {
+    position: relative;
+    height: 200px;
+    margin-top: 40px;
+}
+
+.containerCheckBox {
+    display: block;
+    position: relative;
+    padding-right: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 15px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+    /* Hide the browser's default radio button */
+    .containerCheckBox input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+/* Create a custom radio button */
+.checkmark {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.containerCheckBox:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.containerCheckBox input:checked ~ .checkmark {
+    background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.containerCheckBox input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.containerCheckBox .checkmark:after {
+    top: 9px;
+    left: 9px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: white;
+}
+
