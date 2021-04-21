@@ -222,9 +222,14 @@
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-body">
-                <div class="recent-activities__modal__close" data-dismiss="modal">
-                    <span>بستن</span>
-
+                <div class="stay-gold-content__modal__header">
+                    <div class="stay-gold-content__modal__header__title">
+                        <h5>انتخاب دسته بندی</h5>
+                        <p class="text text-danger" id="errorsendmessage" style="margin-top:10px"></p>
+                    </div>
+                    <div class="stay-gold-content__modal__header__close">
+                        <a href="#" data-dismiss="modal" dideo-checked="true"><svg width="24" height="24" class="icon_svg"><path d="M13.41 12l5.3-5.29a1.004 1.004 0 10-1.42-1.42L12 10.59l-5.29-5.3a1.004 1.004 0 00-1.42 1.42l5.3 5.29-5.3 5.29a1 1 0 000 1.42 1 1 0 001.42 0l5.29-5.3 5.29 5.3a1 1 0 001.42 0 1 1 0 000-1.42L13.41 12z"></path></svg></a>
+                    </div>
                 </div>
                 <div class="category-content">
                     @foreach (var item in Model.categories.ToList())
@@ -247,8 +252,14 @@
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-body">
-                <div class="recent-activities__modal__close" data-dismiss="modal">
-                    <span>بستن</span>
+                <div class="stay-gold-content__modal__header">
+                    <div class="stay-gold-content__modal__header__title">
+                        <h5>انتخاب ویژگی</h5>
+                        <p class="text text-danger" id="errorsendmessage" style="margin-top:10px"></p>
+                    </div>
+                    <div class="stay-gold-content__modal__header__close">
+                        <a href="#" data-dismiss="modal" dideo-checked="true"><svg width="24" height="24" class="icon_svg"><path d="M13.41 12l5.3-5.29a1.004 1.004 0 10-1.42-1.42L12 10.59l-5.29-5.3a1.004 1.004 0 00-1.42 1.42l5.3 5.29-5.3 5.29a1 1 0 000 1.42 1 1 0 001.42 0l5.29-5.3 5.29 5.3a1 1 0 001.42 0 1 1 0 000-1.42L13.41 12z"></path></svg></a>
+                    </div>
                 </div>
                 <div class="category-content">
                     @foreach (var item in Model.features.ToList())
@@ -270,8 +281,14 @@
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-body">
-                <div class="recent-activities__modal__close" data-dismiss="modal">
-                    <span>بستن</span>
+                <div class="stay-gold-content__modal__header">
+                    <div class="stay-gold-content__modal__header__title">
+                        <h5>انتخاب استان</h5>
+                        <p class="text text-danger" id="errorsendmessage" style="margin-top:10px"></p>
+                    </div>
+                    <div class="stay-gold-content__modal__header__close">
+                        <a href="#" data-dismiss="modal" dideo-checked="true"><svg width="24" height="24" class="icon_svg"><path d="M13.41 12l5.3-5.29a1.004 1.004 0 10-1.42-1.42L12 10.59l-5.29-5.3a1.004 1.004 0 00-1.42 1.42l5.3 5.29-5.3 5.29a1 1 0 000 1.42 1 1 0 001.42 0l5.29-5.3 5.29 5.3a1 1 0 001.42 0 1 1 0 000-1.42L13.41 12z"></path></svg></a>
+                    </div>
                 </div>
                 <div class="Prov-content ">
                     @foreach (var item in Model.provinces.ToList())
@@ -298,8 +315,14 @@
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content" style="padding: 20px;">
             <div class="modal-body">
-                <div class="recent-activities__modal__close" data-dismiss="modal">
-                    <span>بستن</span>
+                <div class="stay-gold-content__modal__header">
+                    <div class="stay-gold-content__modal__header__title">
+                        <h5>ارسال درخواست</h5>
+                        <p class="text text-danger" id="errorsendmessage" style="margin-top:10px"></p>
+                    </div>
+                    <div class="stay-gold-content__modal__header__close">
+                        <a href="#" data-dismiss="modal" dideo-checked="true"><svg width="24" height="24" class="icon_svg"><path d="M13.41 12l5.3-5.29a1.004 1.004 0 10-1.42-1.42L12 10.59l-5.29-5.3a1.004 1.004 0 00-1.42 1.42l5.3 5.29-5.3 5.29a1 1 0 000 1.42 1 1 0 001.42 0l5.29-5.3 5.29 5.3a1 1 0 001.42 0 1 1 0 000-1.42L13.41 12z"></path></svg></a>
+                    </div>
                 </div>
                 @if (!User.Identity.IsAuthenticated)
                 {
@@ -322,8 +345,14 @@
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content" style="padding: 20px;">
             <div class="modal-body">
-                <div class="recent-activities__modal__close" data-dismiss="modal">
-                    <span>بستن</span>
+                <div class="stay-gold-content__modal__header">
+                    <div class="stay-gold-content__modal__header__title">
+                        <h5>ارسال پیام</h5>
+                        <p class="text text-danger" id="errorsendmessage" style="margin-top:10px"></p>
+                    </div>
+                    <div class="stay-gold-content__modal__header__close">
+                        <a href="#" data-dismiss="modal" dideo-checked="true"><svg width="24" height="24" class="icon_svg"><path d="M13.41 12l5.3-5.29a1.004 1.004 0 10-1.42-1.42L12 10.59l-5.29-5.3a1.004 1.004 0 00-1.42 1.42l5.3 5.29-5.3 5.29a1 1 0 000 1.42 1 1 0 001.42 0l5.29-5.3 5.29 5.3a1 1 0 001.42 0 1 1 0 000-1.42L13.41 12z"></path></svg></a>
+                    </div>
                 </div>
                 <h6>درخواست شما با موفقیت ثبت گردید</h6>
             </div>
