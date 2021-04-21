@@ -73,6 +73,8 @@
     <Compile Remove="Migrations\20210414061854_AddBusinessQoute.Designer.cs" />
     <Compile Remove="Migrations\20210414063134_AddBusinessQoute.cs" />
     <Compile Remove="Migrations\20210414063134_AddBusinessQoute.Designer.cs" />
+    <Compile Remove="Migrations\20210421071728_AddUserActivityTable.cs" />
+    <Compile Remove="Migrations\20210421071728_AddUserActivityTable.Designer.cs" />
 
   </ItemGroup>
 

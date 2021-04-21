@@ -201,24 +201,46 @@ namespace DataLayer.Services
 
 			return result;
 		}
-		//public async Task<IEnumerable<UserReviewPaginateQuery>> GetCurrentUserReviews(string userId, int page)
-		//{
-		//	var result = await GetPaginateReviewQuery(userName, page, _pageSize)
-		//					.Where(w => w.Status == StatusEnum.Accepted)
-		//					.ToListAsync();
+		public async Task<UserReviewPaginateQuery> GetUseReview(Guid id)
+		{
+			var review = await DbContext.Reviews
+					.Where(w => w.Id == id)
+					.Select(s => new UserReviewPaginateQuery
+					{
+						Id = s.Id,
+						Rate = s.Rate,
+						Description = s.Description,
+						UsefulCount = s.UsefulCount,
+						FunnyCount = s.FunnyCount,
+						CoolCount = s.CoolCount,
+						CreatedAt = s.Date,
+						Status = s.StatusEnum,
+						Business = new UserReviewPaginateQuery.BusinessQuery
+						{
+							Id = s.Business.Id,
+							FeatureImage = s.Business.FeatureImage,
+							CityId = s.Business.District.CityId,
+							CityName = s.Business.District.City.Name,
+							Name = s.Business.Name,
+							OwnerFullName = s.Business.Owner.FullName,
+							CategoryId = s.Business.CategoryId
+						}
+					})
+					.FirstOrDefaultAsync();
 
-		//	// add business categories
-		//	if (result.Count > 0)
-		//	{
-		//		foreach (var model in result)
-		//		{
-		//			model.Business.Categories = GetBusinessCategories(model.Business.CategoryId);
-		//			//model.Business.Categories = dd;
-		//		}
-		//	}
+			review.Media =
+				await DbContext.ReviewMedias.Take(3)
+						.Select(m => new ReviewMediaQuery
+						{
+							ImagePath = m.Image,
+							CreatedAt = m.CreatedAt,
+							Description = m.Description
+						})
+						.OrderByDescending(x => x.CreatedAt)
+						.ToArrayAsync();
 
-		//	return result;
-		//}
+			return review;
+		}
 
 		public async Task<IEnumerable<Review>> GetBusinessReviews(Guid Id)
 		{
@@ -550,5 +572,7 @@ namespace DataLayer.Services
 				await DbContext.SaveChangesAsync();
 			}
 		}
+
+
 	}
 }
