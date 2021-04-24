@@ -148,7 +148,7 @@ namespace DataLayer.Services
 			var BusinessItem = await DbContext.Businesses.FirstOrDefaultAsync(s=>s.Id.Equals(id));
 			if(BusinessItem != null)
 			{
-				return await DbContext.CustomerBusinessMediaPictures.Where(s => s.CustomerBusinessMedia.BusinessId.Equals(id) && s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted).ToListAsync();
+				return await DbContext.CustomerBusinessMediaPictures.Include(s=>s.CustomerBusinessMedia.BizAppUser.ApplicationUserMedias).Where(s => s.CustomerBusinessMedia.BusinessId.Equals(id) && s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted).ToListAsync();
 			}
 			else
 			{

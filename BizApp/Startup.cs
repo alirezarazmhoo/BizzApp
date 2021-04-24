@@ -12,6 +12,7 @@ using DataLayer.Infrastructure;
 using AutoMapper;
 using BizApp.Automapper;
 using Microsoft.AspNetCore.Http;
+using System;
 
 namespace BizApp
 {
@@ -66,6 +67,12 @@ namespace BizApp
 		   .AddNewtonsoftJson(options =>
 		   options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 	   );
+			services.AddDistributedMemoryCache(); 
+			services.AddSession(options =>
+			{
+				options.IdleTimeout = TimeSpan.FromMinutes(20);
+				options.Cookie.HttpOnly = false;
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -90,7 +97,7 @@ namespace BizApp
 
 			app.UseAuthentication();
 			app.UseAuthorization();
-
+			app.UseSession();
 			app.UseEndpoints(endpoints =>
 			{
 				// route admin area with authorization

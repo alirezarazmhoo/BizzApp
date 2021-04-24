@@ -1,8 +1,247 @@
 ﻿
 @{
-    ViewData["Title"] = "GuessReivew";
-    Layout = "~/Views/Shared/_AllPagesLayout.cshtml";
+	ViewData["Title"] = "GuessReivew";
+	Layout = "~/Views/Shared/_AllPagesLayout.cshtml";
 }
 
-<h2>GuessReivew</h2>
+<section class="first-review">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-9">
+				<div class="first-review__item">
+					<div class="first-review__item__title">
+						<h1>اولین بررسی شما در انتظار است</h1>
+					</div>
+					<div class="first-review__item__text">
+						<p>مشاغل مورد علاقه خود را مرور کرده و تجربیات خود را با انجمن ما در میان بگذارید. برای شروع به کمی کمک نیاز دارید؟  <a href="#">این نکات را بررسی کنید.</a></p>
+					</div>
+					<div class="first-review__item__search">
+						<div class="first-review__item__search__find">
+							<label for="">پیدا کردن</label>
+							<input type="text" placeholder="پیتزا ، میخانه ، فاکس و سگ شکاری">
+						</div>
+						<div class="first-review__item__search__near">
+							<label for="">نزدیک </label>
+							<input type="text" placeholder="تورنتو ، کانادا">
+						</div>
+						<button><svg width="18" height="18" class="icon_svg"><path d="M15.913 14.224a1.324 1.324 0 00-.3-.466h.009l-3.377-3.376a5.492 5.492 0 00.802-2.857 5.523 5.523 0 10-5.522 5.52 5.491 5.491 0 002.856-.801l3.369 3.369.004.003c.132.131.293.231.471.298.143.053.296.086.458.086.727 0 1.317-.589 1.317-1.316 0-.163-.033-.317-.087-.46zM7.525 10.94a3.422 3.422 0 01-3.418-3.416 3.422 3.422 0 013.418-3.417 3.422 3.422 0 013.416 3.417 3.421 3.421 0 01-3.416 3.416z"></path></svg></button>
+					</div>
+				</div>
 
+			</div>
+			<div class="col-md-3">
+				<div class="first-review__image">
+					<img src="./assets/img/first-review.png" alt="">
+				</div>
+			</div>
+		</div>
+
+	</div>
+</section>
+<section class="write-areviews">
+	<div class="container">
+		<div class="write-areviews__title">
+			<h2>اخیراً به این مشاغل مراجعه کرده اید؟</h2>
+		</div>
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="write-areviews__item">
+					<div class="write-areviews__item__image">
+						<img src="./assets/img/write-areviews1.jpg" alt="">
+					</div>
+					<div class="write-areviews__item__text">
+						<div class="write-areviews__item__text__title">
+							<h3><a href="#">ایستگاه ریچموند</a></h3>
+						</div>
+						<div class="write-areviews__item__text__desc">
+							<p>به جامعه کمک کنید تا تصمیم بگیرد</p>
+						</div>
+						<div class="write-areviews__item__text__star">
+							<div class="write-areviews__item__text__star__icon">
+								<input type="radio" name="star" id="star_5">
+								<label for="star_5" data-star="5"></label>
+								<input type="radio" name="star" id="star_4">
+								<label for="star_4" data-star="4"></label>
+								<input type="radio" name="star" id="star_3">
+								<label for="star_3" data-star="3"></label>
+								<input type="radio" name="star" id="star_2">
+								<label for="star_2" data-star="2"></label>
+								<input type="radio" name="star" id="star_1">
+								<label for="star_1" data-star="1"></label>
+							</div>
+						</div>
+						<div class="write-areviews__item__text__close">
+							<svg width="24" height="24" class="icon_svg"><path d="M17.657 19.071L12 13.414l-5.657 5.657-1.414-1.414L10.586 12 4.929 6.343l1.414-1.414L12 10.586l5.657-5.657 1.414 1.414L13.414 12l5.657 5.657-1.414 1.414z"></path></svg>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="write-areviews__item">
+					<div class="write-areviews__item__image">
+						<img src="./assets/img/write-areviews2.jpg" alt="">
+					</div>
+					<div class="write-areviews__item__text">
+						<div class="write-areviews__item__text__title">
+							<h3><a href="#">ایستگاه ریچموند</a></h3>
+						</div>
+						<div class="write-areviews__item__text__desc">
+							<p>به جامعه کمک کنید تا تصمیم بگیرد</p>
+						</div>
+						<div class="write-areviews__item__text__star">
+							<div class="write-areviews__item__text__star__icon">
+								<input type="radio" name="star" id="star_5">
+								<label for="star_5" data-star="5"></label>
+								<input type="radio" name="star" id="star_4">
+								<label for="star_4" data-star="4"></label>
+								<input type="radio" name="star" id="star_3">
+								<label for="star_3" data-star="3"></label>
+								<input type="radio" name="star" id="star_2">
+								<label for="star_2" data-star="2"></label>
+								<input type="radio" name="star" id="star_1">
+								<label for="star_1" data-star="1"></label>
+							</div>
+						</div>
+						<div class="write-areviews__item__text__close">
+							<svg width="24" height="24" class="icon_svg"><path d="M17.657 19.071L12 13.414l-5.657 5.657-1.414-1.414L10.586 12 4.929 6.343l1.414-1.414L12 10.586l5.657-5.657 1.414 1.414L13.414 12l5.657 5.657-1.414 1.414z"></path></svg>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="write-areviews__item">
+					<div class="write-areviews__item__image">
+						<img src="./assets/img/write-areviews3.jpg" alt="">
+					</div>
+					<div class="write-areviews__item__text">
+						<div class="write-areviews__item__text__title">
+							<h3><a href="#">ایستگاه ریچموند</a></h3>
+						</div>
+						<div class="write-areviews__item__text__desc">
+							<p>به جامعه کمک کنید تا تصمیم بگیرد</p>
+						</div>
+						<div class="write-areviews__item__text__star">
+							<div class="write-areviews__item__text__star__icon">
+								<input type="radio" name="star" id="star_5">
+								<label for="star_5" data-star="5"></label>
+								<input type="radio" name="star" id="star_4">
+								<label for="star_4" data-star="4"></label>
+								<input type="radio" name="star" id="star_3">
+								<label for="star_3" data-star="3"></label>
+								<input type="radio" name="star" id="star_2">
+								<label for="star_2" data-star="2"></label>
+								<input type="radio" name="star" id="star_1">
+								<label for="star_1" data-star="1"></label>
+							</div>
+						</div>
+						<div class="write-areviews__item__text__close">
+							<svg width="24" height="24" class="icon_svg"><path d="M17.657 19.071L12 13.414l-5.657 5.657-1.414-1.414L10.586 12 4.929 6.343l1.414-1.414L12 10.586l5.657-5.657 1.414 1.414L13.414 12l5.657 5.657-1.414 1.414z"></path></svg>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="write-areviews__item">
+					<div class="write-areviews__item__image">
+						<img src="./assets/img/write-areviews4.jpg" alt="">
+					</div>
+					<div class="write-areviews__item__text">
+						<div class="write-areviews__item__text__title">
+							<h3><a href="#">ایستگاه ریچموند</a></h3>
+						</div>
+						<div class="write-areviews__item__text__desc">
+							<p>به جامعه کمک کنید تا تصمیم بگیرد</p>
+						</div>
+						<div class="write-areviews__item__text__star">
+							<div class="write-areviews__item__text__star__icon">
+								<input type="radio" name="star" id="star_5">
+								<label for="star_5" data-star="5"></label>
+								<input type="radio" name="star" id="star_4">
+								<label for="star_4" data-star="4"></label>
+								<input type="radio" name="star" id="star_3">
+								<label for="star_3" data-star="3"></label>
+								<input type="radio" name="star" id="star_2">
+								<label for="star_2" data-star="2"></label>
+								<input type="radio" name="star" id="star_1">
+								<label for="star_1" data-star="1"></label>
+							</div>
+						</div>
+						<div class="write-areviews__item__text__close">
+							<svg width="24" height="24" class="icon_svg"><path d="M17.657 19.071L12 13.414l-5.657 5.657-1.414-1.414L10.586 12 4.929 6.343l1.414-1.414L12 10.586l5.657-5.657 1.414 1.414L13.414 12l5.657 5.657-1.414 1.414z"></path></svg>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="write-areviews__item">
+					<div class="write-areviews__item__image">
+						<img src="./assets/img/write-areviews5.jpg" alt="">
+					</div>
+					<div class="write-areviews__item__text">
+						<div class="write-areviews__item__text__title">
+							<h3><a href="#">ایستگاه ریچموند</a></h3>
+						</div>
+						<div class="write-areviews__item__text__desc">
+							<p>به جامعه کمک کنید تا تصمیم بگیرد</p>
+						</div>
+						<div class="write-areviews__item__text__star">
+							<div class="write-areviews__item__text__star__icon">
+								<input type="radio" name="star" id="star_5">
+								<label for="star_5" data-star="5"></label>
+								<input type="radio" name="star" id="star_4">
+								<label for="star_4" data-star="4"></label>
+								<input type="radio" name="star" id="star_3">
+								<label for="star_3" data-star="3"></label>
+								<input type="radio" name="star" id="star_2">
+								<label for="star_2" data-star="2"></label>
+								<input type="radio" name="star" id="star_1">
+								<label for="star_1" data-star="1"></label>
+							</div>
+						</div>
+						<div class="write-areviews__item__text__close">
+							<svg width="24" height="24" class="icon_svg"><path d="M17.657 19.071L12 13.414l-5.657 5.657-1.414-1.414L10.586 12 4.929 6.343l1.414-1.414L12 10.586l5.657-5.657 1.414 1.414L13.414 12l5.657 5.657-1.414 1.414z"></path></svg>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="write-areviews__item">
+					<div class="write-areviews__item__image">
+						<img src="./assets/img/write-areviews6.jpg" alt="">
+					</div>
+					<div class="write-areviews__item__text">
+						<div class="write-areviews__item__text__title">
+							<h3><a href="#">ایستگاه ریچموند</a></h3>
+						</div>
+						<div class="write-areviews__item__text__desc">
+							<p>به جامعه کمک کنید تا تصمیم بگیرد</p>
+						</div>
+						<div class="write-areviews__item__text__star">
+							<div class="write-areviews__item__text__star__icon">
+								<input type="radio" name="star" id="star_5">
+								<label for="star_5" data-star="5"></label>
+								<input type="radio" name="star" id="star_4">
+								<label for="star_4" data-star="4"></label>
+								<input type="radio" name="star" id="star_3">
+								<label for="star_3" data-star="3"></label>
+								<input type="radio" name="star" id="star_2">
+								<label for="star_2" data-star="2"></label>
+								<input type="radio" name="star" id="star_1">
+								<label for="star_1" data-star="1"></label>
+							</div>
+						</div>
+						<div class="write-areviews__item__text__close">
+							<svg width="24" height="24" class="icon_svg"><path d="M17.657 19.071L12 13.414l-5.657 5.657-1.414-1.414L10.586 12 4.929 6.343l1.414-1.414L12 10.586l5.657-5.657 1.414 1.414L13.414 12l5.657 5.657-1.414 1.414z"></path></svg>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="write-areviews__item__text__show-more">
+			<a href="#">
+				پیشنهادات بیشتری را نشان دهید
+				<svg width="24" height="24" class="icon_svg"><path d="M18.364 9.525L16.95 8.111 12 13.061l-4.95-4.95-1.414 1.414L12 15.889l6.364-6.364z"></path></svg>
+			</a>
+		</div>
+	</div>
+</section> 

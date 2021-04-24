@@ -40,7 +40,7 @@ function CityAutoComplete(parameter) {
 		success: function (response) {
 			$.each(response.districts, function () {
 			
-				res += "<li  data-value=" + this.id + " onclick='FillCitySearchInput(\"" + this.listName + "\")'><a href='#'  style='margin-right:15px'>" + this.listName + "</a></li>"; 
+				res += "<li  data-value=" + this.id + " onclick='FillCitySearchInput(\"" + this.listName + "\" ,\"" + this.id + "\")'><a href='#'  style='margin-right:15px'>" + this.listName + "</a></li>"; 
 			});
 			finalres = "<ul>" + res + "</ul>"; 
 			$('#cmbSearchCity').append(finalres);
@@ -52,9 +52,19 @@ function CityAutoComplete(parameter) {
 
 }
 
-function FillCitySearchInput(listname) {
+function FillCitySearchInput(listname, id) {
 	$("#searchCityInput").val(listname);
 	$('#cmbSearchCity').empty();
+	$.ajax({
+		type: "GET",
+		url: 'Home/FillCitySession?Id=' + id+ '',
+		dataType: "json",
+		contentType: false,
+		processData: false,
+		success: function (response) {
+
+		},
+	});
 }
 
 function FillCategorySearchInput(listname) {

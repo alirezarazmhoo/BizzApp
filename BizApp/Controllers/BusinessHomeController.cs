@@ -61,7 +61,8 @@ namespace BizApp.Controllers
 			businessHomePage_SummaryViewModel.Reviews = SummaryItem.Item3;
 			businessHomePage_SummaryViewModel.IsClaimed = SummaryItem.Item4;
 			businessHomePage_SummaryViewModel.TotalPhotos = SummaryItem.Item5;
-			businessHomePage_SummaryViewModel.Description = SummaryItem.Item6; 
+			businessHomePage_SummaryViewModel.Description = SummaryItem.Item6;
+			businessHomePage_SummaryViewModel.BusinessId = BusinessId;
 			#endregion
 			#region Featrues
 			businessHomePage_FeatureViewModel.BoldFeature = FeaturesItem.Item1;
@@ -172,30 +173,6 @@ namespace BizApp.Controllers
 				return Content("");
 
 			}
-		}
-		public async Task<IActionResult> GetGalleryForBusiness(Guid Id)
-		{
-			#region Objects
-			BusinessGalleryViewModel businessGalleryViewModel = new BusinessGalleryViewModel();
-			Dictionary<Guid, string> Gallery = new Dictionary<Guid, string>();
-			#endregion
-			#region Resource
-			var BusinessInfo = await _UnitOfWork.BusinessRepo.GetById(Id);
-			var TotalReviews = await _UnitOfWork.ReviewRepo.BusinessReviewCount(Id);
-			var GalleryItems = await _UnitOfWork.BusinessHomePageRepo.GetBusinessGallery(Id);
-			#endregion
-			#region Main
-			businessGalleryViewModel.BusinessId = BusinessInfo.Id;
-			businessGalleryViewModel.BusinessName = BusinessInfo.Name;
-			businessGalleryViewModel.BusinessRate = BusinessInfo.Rate;
-			businessGalleryViewModel.BusinessTotalReview = TotalReviews;
-			foreach (var item in GalleryItems)
-			{
-				Gallery.TryAdd(item.Id, item.Image);
-			}
-			businessGalleryViewModel.Pictures = Gallery; 
-			#endregion
-			return View(businessGalleryViewModel);
 		}
 
 

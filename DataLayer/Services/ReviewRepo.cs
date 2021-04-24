@@ -320,48 +320,39 @@ namespace DataLayer.Services
 				}
 			}
 		}
-		public async Task<IEnumerable<Business>> GuessReview(string id, int? cityId)
+		public async Task<IEnumerable<Business>> GuessReview(List<int> Districts, int DistricId , string UserId)
 		{
-			var UserItem = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(id));
 			List<Business> FinalList = new List<Business>();
 			List<Review> Reviews = new List<Review>();
 			List<Business> Businesses = new List<Business>();
-			if (UserItem != null)
+			List<Business> BusinessesHelper = new List<Business>();
+			if (DistricId !=0)
 			{
-				if (UserItem.CityId.HasValue)
+				Businesses = await DbContext.Businesses.Where(s => s.DistrictId.Equals(DistricId)).ToListAsync();
+			}
+			else if(Districts.Count>0)
+			{
+				foreach (var item in Districts)
 				{
-					Reviews = await DbContext.Reviews.Where(s => s.StatusEnum == StatusEnum.Accepted && s.BizAppUserId.Equals(id)).ToListAsync();
-					Businesses = await DbContext.Businesses.Where(s => s.District.City.Id == UserItem.CityId).ToListAsync();
-					foreach (var item in Businesses)
-					{
-						if (!Reviews.Any(s => s.BusinessId == item.Id))
-						{
-							FinalList.Add(item);
-						}
-					}
-					return FinalList;
-				}
-				else
-				{
-					Reviews = await DbContext.Reviews.Where(s => s.StatusEnum == StatusEnum.Accepted && s.BizAppUserId.Equals(id)).ToListAsync();
-					Businesses = await DbContext.Businesses.Where(s => s.District.City.Id == cityId.Value).ToListAsync();
-					foreach (var item in Businesses)
-					{
-						if (Reviews.Any(s => s.BusinessId == item.Id) == false)
-						{
-							FinalList.Add(item);
-						}
-					}
-					return FinalList;
-
+					Businesses.AddRange(await DbContext.Businesses.Where(s => s.DistrictId.Equals(item)).ToListAsync());
 				}
 			}
-
-			else
+			FinalList.AddRange(Businesses);
+			if (!string.IsNullOrEmpty(UserId))
 			{
-				return new List<Business>();
+				FinalList.Clear();
+				var UserItem = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(UserId));
+				var Reveiws = await DbContext.Reviews.Include(s=>s.Business).Where(s => s.BizAppUserId.Equals(UserItem.Id)).ToListAsync();
+				BusinessesHelper.AddRange(Reviews.Select(s=>s.Business).ToList());
+				foreach (var item in FinalList)
+				{
+					if (!BusinessesHelper.Any(s => s.Id.Equals(item.Id)))
+					{
+						FinalList.Add(item);
+					}
+				}
 			}
-
+			return FinalList; 
 		}
 		public async Task<VotesAction> ChangeHelpFull(Guid Id, string UserId)
 		{
@@ -572,7 +563,5 @@ namespace DataLayer.Services
 				await DbContext.SaveChangesAsync();
 			}
 		}
-
-
 	}
 }

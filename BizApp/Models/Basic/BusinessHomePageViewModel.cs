@@ -32,6 +32,7 @@ namespace BizApp.Models.Basic
 	#region BusinessSummary
 	public class BusinessHomePage_SummaryViewModel
 	{
+		public Guid BusinessId { get; set; }
 		public string Title { get; set; }
 		public int Rate { get; set; }
 		public int Reviews { get; set; }

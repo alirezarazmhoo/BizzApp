@@ -46,14 +46,31 @@ namespace BizApp.Controllers
 			#endregion
 			return View(reviewViewModel);
 		}
-		public async Task<IActionResult> GuessReivew(string Id)
+		public async Task<IActionResult> GuessReivew()
 		{
+			string Id = "ggfdgfdgdf";
+			string UserId = string.Empty;
+			List<int> Districts = new List<int>();
+			int District = 0; 
+
 			#region Objects
 			GuessReviewViewModel guessReviewViewModel = new GuessReviewViewModel();
 			List<GuessReview_BusinessListViewModel> guessReview_BusinessListViewModels = new List<GuessReview_BusinessListViewModel>();
 			#endregion
 			#region Resource
-			var items = await _unitOfWork.ReviewRepo.GuessReview(Id, null);
+			if (User.Identity.IsAuthenticated)
+			{
+				UserId = GetUserId();
+			}
+			if(HttpContext.Session.GetInt32("districId").HasValue)
+			{
+				District = HttpContext.Session.GetInt32("districId").Value;
+			}
+			if (!User.Identity.IsAuthenticated || HttpContext.Session.GetString("districId") == null)
+			{
+				Districts.AddRange(await _unitOfWork.DistrictRepo.GetDeafults());
+			}
+			var items = await _unitOfWork.ReviewRepo.GuessReview(Districts, District, UserId);
 			#endregion
 			#region ListBusiness
 			foreach (var item in items)
@@ -64,7 +81,7 @@ namespace BizApp.Controllers
 			#region FinalResualt
 			guessReviewViewModel.guessReview_BusinessListViewModels = guessReview_BusinessListViewModels; 
 			#endregion
-			return View(guessReviewViewModel);
+			return View();
 		}
 		[HttpPost]
 		public async Task<JsonResult> ChangeUseFullCount(Guid Id)

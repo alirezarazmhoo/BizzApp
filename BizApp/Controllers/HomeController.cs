@@ -4,6 +4,7 @@ using BizApp.Models;
 using BizApp.Models.Basic;
 using BizApp.Utility;
 using DataLayer.Infrastructure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -284,6 +285,16 @@ namespace BizApp.Controllers
 					item = "",
 				});
 			}
+		}
+
+		[HttpGet]
+		public  JsonResult FillCitySession(int Id)
+		{
+			HttpContext.Session.SetInt32("districId", Id);
+			return Json(new
+			{
+				success = true,
+			});
 		}
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()

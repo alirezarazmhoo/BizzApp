@@ -24,7 +24,7 @@ namespace DataLayer.Infrastructure.Reviews
 		Task<IEnumerable<Review>> GetBusinessReviews(Guid Id);
 		Task AddReview(Review model, IFormFile[] files);
 		Task AddBusinessMedia(CustomerBusinessMedia model, IFormFile[] files);
-		Task<IEnumerable<Business>> GuessReview(string id, int? cityId);
+		Task<IEnumerable<Business>> GuessReview(List<int> Districts, int DistricId, string UserId);
 		Task<VotesAction> ChangeHelpFull(Guid Id, string UserId);
 		Task<VotesAction> ChangeFunnyCount(Guid Id, string UserId);
 		Task<VotesAction> ChangeCoolCount(Guid Id, string UserId);
