@@ -24,7 +24,7 @@ namespace BizApp.Controllers
 		}
 
 		[Authorize]
-		public async Task<IActionResult> Index(Guid Id)
+		public async Task<IActionResult> Index(Guid Id , int? star)
 		{
 			var BusinessId =Id;
 			#region Objects
@@ -42,13 +42,14 @@ namespace BizApp.Controllers
 			#region FinalResult
 			reviewViewModel.BusinessName = await _unitOfWork.BusinessRepo.GetBusinessName(BusinessId);
 			reviewViewModel.review_ReviewListViewModels = review_ReviewListViewModel;
-			reviewViewModel.BussinessId = BusinessId; 
+			reviewViewModel.BussinessId = BusinessId;
+			reviewViewModel.CurrentRate = star.HasValue ? star.Value : 1;
 			#endregion
 			return View(reviewViewModel);
 		}
 		public async Task<IActionResult> GuessReivew()
 		{
-			string Id = "ggfdgfdgdf";
+	
 			string UserId = string.Empty;
 			List<int> Districts = new List<int>();
 			int District = 0; 
@@ -70,7 +71,7 @@ namespace BizApp.Controllers
 			{
 				Districts.AddRange(await _unitOfWork.DistrictRepo.GetDeafults());
 			}
-			var items = await _unitOfWork.ReviewRepo.GuessReview(Districts, District, UserId);
+			var items = await _unitOfWork.ReviewRepo.GuessReview(Districts, District, UserId, null);
 			#endregion
 			#region ListBusiness
 			foreach (var item in items)
@@ -81,7 +82,59 @@ namespace BizApp.Controllers
 			#region FinalResualt
 			guessReviewViewModel.guessReview_BusinessListViewModels = guessReview_BusinessListViewModels; 
 			#endregion
-			return View();
+			return View(guessReviewViewModel);
+		}
+		public async Task<JsonResult> GetMoreGuessReivew(int? page)
+		{
+			bool HasNext = true;
+			int CurrentPage = 0;
+			string UserId = string.Empty;
+			List<int> Districts = new List<int>();
+			int District = 0;
+
+			#region Objects
+			GuessReviewViewModel guessReviewViewModel = new GuessReviewViewModel();
+			List<GuessReview_BusinessListViewModel> guessReview_BusinessListViewModels = new List<GuessReview_BusinessListViewModel>();
+			#endregion
+			#region Resource
+			if (User.Identity.IsAuthenticated)
+			{
+				UserId = GetUserId();
+			}
+			if (HttpContext.Session.GetInt32("districId").HasValue)
+			{
+				District = HttpContext.Session.GetInt32("districId").Value;
+			}
+			if (!User.Identity.IsAuthenticated || HttpContext.Session.GetString("districId") == null)
+			{
+				Districts.AddRange(await _unitOfWork.DistrictRepo.GetDeafults());
+			}
+			var items = await _unitOfWork.ReviewRepo.GuessReview(Districts, District, UserId, page);
+			#endregion
+			#region ListBusiness
+			foreach (var item in items)
+			{
+				guessReview_BusinessListViewModels.Add(new GuessReview_BusinessListViewModel() { Id = item.Id, Image = string.IsNullOrEmpty(item.FeatureImage) == true ? "/Upload/DefaultPicutres/Bussiness/Business.jpg" : item.FeatureImage, Name = item.Name });
+			}
+			if (HasNext)
+			{
+				CurrentPage = (page.HasValue ? page.Value : 1) + 1;
+			}
+			else
+			{
+				CurrentPage = page.Value;
+			}
+			#endregion
+			#region FinalResualt
+			guessReviewViewModel.guessReview_BusinessListViewModels = guessReview_BusinessListViewModels;
+			#endregion
+			return Json(new
+			{
+				success = true,
+				items = guessReviewViewModel.guessReview_BusinessListViewModels,
+				currentpage = CurrentPage,
+				hasnext = HasNext = guessReview_BusinessListViewModels.Count > 0 ? true : false
+			});
 		}
 		[HttpPost]
 		public async Task<JsonResult> ChangeUseFullCount(Guid Id)

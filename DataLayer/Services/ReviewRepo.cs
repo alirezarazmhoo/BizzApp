@@ -320,12 +320,21 @@ namespace DataLayer.Services
 				}
 			}
 		}
-		public async Task<IEnumerable<Business>> GuessReview(List<int> Districts, int DistricId , string UserId)
+		public async Task<IEnumerable<Business>> GuessReview(List<int> Districts, int DistricId , string UserId , int? pageNumber)
 		{
 			List<Business> FinalList = new List<Business>();
+			List<Business> FinalList2 = new List<Business>();
 			List<Review> Reviews = new List<Review>();
 			List<Business> Businesses = new List<Business>();
-			List<Business> BusinessesHelper = new List<Business>();
+			List<Guid> BusinessesHelper = new List<Guid>();
+			if (pageNumber == 1)
+			{
+				pageNumber += 1;
+			}
+			else
+			{
+				pageNumber = pageNumber.HasValue == false ? 1 : pageNumber;
+			}
 			if (DistricId !=0)
 			{
 				Businesses = await DbContext.Businesses.Where(s => s.DistrictId.Equals(DistricId)).ToListAsync();
@@ -339,20 +348,24 @@ namespace DataLayer.Services
 			}
 			FinalList.AddRange(Businesses);
 			if (!string.IsNullOrEmpty(UserId))
-			{
-				FinalList.Clear();
+			{	
 				var UserItem = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(UserId));
 				var Reveiws = await DbContext.Reviews.Include(s=>s.Business).Where(s => s.BizAppUserId.Equals(UserItem.Id)).ToListAsync();
-				BusinessesHelper.AddRange(Reviews.Select(s=>s.Business).ToList());
+				foreach (var item in Reveiws)
+				{
+					BusinessesHelper.Add(item.BusinessId);
+				}
 				foreach (var item in FinalList)
 				{
-					if (!BusinessesHelper.Any(s => s.Id.Equals(item.Id)))
+					if (!BusinessesHelper.Any(s => s.Equals(item.Id)))
 					{
-						FinalList.Add(item);
+						FinalList2.Add(item);
 					}
 				}
+				FinalList.Clear();
+				FinalList = FinalList2;
 			}
-			return FinalList; 
+			return FinalList.Skip((pageNumber.Value - 1) * 3).Take(3).ToList(); 
 		}
 		public async Task<VotesAction> ChangeHelpFull(Guid Id, string UserId)
 		{
