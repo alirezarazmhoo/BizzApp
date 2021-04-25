@@ -13,69 +13,54 @@ namespace BizApp.Areas.Profile.Controllers
 {
 	public class ProfileController : Controller
 	{
-		private readonly IUnitOfWorkRepo _unitOfWork;
-		private readonly IIdentity _currentUser;
-		private readonly UserManager<BizAppUser> _userManager;
-		private readonly IMapper _mapper;
+		protected readonly IUnitOfWorkRepo UnitOfWork;
+		protected readonly IIdentity CurrentUser;
+		//private readonly UserManager<BizAppUser> _userManager;
+		protected readonly IMapper Mapper;
 
-		public ProfileController(IUnitOfWorkRepo unitOfWork)
+		public ProfileController(IUnitOfWorkRepo unitOfWork, IHttpContextAccessor httpContextAccessor, IMapper mapper)
 		{
-			_unitOfWork = unitOfWork;
-		}
-		public ProfileController(IUnitOfWorkRepo unitOfWork, IHttpContextAccessor httpContextAccessor): this(unitOfWork)
-		{
-			_currentUser = httpContextAccessor.HttpContext.User.Identity;
-
-		}
-		public ProfileController(IUnitOfWorkRepo unitOfWork, UserManager<BizAppUser> userManager) : this(unitOfWork)
-		{
-			_userManager = userManager;
-
-		}
-		public ProfileController(IUnitOfWorkRepo unitOfWork, UserManager<BizAppUser> userManager, IMapper mapper) : this(unitOfWork, userManager)
-		{
-			_mapper = mapper;
+			UnitOfWork = unitOfWork;
+			CurrentUser = httpContextAccessor.HttpContext.User.Identity;
+			Mapper = mapper;
 		}
 
 		protected async Task<SharedProfileDetailViewModel> GetUserDetailWithMainImage(string userName = null)
 		{
-			if (userName == null && _currentUser != null)
+			if (userName == null && CurrentUser != null)
 			{
-				userName = _currentUser.Name;
+				userName = CurrentUser.Name;
 			}
 
 			if (string.IsNullOrEmpty(userName)) throw new UnauthorizedAccessException();
 
-			var user = await _unitOfWork.UserProfileRepo.GetSharedUserDetail(userName);
+			var user = await UnitOfWork.UserProfileRepo.GetSharedUserDetail(userName);
 
-			var result = _mapper.Map<SharedProfileDetailViewModel>(user);
+			var result = Mapper.Map<SharedProfileDetailViewModel>(user);
 			return result;
 		}
-		protected async Task<ProfileViewModel> GetCurrentUserDetail()
-		{
-			var userId = _userManager.GetUserId(HttpContext.User);
-			var userDetail = await _unitOfWork.ProfileRepo.GetUserDetail(userId);
+		//protected async Task<ProfileViewModel> GetCurrentUserDetail()
+		//{
+		//	var userId = _userManager.GetUserId(HttpContext.User);
+		//	var userDetail = await UnitOfWork.ProfileRepo.GetUserDetail(userId);
 
-			var result = _mapper.Map<ProfileViewModel>(userDetail);
+		//	var result = Mapper.Map<ProfileViewModel>(userDetail);
 
-			return result;
-		}
+		//	return result;
+		//}
+		//protected async Task<ProfileViewModel> GetUserDetail(string userName = null)
+		//{
+		//	if (userName == null)
+		//	{
+		//		return await GetCurrentUserDetail();
+		//	}
 
+		//	var tempUser = await UnitOfWork.UserRepo.GetByUserName(userName);
 
-		protected async Task<ProfileViewModel> GetUserDetail(string userName = null)
-		{
-			if (userName == null)
-			{
-				return await GetCurrentUserDetail();
-			}
+		//	var user = await UnitOfWork.ProfileRepo.GetUserDetail(tempUser.Id);
+		//	var result = Mapper.Map<ProfileViewModel>(user);
 
-			var tempUser = await _unitOfWork.UserRepo.GetByUserName(userName);
-
-			var user = await _unitOfWork.ProfileRepo.GetUserDetail(tempUser.Id);
-			var result = _mapper.Map<ProfileViewModel>(user);
-
-			return result;
-		}
-
+		//	return result;
+		//}
 	}
 }
