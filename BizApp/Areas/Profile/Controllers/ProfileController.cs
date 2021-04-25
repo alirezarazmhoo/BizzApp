@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
@@ -14,14 +15,14 @@ namespace BizApp.Areas.Profile.Controllers
 	public class ProfileController : Controller
 	{
 		protected readonly IUnitOfWorkRepo UnitOfWork;
-		protected readonly IIdentity CurrentUser;
+		protected readonly ClaimsPrincipal CurrentUser;
 		//private readonly UserManager<BizAppUser> _userManager;
 		protected readonly IMapper Mapper;
 
 		public ProfileController(IUnitOfWorkRepo unitOfWork, IHttpContextAccessor httpContextAccessor, IMapper mapper)
 		{
 			UnitOfWork = unitOfWork;
-			CurrentUser = httpContextAccessor.HttpContext.User.Identity;
+			CurrentUser = httpContextAccessor.HttpContext.User;
 			Mapper = mapper;
 		}
 
@@ -29,7 +30,7 @@ namespace BizApp.Areas.Profile.Controllers
 		{
 			if (userName == null && CurrentUser != null)
 			{
-				userName = CurrentUser.Name;
+				userName = CurrentUser.Identity.Name;
 			}
 
 			if (string.IsNullOrEmpty(userName)) throw new UnauthorizedAccessException();
@@ -39,6 +40,7 @@ namespace BizApp.Areas.Profile.Controllers
 			var result = Mapper.Map<SharedProfileDetailViewModel>(user);
 			return result;
 		}
+		
 		//protected async Task<ProfileViewModel> GetCurrentUserDetail()
 		//{
 		//	var userId = _userManager.GetUserId(HttpContext.User);

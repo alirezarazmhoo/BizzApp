@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DataLayer.Services
@@ -18,7 +19,10 @@ namespace DataLayer.Services
 
 		public async Task<IList<UserActivity>> GetAllActivities(string userId, int page = 1)
 		{
-			return await DbContext.UserActivities.Paginate(page, 10).ToListAsync();
+			return await DbContext.UserActivities.Paginate(page, 10)
+				.Where(w => w.UserId == userId)
+				.OrderByDescending(x => x.CreatedAt)
+				.ToListAsync();
 		}
 
 		public async Task AddAsync(TableName table, string tableKey, string currentUserId, string description)

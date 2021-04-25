@@ -62,7 +62,7 @@ namespace DataLayer.Services
 		{
 			// get list of user photos
 			var items = 
-				await FindByCondition(f => f.BizAppUserId == userId)
+				await DbContext.ApplicationUserMedias.Where(f => f.BizAppUserId == userId)
 						.OrderByDescending(o => o.IsMainImage)
 						.ThenBy(c => c.CreatedAt)
 					.ToListAsync();
@@ -93,7 +93,7 @@ namespace DataLayer.Services
 			};
 
 			// check if user not have primary photo set for him or her
-			var hasPhoto = await FindByCondition(f => f.BizAppUserId == userId).AnyAsync();
+			bool hasPhoto = await DbContext.ApplicationUserMedias.AnyAsync(f => f.BizAppUserId == userId);
 			if (!hasPhoto)
 			{
 				addedItem.IsMainImage = true;
@@ -174,12 +174,10 @@ namespace DataLayer.Services
 				throw ex;
 			}
 		}
-
 		public async Task<ApplicationUserMedia> GetById(Guid id)
 		{
-			return await FindByCondition(f=> f.Id == id).FirstOrDefaultAsync();
+			return await DbContext.ApplicationUserMedias.FirstOrDefaultAsync(f=> f.Id == id);
 		}
-
 		public async Task<string> GetPathById(Guid id)
 		{
 			var fileDetail = await DbContext.ApplicationUserMedias.FirstOrDefaultAsync(f => f.Id == id);

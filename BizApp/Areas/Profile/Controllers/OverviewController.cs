@@ -10,6 +10,7 @@ using PagedList.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace BizApp.Areas.Profile.Controllers
@@ -17,9 +18,6 @@ namespace BizApp.Areas.Profile.Controllers
 	[Area("profile")]
 	public class OverviewController : ProfileController
 	{
-		//private readonly IUnitOfWorkRepo _unitOfWork;
-		//private readonly System.Security.Principal.IIdentity _currentUser;
-
 		public OverviewController(IUnitOfWorkRepo unitOfWork, IHttpContextAccessor httpContextAccessor, IMapper mapper)
 			: base(unitOfWork, httpContextAccessor, mapper)
 		{
@@ -28,7 +26,7 @@ namespace BizApp.Areas.Profile.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Index(string userName, int page = 1)
 		{
-			if (string.IsNullOrEmpty(userName) || userName.Equals(CurrentUser.Name, StringComparison.OrdinalIgnoreCase))
+			if (string.IsNullOrEmpty(userName) || userName.Equals(CurrentUser.Identity.Name, StringComparison.OrdinalIgnoreCase))
 				return await Index(page);
 
 			try
@@ -44,7 +42,6 @@ namespace BizApp.Areas.Profile.Controllers
 				return NotFound();
 			}
 		}
-
 		private async Task<IActionResult> Index(int page)
 		{
 			SharedProfileDetailViewModel userDetail;
@@ -62,7 +59,7 @@ namespace BizApp.Areas.Profile.Controllers
 			}
 
 			// get activities
-			var activities = await UnitOfWork.UserActivityRepo.GetAllActivities(CurrentUser.Name, page);
+			var activities = await UnitOfWork.UserActivityRepo.GetAllActivities(CurrentUser.FindFirst(ClaimTypes.NameIdentifier).Value, page);
 
 			var model = new BasicUserActivityViewModel
 			{
