@@ -179,7 +179,11 @@ namespace BizApp.Areas.Profile.Controllers
 			}
 			catch (UnauthorizedAccessException)
 			{
-				return Unauthorized();
+				return StatusCode(StatusCodes.Status503ServiceUnavailable);
+			}
+			catch (KeyNotFoundException)
+			{
+				return NotFound();
 			}
 			catch (Exception)
 			{

@@ -1,4 +1,5 @@
 ﻿using DataLayer.Data;
+using DataLayer.Extensions;
 using DataLayer.Infrastructure;
 using DomainClass;
 using DomainClass.Queries;
@@ -19,6 +20,19 @@ namespace DataLayer.Services
 		{
 			try
 			{
+				var query = 
+					DbContext.Users
+						.Where(w => w.UserName == userName)
+						.Select(s => new SharedUserProfileDetailQuery
+						{
+							Id = s.Id,
+							UserName = s.UserName,
+							FullName = s.FullName,
+							ReviewCount = s.Reviews.Count,
+							MainPhotoPath = s.ApplicationUserMedias.FirstOrDefault(f => f.BizAppUserId == s.Id && f.IsMainImage).UploadedPhoto
+						})
+						.ToSql();
+
 				var userDetail = await
 					DbContext.Users
 						.Where(w => w.UserName == userName)
