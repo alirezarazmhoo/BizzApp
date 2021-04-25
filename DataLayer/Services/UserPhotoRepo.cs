@@ -119,7 +119,9 @@ namespace DataLayer.Services
 			// find photo
 			var photo = await DbContext.ApplicationUserMedias.FirstOrDefaultAsync(f => f.Id == id);
 
-			// delete from database
+			if (photo == null) throw new KeyNotFoundException();
+
+			// delete from directory
 			if (!string.IsNullOrEmpty(photo.UploadedPhoto))
 			{
 				File.Delete($"wwwroot/{photo.UploadedPhoto}");
@@ -128,11 +130,23 @@ namespace DataLayer.Services
 			// delete from database
 			DbContext.ApplicationUserMedias.Remove(photo);
 			
+			// change user primary image 
+			if (photo.IsMainImage)
+			{
+				//get user photos count
+				var firstUploadedPhoto =
+					await DbContext.ApplicationUserMedias.Where(w => w.BizAppUserId == currentUserId).OrderBy(x => x.CreatedAt).FirstOrDefaultAsync();
+
+				if (firstUploadedPhoto != null)
+				{
+					firstUploadedPhoto.IsMainImage = true;
+				}
+			}
+
 			// delete created activity
 			await _userActivity.Remove(id.ToString());
 
 			await DbContext.SaveChangesAsync();
-
 		}
 		public async Task SetAsPrimary(Guid id, string userId)
 		{
@@ -140,11 +154,11 @@ namespace DataLayer.Services
 			if (!isOwner) throw new UnauthorizedAccessException();
 
 			// get selected photo
-			var photo = await FindByCondition(f => f.Id == id).FirstOrDefaultAsync();
+			var photo = await DbContext.ApplicationUserMedias.FirstOrDefaultAsync(f => f.Id == id);
 			photo.IsMainImage = true;
 
 			// get other user photos
-			var userPhotos = await FindByCondition(f => f.BizAppUserId == userId).ToListAsync();
+			var userPhotos = await DbContext.ApplicationUserMedias.Where(f => f.BizAppUserId == userId && f.Id != id).ToListAsync();
 			foreach (var userPhoto in userPhotos)
 			{
 				userPhoto.IsMainImage = false;
