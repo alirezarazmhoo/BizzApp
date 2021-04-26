@@ -11,6 +11,7 @@ namespace BizApp.Models.Basic
 	{
 		public Guid BusinessId { get; set; }
 		public string BusinessName { get; set; }
+		public bool FavoritConditation { get; set; }
 		public BusinessHomePage_SliderViewModel businessHomePage_SliderViewModel { get; set; }
 		public BusinessHomePage_SummaryViewModel businessHomePage_SummaryViewModel { get; set;  }
 		public BusinessHomePage_FeatureViewModel businessHomePage_FeatureViewModel { get; set; }

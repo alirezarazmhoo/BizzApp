@@ -301,7 +301,6 @@ namespace DataLayer.Services
         {
             return await FindByCondition(f => f.Id == id).Include(s => s.Galleries).Include(s=>s.Reviews).Include(s=>s.District).FirstOrDefaultAsync();
         }
-        
         public async Task Remove(Business model)
         {
             var MainItem = await GetById(model.Id);
@@ -400,7 +399,6 @@ namespace DataLayer.Services
 
             return true;
         }
-
         public PagedList<Business> GetBussiness(SearchBussinessQuery searchViewModel)
         {
             IQueryable<Business> result = null;
@@ -504,7 +502,6 @@ namespace DataLayer.Services
             PagedList<Business> res = new PagedList<Business>(result, searchViewModel.page, 10);
             return res;
         }
-
         public async Task<string> GetBusinessName(Guid Id)
         {
             var BusinessItem = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Id.Equals(Id));
@@ -517,21 +514,16 @@ namespace DataLayer.Services
                 return string.Empty;
             }
         }
-
         public async Task<IEnumerable<Business>> GetBusinessOnMap(int Id ,double Longitude , double Latitude)
 		{
             var CategroyItem = await DbContext.Categories.FirstOrDefaultAsync(s => s.Id.Equals(Id));
             List<Business> businesses = new List<Business>();
-            double longitude = 0;
-            double latitiude = 0;
             if (CategroyItem != null)
 			{
-                var BusinessItems = await DbContext.Businesses.Where(s => s.CategoryId.Equals(CategroyItem.Id)).ToListAsync();
+                var BusinessItems = await DbContext.Businesses.Include(s=>s.Reviews).Include(s=>s.Galleries).Include(s=>s.District).Include(s=>s.Category).Where(s => s.CategoryId.Equals(CategroyItem.Id)).ToListAsync();
 				foreach (var item in BusinessItems)
 				{
-                    longitude = item.Longitude;
-                    latitiude = item.Latitude;
-                    if ((Math.Pow(Longitude - longitude, 2) + Math.Pow(Latitude - latitiude, 2)) < 10)
+                    if (GetDistance.distance(Latitude, Longitude, item.Latitude, item.Longitude, 'K') < 10)
                     {
                         businesses.Add(item);
                     }
@@ -542,6 +534,10 @@ namespace DataLayer.Services
 			{
                 return new List<Business>(); 
 			}
+		}
+        public async Task<bool> CheckBisinessFavorit(Guid Id , string UserId)
+		{
+           return await DbContext.UserFavorits.AnyAsync(s => s.BizAppUserId.Equals(UserId) && s.BusinessId.Equals(Id));
 		}
     }
 }

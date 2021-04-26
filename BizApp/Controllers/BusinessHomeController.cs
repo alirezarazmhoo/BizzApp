@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace BizApp.Controllers
@@ -17,10 +18,14 @@ namespace BizApp.Controllers
 	{
 		private readonly IUnitOfWorkRepo _UnitOfWork;
 		private readonly IMapper _mapper;
-		public BusinessHomeController(IUnitOfWorkRepo unitOfWork, IMapper mapper)
+		private readonly IHttpContextAccessor _httpContextAccessor;
+
+		public BusinessHomeController(IUnitOfWorkRepo unitOfWork, IMapper mapper , IHttpContextAccessor httpContextAccessor)
 		{
 			_UnitOfWork = unitOfWork;
 			_mapper = mapper;
+			_httpContextAccessor = httpContextAccessor;
+
 		}
 		public async  Task<IActionResult> Index(Guid Id)
 		{
@@ -127,7 +132,16 @@ namespace BizApp.Controllers
 			businessHomePageViewModel.businessHomePage_RelatedBusinessViewModels = businessHomePage_RelatedBusinessViewModels;
 			businessHomePageViewModel.businessHomePage_HoursAndLocationViewModel = businessHomePage_HoursAndLocationViewModel;
 			businessHomePageViewModel.BusinessId = BusinessId;
-			businessHomePageViewModel.BusinessName = BusinessName; 
+			businessHomePageViewModel.BusinessName = BusinessName;
+			if (User.Identity.IsAuthenticated)
+			{
+				businessHomePageViewModel.FavoritConditation =await _UnitOfWork.BusinessRepo.CheckBisinessFavorit(BusinessId , GetUserId()) ;
+			}
+			else
+			{
+				businessHomePageViewModel.FavoritConditation = false; 
+			}
+
 			#endregion
 			return View(businessHomePageViewModel);
 		}
@@ -136,6 +150,10 @@ namespace BizApp.Controllers
 		{
 			try
 			{
+				if (User.Identity.IsAuthenticated)
+				{
+					model.BizAppUserId = GetUserId();
+				}
 				await _UnitOfWork.BusinessHomePageRepo.MessageToBusiness(model);
 				await _UnitOfWork.SaveAsync();
 				return Json(new { success = true });
@@ -173,6 +191,10 @@ namespace BizApp.Controllers
 				return Content("");
 
 			}
+		}
+		private string GetUserId()
+		{
+			return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 		}
 
 

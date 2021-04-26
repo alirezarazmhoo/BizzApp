@@ -170,6 +170,8 @@ namespace BizApp.Controllers
 
 		}
 		[HttpPost]
+
+
 		public async Task<JsonResult> ChangeFunnyCount(Guid Id)
 		{
 			try
@@ -204,6 +206,8 @@ namespace BizApp.Controllers
 
 		}
 		[HttpPost]
+
+
 		public async Task<JsonResult> ChangeCoolCount(Guid Id)
 		{
 			

@@ -20,6 +20,18 @@ namespace BizApp.Areas.WebApi.Models
 	}
 	public class BusinessOnMap
 	{
+		public string name { get; set; }
+		public string website { get; set; }
+		public string boldfeature { get; set; }
+		public string phonenumber { get; set; }
+		public string category { get; set;  }
+		public string featureimage { get; set;  }
+		public string address { get; set; }
+		public string districtname { get; set;  }
+		public string description { get; set;  }
+		public List<string> images { get; set; }
+		public int totalreview { get; set; }
+		public int rate { get; set;  }
 		public double longitude { get; set; }
 		public double latitude { get; set; }
 		public Guid id { get; set; }
