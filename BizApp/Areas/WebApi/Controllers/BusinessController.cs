@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BizApp.Areas.WebApi.Models;
+using BizApp.Utility;
 using DataLayer.Data;
 using DataLayer.Infrastructure;
 using Microsoft.AspNetCore.Http;
@@ -44,27 +45,39 @@ namespace BizApp.Areas.WebApi.Controllers
 			}
 		}
 		[Route("GetById")]
-		public async Task<BusinessPopop> GetById(Guid id)
+		public async Task<BusinessItem> GetById(Guid id)
 		{
 			try
 			{
-			BusinessPopop businessPopop = new BusinessPopop();
+			BusinessItem businessPopop = new BusinessItem();
+				List<Review> reviews = new List<Review>();
 			var Item = await _UnitOfWork.BusinessRepo.GetById(id);
 			if(Item != null)
 			{
-					var item = _mapper.Map<BusinessPopop>(Item);
-					if (string.IsNullOrEmpty(item.image))
+					businessPopop.address = Item.Address;
+					businessPopop.description = Item.Description;
+					businessPopop.districname = Item.District.Name;
+					businessPopop.id = Item.Id;
+					businessPopop.image = string.IsNullOrEmpty(Item.FeatureImage) == true ?  "/Upload/DefaultPicutres/Bussiness/business-strategy-success-target-goals_1421-33.jpg" : Item.FeatureImage;
+					businessPopop.name = Item.Name;
+					businessPopop.rate = Item.Rate;
+					foreach (var item in Item.Reviews)
 					{
-						item.image = "/Upload/DefaultPicutres/Bussiness/Business.jpg";
+						string UserPicture = string.IsNullOrEmpty(item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault()) == true ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault();
+						reviews.Add(new Review() { Date =  item.Date.ToPersianDateString() , FullName = item.BizAppUser.FullName , 
+						 Id = item.Id , Image = UserPicture  , Rate = item.Rate , Text = item.Description ,  TotalReview= item.BizAppUser.Reviews.Count , TotalBusinessMediaPicture =await _UnitOfWork.BusinessHomePageRepo.GetTotalUserMedia(item.BizAppUserId),  TotalReviewPicture = 0 
+						});
 					}
-					return item;
+					businessPopop.reviews = reviews;
+					businessPopop.totalreview = Item.Reviews.Count;
+					return businessPopop;
 			}
 				else
 				{
 					return null; 
 				}
 			}
-		   catch (Exception)
+		   catch (Exception ex)
 			{
 				throw;
 			}

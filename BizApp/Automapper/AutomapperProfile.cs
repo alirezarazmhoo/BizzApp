@@ -116,7 +116,7 @@ namespace BizApp.Automapper
 			//CreateMap<ReviewMediaQuery, ReviewMediaViewModel>
 
 			//BusinessPopop
-			CreateMap<Business, BusinessPopop>()
+			CreateMap<Business, BusinessItem>()
 				.ForMember(dest => dest.id, opt => opt.MapFrom(src => src.Id))
 				.ForMember(dest => dest.address, opt => opt.MapFrom(src => src.Address))
 				.ForMember(dest => dest.districname, opt => opt.MapFrom(src => src.District.Name))
@@ -125,6 +125,8 @@ namespace BizApp.Automapper
 				.ForMember(dest => dest.description, opt => opt.MapFrom(src => src.Description))
 				.ForMember(dest => dest.image, opt => opt.MapFrom(src => src.FeatureImage))
 				.ForMember(dest => dest.name, opt => opt.MapFrom(src => src.Name))
+				.ForMember(dest => dest.reviews, opt => opt.MapFrom(src => src.Reviews))
+
 
 
 

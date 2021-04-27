@@ -36,7 +36,7 @@ namespace BizApp.Areas.WebApi.Models
 		public double latitude { get; set; }
 		public Guid id { get; set; }
 	}
-	public class BusinessPopop
+	public class BusinessItem
 	{
 		public Guid id { get; set;  }
 		public string name { get; set; }
@@ -46,7 +46,23 @@ namespace BizApp.Areas.WebApi.Models
 		public string districname { get; set;  }
 		public string description { get; set; }
 		public string image { get; set;  }
+		public List<Review> reviews { get; set; }
 	}
+
+	public class Review
+	{
+		public Guid Id { get; set; }
+		public string Image { get; set; }
+		public string FullName { get; set; }
+		public int Rate { get; set; }
+		public string Date { get; set; }
+		public string Text { get; set; }
+		public int TotalReviewPicture { get; set; }
+		public int TotalReview { get; set; }
+		public int TotalBusinessMediaPicture { get; set; }
+
+	}
+
 
 
 }
