@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BizApp.Areas.Admin.Models;
 using BizApp.Areas.Profile.Models;
+using BizApp.Areas.Profile.Models.Account;
 using BizApp.Areas.Profile.Models.Reviews;
 using BizApp.Areas.WebApi.Models;
 using BizApp.Models.Basic;
@@ -79,6 +80,8 @@ namespace BizApp.Automapper
 			CreateMap<UserProfileDetailQuery, ProfileViewModel>()
 				//.ForMember(dest => dest.RegisterDate, opt => opt.MapFrom(src => src.RegisterDate.ToPersianShortDate()))
 				.ReverseMap();
+			CreateMap<BizAppUser, EditAcountViewModel>().ReverseMap();
+			CreateMap<EditAcountViewModel, EditAcountCommand>().ReverseMap();
 
 			// user photos
 			CreateMap<ApplicationUserMedia, UserPhotosViewModel>()
