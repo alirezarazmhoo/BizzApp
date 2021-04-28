@@ -31,16 +31,8 @@
 }
 
 <main>
-	<partial name="~/Areas/Profile/Views/Shared/_ShowMessagePartial" />
+	<partial name="~/Areas/Profile/Views/Shared/_ShowMessagePartial.cshtml" />
 
-	@if (TempData["message"] != null)
-	{
-		<div class="container" style="padding-top: 10px;">
-			<div class="alert alert-success" role="alert">
-				@TempData["message"]
-			</div>
-		</div>
-	}
 	<div class="container">
 		<div class="row">
 			<div class="col-md-7 md-7">
@@ -135,7 +127,7 @@
 										</form>
 										<form asp-action="confirmDelete" asp-controller="userphoto" asp-area="profile" method="get">
 											<input type="hidden" id="deleteId" name="id" />
-											<button type="submit" class="btn btn-link btn-sm" onclick="deletePhoto()" style="font-size:12px;" >حذف تصویر</button>
+											<button type="submit" class="btn btn-link btn-sm" onclick="deletePhoto()" style="font-size:12px;">حذف تصویر</button>
 										</form>
 									</div>
 								}

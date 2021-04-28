@@ -53,6 +53,8 @@
 @RenderSection("head", required: false)
 
 <main>
+	<partial name="~/Areas/Profile/Views/Shared/_ShowMessagePartial.cshtml" />
+
 	@*// todo: redirect if user is null*@
 	@if (string.IsNullOrEmpty(userName))
 	{
@@ -86,12 +88,12 @@
 
 										@if (user.Photos.Count == 0)
 										{
-											
-										<a asp-area="profile"
-										   asp-controller="userphoto"
-										   asp-action="upload">
-											<img class="profile-photo-img" src="~/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" />
-										</a>
+
+											<a asp-area="profile"
+											   asp-controller="userphoto"
+											   asp-action="upload">
+												<img class="profile-photo-img" src="~/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" />
+											</a>
 										}
 										else
 										{
