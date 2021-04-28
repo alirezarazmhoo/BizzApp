@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 using BizApp.Utility;
 using System;
 using DomainClass.Commands;
+using DomainClass;
+using Microsoft.AspNetCore.Identity;
+
+// change for commit
 
 namespace BizApp.Areas.Profile.Controllers
 {
@@ -16,8 +20,13 @@ namespace BizApp.Areas.Profile.Controllers
 	[Authorize]
 	public class AccountController : ProfileController
 	{
-		public AccountController(IUnitOfWorkRepo unitOfWork, IHttpContextAccessor httpContextAccessor, IMapper mapper) : base(unitOfWork, httpContextAccessor, mapper)
+		private readonly UserManager<BizAppUser> _userManager;
+		private readonly SignInManager<BizAppUser> _signInManager;
+
+		public AccountController(IUnitOfWorkRepo unitOfWork, IHttpContextAccessor httpContextAccessor, IMapper mapper, UserManager<BizAppUser> userManager, SignInManager<BizAppUser> signInManager) : base(unitOfWork, httpContextAccessor, mapper)
 		{
+			_userManager = userManager;
+			_signInManager = signInManager;
 		}
 
 		[HttpGet]
@@ -41,7 +50,19 @@ namespace BizApp.Areas.Profile.Controllers
 			// set main photo image
 			model.MainPhoto = await UnitOfWork.UserRepo.GetMainPhoto(userId);
 
+			// set city name
+			if (model.CityId != null) {
+				var cityWithProvince = await UnitOfWork.CityRepo.GetWithProvince((int) model.CityId);
+				model.CityName = cityWithProvince.ListName;
+			}
+
 			return View(model);
+		}
+
+		[HttpGet]
+		public IActionResult Hi()
+		{
+			return View();
 		}
 
 		[HttpPost]
@@ -57,7 +78,21 @@ namespace BizApp.Areas.Profile.Controllers
 			{
 				var command = Mapper.Map<EditAcountCommand>(model);
 
-				await UnitOfWork.UserRepo.UpdateUserInformation(command);
+				// convert persian birth date to geo
+				if (model.Year > 0 && model.Month > 0 && model.Day > 0)
+				{
+					var persianDate = $"{model.Year}/{model.Month}/{model.Day}";
+					var geoDate = persianDate.ToGeorgianDateTime();
+					command.BirthDate = geoDate;
+				}
+				else
+				{
+					command.BirthDate = null;
+				}
+
+				await UnitOfWork.UserRepo.UpdateProfile(command);
+
+				TempData["message"] = "تغییرات ارسالی ذخیره شد";
 
 				return RedirectToAction("edit");
 			}
@@ -65,6 +100,42 @@ namespace BizApp.Areas.Profile.Controllers
 			{
 				return StatusCode(500);
 			}
+		}
+
+		[HttpGet]
+		public IActionResult ChangePassword()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model) 
+		{
+			// check current password
+			if (!ModelState.IsValid) return View(model);
+
+			var user = await _userManager.GetUserAsync(User);
+
+			// change password
+			var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+			if (!result.Succeeded)
+			{
+				foreach (var error in result.Errors)
+				{
+					if (error.Code.Equals("PasswordMismatch", StringComparison.OrdinalIgnoreCase))
+					{
+						ModelState.AddModelError(string.Empty, "رمز عبور فعلی اشتباه است");
+					}
+				}
+				return View();
+			}
+
+			await _signInManager.RefreshSignInAsync(user);
+			// show message
+			TempData["message"] = "رمز عبور شما با موفقیت تغییر کرد";
+
+			return View();
+
 		}
 	}
 }

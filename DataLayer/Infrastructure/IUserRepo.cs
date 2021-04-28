@@ -13,6 +13,6 @@ namespace DataLayer.Infrastructure
 		Task<BizAppUser> GetByUserName(string userName);
 		Task<string> GetUserName(string userId);
 		Task<string> GetMainPhoto(string userId);
-		Task UpdateUserInformation(EditAcountCommand command);
+		Task UpdateProfile(EditAcountCommand command);
 	}
 }

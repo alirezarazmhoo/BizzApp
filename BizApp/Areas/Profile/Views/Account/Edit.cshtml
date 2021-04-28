@@ -4,12 +4,14 @@
 
 @{ 
 	ViewData["Title"] = "ویرایش پروفایل";
-	Layout = "~/Areas/Profile/Views/Shared/_AccountSettingLayout.cshtml";
+	Layout = "~/Areas/Profile/Views/Shared/_AccountSettingLayout.cshtml"; 
 }
 
 @section head {
 	<link href="~/css/autocomplete.css" rel="stylesheet" />
 }
+
+<partial name="~/Areas/Profile/Views/Shared/_ShowMessagePartial.cshtml" />
 
 <div class="edit__item__title">
 	<h2>پروفایل</h2>
@@ -40,17 +42,17 @@
 	<div class="edit__item__pro-edit__form">
 		<form asp-area="profile"
 			  asp-controller="account"
-			  asp-action="edit"
+			  asp-action="update"
 			  asp-route-returnurl="/profile/account/edit/"
-			  asp-antiforgery="false"
 			  method="post"
-			  class="form-horizontal"
-			  role="form">
+			  class="form-horizontal">
 			<div class="form-group">
-				<label>نام</label>
+				<label>نام و نام خانوادگی</label>
 				<p>این قسمت الزامی است</p>
 				<input asp-for="FullName" type="text" class="form-control" aria-describedby="" placeholder="">
+				<span asp-validation-for="FullName" class="text-danger"></span>
 			</div>
+			<input asp-for="Id" type="hidden" />
 			<div class="form-group">
 				<label>جنسیت</label>
 
@@ -66,26 +68,27 @@
 						زن
 					</label>
 				</div>
+				<span asp-validation-for="Gender" class="text-danger"></span>
 			</div>
 
 			<div class="form-group">
 				<label>کد ملی</label>
 				<input asp-for="NationalCode" type="text" class="form-control" aria-describedby="" placeholder="">
+				<span asp-validation-for="NationalCode" class="text-danger"></span>
 			</div>
-
+			
 			<div class="sign-up__item__lable">
 				<p>تاریخ تولد</p>
 			</div>
 			<div class="sign-up__item__birthday">
 				<div class="row" data-space="10">
-
 					<div class="col-4">
+						<input asp-for="MainPhoto" type="hidden" />
 						<select class="form-control" asp-for="Day">
 							<option value="0">روز</option>
 							@for (int i = 0; i < 31; i++)
 							{
-								<option selected="@((i + 1) == Model.Day)" value="@(i + 1)">@(i + 1)</option>
-							}
+				<option selected="@((i + 1) == Model.Day)" value="@(i + 1)">@(i + 1)</option>}
 						</select>
 					</div>
 					<div class="col-4">
@@ -93,19 +96,19 @@
 							<option value="0">ماه</option>
 							@for (int i = 0; i < 12; i++)
 							{
-								<option selected="@((i + 1) == Model.Month)" value="@(i + 1)">@(i + 1)</option>
-							}
+				<option selected="@((i + 1) == Model.Month)" value="@(i + 1)">@(i + 1)</option>}
 						</select>
 					</div>
 					<div class="col-4">
 						<select class="form-control" asp-for="Year">
 							<option value="0">سال</option>
-							@{
+							@{ 
 								var currentDate = DateTime.Now.ToPersianDateString();
 								var currentYear = Convert.ToInt32(currentDate.Substring(0, 4)) - 5;
+
 								for (int i = currentYear; i > currentYear - 140; i--)
 								{
-									<option selected="@((i + 1) == Model.Year)" value="@i">@i</option> 
+									<option selected="@((i + 1) == Model.Year)" value="@i">@i</option>
 								} 
 							}
 						</select>
@@ -114,9 +117,9 @@
 			</div>
 
 			<div style="position: relative; height: 80px;">
-				<input type="text" placeholder="حداقل 3 کاراکتر تایپ کنید" value="" id="city-autocomplete" class="form-control" />
-				<div id="selectedCity">شهر انتخاب شده: هیچ</div>
-				<input asp-for="CityId" type="hidden" />
+				<input type="text" placeholder="حداقل 3 کاراکتر تایپ کنید" value="@Model.CityName" id="city-autocomplete" class="form-control" />
+				<div id="selectedCity">شهر: @(string.IsNullOrEmpty(Model.CityName) ? "هیچ" : Model.CityName)</div>
+				<input asp-for="CityId" type="hidden" id="Input_CityId"/>
 			</div>
 
 			<div class="form-group">
@@ -141,4 +144,8 @@
 
 	<script src="~/lib/autocomplete/jquery.autocomplete.js"></script>
 	<script src="~/Scripts/cityautocomplete.js"></script>
+
+	<script type="text/javascript">
+		setInputResultName('CityId');
+	</script>
 }

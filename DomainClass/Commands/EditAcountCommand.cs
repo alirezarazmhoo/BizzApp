@@ -14,11 +14,6 @@ namespace DomainClass.Commands
 		public int? CityId { get; set; }
 		public string PostalCode { get; set; }
 		public string Address { get; set; }
-		public string MainPhoto { get; set; }
-
-		// birth date fields
-		public int? Year { get; set; }
-		public int? Month { get; set; }
-		public int? Day { get; set; }
+		public DateTime? BirthDate { get; set; }
 	}
 }

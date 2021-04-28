@@ -3,6 +3,7 @@ using DataLayer.Infrastructure;
 using DomainClass;
 using DomainClass.Commands;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -56,7 +57,6 @@ namespace DataLayer.Services
 			var Item = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(userId));
 			if (Item != null)
 			{
-
 				return Item.FullName;
 			}
 			else
@@ -65,9 +65,21 @@ namespace DataLayer.Services
 			}
 		}
 
-		public Task UpdateUserInformation(EditAcountCommand command)
+		public async Task UpdateProfile(EditAcountCommand command)
 		{
-			throw new System.NotImplementedException();
+			var user = await DbContext.Users.FirstOrDefaultAsync(f => f.Id == command.Id);
+
+			if (user == null) throw new KeyNotFoundException();
+
+			user.FullName = command.FullName;
+			user.Gender = command.Gender;
+			user.NationalCode = command.NationalCode;
+			user.PostalCode = command.PostalCode;
+			user.Address = command.Address;
+			user.CityId = command.CityId != null && command.CityId > 0 ? command.CityId : null;
+			user.BirthDate = command.BirthDate;
+
+			await DbContext.SaveChangesAsync();
 		}
 	}
 }

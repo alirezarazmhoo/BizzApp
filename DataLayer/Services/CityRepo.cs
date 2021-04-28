@@ -52,6 +52,19 @@ namespace DataLayer.Services
 			return result;
 		}
 
+		public async Task<CityWithProvinceNamesQuery> GetWithProvince(int id)
+		{
+			var result = await
+							DbContext.Cities.Select(s => new CityWithProvinceNamesQuery
+							{
+								Id = s.Id,
+								ListName = s.Province.Name + " - " + s.Name
+							})
+							.FirstOrDefaultAsync(w => w.Id == id);
+
+			return result;
+		}
+
 		public async Task<City> GetById(int id)
 		{
 			return await FindByCondition(f => f.Id == id).FirstOrDefaultAsync();

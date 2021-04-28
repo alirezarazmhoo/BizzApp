@@ -31,6 +31,8 @@
 }
 
 <main>
+	<partial name="~/Areas/Profile/Views/Shared/_ShowMessagePartial" />
+
 	@if (TempData["message"] != null)
 	{
 		<div class="container" style="padding-top: 10px;">
