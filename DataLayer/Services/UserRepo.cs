@@ -64,7 +64,23 @@ namespace DataLayer.Services
 				return "بدون نام";
 			}
 		}
+		public async Task<string> UserTokenMaper(string userToken)
+		{
+			var UserItem = await DbContext.Users.FirstOrDefaultAsync(s => s.SecurityStamp.Equals(userToken));
+			if (UserItem !=null)
+			{
+				return UserItem.Id; 
 
+			}
+			else
+			{
+				return string.Empty; 
+			}
+		}
+		public async Task<bool> CheckUserToken(string userToken)
+		{
+			return await DbContext.Users.AnyAsync(s => s.SecurityStamp.Equals(userToken));
+		}
 		public async Task UpdateProfile(EditAcountCommand command)
 		{
 			var user = await DbContext.Users.FirstOrDefaultAsync(f => f.Id == command.Id);

@@ -60,7 +60,9 @@ namespace BizApp.Areas.WebApi.Models
 		public int TotalReviewPicture { get; set; }
 		public int TotalReview { get; set; }
 		public int TotalBusinessMediaPicture { get; set; }
-
+		public int UseFull { get; set; }
+		public int Cool { get; set; }
+		public int Funny { get; set; }
 	}
 
 

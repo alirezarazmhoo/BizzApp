@@ -19,17 +19,17 @@ namespace BizApp.Areas.WebApi.Controllers
 		}
 		[HttpPost]
 		[Route("ChangeUseFullCount")]
-		public async Task<bool> ChangeUseFullCount(Guid Id, string UserId)
+		public async Task<bool> ChangeUseFullCount(Guid Id)
 		{
-
 			try
 			{
 				bool state;
-				if (await _UnitOfWork.UserRepo.GetById(UserId) == null)
+				string Token = HttpContext.Request?.Headers["Token"];
+				if (await _UnitOfWork.UserRepo.CheckUserToken(Token) == false)
 				{
 					throw new Exception();
 				}
-				if (await _UnitOfWork.ReviewRepo.ChangeHelpFull(Id, UserId) == DomainClass.Enums.VotesAction.Add)
+				if (await _UnitOfWork.ReviewRepo.ChangeHelpFull(Id, await _UnitOfWork.UserRepo.UserTokenMaper(Token)) == DomainClass.Enums.VotesAction.Add)
 				{
 					state = true;
 				}
@@ -51,20 +51,17 @@ namespace BizApp.Areas.WebApi.Controllers
 		[HttpPost]
 		[Route("ChangeFunnyCount")]
 
-		public async Task<bool> ChangeFunnyCount(Guid Id, string UserId)
+		public async Task<bool> ChangeFunnyCount(Guid Id)
 		{
 			try
 			{
-
 				bool state;
-
-				if (await _UnitOfWork.UserRepo.GetById(UserId) == null )
+				string Token = HttpContext.Request?.Headers["Token"];
+				if (await _UnitOfWork.UserRepo.CheckUserToken(Token) == false)
 				{
 					throw new Exception();
 				}
-
-
-				if (await _UnitOfWork.ReviewRepo.ChangeFunnyCount(Id, UserId) == DomainClass.Enums.VotesAction.Add)
+				if (await _UnitOfWork.ReviewRepo.ChangeFunnyCount(Id, await _UnitOfWork.UserRepo.UserTokenMaper(Token)) == DomainClass.Enums.VotesAction.Add)
 				{
 					state = true;
 				}
@@ -85,17 +82,17 @@ namespace BizApp.Areas.WebApi.Controllers
 		}
 		[HttpPost]
 		[Route("ChangeCoolCount")]
-
 		public async Task<bool> ChangeCoolCount(Guid Id, string UserId)
 		{
 			try
 			{
 				bool state;
-				if (await _UnitOfWork.UserRepo.GetById(UserId) == null)
+				string Token = HttpContext.Request?.Headers["Token"];
+				if (await _UnitOfWork.UserRepo.CheckUserToken(Token) == false)
 				{
 					throw new Exception();
 				}
-				if (await _UnitOfWork.ReviewRepo.ChangeCoolCount(Id, UserId) == DomainClass.Enums.VotesAction.Add)
+				if (await _UnitOfWork.ReviewRepo.ChangeCoolCount(Id, await _UnitOfWork.UserRepo.UserTokenMaper(Token)) == DomainClass.Enums.VotesAction.Add)
 				{
 					state = true;
 				}
@@ -114,9 +111,5 @@ namespace BizApp.Areas.WebApi.Controllers
 			}
 
 		}
-
-
-
-
 	}
 }

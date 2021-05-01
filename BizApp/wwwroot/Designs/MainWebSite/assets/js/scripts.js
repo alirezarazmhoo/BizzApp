@@ -429,8 +429,50 @@ $(window).on('load', () => {
         $(this).find('>ul').toggle()
     })
     
-    $("#dropzone").dropzone({ url: "/file/post" });
-    // $("#dropzone1").dropzone({ url: "/file/post" });
+    $("#dropzone1").dropzone({
+        url: "/file/post",
+        autoProcessQueue: false,
+        init: function () {
+            this.on("addedfile", function(file) {
+                $('.upload-pic__header h3').show();
+                $('.upload-pic__footer').show();
+                $('.upload-pic .dropzone .dz-message').remove();
+                $('.upload-pic .dropzone').addClass('loaded');
+                
+                caption = file.caption == undefined ? "" : file.caption;
+                file._captionLabel = Dropzone.createElement("<label>توضیحات: <small>دلخواه</small></label>")
+                file._captionBox = Dropzone.createElement("<textarea id='image_"+file.lastModified+"' name='caption[]' placeholder='توضیحات را در این قسمت بنویسید'>"+caption+"</textarea>");
+                file.previewElement.appendChild(file._captionLabel);
+                file.previewElement.appendChild(file._captionBox);
+            }),
+            this.on("sending", function(file, xhr, formData){
+                formData.append('yourPostName',file._captionBox.value);
+            })
+        }
+    });
+
+    $("#dropzone2").dropzone({
+        url: "/file/post",
+        autoProcessQueue: false,
+        init: function () {
+            this.on("addedfile", function(file) {
+                $('.review-content__modal__content__close h3').show();
+                $('.review-content__modal__content__footer').show();
+                $('.review-content__modal__content__image').remove();
+                $('.review-content__modal .dz-message').remove();
+                $('.review-content__modal .dropzone').addClass('loaded');
+                
+                caption = file.caption == undefined ? "" : file.caption;
+                file._captionLabel = Dropzone.createElement("<label>توضیحات: <small>دلخواه</small></label>")
+                file._captionBox = Dropzone.createElement("<textarea id='image_"+file.lastModified+"' name='caption[]' placeholder='توضیحات را در این قسمت بنویسید'>"+caption+"</textarea>");
+                file.previewElement.appendChild(file._captionLabel);
+                file.previewElement.appendChild(file._captionBox);
+            }),
+            this.on("sending", function(file, xhr, formData){
+                formData.append('yourPostName',file._captionBox.value);
+            })
+        }
+    });
     
     var page_slider = new Swiper('.page-slider .swiper-container', {
         slidesPerView: 1,
@@ -472,13 +514,18 @@ $(window).on('load', () => {
 
 
     $(".review-content__wrapper__box-comment__score__star > label").on("mouseover",function(){
-        var data_title=$(this).data("title")
+        var data_title = $(this).data("title")
         $(".review-content__wrapper__box-comment__score__text > span").html(data_title)
     })
 
     $(".review-content__wrapper__box-comment__score__star > label").on("mouseleave",function(){
-        
-        $(".review-content__wrapper__box-comment__score__text > span").html("رتبه بندی خود را انتخاب کنید")
+        var text = $(".review-content__wrapper__box-comment__score__text").attr('data-default')
+        $(".review-content__wrapper__box-comment__score__text > span").html(text)
+    })
+
+    $(".review-content__wrapper__box-comment__score__star > label").on("click",function(){
+        var data_title = $(this).data("title")
+        $(".review-content__wrapper__box-comment__score__text").attr('data-default',data_title)
     })
 
 
