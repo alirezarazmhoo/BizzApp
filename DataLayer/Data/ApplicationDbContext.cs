@@ -47,8 +47,8 @@ namespace DataLayer.Data
 		public virtual DbSet<BusinessQouteUser> BusinessQouteUsers { get; set; }
 		public virtual DbSet<UserFavorits> UserFavorits { get; set;  }
 		public virtual DbSet<UserActivity> UserActivities { get; set; }
-
-
+		public virtual DbSet<Friend> Friends { get; set; }
+		public virtual DbSet<Notification> Notifications { get; set; }
 		#endregion
 		
 		protected override void OnModelCreating(ModelBuilder builder)
