@@ -34,6 +34,7 @@ namespace DataLayer.Services
 		private readonly AskTheCommunityRepo askTheCommunityRepo;
 		private readonly UserFavoritsRepo userFavoritsRepo;
 		private readonly UserActivityRepo userActivity;
+		private readonly FriendRepo friendRepo;
 
 		public UnitOfWorkRepo(ApplicationDbContext DbContext, UserManager<BizAppUser> userManager, IUserActivityRepo userActivity)
 		{
@@ -66,6 +67,7 @@ namespace DataLayer.Services
 		public IAskTheCommunityRepo AskTheCommunityRepo => askTheCommunityRepo ?? new AskTheCommunityRepo(_DbContext);
 		public IUserFavoritsRepo UserFavoritsRepo => userFavoritsRepo ?? new UserFavoritsRepo(_DbContext);
 		public IUserActivityRepo UserActivityRepo => userActivity ?? new UserActivityRepo(_DbContext, _userManager);
+		public IFriendRepo FriendRepo => friendRepo ?? new FriendRepo(_DbContext);
 
 		public async Task SaveAsync()
 		{
