@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DomainClass.Enums;
+using System;
 
 namespace DomainClass.Review
 {
@@ -10,7 +11,6 @@ namespace DomainClass.Review
 		public int LikeCount { get; set; }
 		public DateTime CreatedAt { get; set; }
 		public string Description { get; set; }
-
 		public virtual Review Review { get; set; }
 	}
 }

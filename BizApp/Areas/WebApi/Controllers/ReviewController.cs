@@ -1,4 +1,5 @@
 ﻿using DataLayer.Infrastructure;
+using DomainClass.Review;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -82,7 +83,7 @@ namespace BizApp.Areas.WebApi.Controllers
 		}
 		[HttpPost]
 		[Route("ChangeCoolCount")]
-		public async Task<bool> ChangeCoolCount(Guid Id, string UserId)
+		public async Task<bool> ChangeCoolCount(Guid Id)
 		{
 			try
 			{
@@ -109,23 +110,28 @@ namespace BizApp.Areas.WebApi.Controllers
 			{
 				throw;
 			}
-
 		}
-		//[HttpPost]
-		//[Route("Add")]
-		//public async Task<IActionResult> Add( )
-		//{
-		//	string Token = HttpContext.Request?.Headers["Token"];
-		//	if (await _UnitOfWork.UserRepo.CheckUserToken(Token) == false)
-		//	{
-		//		return NotFound();
-		//	}
-
-
-
-
-
-		//}
+		[HttpPost]
+		[Route("Add")]
+		public async Task<IActionResult> Add([FromForm] Review model , IFormFile[] files )
+		{
+			string Token = HttpContext.Request?.Headers["Token"];
+			if (await _UnitOfWork.UserRepo.CheckUserToken(Token) == false)
+			{
+				return NotFound();
+			}
+			try
+			{
+				model.BizAppUserId = await _UnitOfWork.UserRepo.UserTokenMaper(Token); 
+				await _UnitOfWork.ReviewRepo.AddReview(model , files , model.caption);
+				await _UnitOfWork.SaveAsync();
+				return Ok();
+			}
+			catch(Exception)
+			{
+				throw; 
+			}
+		}
 
 
 	}

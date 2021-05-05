@@ -7,6 +7,7 @@ using DomainClass.Businesses.Commands;
 using DomainClass.Businesses.Queries;
 using DomainClass.Infrastructure;
 using DomainClass.Queries;
+using DomainClass.Review;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -299,7 +300,7 @@ namespace DataLayer.Services
         }
         public async Task<Business> GetById(Guid id)
         {
-            return await FindByCondition(f => f.Id == id).Include(s => s.Galleries).Include(s=>s.Reviews).ThenInclude(s=>s.BizAppUser).ThenInclude(s=>s.ApplicationUserMedias).Include(s=>s.District).FirstOrDefaultAsync();
+            return await FindByCondition(f => f.Id == id).Include(s => s.Galleries).Include(s=>s.Reviews).ThenInclude(s=>s.BizAppUser).ThenInclude(s=>s.ApplicationUserMedias).Include(s=>s.Reviews).ThenInclude(s=>s.ReviewMedias).Include(s=>s.District).FirstOrDefaultAsync();
         }
         public async Task Remove(Business model)
         {
@@ -539,5 +540,33 @@ namespace DataLayer.Services
 		{
            return await DbContext.UserFavorits.AnyAsync(s => s.BizAppUserId.Equals(UserId) && s.BusinessId.Equals(Id));
 		}
+        public async Task<IEnumerable<CustomerBusinessMedia>> GetCustomerBusinessMedia(Guid Id)
+        {
+            var MainItem = await GetById(Id);
+            if(MainItem != null)
+			{
+                return await DbContext.CustomerBusinessMedias.Include(s=>s.CustomerBusinessMediaPictures).Where(s => s.BusinessId.Equals(Id) && s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted).ToListAsync();
+			}
+			else
+			{
+                return new List<CustomerBusinessMedia>();
+			}
+        }
+
+        public async Task<IEnumerable<BusinessGallery>> GetBusinessGallery(Guid Id)
+		{
+            var MainItem = await GetById(Id);
+            if (MainItem != null)
+            {
+                return await DbContext.BusinessGalleries.Where(s => s.BusinessId.Equals(Id)).ToListAsync();
+            }
+            else
+            {
+                return new List<BusinessGallery>();
+            }
+
+        }
+
+
     }
 }

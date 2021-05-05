@@ -57,4 +57,12 @@
 		Undefinded
 
 	}
+
+	public enum MediaType
+	{
+	Video , 
+	Picture,
+		Undefined
+
+	}
 }

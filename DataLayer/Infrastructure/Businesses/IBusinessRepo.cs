@@ -2,6 +2,7 @@
 using DomainClass.Businesses.Commands;
 using DomainClass.Businesses.Queries;
 using DomainClass.Queries;
+using DomainClass.Review;
 using Microsoft.AspNetCore.Http;
 using PagedList.Core;
 using System;
@@ -27,6 +28,10 @@ namespace DataLayer.Infrastructure
 		PagedList<Business> GetBussiness(SearchBussinessQuery searchViewModel);
 		Task<string> GetBusinessName(Guid Id);
 		Task<IEnumerable<Business>> GetBusinessOnMap(int Id, double Longitude, double Latitude);
-		Task<bool> CheckBisinessFavorit(Guid Id, string UserId); 
+		Task<bool> CheckBisinessFavorit(Guid Id, string UserId);
+		Task<IEnumerable<CustomerBusinessMedia>> GetCustomerBusinessMedia(Guid Id);
+		Task<IEnumerable<BusinessGallery>> GetBusinessGallery(Guid Id);
+
+
 	}
 }

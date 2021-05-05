@@ -254,7 +254,7 @@ namespace DataLayer.Services
 				return new List<Review>();
 			}
 		}
-		public async Task AddReview(Review model, IFormFile[] files)
+		public async Task AddReview(Review model, IFormFile[] files , string[] captions)
 		{
 			if (await DbContext.Users.AnyAsync(s => s.Id.Equals(model.BizAppUserId)) && await DbContext.Businesses.AnyAsync(s => s.Id.Equals(model.BusinessId)))
 			{
@@ -268,20 +268,20 @@ namespace DataLayer.Services
 				await DbContext.SaveChangesAsync();
 				if (files != null && files.Count() > 0)
 				{
-					foreach (var item in files)
+					for (int i = 0; i < files.Count(); i++)
 					{
-						var fileName = Guid.NewGuid().ToString().Replace('-', '0') + Path.GetExtension(item.FileName).ToLower();
+						var fileName = Guid.NewGuid().ToString().Replace('-', '0') + Path.GetExtension(files[i].FileName).ToLower();
 						var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Upload\Review\Files\", fileName);
 						using (var stream = new FileStream(filePath, FileMode.Create))
 						{
-							item.CopyTo(stream);
+								files[i].CopyTo(stream);
 						}
 						DbContext.ReviewMedias.Add(new ReviewMedia()
 						{
 							LikeCount = 0,
 							ReviewId = model.Id,
 							CreatedAt = DateTime.Now,
-							Description = string.Empty,
+							Description = captions[i],
 							Image = "/Upload/Review/Files/" + fileName,
 						});
 					}

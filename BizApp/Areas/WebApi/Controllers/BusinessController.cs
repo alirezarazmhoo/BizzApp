@@ -2,6 +2,7 @@
 using BizApp.Areas.WebApi.Models;
 using BizApp.Utility;
 using DataLayer.Data;
+using DataLayer.Extensions;
 using DataLayer.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -65,8 +66,9 @@ namespace BizApp.Areas.WebApi.Controllers
 					{
 						string UserPicture = string.IsNullOrEmpty(item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault()) == true ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault();
 						reviews.Add(new Review() { Date =  item.Date.ToPersianDateString() , FullName = item.BizAppUser.FullName , 
-						 Id = item.Id , Image = UserPicture  , Rate = item.Rate , Text = item.Description ,  TotalReview= item.BizAppUser.Reviews.Count , TotalBusinessMediaPicture =await _UnitOfWork.BusinessHomePageRepo.GetTotalUserMedia(item.BizAppUserId),  TotalReviewPicture = await _UnitOfWork.ReviewRepo.GetUserTotalReviewMedia(item.BizAppUserId) , Cool = item.CoolCount , Funny = item.FunnyCount  , UseFull = item.UsefulCount
-						});
+						 Id = item.Id , Image = UserPicture  , Rate = item.Rate , Text = item.Description ,  TotalReview= item.BizAppUser.Reviews.Count , TotalBusinessMediaPicture =await _UnitOfWork.BusinessHomePageRepo.GetTotalUserMedia(item.BizAppUserId),  TotalReviewPicture = await _UnitOfWork.ReviewRepo.GetUserTotalReviewMedia(item.BizAppUserId) , Cool = item.CoolCount , Funny = item.FunnyCount  , UseFull = item.UsefulCount ,
+							ReviewMedias =  FillMediaType(item.ReviewMedias)
+						});;
 					}
 					businessPopop.reviews = reviews;
 					businessPopop.totalreview = Item.Reviews.Count;
@@ -83,7 +85,28 @@ namespace BizApp.Areas.WebApi.Controllers
 
 			}
 		}
+		private  ICollection<ReviewMedias> FillMediaType(ICollection<DomainClass.Review.ReviewMedia> reviewMedias)
+		{
+			List<ReviewMedias> medias = new List<ReviewMedias>();
+			foreach (var item in reviewMedias)
+			{
+				medias.Add(new ReviewMedias() {  MediaType = FormatCheck.GetFormat(item.Image) == DomainClass.Enums.MediaType.Picture ? "Picture" : "Video" , Url = item.Image , Caption = item.Description});
+			}
+			return medias; 
+		}
+		[Route("GetBusinessGallery")]
+		public async Task<IEnumerable<BusinessGallery>> GetBusinessGallery(Guid id)
+		{
+			List<BusinessGallery> businessGalleries = new List<BusinessGallery>();
 
-
+			foreach (var item in await _UnitOfWork.BusinessRepo.GetCustomerBusinessMedia(id))
+			{
+				foreach (var item2 in item.CustomerBusinessMediaPictures)
+				{
+					businessGalleries.Add(new BusinessGallery() { Description = item2.Description, Id = item2.Id, Url = item2.Image, MediaType = FormatCheck.GetFormat(item2.Image) == DomainClass.Enums.MediaType.Picture ? "Picture" : "Video" });
+				}
+			}
+			return businessGalleries;
+		}
 	}
 }

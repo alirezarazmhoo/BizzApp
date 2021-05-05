@@ -164,11 +164,11 @@ namespace BizApp.Controllers
 			}
 		}
 		[HttpPost]
-		public async Task<IActionResult> AddFaqsAnswers(Review model, IFormFile[] files)
+		public async Task<IActionResult> AddFaqsAnswers(Review model, IFormFile[] files , string[] caption)
 		{
 			try
 			{
-				await _UnitOfWork.ReviewRepo.AddReview(model, files);
+				await _UnitOfWork.ReviewRepo.AddReview(model, files , caption);
 				await _UnitOfWork.SaveAsync();
 				return RedirectToAction(nameof(Index));
 			}

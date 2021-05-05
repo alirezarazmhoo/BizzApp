@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DomainClass.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,28 +25,28 @@ namespace BizApp.Areas.WebApi.Models
 		public string website { get; set; }
 		public string boldfeature { get; set; }
 		public string phonenumber { get; set; }
-		public string category { get; set;  }
-		public string featureimage { get; set;  }
+		public string category { get; set; }
+		public string featureimage { get; set; }
 		public string address { get; set; }
-		public string districtname { get; set;  }
-		public string description { get; set;  }
+		public string districtname { get; set; }
+		public string description { get; set; }
 		public List<string> images { get; set; }
 		public int totalreview { get; set; }
-		public int rate { get; set;  }
+		public int rate { get; set; }
 		public double longitude { get; set; }
 		public double latitude { get; set; }
 		public Guid id { get; set; }
 	}
 	public class BusinessItem
 	{
-		public Guid id { get; set;  }
+		public Guid id { get; set; }
 		public string name { get; set; }
-		public int rate { get; set;  }
-		public int totalreview { get; set;  }
+		public int rate { get; set; }
+		public int totalreview { get; set; }
 		public string address { get; set; }
-		public string districname { get; set;  }
+		public string districname { get; set; }
 		public string description { get; set; }
-		public string image { get; set;  }
+		public string image { get; set; }
 		public List<Review> reviews { get; set; }
 	}
 
@@ -63,8 +64,22 @@ namespace BizApp.Areas.WebApi.Models
 		public int UseFull { get; set; }
 		public int Cool { get; set; }
 		public int Funny { get; set; }
+		public ICollection<ReviewMedias> ReviewMedias { get; set; }
 	}
 
+	public class ReviewMedias
+	{
+		public string Url { get; set; }
+		public string MediaType { get; set; }
+		public string Caption { get; set; }
+	}
+	public class BusinessGallery
+	{
+		public Guid Id { get; set; }
+		public string Url { get; set; }
+		public string Description { get; set; }
+		public string MediaType { get; set; }
+	}
 
 
 }
