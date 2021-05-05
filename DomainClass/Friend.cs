@@ -16,6 +16,8 @@ namespace DomainClass
 		public string ReceiverUserId { get; set; }
 		[Required]
 		public StatusEnum Status { get; set; } = StatusEnum.Waiting;
+		[Required]
+		public DateTime CreatedAt { get; set; } = DateTime.Now;
 
 		public virtual BizAppUser Applicator { get; set; }
 		public virtual BizAppUser Receiver { get; set; }

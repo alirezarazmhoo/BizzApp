@@ -75,6 +75,10 @@
     <Compile Remove="Migrations\20210414063134_AddBusinessQoute.Designer.cs" />
     <Compile Remove="Migrations\20210421071728_AddUserActivityTable.cs" />
     <Compile Remove="Migrations\20210421071728_AddUserActivityTable.Designer.cs" />
+    <Compile Remove="Migrations\20210505062556_AddCreatedAtToFriend.cs" />
+    <Compile Remove="Migrations\20210505062556_AddCreatedAtToFriend.Designer.cs" />
+    <Compile Remove="Migrations\20210505063313_AddCreatedAtToFriendAndNotification.cs" />
+    <Compile Remove="Migrations\20210505063313_AddCreatedAtToFriendAndNotification.Designer.cs" />
 
   </ItemGroup>
 
