@@ -59,12 +59,6 @@ namespace BizApp.Areas.Profile.Controllers
 			return View(model);
 		}
 
-		[HttpGet]
-		public IActionResult Hi()
-		{
-			return View();
-		}
-
 		[HttpPost]
 		public async Task<IActionResult> Update(EditAcountViewModel model)
 		{

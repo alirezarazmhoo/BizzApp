@@ -13,7 +13,7 @@
 			}
 			set
 			{
-				fullName = !string.IsNullOrEmpty(value) ? fullName : "بدون نام";
+				fullName = !string.IsNullOrEmpty(value) ? value : "بدون نام";
 			}
 		}
 		public string UserName { get; set; }

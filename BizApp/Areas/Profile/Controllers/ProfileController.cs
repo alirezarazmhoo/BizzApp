@@ -18,6 +18,7 @@ namespace BizApp.Areas.Profile.Controllers
 		protected readonly ClaimsPrincipal CurrentUser;
 		//private readonly UserManager<BizAppUser> _userManager;
 		protected readonly IMapper Mapper;
+		protected string CurrentUserId => CurrentUser?.FindFirst(ClaimTypes.NameIdentifier).Value;
 
 		public ProfileController(IUnitOfWorkRepo unitOfWork, IHttpContextAccessor httpContextAccessor, IMapper mapper)
 		{

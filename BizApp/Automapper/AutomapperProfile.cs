@@ -116,7 +116,9 @@ namespace BizApp.Automapper
 				.ForMember(dest => dest.Business, opt => opt.MapFrom(src => src.Business))
 				.ReverseMap();
 
-			//CreateMap<ReviewMediaQuery, ReviewMediaViewModel>
+			// Friends
+			CreateMap<CreateFriendRelationViewModel, CreateFriendRelationCommand>().ReverseMap();
+
 
 			//BusinessPopop
 			CreateMap<Business, BusinessItem>()
@@ -129,10 +131,6 @@ namespace BizApp.Automapper
 				.ForMember(dest => dest.image, opt => opt.MapFrom(src => src.FeatureImage))
 				.ForMember(dest => dest.name, opt => opt.MapFrom(src => src.Name))
 				.ForMember(dest => dest.reviews, opt => opt.MapFrom(src => src.Reviews))
-
-
-
-
 				.ReverseMap();
 
 		}
