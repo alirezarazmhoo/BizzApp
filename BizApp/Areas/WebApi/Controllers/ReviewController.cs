@@ -111,5 +111,22 @@ namespace BizApp.Areas.WebApi.Controllers
 			}
 
 		}
+		//[HttpPost]
+		//[Route("Add")]
+		//public async Task<IActionResult> Add( )
+		//{
+		//	string Token = HttpContext.Request?.Headers["Token"];
+		//	if (await _UnitOfWork.UserRepo.CheckUserToken(Token) == false)
+		//	{
+		//		return NotFound();
+		//	}
+
+
+
+
+
+		//}
+
+
 	}
 }

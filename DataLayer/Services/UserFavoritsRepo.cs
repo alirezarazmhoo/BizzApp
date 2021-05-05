@@ -20,7 +20,7 @@ namespace DataLayer.Services
 		{
 			return await DbContext.UserFavorits.Where(s => s.BizAppUserId.Equals(Id)).ToListAsync();
 		}
-		public async  Task<VotesAction> AddOrRemove(string Id, string UserId)
+		public async  Task<VotesAction> AddOrRemove(Guid Id, string UserId)
 		{
 			UserFavorits userFavorits = new UserFavorits();
 			if(await DbContext.UserFavorits.AnyAsync(s=>s.BusinessId.Equals(Id) && s.BizAppUserId.Equals(UserId)))
