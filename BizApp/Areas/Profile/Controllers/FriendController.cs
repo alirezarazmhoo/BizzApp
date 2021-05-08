@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using BizApp.Areas.Profile.Models;
 using DataLayer.Infrastructure;
-using DomainClass;
 using DomainClass.Commands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PagedList.Core;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -23,11 +23,30 @@ namespace BizApp.Areas.Profile.Controllers
 		}
 
 		[HttpGet]
-		public IActionResult Index(string userName)
+		public async Task<IActionResult> Index(string userName, int page = 1)
 		{
+			// if user is authentitcate
 			if (string.IsNullOrEmpty(userName)) return Index();
 
-			return View();
+			// get list of friends
+			try
+			{
+				var result = await UnitOfWork.FriendRepo.GetAll(userName, page);
+
+				var model = Mapper.Map<IEnumerable<SharedProfileDetailViewModel>>(result);
+				var paginatedItems = new PagedList<SharedProfileDetailViewModel>(model.AsQueryable(), page, 48);
+
+				return View(paginatedItems);
+			}
+			catch (KeyNotFoundException)
+			{
+				return NotFound();
+			}
+			catch (Exception)
+			{
+				return StatusCode(500);
+			}
+
 		}
 
 		private IActionResult Index()

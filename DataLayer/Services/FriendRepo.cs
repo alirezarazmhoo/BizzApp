@@ -1,10 +1,13 @@
 ﻿using DataLayer.Data;
+using DataLayer.Extensions;
 using DataLayer.Infrastructure;
 using DomainClass;
 using DomainClass.Commands;
 using DomainClass.Enums;
+using DomainClass.Queries;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -56,7 +59,29 @@ namespace DataLayer.Services
 
 				scope.Complete();
 			}
+		}
 
+		public async Task<IEnumerable<SharedUserProfileDetailQuery>> GetAll(string userName, int page = 1)
+		{
+			var user = await DbContext.Users.FirstOrDefaultAsync(w => w.UserName == userName);
+			if (user == null) throw new KeyNotFoundException();
+
+			var result = 
+				await DbContext.Friends
+						.Where(w => w.ApplicatorUserId == user.Id )
+						.Select(s => new SharedUserProfileDetailQuery
+						{
+							Id = s.ReceiverUserId,
+							UserName = s.Receiver.UserName,
+							FullName = s.Receiver.FullName,
+							MainPhotoPath = 
+								s.Receiver.ApplicationUserMedias.FirstOrDefault(f => f.IsMainImage && f.BizAppUserId == s.ReceiverUserId).UploadedPhoto,
+							ReviewCount = s.Receiver.Reviews.Count
+						})
+						.Paginate(page, 48)
+						.ToListAsync();
+
+			return result;
 		}
 	}
 }
