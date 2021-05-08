@@ -43,7 +43,8 @@ namespace BizApp.Controllers
 			List<BusinessHomePage_FaqViewModel> businessHomePage_FaqViewModels = new List<BusinessHomePage_FaqViewModel>();
 			List<BusinessHomePage_RelatedBusinessViewModel> businessHomePage_RelatedBusinessViewModels = new List<BusinessHomePage_RelatedBusinessViewModel>();
 			BusinessHomePage_HoursAndLocationViewModel businessHomePage_HoursAndLocationViewModel = new BusinessHomePage_HoursAndLocationViewModel();
-			List<DataLayer.Services.BusinessHomePageRepo.LocationHours> locationHours = new List<DataLayer.Services.BusinessHomePageRepo.LocationHours>(); 
+			List<DataLayer.Services.BusinessHomePageRepo.LocationHours> locationHours = new List<DataLayer.Services.BusinessHomePageRepo.LocationHours>();
+			List<BusinessFeatureItem> businessFeatureItems = new List<BusinessFeatureItem>();
 			#endregion
 			#region Resource
 			var SliderItem = await _UnitOfWork.BusinessHomePageRepo.GetSlider(BusinessId);
@@ -71,7 +72,11 @@ namespace BizApp.Controllers
 			#endregion
 			#region Featrues
 			businessHomePage_FeatureViewModel.BoldFeature = FeaturesItem.Item1;
-			businessHomePage_FeatureViewModel.Features = FeaturesItem.Item2;
+			foreach (var item in FeaturesItem.Item2)
+			{
+				businessFeatureItems.Add(new BusinessFeatureItem() { Icon = item.Feature.Icon, Name = item.Feature.Name }); 
+			}
+			businessHomePage_FeatureViewModel.Features = businessFeatureItems;
 			#endregion
 			#region NearSponseredBusiness
 			foreach (var item in SponseredBusinessItem)

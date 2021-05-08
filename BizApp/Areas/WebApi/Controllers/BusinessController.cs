@@ -17,16 +17,10 @@ namespace BizApp.Areas.WebApi.Controllers
 	[ApiController]
 	public class BusinessController : ControllerBase
 	{
-		private readonly ApplicationDbContext _context;
 		private readonly IUnitOfWorkRepo _UnitOfWork;
-		private readonly IMapper _mapper;
-
-		public BusinessController(ApplicationDbContext context , IUnitOfWorkRepo unitOfWork, IMapper mapper)
+		public BusinessController(ApplicationDbContext context , IUnitOfWorkRepo unitOfWork)
 		{
-			_context = context;
 			_UnitOfWork = unitOfWork;
-			_mapper = mapper;
-
 		}
 		[Route("GetOnMap")]
 		public async Task<IEnumerable<BusinessOnMap>> GetOnMap(int categoryId , double latitude, double longitude)
@@ -107,6 +101,46 @@ namespace BizApp.Areas.WebApi.Controllers
 				}
 			}
 			return businessGalleries;
+		}
+		[Route("TimeAndFeatures")]
+		public async Task<IActionResult> GetBusinessTimeAndFeatures(Guid id)
+		{
+			BusinessTimeAndFeature businessTimeAndFeature = new BusinessTimeAndFeature();
+			List<BusinessFeature> businessFeatures = new List<BusinessFeature>();
+			List<BusinessTime>   businessTimes = new List<BusinessTime>();
+
+			if (await _UnitOfWork.BusinessRepo.GetById(id) == null)
+			{
+				return NotFound();
+			}
+			try
+			{
+			#region Resource
+			var Features = await _UnitOfWork.BusinessHomePageRepo.GetBusinessFeatures(id);
+			var Times = await _UnitOfWork.BusinessHomePageRepo.GetBusinessLocationHours(id);
+			var Description = await _UnitOfWork.BusinessRepo.GetById(id);
+			#endregion
+			foreach (var item in  Features.Item2)
+			{
+				businessFeatures.Add(new BusinessFeature() { Icon = item.Feature.Icon, Title = item.Feature.Name });
+			}
+			foreach (var item in Times.Item4)
+			{
+				item.DayName = GetDayName.GetName(item.Day);
+				businessTimes.Add( new BusinessTime() { DayName = item.DayName , FromTime = item.FromTime , ToTime = item.ToTime  });
+			}
+				#region FinalResult
+				businessTimeAndFeature.BusinessFeatures = businessFeatures;
+				businessTimeAndFeature.BusinessTimes = businessTimes;
+				businessTimeAndFeature.Description = Description.Description; 
+				#endregion
+				return Ok(businessTimeAndFeature);
+
+			}
+			catch (Exception)
+			{
+				throw;
+			}
 		}
 	}
 }

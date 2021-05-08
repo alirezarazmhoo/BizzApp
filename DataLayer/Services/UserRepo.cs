@@ -31,8 +31,7 @@ namespace DataLayer.Services
 		}
 		public async Task<BizAppUser> GetById(string userId)
 		{
-			return await DbContext.Users.Include(x => x.City).Where(x => x.Id == userId).FirstOrDefaultAsync();
-
+			return await DbContext.Users.Include(x => x.City).Include(s => s.Reviews).Include(s => s.ApplicationUserMedias).Include(s=>s.City).Where(x => x.Id == userId).FirstOrDefaultAsync();
 		}
 
 		public async Task<BizAppUser> GetByUserName(string userName)

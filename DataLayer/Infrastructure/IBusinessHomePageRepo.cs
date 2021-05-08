@@ -13,7 +13,7 @@ namespace DataLayer.Infrastructure
 	{
 		Task<IEnumerable<string>> GetSlider(Guid id);
 		Task<Tuple<string, int, int, bool, int, string, string>> GetBusinessSummary(Guid id);
-		Task<Tuple<string, List<string>>> GetBusinessFeatures(Guid id);
+		Task<Tuple<string, List<BusinessFeature>>> GetBusinessFeatures(Guid id);
 		Task<Tuple<string, double, double, List<LocationHours>>> GetBusinessLocationHours(Guid id);
 		Task<List<Tuple<string, string, int, int, Guid, string, string>>> GetNearByBusinessSponsored(Guid id);
 		Task<Tuple<string, string, string, string>> GetBusinessOtherInfo(Guid id); 

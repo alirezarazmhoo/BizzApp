@@ -31,6 +31,7 @@ namespace DomainClass.Businesses.Queries
 		public bool IsInFeature { get; set; }
 		public string FeatureName { get; set; }
 		public string BusinessName { get; set; }
+		public string Icon { get; set;  }
 
 	}
 	public class MenuCategoryViewModel

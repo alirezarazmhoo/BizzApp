@@ -1,4 +1,5 @@
-﻿using DomainClass.Enums;
+﻿using DomainClass.Businesses;
+using DomainClass.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -80,6 +81,45 @@ namespace BizApp.Areas.WebApi.Models
 		public string Description { get; set; }
 		public string MediaType { get; set; }
 	}
+
+
+	public class BusinessTimeAndFeature
+	{
+		public string Description { get; set; }
+		public ICollection<BusinessTime> BusinessTimes { get; set; }
+		public ICollection<BusinessFeature> BusinessFeatures { get; set; }
+
+	}
+
+	public class BusinessTime
+	{
+		public WeekDaysEnum Day { get; set; }
+		public string DayName { get; set; }
+		public TimeSpan? FromTime { get; set; }
+		public TimeSpan? ToTime { get; set; }
+
+
+	}
+	public class BusinessFeature
+	{
+		public string Title { get; set; }
+		public string Icon { get; set; }
+	}
+
+	public class UserProfile
+	{
+		public string UserName { get; set; }
+		public string Address { get; set; }
+		public int TotalReviewPicture { get; set; }
+		public int TotalReview { get; set; }
+		public int TotalBusinessMediaPicture { get; set; }
+		public string Image { get; set; }
+
+
+	}
+
+
+
 
 
 }

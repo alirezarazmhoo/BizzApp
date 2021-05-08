@@ -54,7 +54,40 @@ namespace BizApp.Areas.WebApi.Controllers
 			}
 		}
 
+		[HttpGet]
+		[Route("Check")]
+		public async Task<bool> CheckIsAlreadyExists(Guid Id)
+		{
+			try
+			{
+				bool state;
+				string Token = HttpContext.Request?.Headers["Token"];
+				if (await _UnitOfWork.UserRepo.CheckUserToken(Token) == false)
+				{
+					throw new Exception();
+				}
+				if (await _UnitOfWork.BusinessRepo.GetById(Id) == null)
+				{
+					throw new Exception();
+				}
+				if (await _UnitOfWork.BusinessRepo.CheckBisinessFavorit(Id,await _UnitOfWork.UserRepo.UserTokenMaper(Token)) )
+				{
+					state = true;
 
+				}
+				else
+				{
+					state = false;
+				}
+				await _UnitOfWork.SaveAsync();
+				return state;
+			}
+			catch (Exception)
+			{
+				throw;
+
+			}
+		}
 
 	}
 }

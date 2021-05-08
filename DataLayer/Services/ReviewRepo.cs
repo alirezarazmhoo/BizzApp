@@ -256,6 +256,7 @@ namespace DataLayer.Services
 		}
 		public async Task AddReview(Review model, IFormFile[] files , string[] captions)
 		{
+
 			if (await DbContext.Users.AnyAsync(s => s.Id.Equals(model.BizAppUserId)) && await DbContext.Businesses.AnyAsync(s => s.Id.Equals(model.BusinessId)))
 			{
 				model.StatusEnum = StatusEnum.Waiting;

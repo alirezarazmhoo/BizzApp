@@ -47,8 +47,16 @@ namespace BizApp.Models.Basic
 	public class BusinessHomePage_FeatureViewModel
 	{
 		public string BoldFeature { get; set; }
-		public List<string> Features { get; set; }
+		public List<BusinessFeatureItem> Features { get; set; }
 	}
+
+	public class BusinessFeatureItem
+	{
+		public string Name { get; set; }
+		public string Icon { get; set; }
+	}
+
+
 	#endregion
 	#region NearSponsered
 	public class BusinessHomePage_NearSponseredViewModel
@@ -121,7 +129,6 @@ namespace BizApp.Models.Basic
 		public int Review { get; set;  }
 	}
 	#endregion
-
 	#region HoursAndLocations
 	public class BusinessHomePage_HoursAndLocationViewModel
 	{
@@ -131,5 +138,8 @@ namespace BizApp.Models.Basic
 		public List<DataLayer.Services.BusinessHomePageRepo.LocationHours> LocationHours { get; set;  }
 	}
 	#endregion
+
+
+
 
 }
