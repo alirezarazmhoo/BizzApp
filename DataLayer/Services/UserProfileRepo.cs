@@ -1,6 +1,7 @@
 ﻿using DataLayer.Data;
 using DataLayer.Infrastructure;
 using DomainClass;
+using DomainClass.Enums;
 using DomainClass.Queries;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -28,7 +29,8 @@ namespace DataLayer.Services
 							UserName = s.UserName,
 							FullName = s.FullName,
 							ReviewCount = s.Reviews.Count,
-							MainPhotoPath = s.ApplicationUserMedias.FirstOrDefault(f => f.BizAppUserId == s.Id && f.IsMainImage).UploadedPhoto
+							MainPhotoPath = s.ApplicationUserMedias.FirstOrDefault(f => f.BizAppUserId == s.Id && f.IsMainImage).UploadedPhoto,
+							FriendsNumber = DbContext.Friends.Where(w => w.ApplicatorUserId == s.Id && w.Status == StatusEnum.Accepted).Count()
 						})
 						.FirstOrDefaultAsync();
 

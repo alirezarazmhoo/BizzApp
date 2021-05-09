@@ -22,13 +22,8 @@ namespace BizApp.Areas.Profile.Controllers
 		{
 		}
 
-		[HttpGet]
-		public async Task<IActionResult> Index(string userName, int page = 1)
+		private async Task<IActionResult> GetFriendsList(string userName, int page)
 		{
-			// if user is authentitcate
-			if (string.IsNullOrEmpty(userName)) return Index();
-
-			// get list of friends
 			try
 			{
 				var result = await UnitOfWork.FriendRepo.GetAll(userName, page);
@@ -46,17 +41,37 @@ namespace BizApp.Areas.Profile.Controllers
 			{
 				return StatusCode(500);
 			}
-
 		}
 
-		private IActionResult Index()
+		[HttpGet]
+		public async Task<IActionResult> Index(string userName, int page = 1)
+		{
+			// if user is authentitcate
+			if (string.IsNullOrEmpty(userName)) return await Index(page);
+
+			// get list of friends
+			return await GetFriendsList(userName, page);
+		}
+
+		private async Task<IActionResult> Index(int page = 1)
 		{
 			// check user authentication
+			SharedProfileDetailViewModel userDetail;
+			try
+			{
+				userDetail = await GetUserDetailWithMainImage();
+			}
+			catch (UnauthorizedAccessException)
+			{
+				return Redirect("/identity/account/login?ReturnUrl=/profile/friend");
+			}
+			catch (Exception)
+			{
+				return StatusCode(500);
+			}
 
 			// get user firends
-
-			// return view
-			return View();
+			return await GetFriendsList(userDetail.UserName, page);
 		}
 
 		[HttpGet]
@@ -101,7 +116,7 @@ namespace BizApp.Areas.Profile.Controllers
 			}
 			catch (DuplicateNameException)
 			{
-				ModelState.AddModelError("UserName", "");
+				TempData["error-message"] = "درخواست دوستی شما برای این کاربر ارسال شده است";
 				return View("add", receiverInfo);
 			}
 			catch (ApplicationException)

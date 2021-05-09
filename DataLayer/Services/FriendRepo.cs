@@ -68,7 +68,7 @@ namespace DataLayer.Services
 
 			var result = 
 				await DbContext.Friends
-						.Where(w => w.ApplicatorUserId == user.Id )
+						.Where(w => w.ApplicatorUserId == user.Id)
 						.Select(s => new SharedUserProfileDetailQuery
 						{
 							Id = s.ReceiverUserId,
@@ -76,7 +76,8 @@ namespace DataLayer.Services
 							FullName = s.Receiver.FullName,
 							MainPhotoPath = 
 								s.Receiver.ApplicationUserMedias.FirstOrDefault(f => f.IsMainImage && f.BizAppUserId == s.ReceiverUserId).UploadedPhoto,
-							ReviewCount = s.Receiver.Reviews.Count
+							ReviewCount = s.Receiver.Reviews.Count,
+							FriendsNumber = DbContext.Friends.Where(w => w.ApplicatorUserId == user.Id && w.Status == StatusEnum.Accepted).Count()
 						})
 						.Paginate(page, 48)
 						.ToListAsync();

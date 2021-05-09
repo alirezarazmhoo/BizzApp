@@ -6,3 +6,12 @@
 		</div>
 	</div>
 }
+else if (TempData["error-message"] != null)
+{
+	<div class="container" style="padding-top: 10px;">
+		<div class="alert alert-danger" role="alert">
+			@TempData["error-message"]
+		</div>
+	</div>
+
+}
