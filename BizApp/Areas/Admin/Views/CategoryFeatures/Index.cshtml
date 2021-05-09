@@ -31,9 +31,7 @@
                 <div class="form-group">
                     <button class="btn btn-default">جستجو</button>
                 </div>
-                <div class="form-group">
-                    <a href="/admin/CategoryFeatures/" class="btn btn-default">مشاهده همه</a>
-                </div>
+        
             </div>
         }
     </div>
@@ -83,20 +81,20 @@
                             }
                         </table>
                     </div>
-                    <div class="row">
+                    @*<div class="row">
                         <div class="col-sm-5">
                         </div>
                         <div class="col-sm-7">
                             <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
-                                <ul class="pagination">
-
-                                    <li>
-                                        <pager list="@Model" asp-controller="district" asp-action="Index" asp-area="admin" />
-                                    </li>
-                                </ul>
+								<ul class="pagination">
+									admin/category/1042/features
+									<li>
+										<pager list="@Model" asp-all-route-data="admin/category/1042/features" asp-controller="categoryFeatures" asp-action="index" asp-area="admin" />
+									</li>
+								</ul>
                             </div>
                         </div>
-                    </div>
+                    </div>*@
                 </div>
 
 

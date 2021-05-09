@@ -113,6 +113,7 @@ namespace BizApp.Models.Basic
 	public class BusinessHomePage_FaqViewModel
 	{
 		public Guid Id { get; set; }
+		public Guid BusinessId { get; set; }
 		public  int AnswersCount { get; set;  }
 		public string Question { get; set; }
 		public string Date { get; set; }

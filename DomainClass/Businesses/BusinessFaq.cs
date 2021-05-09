@@ -14,7 +14,7 @@ namespace DomainClass.Businesses
 		public virtual Business Business {get;set;}
 		public StatusEnum StatusEnum { get; set; }
 		public ICollection<BusinessFaqAnswer> BusinessFaqAnswers { get; set;  }
-		public Guid? BizAppUserId { get; set; }
+		public string BizAppUserId { get; set; }
 		public virtual BizAppUser BizAppUser { get; set; }
 	}
 }
