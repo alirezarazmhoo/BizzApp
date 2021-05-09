@@ -91,7 +91,17 @@ namespace DataLayer.Data
 				.HasForeignKey(p => p.BusinessQouteId)
 				.OnDelete(DeleteBehavior.NoAction);
 
-			// relation between user and business owner
+			// relation between user and friends
+			builder.Entity<Friend>().HasOne(p => p.Receiver)
+				.WithMany()
+				.HasForeignKey(p => p.ReceiverUserId)
+				.OnDelete(DeleteBehavior.NoAction);
+
+			builder.Entity<Friend>().HasOne(p => p.Applicator)
+				.WithMany()
+				.HasForeignKey(p => p.ApplicatorUserId)
+				.OnDelete(DeleteBehavior.NoAction);
+
 			//builder.Entity<Business>().HasOne(b => b.Owner).WithMany(u => u.)
 
 
