@@ -64,7 +64,7 @@ namespace BizApp.Areas.Admin.Controllers
 
 				var categoryFeatures = await GetAll(categoryId);
 
-				PagedList<CategoryFeaturesViewModel> res = new PagedList<CategoryFeaturesViewModel>(categoryFeatures, page ?? 1, 10);
+				PagedList<CategoryFeaturesViewModel> res = new PagedList<CategoryFeaturesViewModel>(categoryFeatures, page ?? 1, 100);
                 return View(res);
 			}
 			catch (Exception)
@@ -87,7 +87,9 @@ namespace BizApp.Areas.Admin.Controllers
 				var categoryFeatures = await GetAll(categoryId, searchString);
 				
 				int pageSize = 5;
-				return View(PaginatedList<CategoryFeaturesViewModel>.CreateAsync(categoryFeatures, pageNumber ?? 1, pageSize));
+				PagedList<CategoryFeaturesViewModel> res = new PagedList<CategoryFeaturesViewModel>(categoryFeatures, pageNumber ?? 1, 100);
+
+				return View(res);
 			}
 			catch (Exception)
 			{

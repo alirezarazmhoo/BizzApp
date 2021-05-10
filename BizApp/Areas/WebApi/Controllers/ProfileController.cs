@@ -16,7 +16,7 @@ namespace BizApp.Areas.WebApi.Controllers
 	{
 
 		private readonly IUnitOfWorkRepo _UnitOfWork;
-		public ProfileController(ApplicationDbContext context, IUnitOfWorkRepo unitOfWork)
+		public ProfileController( IUnitOfWorkRepo unitOfWork)
 		{
 			_UnitOfWork = unitOfWork;
 		}
@@ -25,14 +25,16 @@ namespace BizApp.Areas.WebApi.Controllers
 		public async Task<IActionResult> GetUsersInformation(string Id)
 		{
 			UserProfile userProfile = new UserProfile();
-			string Token = HttpContext.Request?.Headers["Token"];
-			if (await _UnitOfWork.UserRepo.CheckUserToken(Token) == false)
+			if(await _UnitOfWork.UserRepo.GetById(Id) == null)
 			{
+
 				return NotFound();
 			}
+
+
 			try
 			{
-			var UserItem = await _UnitOfWork.UserRepo.GetById(await _UnitOfWork.UserRepo.UserTokenMaper(Token));
+			var UserItem = await _UnitOfWork.UserRepo.GetById(Id);
 			userProfile.Address = string.IsNullOrEmpty(UserItem.Address) ? "بدون آدرس" : UserItem.Address;
 			userProfile.Image = string.IsNullOrEmpty(UserItem.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault()) == true ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : UserItem.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault();
 			userProfile.TotalBusinessMediaPicture = await _UnitOfWork.BusinessHomePageRepo.GetTotalUserMedia(Id);

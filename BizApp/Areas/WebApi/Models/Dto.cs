@@ -56,6 +56,8 @@ namespace BizApp.Areas.WebApi.Models
 		public Guid Id { get; set; }
 		public string Image { get; set; }
 		public string FullName { get; set; }
+		public string UserId { get; set;  }
+
 		public int Rate { get; set; }
 		public string Date { get; set; }
 		public string Text { get; set; }

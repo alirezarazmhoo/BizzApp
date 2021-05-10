@@ -29,8 +29,8 @@ namespace BizApp.Controllers
 		}
 		public async  Task<IActionResult> Index(Guid Id)
 		{
-			//var BusinessId = new Guid("4e9b06be-2a73-4c40-fea1-08d8e04ff1b3");
 			var BusinessId = Id;
+			ViewBag.BusinessId = Id;
 			#region Objects
 			BusinessHomePageViewModel businessHomePageViewModel = new BusinessHomePageViewModel();
 			BusinessHomePage_SliderViewModel businessHomePage_SliderViewModel = new BusinessHomePage_SliderViewModel();
@@ -107,6 +107,7 @@ namespace BizApp.Controllers
 
 				businessHomePage_FaqViewModels.Add(new BusinessHomePage_FaqViewModel() { Question = item.Question, Answers = item.BusinessFaqAnswers.Select(s => s.Text).ToList(), Date = Date, AnswersCount = item.BusinessFaqAnswers.Count()  ,Id = item.Id}) ;
 			}
+			
 			#endregion
 			#region RelatedBusiness
 			foreach (var item in RelatedBusinessItem)

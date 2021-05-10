@@ -16,9 +16,9 @@ namespace BizApp.Controllers
 		{
 			_UnitOfWork = unitOfWork;
 		}
-		public async Task<IActionResult>  Index()
+		public async Task<IActionResult>  Index(Guid Id)
 		{
-			var BusinessId = new Guid("4e9b06be-2a73-4c40-fea1-08d8e04ff1b3");
+			var BusinessId = Id; 
 			#region Objects 
 			AskTheCommunityViewModel askTheCommunityViewModel = new AskTheCommunityViewModel();
 			AskTheCommunity_NavbarViewModel askTheCommunity_NavbarViewModel = new AskTheCommunity_NavbarViewModel();
@@ -38,8 +38,8 @@ namespace BizApp.Controllers
 			foreach (var item in NavbarItem)
 			{
 				var UserPhoto = item.BusinessFaqAnswers.FirstOrDefault().BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault() == null ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : item.BusinessFaqAnswers.FirstOrDefault().BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault().UploadedPhoto;
-				var Date = item.Date == DateTime.MinValue ? string.Empty : Utility.DateChanger.ToPersianDateString(item.Date);
-				askTheCommunity_QuestionListViewModels.Add(new AskTheCommunity_QuestionListViewModel() { Subject = item.Question , Answer = item.BusinessFaqAnswers.FirstOrDefault().Text ,  UserImage = UserPhoto , AnswersCount = item.BusinessFaqAnswers.Count , Date = Date, UserId = item.BizAppUserId.Value});
+				var Date = item.Date == DateTime.MinValue ? string.Empty : DateChanger.ToPersianDateString(item.Date);
+				askTheCommunity_QuestionListViewModels.Add(new AskTheCommunity_QuestionListViewModel() { Subject = item.Question , Answer = item.BusinessFaqAnswers.FirstOrDefault().Text ,  UserImage = UserPhoto , AnswersCount = item.BusinessFaqAnswers.Count , Date = Date, UserId = item.BizAppUserId , UserName =await _UnitOfWork.UserRepo.GetUserName(item.BizAppUserId)});
 			}
 			#endregion
 			#region BusinessItem 
