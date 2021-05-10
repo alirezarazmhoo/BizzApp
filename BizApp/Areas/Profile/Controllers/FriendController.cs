@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BizApp.Areas.Profile.Models;
+using BizApp.Areas.Profile.Models.Friends;
 using DataLayer.Infrastructure;
 using DomainClass.Commands;
 using Microsoft.AspNetCore.Authorization;
@@ -129,5 +130,80 @@ namespace BizApp.Areas.Profile.Controllers
 			}
 
 		}
+
+		[HttpGet("remove")]
+		[Authorize]
+		public async Task<IActionResult> ConfirmRemoveRelation(string friendUserName)
+		{
+			var friendDetail = await GetUserDetailWithMainImage(friendUserName);
+
+			return View(friendDetail);
+		}
+
+		[HttpPost]
+		[Authorize]
+		public async Task<IActionResult> RemoveRelation(RemoveRelationViewModel model)
+		{
+			try
+			{
+				var command = new RemoveFriendRelationCommand 
+				{ 
+					FriendUserId = model.FriendUserId, 
+					RemoverUserId = CurrentUserId 
+				};
+
+				await UnitOfWork.FriendRepo.RemoveRelation(command);
+				TempData["message"] = $"ارتباط شما با {model.FriendFullName} حذف شد";
+
+				return RedirectToAction("index");
+			}
+			catch (KeyNotFoundException)
+			{
+				return NotFound();
+			}
+			catch (Exception)
+			{
+				return StatusCode(500);
+			}
+		}
+
+		[HttpPost("accepted")]
+		[Authorize]
+		public async Task<IActionResult> ApprovedRelation(string applicatorUserId)
+		{
+			try
+			{
+				await UnitOfWork.FriendRepo.AcceptedRelation(CurrentUserId, applicatorUserId);
+				
+				TempData["message"] = $"درخواست دوستی تایید شد";
+				return RedirectToAction("index", "overview", new { area = "profile" });
+			}
+			catch (KeyNotFoundException)
+			{
+				return NotFound();
+			}
+			catch (Exception)
+			{
+				return StatusCode(500);
+			}
+		}
+
+		[HttpPost("reject")]
+		[Authorize]
+		public async Task<IActionResult> RejectRelation(string applicatorUserId)
+		{
+			try
+			{
+				await UnitOfWork.FriendRepo.RejectRelation(CurrentUserId, applicatorUserId);
+
+				TempData["message"] = $"درخواست دوستی رد شد";
+				return RedirectToAction("index", "overview", new { area = "profile" });
+			}
+			catch (Exception)
+			{
+				return StatusCode(500);
+			}
+		}
+
 	}
 }

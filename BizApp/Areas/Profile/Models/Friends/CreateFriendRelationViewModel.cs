@@ -1,4 +1,4 @@
-﻿namespace BizApp.Areas.Profile.Models
+﻿namespace BizApp.Areas.Profile.Models.Friends
 {
 	public class CreateFriendRelationViewModel
 	{

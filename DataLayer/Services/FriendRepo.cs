@@ -66,7 +66,7 @@ namespace DataLayer.Services
 			var user = await DbContext.Users.FirstOrDefaultAsync(w => w.UserName == userName);
 			if (user == null) throw new KeyNotFoundException();
 
-			var result = 
+			var result =
 				await DbContext.Friends
 						.Where(w => w.ApplicatorUserId == user.Id)
 						.Select(s => new SharedUserProfileDetailQuery
@@ -74,7 +74,7 @@ namespace DataLayer.Services
 							Id = s.ReceiverUserId,
 							UserName = s.Receiver.UserName,
 							FullName = s.Receiver.FullName,
-							MainPhotoPath = 
+							MainPhotoPath =
 								s.Receiver.ApplicationUserMedias.FirstOrDefault(f => f.IsMainImage && f.BizAppUserId == s.ReceiverUserId).UploadedPhoto,
 							ReviewCount = s.Receiver.Reviews.Count,
 							FriendsNumber = DbContext.Friends.Where(w => w.ApplicatorUserId == user.Id && w.Status == StatusEnum.Accepted).Count()
@@ -83,6 +83,61 @@ namespace DataLayer.Services
 						.ToListAsync();
 
 			return result;
+		}
+
+		public async Task RejectRelation(string receiverUserId, string applicatorUserId)
+		{
+			var relation = await DbContext.Friends.FirstOrDefaultAsync(f => f.ApplicatorUserId == applicatorUserId && f.ReceiverUserId == receiverUserId);
+
+			if (relation == null) throw new KeyNotFoundException();
+
+			// remove relation
+			DbContext.Friends.Remove(relation);
+			await DbContext.SaveChangesAsync();
+		}
+
+		public async Task AcceptedRelation(string receiverUserId, string applicatorUserId)
+		{
+			var relation = await DbContext.Friends.FirstOrDefaultAsync(f => f.ApplicatorUserId == applicatorUserId && f.ReceiverUserId == receiverUserId);
+
+			if (relation == null) throw new KeyNotFoundException();
+
+			// update saved relation status
+			relation.Status = StatusEnum.Accepted;
+
+			// add new relation for receiver user
+			var newRelation = new Friend
+			{
+				Status = StatusEnum.Accepted,
+				ApplicatorUserId = receiverUserId,
+				ReceiverUserId = applicatorUserId
+			};
+
+			DbContext.Add(newRelation);
+
+			await DbContext.SaveChangesAsync();
+		}
+
+		public async Task RemoveRelation(RemoveFriendRelationCommand model)
+		{
+			// check request is excists or not 
+			var relations =
+				await DbContext.Friends
+					.Where(w => (w.ApplicatorUserId == model.RemoverUserId && w.ReceiverUserId == model.FriendUserId)
+							|| (w.ReceiverUserId == model.RemoverUserId && w.ApplicatorUserId == model.FriendUserId))
+					.ToListAsync();
+
+			// if realtion not approved or not rejected then can't be delete
+			if (relations.Count != 2)
+			{
+				throw new KeyNotFoundException();
+			}
+
+			// remove relations
+			DbContext.Friends.RemoveRange(relations);
+
+			// save changes
+			await DbContext.SaveChangesAsync();
 		}
 	}
 }

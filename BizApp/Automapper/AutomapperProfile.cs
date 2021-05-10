@@ -2,6 +2,7 @@
 using BizApp.Areas.Admin.Models;
 using BizApp.Areas.Profile.Models;
 using BizApp.Areas.Profile.Models.Account;
+using BizApp.Areas.Profile.Models.Friends;
 using BizApp.Areas.Profile.Models.Reviews;
 using BizApp.Areas.WebApi.Models;
 using BizApp.Models.Basic;
