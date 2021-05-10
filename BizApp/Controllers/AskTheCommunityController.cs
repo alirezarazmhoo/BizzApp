@@ -2,6 +2,7 @@
 using BizApp.Utility;
 using DataLayer.Infrastructure;
 using DomainClass.Businesses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -56,7 +57,8 @@ namespace BizApp.Controllers
 			return View(askTheCommunityViewModel);
 		}
 		[HttpPost]
-		public async Task<JsonResult> Add(BusinessFaq model)
+		[Authorize]
+		public async Task<IActionResult> Add(BusinessFaq model)
 		{
 			try
 			{

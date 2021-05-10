@@ -50,14 +50,13 @@ namespace BizApp.Areas.WebApi.Models
 		public string image { get; set; }
 		public List<Review> reviews { get; set; }
 	}
-
 	public class Review
 	{
 		public Guid Id { get; set; }
 		public string Image { get; set; }
 		public string FullName { get; set; }
-		public string UserId { get; set;  }
-
+		public string UserId { get; set; }
+		public string BusinessImage { get; set;  }
 		public int Rate { get; set; }
 		public string Date { get; set; }
 		public string Text { get; set; }
@@ -69,7 +68,6 @@ namespace BizApp.Areas.WebApi.Models
 		public int Funny { get; set; }
 		public ICollection<ReviewMedias> ReviewMedias { get; set; }
 	}
-
 	public class ReviewMedias
 	{
 		public string Url { get; set; }
@@ -82,9 +80,14 @@ namespace BizApp.Areas.WebApi.Models
 		public string Url { get; set; }
 		public string Description { get; set; }
 		public string MediaType { get; set; }
+		public int UserTotalFriends { get; set; }
+		public int UserTotalPictures { get; set; }
+		public int UserTotalReview { get; set; }
+		public string UserName { get; set; }
+		public string UserPicture { get; set; }
+		public string UserId { get; set; }
+		public string Date { get; set;   }
 	}
-
-
 	public class BusinessTimeAndFeature
 	{
 		public string Description { get; set; }
@@ -92,7 +95,6 @@ namespace BizApp.Areas.WebApi.Models
 		public ICollection<BusinessFeature> BusinessFeatures { get; set; }
 
 	}
-
 	public class BusinessTime
 	{
 		public WeekDaysEnum Day { get; set; }
@@ -107,7 +109,6 @@ namespace BizApp.Areas.WebApi.Models
 		public string Title { get; set; }
 		public string Icon { get; set; }
 	}
-
 	public class UserProfile
 	{
 		public string UserName { get; set; }
@@ -115,13 +116,57 @@ namespace BizApp.Areas.WebApi.Models
 		public int TotalReviewPicture { get; set; }
 		public int TotalReview { get; set; }
 		public int TotalBusinessMediaPicture { get; set; }
+		public int TotalFriends { get; set; }
 		public string Image { get; set; }
 
 
 	}
+	public class Activity
+	{
+		public ICollection<UserReviewActivity> UserReviewActivities { get; set; }
+		public ICollection<UserBusinessMediaActivity>  UserBusinessMediaActivities { get; set; }
+		public ICollection<UserChangeProfileActivity>  UserChangeProfileActivities { get; set; }
 
 
+	}
+	public class UserReviewActivity : UserProfile 
+	{
+		public int Type { get; set; }
+		public string BusinessImage { get; set; }
+		public int BusinessRate { get; set;  }
+		public string BusinessName { get; set; }
+		public int BusinessTotalReview { get; set;  }
+		public Guid BusinessId { get; set; }
+		public int ReviewRate { get; set; }
+		public string Text { get; set;  }
+		public int CoolCount { get; set;  }
+		public int UseFullCount { get; set;  }
+		public int FunnyCount { get; set; }
+		public string Date { get; set; }
 
-
-
+	}
+	public class UserBusinessMediaActivity
+	{
+		public string BusinessImage { get; set; }
+		public int BusinessRate { get; set; }
+		public string BusinessName { get; set; }
+		public int BusinessTotalReview { get; set; }
+		public Guid BusinessId { get; set; }
+		public Dictionary<Guid , string> Pictures { get; set; }
+		public string Date { get; set; }
+	}
+	public class UserChangeProfileActivity : UserProfile
+	{
+		public string Text { get; set; }
+		public string Date { get; set; }
+	}
+	public class ReviewProfile
+	{
+		public Guid Id { get; set; }
+		public string Image { get; set; }
+		public string BusinessName { get; set;  }
+		public int TotalImages { get; set;  }
+		public string Text { get; set; }
+		public int Rate { get; set; }
+	}
 }

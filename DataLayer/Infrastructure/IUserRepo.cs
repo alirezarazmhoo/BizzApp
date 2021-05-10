@@ -13,9 +13,9 @@ namespace DataLayer.Infrastructure
 		Task<BizAppUser> GetByUserName(string userName);
 		Task<string> GetUserName(string userId);
 		Task<string> GetMainPhoto(string userId);
-
 		Task<string> UserTokenMaper(string userToken);
 		Task<bool> CheckUserToken(string userToken);
 		Task UpdateProfile(EditAcountCommand command);
+		Task<int> GetUserFriendsCount(string Id);  
 	}
 }

@@ -26,6 +26,7 @@ namespace BizApp.Models.Basic
 		public string UserName { get; set; }
 		public string UserId { get; set;  }
 		public int  UserTotalReview { get; set; }
+
 		public string Date { get; set; }
 		public string UserImage { get; set;  }
 

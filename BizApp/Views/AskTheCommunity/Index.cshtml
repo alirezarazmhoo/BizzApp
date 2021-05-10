@@ -55,13 +55,17 @@
 			</div>
 		}
 		<div class="questions__form">
+
 			<h3>سوال خود را پیدا نکردید؟ بپرسید</h3>
-			<textarea class="form-control" placeholder="دوست دارید درباره این مکان بیشتر بدانید؟"></textarea>
-			<div class="questions__check">
+			<form action="/AskTheCommunity/Add" method="post">
+			<textarea name="Question" class="form-control" placeholder="دوست دارید درباره این مکان بیشتر بدانید؟"></textarea>
+				@*<input name="BusinessId" value="@Model." />*@
+			@*<div class="questions__check">
 				<input type="checkbox" name="" id="questions">
 				<label for="questions">پاسخهای جدید را به من اطلاع دهید</label>
-			</div>
-			<button class="btn">ارسال پیام</button>
+			</div>*@
+			<button type="submit" class="btn">ارسال پیام</button>
+			</form>
 		</div>
 	</div>
 </section>

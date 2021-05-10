@@ -111,7 +111,6 @@ namespace DataLayer.Services
 			var BusinessItem = await DbContext.Reviews.Where(s => s.BusinessId.Equals(Id)).CountAsync();
 			return BusinessItem;
 		}
-
 		private async Task<bool> IsOwner(Guid id, string currentUserId)
 		{
 			var review = await DbContext.Reviews.FirstOrDefaultAsync(w => w.Id == id);
@@ -241,7 +240,6 @@ namespace DataLayer.Services
 
 			return review;
 		}
-
 		public async Task<IEnumerable<Review>> GetBusinessReviews(Guid Id)
 		{
 			var BusinessItem = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Id.Equals(Id));
@@ -576,6 +574,41 @@ namespace DataLayer.Services
 				BusinessItem.Rate = Average;
 				await DbContext.SaveChangesAsync();
 			}
+		}
+		public async Task<Review> GetById(string Id)
+		{
+			Guid ReviewId = new Guid(Id);
+			return await DbContext.Reviews.
+				Include(s => s.Business).
+				Include(s => s.BizAppUser).
+				Include(s=>s.Business).
+				ThenInclude(s=>s.District)
+				.Where(s => s.Id.Equals(ReviewId) && s.StatusEnum == StatusEnum.Accepted).
+				FirstOrDefaultAsync();
+		}
+		public async Task<int> GetBusinessTotalReview(Guid Id)
+		{
+			return await DbContext.Reviews.Where(s => s.BusinessId.Equals(Id)).CountAsync();
+		}
+		public async Task<int> GetBusinessTotalCustomerMedia(Guid Id)
+		{
+			return await DbContext.CustomerBusinessMediaPictures.Where(s => s.CustomerBusinessMedia.BusinessId.Equals(Id) && s.CustomerBusinessMedia.StatusEnum == StatusEnum.Accepted).CountAsync();
+		}
+		public async Task<bool> CheckUserAlreadyExistsInBusinessLikeGallery(string Id , Guid GalleryId)
+		{
+			var CustomerBusinessMediaPicture = await DbContext.CustomerBusinessMediaPictures.Where(s => s.Id.Equals(GalleryId)).FirstOrDefaultAsync();
+			if (CustomerBusinessMediaPicture != null)
+			{
+				return await DbContext.UsersInCustomerBusinessMediaLikes.AnyAsync(s => s.CustomerBusinessMediaPicturesId.Equals(GalleryId) && s.BizAppUserId.Equals(Id));
+			}
+			else
+			{
+				return false;
+			}
+		}
+		public async Task<IEnumerable<Review>> GetUserReview(string Id)
+		{
+			return await DbContext.Reviews.Include(s=>s.Business).Include(s=>s.ReviewMedias).Where(s => s.BizAppUserId.Equals(Id) && s.StatusEnum == StatusEnum.Accepted).OrderByDescending(s => s.Date).ToListAsync();  
 		}
 	}
 }

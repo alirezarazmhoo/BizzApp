@@ -1,4 +1,5 @@
-﻿using DataLayer.Infrastructure;
+﻿using BizApp.Areas.WebApi.Models;
+using DataLayer.Infrastructure;
 using DomainClass.Review;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Review = DomainClass.Review.Review;
 
 namespace BizApp.Areas.WebApi.Controllers
 {
@@ -133,6 +135,27 @@ namespace BizApp.Areas.WebApi.Controllers
 			}
 		}
 
-
+		[Route("GetUserReview")]
+		public async Task<IActionResult> GetUserReview(string Id)
+		{
+			List<ReviewProfile> reviews = new List<ReviewProfile>(); 
+			if (await _UnitOfWork.UserRepo.GetById(Id) == null)
+			{
+				return NotFound();
+			}
+			try
+			{
+				var Items = await _UnitOfWork.ReviewRepo.GetUserReview(Id);
+				foreach (var item in Items)
+				{
+					reviews.Add(new ReviewProfile() { Image = string.IsNullOrEmpty(item.Business.FeatureImage) == false ? "/Upload/DefaultPicutres/Bussiness/business-strategy-success-target-goals_1421-33.jpg" : item.Business.FeatureImage, Rate = item.Rate, TotalImages = item.ReviewMedias.Count, Text = item.Description, BusinessName = item.Business.Name, Id = item.Id });
+				}
+				return Ok(reviews);
+			}
+			catch(Exception)
+			{
+				throw;  
+			}
+		}
 	}
 }

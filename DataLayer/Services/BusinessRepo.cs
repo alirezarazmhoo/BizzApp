@@ -545,7 +545,7 @@ namespace DataLayer.Services
             var MainItem = await GetById(Id);
             if(MainItem != null)
 			{
-                return await DbContext.CustomerBusinessMedias.Include(s=>s.CustomerBusinessMediaPictures).Where(s => s.BusinessId.Equals(Id) && s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted).ToListAsync();
+                return await DbContext.CustomerBusinessMedias.Include(s=>s.CustomerBusinessMediaPictures).Include(s=>s.BizAppUser).ThenInclude(s=>s.ApplicationUserMedias).Include(s=>s.BizAppUser).Where(s => s.BusinessId.Equals(Id) && s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted).ToListAsync();
 			}
 			else
 			{

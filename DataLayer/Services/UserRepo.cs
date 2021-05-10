@@ -96,5 +96,9 @@ namespace DataLayer.Services
 
 			await DbContext.SaveChangesAsync();
 		}
+		public async Task<int> GetUserFriendsCount(string Id)
+		{
+			return await DbContext.Friends.Where(s => s.ApplicatorUserId.Equals(Id)).CountAsync();
+		}
 	}
 }

@@ -32,6 +32,11 @@ namespace DataLayer.Infrastructure.Reviews
 		Task<int> GetUserTotalReview(string Id);
 		Task<int> GetUserTotalReviewMedia(string Id);
 		Task<int> GetUserTotalBusinessMedia(string Id);
-		Task PostReview(Review Model, IFormFile[] file); 
+		Task PostReview(Review Model, IFormFile[] file);
+		Task<Review> GetById(string Id);
+		Task<int> GetBusinessTotalReview(Guid Id);
+		Task<int> GetBusinessTotalCustomerMedia(Guid Id);
+		Task<bool> CheckUserAlreadyExistsInBusinessLikeGallery(string Id, Guid GalleryId);
+		Task<IEnumerable<Review>> GetUserReview(string Id); 
 	}
 }

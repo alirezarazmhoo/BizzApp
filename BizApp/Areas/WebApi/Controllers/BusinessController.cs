@@ -18,7 +18,7 @@ namespace BizApp.Areas.WebApi.Controllers
 	public class BusinessController : ControllerBase
 	{
 		private readonly IUnitOfWorkRepo _UnitOfWork;
-		public BusinessController(ApplicationDbContext context , IUnitOfWorkRepo unitOfWork)
+		public BusinessController(IUnitOfWorkRepo unitOfWork)
 		{
 			_UnitOfWork = unitOfWork;
 		}
@@ -89,18 +89,30 @@ namespace BizApp.Areas.WebApi.Controllers
 			return medias; 
 		}
 		[Route("GetBusinessGallery")]
-		public async Task<IEnumerable<BusinessGallery>> GetBusinessGallery(Guid id)
+		public async Task<IActionResult> GetBusinessGallery(Guid id)
 		{
+			if(await _UnitOfWork.BusinessRepo.GetById(id) == null)
+			{
+				return NotFound();
+			}
+			try
+			{
 			List<BusinessGallery> businessGalleries = new List<BusinessGallery>();
-
 			foreach (var item in await _UnitOfWork.BusinessRepo.GetCustomerBusinessMedia(id))
 			{
 				foreach (var item2 in item.CustomerBusinessMediaPictures)
 				{
-					businessGalleries.Add(new BusinessGallery() { Description = item2.Description, Id = item2.Id, Url = item2.Image, MediaType = FormatCheck.GetFormat(item2.Image) == DomainClass.Enums.MediaType.Picture ? "Picture" : "Video" });
+					string UserPicture = string.IsNullOrEmpty(item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault()) == true ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault();
+					businessGalleries.Add(new BusinessGallery() { Description = item2.Description, Id = item2.Id, Url = item2.Image, MediaType = FormatCheck.GetFormat(item2.Image) == DomainClass.Enums.MediaType.Picture ? "Picture" : "Video", UserId = item2.CustomerBusinessMedia.BizAppUserId, Date = item2.CustomerBusinessMedia.Date.ToPersianDateString(), UserName = item2.CustomerBusinessMedia.BizAppUser.UserName, UserTotalFriends = await _UnitOfWork.UserRepo.GetUserFriendsCount(item2.CustomerBusinessMedia.BizAppUserId)  , UserTotalPictures = await _UnitOfWork.BusinessHomePageRepo.GetTotalUserMedia(item2.CustomerBusinessMedia.BizAppUserId) , UserTotalReview = await _UnitOfWork.ReviewRepo.GetUserTotalReview(item2.CustomerBusinessMedia.BizAppUserId) ,  UserPicture = UserPicture }); 
 				}
 			}
-			return businessGalleries;
+			return Ok(businessGalleries);
+			}
+			catch(Exception ex)
+			{
+				return BadRequest(ex);
+			}
+
 		}
 		[Route("TimeAndFeatures")]
 		public async Task<IActionResult> GetBusinessTimeAndFeatures(Guid id)
@@ -142,5 +154,67 @@ namespace BizApp.Areas.WebApi.Controllers
 				throw;
 			}
 		}
+		[HttpPost]
+		[Route("LikeGallery")]
+		public async Task<bool> LikeCustomerBusinessGallery(Guid Id)
+		{
+			try
+			{
+				bool state;
+				string Token = HttpContext.Request?.Headers["Token"];
+				if (await _UnitOfWork.UserRepo.CheckUserToken(Token) == false)
+				{
+					throw new Exception();
+				}
+				if (await _UnitOfWork.ReviewRepo.ChangeLikeCount(Id, await _UnitOfWork.UserRepo.UserTokenMaper(Token)) == DomainClass.Enums.VotesAction.Add)
+				{
+					state = true;
+				}
+				else
+				{
+					state = false;
+
+				}
+				await _UnitOfWork.SaveAsync();
+				return state;
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+		}
+		[HttpGet]
+		[Route("CheckLikeGallery")]
+		public async Task<bool> CheckLikeGalleryAlreadyExists(Guid Id)
+		{
+			try
+			{
+				bool state;
+				string Token = HttpContext.Request?.Headers["Token"];
+				if (await _UnitOfWork.UserRepo.CheckUserToken(Token) == false)
+				{
+					throw new Exception();
+				}
+				if (await _UnitOfWork.BusinessRepo.GetById(Id) == null)
+				{
+					throw new Exception();
+				}
+				if (await _UnitOfWork.ReviewRepo.CheckUserAlreadyExistsInBusinessLikeGallery(await _UnitOfWork.UserRepo.UserTokenMaper(Token), Id ))
+				{
+					state = true;
+				}
+				else
+				{
+					state = false;
+				}
+				await _UnitOfWork.SaveAsync();
+				return state;
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+		}
+
 	}
 }
