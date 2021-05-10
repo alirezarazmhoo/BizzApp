@@ -23,7 +23,8 @@ namespace BizApp.Models.Basic
 	public class AskTheCommunity_QuestionListViewModel
 	{
 		public string Subject { get; set; }
-		public Guid UserId { get; set; }
+		public string UserId { get; set; }
+		public string UserName { get; set; }
 		public string UserImage { get; set;  }
 		public string Answer { get; set; }
 		public int AnswersCount { get; set; }

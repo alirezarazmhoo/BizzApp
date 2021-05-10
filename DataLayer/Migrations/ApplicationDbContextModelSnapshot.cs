@@ -39,7 +39,7 @@ namespace DataLayer.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 4, 18, 12, 28, 19, 337, DateTimeKind.Local).AddTicks(8483));
+                        .HasDefaultValue(new DateTime(2021, 5, 9, 14, 25, 43, 497, DateTimeKind.Local).AddTicks(6748));
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -277,8 +277,8 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "278531ed-2552-438d-9102-2a469b1d3059",
-                            CreateDate = new DateTime(2021, 4, 18, 12, 28, 19, 343, DateTimeKind.Local).AddTicks(4838),
+                            ConcurrencyStamp = "c1459812-19c3-4c72-88a3-dbc17d516741",
+                            CreateDate = new DateTime(2021, 5, 9, 14, 25, 43, 503, DateTimeKind.Local).AddTicks(1862),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             Gender = 0,
@@ -290,10 +290,10 @@ namespace DataLayer.Migrations
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAELX8qldO0H8AJKMkyylUiBpFUSOjmkumghcIOLoEZZ0tmBOgXhC5g7ZbYps3uFac8Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMHllSsW3o+FymdZP9yn6bOHAzLYR599ylmAWSGo9NmdLLelQlC/wMoUjC2bkkZGsw==",
                             PhoneNumberConfirmed = false,
                             PhotoChanged = false,
-                            SecurityStamp = "f2600c01-0019-45d4-8dc0-dcff979ce008",
+                            SecurityStamp = "64982f77-7996-4370-b43f-49bab39d6230",
                             TwoFactorEnabled = false,
                             UserName = "mainadmin"
                         });
@@ -412,10 +412,7 @@ namespace DataLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BizAppUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("BizAppUserId1")
+                    b.Property<string>("BizAppUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid>("BusinessId")
@@ -432,7 +429,7 @@ namespace DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BizAppUserId1");
+                    b.HasIndex("BizAppUserId");
 
                     b.HasIndex("BusinessId");
 
@@ -557,12 +554,11 @@ namespace DataLayer.Migrations
 
                     b.Property<string>("AnswerQoute")
                         .IsRequired()
-                        .HasColumnName("NVARCHAR(1000)")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("BizAppUserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("NVARCHAR(450)");
 
                     b.Property<Guid>("BusinessId")
                         .HasColumnType("uniqueidentifier");
@@ -612,6 +608,9 @@ namespace DataLayer.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BizAppUserId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("BusinessId")
                         .HasColumnType("uniqueidentifier");
@@ -764,6 +763,9 @@ namespace DataLayer.Migrations
                     b.Property<int>("CityId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(100)");
@@ -782,6 +784,9 @@ namespace DataLayer.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Icon")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(100)");
@@ -794,6 +799,68 @@ namespace DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Features");
+                });
+
+            modelBuilder.Entity("DomainClass.Friend", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ApplicatorUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasMaxLength(450);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ReceiverUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasMaxLength(450);
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicatorUserId");
+
+                    b.HasIndex("ReceiverUserId");
+
+                    b.ToTable("Friends");
+                });
+
+            modelBuilder.Entity("DomainClass.Notification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(1000)")
+                        .HasMaxLength(1000);
+
+                    b.Property<int>("Model")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("DomainClass.Province", b =>
@@ -1043,6 +1110,36 @@ namespace DataLayer.Migrations
                     b.ToTable("Sliders");
                 });
 
+            modelBuilder.Entity("DomainClass.UserActivity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("TableKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("TableName")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserActivities");
+                });
+
             modelBuilder.Entity("DomainClass.UserFavorits", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1052,10 +1149,7 @@ namespace DataLayer.Migrations
                     b.Property<string>("BizAppUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("BusinessId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("BusinessId1")
+                    b.Property<Guid>("BusinessId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Date")
@@ -1065,7 +1159,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("BizAppUserId");
 
-                    b.HasIndex("BusinessId1");
+                    b.HasIndex("BusinessId");
 
                     b.ToTable("UserFavorits");
                 });
@@ -1296,7 +1390,7 @@ namespace DataLayer.Migrations
                 {
                     b.HasOne("DomainClass.BizAppUser", "BizAppUser")
                         .WithMany("BusinessFaqs")
-                        .HasForeignKey("BizAppUserId1");
+                        .HasForeignKey("BizAppUserId");
 
                     b.HasOne("DomainClass.Businesses.Business", "Business")
                         .WithMany("BusinessFaqs")
@@ -1446,6 +1540,30 @@ namespace DataLayer.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("DomainClass.Friend", b =>
+                {
+                    b.HasOne("DomainClass.BizAppUser", "Applicator")
+                        .WithMany()
+                        .HasForeignKey("ApplicatorUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("DomainClass.BizAppUser", "Receiver")
+                        .WithMany()
+                        .HasForeignKey("ReceiverUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DomainClass.Notification", b =>
+                {
+                    b.HasOne("DomainClass.BizAppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("DomainClass.Review.CustomerBusinessMedia", b =>
                 {
                     b.HasOne("DomainClass.BizAppUser", "BizAppUser")
@@ -1533,6 +1651,15 @@ namespace DataLayer.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("DomainClass.UserActivity", b =>
+                {
+                    b.HasOne("DomainClass.BizAppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("DomainClass.UserFavorits", b =>
                 {
                     b.HasOne("DomainClass.BizAppUser", "BizAppUser")
@@ -1541,7 +1668,9 @@ namespace DataLayer.Migrations
 
                     b.HasOne("DomainClass.Businesses.Business", "Business")
                         .WithMany()
-                        .HasForeignKey("BusinessId1");
+                        .HasForeignKey("BusinessId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

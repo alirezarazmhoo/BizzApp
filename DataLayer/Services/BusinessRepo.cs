@@ -7,6 +7,7 @@ using DomainClass.Businesses.Commands;
 using DomainClass.Businesses.Queries;
 using DomainClass.Infrastructure;
 using DomainClass.Queries;
+using DomainClass.Review;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -299,7 +300,7 @@ namespace DataLayer.Services
         }
         public async Task<Business> GetById(Guid id)
         {
-            return await FindByCondition(f => f.Id == id).Include(s => s.Galleries).Include(s=>s.Reviews).Include(s=>s.District).FirstOrDefaultAsync();
+            return await FindByCondition(f => f.Id == id).Include(s => s.Galleries).Include(s=>s.Reviews).ThenInclude(s=>s.BizAppUser).ThenInclude(s=>s.ApplicationUserMedias).Include(s=>s.Reviews).ThenInclude(s=>s.ReviewMedias).Include(s=>s.District).FirstOrDefaultAsync();
         }
         public async Task Remove(Business model)
         {
@@ -399,7 +400,6 @@ namespace DataLayer.Services
 
             return true;
         }
-
         public PagedList<Business> GetBussiness(SearchBussinessQuery searchViewModel)
         {
             IQueryable<Business> result = null;
@@ -432,13 +432,14 @@ namespace DataLayer.Services
             else
             {
                 string[] subcatsFinder = searchViewModel.catsFinder.Split(',');
-                var subcatFirstId = 0;
                 foreach (var sub in subcatsFinder)
                 {
                     if (sub.Replace("-", " ") != "")
                     {
-
-                        subcatFirstId = allCategories.FirstOrDefault(w => w.Name.Replace("\t", "") == sub.Replace("-", " ")).Id;
+                        var subcatFirstId = 0;
+                        var substrCat = sub.Replace("-", " ");
+                        var subCatFirst = DbContext.Categories.FirstOrDefault(w => w.Name.Replace("\t", "").Trim() == substrCat);
+                        subcatFirstId = subCatFirst.Id;
                         cats.Add(subcatFirstId);
                         foreach (var item2 in allCategories)
                         {
@@ -502,7 +503,6 @@ namespace DataLayer.Services
             PagedList<Business> res = new PagedList<Business>(result, searchViewModel.page, 10);
             return res;
         }
-
         public async Task<string> GetBusinessName(Guid Id)
         {
             var BusinessItem = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Id.Equals(Id));
@@ -515,21 +515,16 @@ namespace DataLayer.Services
                 return string.Empty;
             }
         }
-
         public async Task<IEnumerable<Business>> GetBusinessOnMap(int Id ,double Longitude , double Latitude)
 		{
             var CategroyItem = await DbContext.Categories.FirstOrDefaultAsync(s => s.Id.Equals(Id));
             List<Business> businesses = new List<Business>();
-            double longitude = 0;
-            double latitiude = 0;
             if (CategroyItem != null)
 			{
-                var BusinessItems = await DbContext.Businesses.Where(s => s.CategoryId.Equals(CategroyItem.Id)).ToListAsync();
+                var BusinessItems = await DbContext.Businesses.Include(s=>s.Reviews).Include(s=>s.Galleries).Include(s=>s.District).Include(s=>s.Category).Where(s => s.CategoryId.Equals(CategroyItem.Id)).ToListAsync();
 				foreach (var item in BusinessItems)
 				{
-                    longitude = item.Longitude;
-                    latitiude = item.Latitude;
-                    if ((Math.Pow(Longitude - longitude, 2) + Math.Pow(Latitude - latitiude, 2)) < 10)
+                    if (GetDistance.distance(Latitude, Longitude, item.Latitude, item.Longitude, 'K') < 10)
                     {
                         businesses.Add(item);
                     }
@@ -541,5 +536,37 @@ namespace DataLayer.Services
                 return new List<Business>(); 
 			}
 		}
+        public async Task<bool> CheckBisinessFavorit(Guid Id , string UserId)
+		{
+           return await DbContext.UserFavorits.AnyAsync(s => s.BizAppUserId.Equals(UserId) && s.BusinessId.Equals(Id));
+		}
+        public async Task<IEnumerable<CustomerBusinessMedia>> GetCustomerBusinessMedia(Guid Id)
+        {
+            var MainItem = await GetById(Id);
+            if(MainItem != null)
+			{
+                return await DbContext.CustomerBusinessMedias.Include(s=>s.CustomerBusinessMediaPictures).Include(s=>s.BizAppUser).ThenInclude(s=>s.ApplicationUserMedias).Include(s=>s.BizAppUser).Where(s => s.BusinessId.Equals(Id) && s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted).ToListAsync();
+			}
+			else
+			{
+                return new List<CustomerBusinessMedia>();
+			}
+        }
+
+        public async Task<IEnumerable<BusinessGallery>> GetBusinessGallery(Guid Id)
+		{
+            var MainItem = await GetById(Id);
+            if (MainItem != null)
+            {
+                return await DbContext.BusinessGalleries.Where(s => s.BusinessId.Equals(Id)).ToListAsync();
+            }
+            else
+            {
+                return new List<BusinessGallery>();
+            }
+
+        }
+
+
     }
 }

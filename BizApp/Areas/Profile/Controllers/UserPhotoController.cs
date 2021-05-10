@@ -90,6 +90,7 @@ namespace BizApp.Areas.Profile.Controllers
 			var user = await GetUserDetail();
 
 			ViewBag.FullName = user.FullName;
+			ViewBag.UserName = user.UserName;
 
 			return View();
 		}
@@ -178,7 +179,11 @@ namespace BizApp.Areas.Profile.Controllers
 			}
 			catch (UnauthorizedAccessException)
 			{
-				return Unauthorized();
+				return StatusCode(StatusCodes.Status503ServiceUnavailable);
+			}
+			catch (KeyNotFoundException)
+			{
+				return NotFound();
 			}
 			catch (Exception)
 			{

@@ -9,6 +9,9 @@ using BizApp.Extensions;
 using System;
 using BizApp.Utility;
 using DomainClass.Queries;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace BizApp.Controllers
 {
@@ -16,10 +19,13 @@ namespace BizApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IUnitOfWorkRepo _UnitOfWork;
-        public SearchController(ILogger<HomeController> logger, IUnitOfWorkRepo unitOfWork)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public SearchController(ILogger<HomeController> logger, IUnitOfWorkRepo unitOfWork, IHttpContextAccessor httpContextAccessor)
         {
             _logger = logger;
             _UnitOfWork = unitOfWork;
+            _httpContextAccessor = httpContextAccessor;
         }
         public async Task<IActionResult> Index(SearchBussinessQuery searchViewModel)
         {
@@ -34,12 +40,42 @@ namespace BizApp.Controllers
         {
             bool isAjax = Request.IsAjaxRequest();
             if (isAjax == false)
-                return RedirectToAction("Index",new {CategoryId=searchViewModel.CategoryId ,page=searchViewModel.page,catsFinder=searchViewModel.catsFinder,featuFinder=searchViewModel.featuFinder,districtFinder=searchViewModel.districtFinder});
+                return RedirectToAction("Index", new { CategoryId = searchViewModel.CategoryId, page = searchViewModel.page, catsFinder = searchViewModel.catsFinder, featuFinder = searchViewModel.featuFinder, districtFinder = searchViewModel.districtFinder });
             //PagedList<Business> bussiness = _UnitOfWork.BusinessRepo.GetBussiness(searchViewModel.CategoryId, searchViewModel.page);
             PagedList<Business> bussiness = _UnitOfWork.BusinessRepo.GetBussiness(searchViewModel);
             ViewBag.CategoryId = searchViewModel.CategoryId;
             return PartialView("Partials/AllBusiness_Partial", bussiness);
         }
+
+        public async Task<IActionResult> GetByCategoryId(int CategoryId)
+        {
+
+            var BusinessQoutes = await _UnitOfWork.BusinessQouteRepo.GetByCategoryId(CategoryId);
+            if (BusinessQoutes == null)
+            {
+                return NotFound();
+            }
+            return Json(new { success = true, BusinessQoutes });
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddBussinessQuoteUser(Guid BusinessId, List<string> AllAnswerQoute)
+        {
+            try
+            {
+                var BizAppUserId = GetUserId();
+                await _UnitOfWork.BusinessQouteUserRepo.Add(BusinessId, AllAnswerQoute, BizAppUserId);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, responseText = CustomeMessages.Fail });
+            }
+            return Json(new { success = true, responseText = CustomeMessages.Succcess });
+        }
+        private string GetUserId()
+        {
+            return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        }
+
 
     }
 }

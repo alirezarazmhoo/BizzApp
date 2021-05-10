@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace BizApp.Controllers
@@ -17,15 +18,19 @@ namespace BizApp.Controllers
 	{
 		private readonly IUnitOfWorkRepo _UnitOfWork;
 		private readonly IMapper _mapper;
-		public BusinessHomeController(IUnitOfWorkRepo unitOfWork, IMapper mapper)
+		private readonly IHttpContextAccessor _httpContextAccessor;
+
+		public BusinessHomeController(IUnitOfWorkRepo unitOfWork, IMapper mapper , IHttpContextAccessor httpContextAccessor)
 		{
 			_UnitOfWork = unitOfWork;
 			_mapper = mapper;
+			_httpContextAccessor = httpContextAccessor;
+
 		}
 		public async  Task<IActionResult> Index(Guid Id)
 		{
-			//var BusinessId = new Guid("4e9b06be-2a73-4c40-fea1-08d8e04ff1b3");
 			var BusinessId = Id;
+			ViewBag.BusinessId = Id;
 			#region Objects
 			BusinessHomePageViewModel businessHomePageViewModel = new BusinessHomePageViewModel();
 			BusinessHomePage_SliderViewModel businessHomePage_SliderViewModel = new BusinessHomePage_SliderViewModel();
@@ -38,7 +43,8 @@ namespace BizApp.Controllers
 			List<BusinessHomePage_FaqViewModel> businessHomePage_FaqViewModels = new List<BusinessHomePage_FaqViewModel>();
 			List<BusinessHomePage_RelatedBusinessViewModel> businessHomePage_RelatedBusinessViewModels = new List<BusinessHomePage_RelatedBusinessViewModel>();
 			BusinessHomePage_HoursAndLocationViewModel businessHomePage_HoursAndLocationViewModel = new BusinessHomePage_HoursAndLocationViewModel();
-			List<DataLayer.Services.BusinessHomePageRepo.LocationHours> locationHours = new List<DataLayer.Services.BusinessHomePageRepo.LocationHours>(); 
+			List<DataLayer.Services.BusinessHomePageRepo.LocationHours> locationHours = new List<DataLayer.Services.BusinessHomePageRepo.LocationHours>();
+			List<BusinessFeatureItem> businessFeatureItems = new List<BusinessFeatureItem>();
 			#endregion
 			#region Resource
 			var SliderItem = await _UnitOfWork.BusinessHomePageRepo.GetSlider(BusinessId);
@@ -61,11 +67,16 @@ namespace BizApp.Controllers
 			businessHomePage_SummaryViewModel.Reviews = SummaryItem.Item3;
 			businessHomePage_SummaryViewModel.IsClaimed = SummaryItem.Item4;
 			businessHomePage_SummaryViewModel.TotalPhotos = SummaryItem.Item5;
-			businessHomePage_SummaryViewModel.Description = SummaryItem.Item6; 
+			businessHomePage_SummaryViewModel.Description = SummaryItem.Item6;
+			businessHomePage_SummaryViewModel.BusinessId = BusinessId;
 			#endregion
 			#region Featrues
 			businessHomePage_FeatureViewModel.BoldFeature = FeaturesItem.Item1;
-			businessHomePage_FeatureViewModel.Features = FeaturesItem.Item2;
+			foreach (var item in FeaturesItem.Item2)
+			{
+				businessFeatureItems.Add(new BusinessFeatureItem() { Icon = item.Feature.Icon, Name = item.Feature.Name }); 
+			}
+			businessHomePage_FeatureViewModel.Features = businessFeatureItems;
 			#endregion
 			#region NearSponseredBusiness
 			foreach (var item in SponseredBusinessItem)
@@ -86,7 +97,7 @@ namespace BizApp.Controllers
 			foreach (var item in ReviewsItem)
 			{
 				string UserPicture = string.IsNullOrEmpty(item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s=>s.UploadedPhoto).FirstOrDefault()) == true ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault();
-				businessHomePage_ReviewsViewModel.Add(new BusinessHomePage_ReviewsViewModel() { ReviewId = item.Id ,Cool = item.CoolCount , Date = DateChanger.ToPersianDateString(item.Date) , DistricName = item.BizAppUser.Address , Funny = item.FunnyCount , Rate = item.Rate , Text = item.Description , UseFull = item.UsefulCount , TotalReviews = item.BizAppUser.Reviews.Count , TotalPictures = await _UnitOfWork.BusinessHomePageRepo.GetTotalUserMedia(item.BizAppUserId) , UserName = item.BizAppUser.FullName , Id = item.BizAppUser.Id , UserPicture = UserPicture  , FullName = item.BizAppUser.FullName , ReviewTotalPictures = item.ReviewMedias.Count, ReviewPictures = item.ReviewMedias.Select(s=>s.Image).ToList()});
+				businessHomePage_ReviewsViewModel.Add(new BusinessHomePage_ReviewsViewModel() { ReviewId = item.Id ,Cool = item.CoolCount , Date = DateChanger.ToPersianDateString(item.Date) , DistricName = item.BizAppUser.Address , Funny = item.FunnyCount , Rate = item.Rate , Text = item.Description , UseFull = item.UsefulCount , TotalReviews = item.BizAppUser.Reviews.Count , TotalPictures = await _UnitOfWork.BusinessHomePageRepo.GetTotalUserMedia(item.BizAppUserId) , UserName = item.BizAppUser.FullName , Id = item.BizAppUser.Id , UserPicture = UserPicture  , FullName = item.BizAppUser.FullName , ReviewTotalPictures = item.ReviewMedias.Count, ReviewPictures = item.ReviewMedias.Select(s=>s.Image).ToList() });
 			}
 			#endregion
 			#region AsktheCommunity
@@ -96,6 +107,7 @@ namespace BizApp.Controllers
 
 				businessHomePage_FaqViewModels.Add(new BusinessHomePage_FaqViewModel() { Question = item.Question, Answers = item.BusinessFaqAnswers.Select(s => s.Text).ToList(), Date = Date, AnswersCount = item.BusinessFaqAnswers.Count()  ,Id = item.Id}) ;
 			}
+			
 			#endregion
 			#region RelatedBusiness
 			foreach (var item in RelatedBusinessItem)
@@ -126,7 +138,16 @@ namespace BizApp.Controllers
 			businessHomePageViewModel.businessHomePage_RelatedBusinessViewModels = businessHomePage_RelatedBusinessViewModels;
 			businessHomePageViewModel.businessHomePage_HoursAndLocationViewModel = businessHomePage_HoursAndLocationViewModel;
 			businessHomePageViewModel.BusinessId = BusinessId;
-			businessHomePageViewModel.BusinessName = BusinessName; 
+			businessHomePageViewModel.BusinessName = BusinessName;
+			if (User.Identity.IsAuthenticated)
+			{
+				businessHomePageViewModel.FavoritConditation =await _UnitOfWork.BusinessRepo.CheckBisinessFavorit(BusinessId , GetUserId()) ;
+			}
+			else
+			{
+				businessHomePageViewModel.FavoritConditation = false; 
+			}
+
 			#endregion
 			return View(businessHomePageViewModel);
 		}
@@ -135,6 +156,10 @@ namespace BizApp.Controllers
 		{
 			try
 			{
+				if (User.Identity.IsAuthenticated)
+				{
+					model.BizAppUserId = GetUserId();
+				}
 				await _UnitOfWork.BusinessHomePageRepo.MessageToBusiness(model);
 				await _UnitOfWork.SaveAsync();
 				return Json(new { success = true });
@@ -145,11 +170,11 @@ namespace BizApp.Controllers
 			}
 		}
 		[HttpPost]
-		public async Task<IActionResult> AddFaqsAnswers(Review model, IFormFile[] files)
+		public async Task<IActionResult> AddFaqsAnswers(Review model, IFormFile[] files , string[] caption)
 		{
 			try
 			{
-				await _UnitOfWork.ReviewRepo.AddReview(model, files);
+				await _UnitOfWork.ReviewRepo.AddReview(model, files , caption);
 				await _UnitOfWork.SaveAsync();
 				return RedirectToAction(nameof(Index));
 			}
@@ -173,29 +198,9 @@ namespace BizApp.Controllers
 
 			}
 		}
-		public async Task<IActionResult> GetGalleryForBusiness(Guid Id)
+		private string GetUserId()
 		{
-			#region Objects
-			BusinessGalleryViewModel businessGalleryViewModel = new BusinessGalleryViewModel();
-			Dictionary<Guid, string> Gallery = new Dictionary<Guid, string>();
-			#endregion
-			#region Resource
-			var BusinessInfo = await _UnitOfWork.BusinessRepo.GetById(Id);
-			var TotalReviews = await _UnitOfWork.ReviewRepo.BusinessReviewCount(Id);
-			var GalleryItems = await _UnitOfWork.BusinessHomePageRepo.GetBusinessGallery(Id);
-			#endregion
-			#region Main
-			businessGalleryViewModel.BusinessId = BusinessInfo.Id;
-			businessGalleryViewModel.BusinessName = BusinessInfo.Name;
-			businessGalleryViewModel.BusinessRate = BusinessInfo.Rate;
-			businessGalleryViewModel.BusinessTotalReview = TotalReviews;
-			foreach (var item in GalleryItems)
-			{
-				Gallery.TryAdd(item.Id, item.Image);
-			}
-			businessGalleryViewModel.Pictures = Gallery; 
-			#endregion
-			return View(businessGalleryViewModel);
+			return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 		}
 
 

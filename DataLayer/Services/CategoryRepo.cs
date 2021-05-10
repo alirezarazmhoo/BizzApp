@@ -428,7 +428,7 @@ namespace DataLayer.Services
         public async Task<List<MenuCategoryViewModel>> GetAllInSearchPage()
         {
             return await 
-                DbContext.Categories
+                DbContext.Categories.OrderByDescending(x=>x.Order)
                     .Select(x => new MenuCategoryViewModel { 
                         Id = x.Id,
                         ParentCategoryId = x.ParentCategoryId,
@@ -440,13 +440,13 @@ namespace DataLayer.Services
 
 		public async Task<IEnumerable<Category>> GetAllParents(int id)
 		{
-            //var result = await
-            //    DbContext.CategoryWithParents
-            //        .FromSqlRaw("EXEC [dbo].[sp_GetAllCategoryWithParentsById] @id = {0}", id)
-            //        .ToListAsync();
+            var result = await
+                DbContext.Categories
+                    .FromSqlRaw("EXEC [dbo].[sp_GetAllCategoryWithParentsById] @id = {0}", id)
+                    .ToListAsync();
 
-            //return result;
-            throw new Exception() ; 
+            return result;
+          
 		}
         public async Task<List<Category>> GetPopular(double Longitude , double Latitude)
 		{

@@ -27,7 +27,7 @@ namespace BizApp.Controllers
 			return View();
 		}
 		[HttpPost]
-		public async Task<JsonResult> AddOrRemove(string Id)
+		public async Task<JsonResult> AddOrRemove(Guid Id)
 		{
 			try
 			{

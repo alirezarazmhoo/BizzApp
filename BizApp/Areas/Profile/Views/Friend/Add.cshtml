@@ -1,0 +1,60 @@
+﻿@model BizApp.Areas.Profile.Models.SharedProfileDetailViewModel
+
+@{
+	ViewData["title"] = "افزودن دوست";
+	Layout = "~/Views/Shared/_AllPagesLayout.cshtml";
+}
+
+
+<section class="page-header">
+	<div class="container">
+		<div class="page-header__wrapper">
+			<h2>اضافه کردن به عنوان دوست جدید</h2>
+		</div>
+	</div>
+</section>
+
+<partial name="~/Areas/Profile/Views/Shared/_ShowMessagePartial.cshtml" />
+
+<section class="page-header">
+	<div class="container">
+		<partial name="~/Areas/Profile/Views/UserPhoto/Partials/_UserInfoPartial.cshtml" model="Model" />
+	</div>
+</section>
+
+<section>
+	<div class="edit__item__pro-edit">
+		<div class="container">
+			<div class="row edit__item__pro-edit__form">
+				<div class="col-md-7">
+					<form asp-area="profile"
+						  asp-controller="friend"
+						  asp-action="CreateRelation"
+						  asp-route-returnurl="/profile/account/edit/"
+						  method="post"
+						  class="form-horizontal">
+
+						<div class="form-group">
+							<br />
+							<label>سلام @Model.FullName</label>
+
+							<textarea class="form-control" id="Description" name="Description">بررسی های شما عالی هستند، دوست داشتم در BizApp با شما ارتباط داشته باشم</textarea>
+							@*<span asp-validation-for="FullName" class="text-danger"></span>*@
+						</div>
+						<input type="hidden" name="ReceiverUserId" value="@Model.Id" />
+						<input type="hidden" name="ReceiverUserName" value="@Model.UserName" />
+						<input type="hidden" name="ReceiverFullName" value="@Model.FullName" />
+
+						<div style="position: relative; height: 80px;">
+							<span>من فقط قسط اضافه کردن شما را به لیست دوستانم در BizzAp دارم. علاقه به اشتراک بررسی های خود با من دارید</span>
+						</div>
+
+						<button type="submit" class="btn btn-primary">ارسال</button>
+						<a href="/profile/overview">انصراف</a>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+

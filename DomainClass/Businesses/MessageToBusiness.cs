@@ -14,5 +14,6 @@ namespace DomainClass.Businesses
 		public string FullName { get; set;  }
 		public Guid BusinessId { get; set; }
 		public virtual Business Business { get; set; }
+		public string BizAppUserId { get; set; }
 	}
 }

@@ -1,0 +1,61 @@
+﻿@model PagedList.Core.PagedList<DomainClass.Review.Queries.UserReviewPaginateQuery>
+
+@section head{
+	<style>
+		a:not([href]):not([tabindex]) {
+			cursor: pointer;
+		}
+	</style>
+}
+
+<div class="col-md-6 d-none d-sm-block ">
+	<div class="profile-content__comment">
+		<div class="profile-content__comment__title">
+			<h2>بررسی ها</h2>
+		</div>
+		@foreach (var review in Model)
+		{
+			<partial name="_ReviewItemPartial.cshtml" model="review" />
+		}
+	</div>
+</div>
+
+@section Scripts {
+	<script type="text/javascript">
+		function changeResultValue(spanId, type) {
+			var resultSpan = $('#' + spanId);
+
+			var currentValue = resultSpan.html();
+			var number = parseInt(currentValue) ?? 0;
+
+			number = (type == 'add') ? number + 1 : number - 1;
+			var result = (number > 0) ? number.toString() : '';
+
+			resultSpan.html(result);
+		}
+
+		function changeFunnyButton_Clicked(id) {
+			var url = '/review/changefunnycount';
+
+			$.post(url, { id: id }, function (data) {
+				changeResultValue('funnySpan' + id, data.type);
+			});
+		}
+
+		function changeCoolButton_Clicked(id) {
+			var url = '/review/changecoolcount';
+
+			$.post(url, { id: id }, function (data) {
+				changeResultValue('coolSpan' + id, data.type);
+			});
+		}
+
+		function changeUsefulButton_Clicked(id) {
+			var url = '/review/changeusefullcount';
+
+			$.post(url, { id: id }, function (data) {
+				changeResultValue('usefulSpan' + id, data.type);
+			});
+		}
+	</script>
+}

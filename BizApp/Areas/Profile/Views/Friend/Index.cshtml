@@ -1,0 +1,44 @@
+﻿@model PagedList.Core.PagedList<BizApp.Areas.Profile.Models.SharedProfileDetailViewModel>
+
+@{
+	ViewData["Title"] = "دوستان";
+	Layout = "~/Areas/Profile/Views/Shared/_ProfileLayout.cshtml";
+
+	int addedItemsCount = 0;
+}
+
+@section head {
+	<style>
+		#profile-content-about {
+			display: none;
+		}
+	</style>
+}
+
+<div class="col-md-9 d-none d-sm-block ">
+	<div class="profile-content__comment">
+		<div class="profile-content__comment__title">
+			<h2>دوستان</h2>
+		</div>
+
+		@for (int i = 0; i < Model.Count; i++)
+		{
+			<div class="row">
+				@{
+					addedItemsCount = 0;
+					@for (int j = i; j < i + 3; j++)
+					{
+						<div class="col-md-4 col-sm-12 col-lg-3">
+							@if (Model.ElementAtOrDefault(j) != null)
+							{
+								addedItemsCount = addedItemsCount + 1;
+								<partial name="~/Areas/Profile/Views/UserPhoto/Partials/_UserInfoPartial.cshtml" model="Model[j]" />
+							}
+						</div>
+					}
+					i += addedItemsCount;
+				}
+			</div>
+		}
+	</div>
+</div>

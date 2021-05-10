@@ -31,18 +31,12 @@
 }
 
 <main>
-	@if (TempData["message"] != null)
-	{
-		<div class="container" style="padding-top: 10px;">
-			<div class="alert alert-success" role="alert">
-				@TempData["message"]
-			</div>
-		</div>
-	}
+	<partial name="~/Areas/Profile/Views/Shared/_ShowMessagePartial.cshtml" />
+
 	<div class="container">
 		<div class="row">
 			<div class="col-md-7 md-7">
-				@(ViewBag.UserName = !string.IsNullOrEmpty(userName) ? userName : currentUser)				
+				@{ViewBag.UserName = !string.IsNullOrEmpty(userName) ? userName : currentUser; }
 				<partial name="_HeaderPartial" />
 			</div>
 
@@ -90,14 +84,6 @@
 		</div>
 	</section>
 
-	@*	@await Html.PartialAsync("Partials/_PhotoCarouselModalPartial", Model)*@
-
-	@*
-		slider source:
-			main website: https://swiperjs.com/demos
-			sample: https://github.com/nolimits4web/Swiper/blob/master/demos/060-pagination-fraction.html
-	*@
-
 	@(count = 1)
 	<div class="profile-content-all-photos__modal modal fade" id="click-photo" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
@@ -135,13 +121,13 @@
 								@if (hasAccess)
 								{
 									<div class="profile-content-all-photos__modal__content__desc">
-										<form asp-action="setasprimary" asp-controller="userphoto" asp-area="profile" method="post">
+										<form asp-action="setasprimary" asp-controller="userphoto" asp-area="profile" method="post" id="setAsPrimaryForm">
 											<input type="hidden" id="photoId" name="id" />
 											<button type="submit" class="btn btn-link btn-sm" style="font-size:12px;" onclick="setAsPrimary()">تنظیم به عنوان تصویر اصلی</button>
 										</form>
 										<form asp-action="confirmDelete" asp-controller="userphoto" asp-area="profile" method="get">
 											<input type="hidden" id="deleteId" name="id" />
-											<button type="submit" class="btn btn-link btn-sm" onclick="deletePhoto()" style="font-size:12px;" >حذف تصویر</button>
+											<button type="submit" class="btn btn-link btn-sm" onclick="deletePhoto()" style="font-size:12px;">حذف تصویر</button>
 										</form>
 									</div>
 								}
@@ -160,7 +146,6 @@
 
 @section Scripts {
 	<script>
-
 		function setSliderIndex(index) {
 			// Initialize Swiper
 			var swiper = document.querySelector('.swiper-container').swiper;

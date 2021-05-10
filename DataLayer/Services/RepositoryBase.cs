@@ -16,16 +16,19 @@ namespace DataLayer.Services
 	{
 		protected ApplicationDbContext DbContext;
 		private readonly SignInManager<ApplicationUser> _signInManager;
-		private readonly UserManager<ApplicationUser> _userManager;
+		protected readonly UserManager<BizAppUser> UserManager;
 
 		public RepositoryBase(ApplicationDbContext dbContext)
 		{
 			DbContext = dbContext;
 		}
-		public RepositoryBase(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+		public RepositoryBase(ApplicationDbContext dbContext, UserManager<BizAppUser> userManager)
+			: this(dbContext)
 		{
-			DbContext = dbContext;
-			_userManager = userManager;
+			UserManager = userManager;
+		}
+		public RepositoryBase(ApplicationDbContext dbContext, UserManager<BizAppUser> userManager, SignInManager<ApplicationUser> signInManager) : this(dbContext, userManager)
+		{
 			_signInManager = signInManager;
 		}
 

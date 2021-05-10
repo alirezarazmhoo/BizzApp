@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BizApp.Areas.Admin.Models;
 using BizApp.Areas.Profile.Models;
+using BizApp.Areas.Profile.Models.Account;
+using BizApp.Areas.Profile.Models.Friends;
 using BizApp.Areas.Profile.Models.Reviews;
 using BizApp.Areas.WebApi.Models;
 using BizApp.Models.Basic;
@@ -79,6 +81,8 @@ namespace BizApp.Automapper
 			CreateMap<UserProfileDetailQuery, ProfileViewModel>()
 				//.ForMember(dest => dest.RegisterDate, opt => opt.MapFrom(src => src.RegisterDate.ToPersianShortDate()))
 				.ReverseMap();
+			CreateMap<BizAppUser, EditAcountViewModel>().ReverseMap();
+			CreateMap<EditAcountViewModel, EditAcountCommand>().ReverseMap();
 
 			// user photos
 			CreateMap<ApplicationUserMedia, UserPhotosViewModel>()
@@ -113,10 +117,12 @@ namespace BizApp.Automapper
 				.ForMember(dest => dest.Business, opt => opt.MapFrom(src => src.Business))
 				.ReverseMap();
 
-			//CreateMap<ReviewMediaQuery, ReviewMediaViewModel>
+			// Friends
+			CreateMap<CreateFriendRelationViewModel, CreateFriendRelationCommand>().ReverseMap();
+
 
 			//BusinessPopop
-			CreateMap<Business, BusinessPopop>()
+			CreateMap<Business, BusinessItem>()
 				.ForMember(dest => dest.id, opt => opt.MapFrom(src => src.Id))
 				.ForMember(dest => dest.address, opt => opt.MapFrom(src => src.Address))
 				.ForMember(dest => dest.districname, opt => opt.MapFrom(src => src.District.Name))
@@ -125,9 +131,7 @@ namespace BizApp.Automapper
 				.ForMember(dest => dest.description, opt => opt.MapFrom(src => src.Description))
 				.ForMember(dest => dest.image, opt => opt.MapFrom(src => src.FeatureImage))
 				.ForMember(dest => dest.name, opt => opt.MapFrom(src => src.Name))
-
-
-
+				.ForMember(dest => dest.reviews, opt => opt.MapFrom(src => src.Reviews))
 				.ReverseMap();
 
 		}

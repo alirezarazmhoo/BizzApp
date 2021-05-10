@@ -28,7 +28,14 @@ namespace BizApp.Utility
 			string persianDateString = string.Format("{0}/{1}/{2}", year, month, day);
 			return persianDateString;
 		}
-		
+
+		public static string ToPersianDateString(this DateTime? georgianDate)
+		{
+			if (georgianDate == null) return string.Empty;
+
+			return ToPersianDateString((DateTime)georgianDate);
+		}
+
 		public static string ToPersianShortDate(this DateTime georgianDate)
 		{
 			System.Globalization.PersianCalendar persianCalendar = new System.Globalization.PersianCalendar();

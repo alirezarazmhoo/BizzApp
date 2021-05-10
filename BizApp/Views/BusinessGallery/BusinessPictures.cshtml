@@ -1,0 +1,182 @@
+﻿@model BizApp.Models.Basic.BusinessGalleryViewModel
+@{
+	ViewData["Title"] = "BusinessGallery";
+	Layout = "~/Views/Shared/_AllPagesLayout.cshtml";
+}
+<section class="all-photos-content">
+	<div class="container">
+		<div class="all-photos-content__wrapper">
+			<div class="all-photos-content__wrapper__title">
+				<h1>عکس های @Model.BusinessName</h1>
+			</div>
+			<div class="all-photos-content__wrapper__profile">
+				<div class="all-photos-content__wrapper__profile__avatar">
+					<div class="all-photos-content__wrapper__profile__avatar__image">
+						<a href="/BusinessHome/Index?Id=@Model.BusinessId"><img src="@Model.Image" alt=""></a>
+					</div>
+					<div class="all-photos-content__wrapper__profile__avatar__bio">
+						<div class="all-photos-content__wrapper__profile__avatar__bio__name">
+							<a href="/BusinessHome/Index?Id=@Model.BusinessId">@Model.BusinessName</a>
+						</div>
+						<div class="all-photos-content__wrapper__profile__avatar__bio__score">
+							<div class="all-photos-content__wrapper__profile__avatar__bio__score__star" data-star="@Model.BusinessRate"></div>
+							<div class="all-photos-content__wrapper__profile__avatar__bio__score__view">
+								<span>بررسی ها</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="all-photos-content__wrapper__profile__add">
+					<a href="/BusinessGallery/UserUploadPhoto"><svg id="24x24_add_photo" height="24" width="24"><path d="M19 20H5a3 3 0 01-3-3V9a3 3 0 013-3h2.184A2.99 2.99 0 0110 4h4a2.99 2.99 0 012.816 2H19a3 3 0 013 3v8a3 3 0 01-3 3zM12.005 8.5a4.5 4.5 0 100 9 4.5 4.5 0 000-9zM13 14v1a1 1 0 01-2 0v-1h-1a1 1 0 010-2h1v-1a1 1 0 012 0v1h1a1 1 0 010 2h-1z"></path></svg>اضافه کردن عکس</a>
+				</div>
+			</div>
+			<div class="all-photos-content__wrapper__tabs" style="margin-top:30px">
+				<div class="all-photos-content__wrapper__tabs__list">
+					<svg id="24x24_chevron_right" height="24" width="24"><path d="M9.525 5.636L8.111 7.05l4.95 4.95-4.95 4.95 1.414 1.414L15.889 12 9.525 5.636z"></path></svg>
+
+					<ul>
+						<li class="active" data-tab="tab-1" data-tab-target="tab-gallery">همه  <span>(@Model.businessGallery_PictureViewModels.Count)</span></li>
+						@*<li data-tab="tab-2" data-tab-target="tab-gallery">غذا  <span>(5)</span></li>
+							<li data-tab="tab-3" data-tab-target="tab-gallery">منو  <span>(5)</span></li>
+							<li data-tab="tab-4" data-tab-target="tab-gallery">بیرون  <span>(5)</span></li>*@
+					</ul>
+					<svg id="24x24_chevron_left" height="24" width="24"><path d="M14.475 18.364l1.414-1.414-4.95-4.95 4.95-4.95-1.414-1.414L8.111 12l6.364 6.364z"></path></svg>
+
+				</div>
+				@*<div class="all-photos-content__wrapper__tabs__search">
+						<div class="all-photos-content__wrapper__tabs__search__input">
+							<input type="text" placeholder="جستجو">
+						</div>
+						<div class="all-photos-content__wrapper__tabs__search__button">
+							<button><svg id="18x18_search_small" height="18" width="18"><path d="M15.913 14.224a1.324 1.324 0 00-.3-.466h.009l-3.377-3.376a5.492 5.492 0 00.802-2.857 5.523 5.523 0 10-5.522 5.52 5.491 5.491 0 002.856-.801l3.369 3.369.004.003c.132.131.293.231.471.298.143.053.296.086.458.086.727 0 1.317-.589 1.317-1.316 0-.163-.033-.317-.087-.46zM7.525 10.94a3.422 3.422 0 01-3.418-3.416 3.422 3.422 0 013.418-3.417 3.422 3.422 0 013.416 3.417 3.421 3.421 0 01-3.416 3.416z"></path></svg></button>
+						</div>
+					</div>*@
+			</div>
+			<div class="all-photos-content__wrapper__gallery active" data-tab-content="tab-1" data-tab-target="tab-gallery">
+				<ul>
+
+					@{ int count = 0; }
+					@foreach (var item in Model.businessGallery_PictureViewModels)
+					{
+						
+						<li>
+							<a href="#" data-toggle="modal" data-target="#click-image"  ><img src="@item.Image" alt=""   onclick="setSliderIndex(@(count++) , this)"  userName="@item.UserName" userpic="@item.UserImage" description="@item.description" date="@item.Date" usertotalreview="@item.UserTotalReview"    ></a>
+						</li>
+					}
+				</ul>
+			</div>
+
+			<div class="all-photos-content__wrapper__pagination">
+				<span>1 از 1</span>
+			</div>
+		</div>
+	</div>
+</section>
+@(count = 1)
+<div class="recent-activities__modal modal fade" id="click-image" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div class="recent-activities__modal__close" data-dismiss="modal">
+					<span>بستن</span>
+					<svg id="24x24_close" height="24" viewBox="0 0 24 24" width="24"><path d="M17.657 19.07L12 13.415 6.343 19.07 4.93 17.658 10.585 12 4.93 6.343 6.342 4.93 12 10.585l5.657-5.657L19.07 6.34 13.416 12l5.657 5.657-1.413 1.414z"></path></svg>
+
+				</div>
+				<div class="row" data-space="10">
+					<div class="col-lg-10 col-md-9 col-sm-8">
+						<div class="swiper-container">
+
+							<div class="swiper-wrapper">
+								@foreach (var photo in Model.businessGallery_PictureViewModels)
+								{
+									<div class="swiper-slide" id="2" userpic="@photo.UserImage" description="@photo.description" date="@photo.Date" usertotalreview="@photo.UserTotalReview"  name="@photo.UserName" tabindex="@(count++)">
+										<div class="profile-content-all-photos__modal__image">
+											<a href="#">
+												<img src="@photo.Image" alt="">
+											</a>
+										</div>
+									</div>
+								}
+							</div>
+							<div class="swiper-pagination"></div>
+							<div class="swiper-button-next"></div>
+							<div class="swiper-button-prev"></div>
+						</div>
+					</div>
+					<div class="col-lg-2 col-md-3 col-sm-4">
+						<div class="recent-activities__modal__content">
+							<div class="recent-activities__modal__content__title">
+								<div class="recent-activities__modal__content__title__avatar">
+									<a href="#"><img id="modalUserProfilePicture" alt=""></a>
+								</div>
+								<div class="recent-activities__modal__content__title__info">
+									<div class="recent-activities__modal__content__title__info__name">
+										<a href="#" id="modalcreatorname"></a>
+									</div>
+									<div class="recent-activities__modal__content__title__info__status">
+										<ul>
+											<li>
+												<svg id="24x24_friends" height="24" viewBox="0 0 24 24" width="24"><g><path d="M10.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946C1.618 12.48 2.586 11 4.018 11h4.964c1.432 0 2.4 1.48 1.842 2.817zM6.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path><path d="M21.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946c-.558-1.337.41-2.817 1.842-2.817h4.964c1.432 0 2.4 1.48 1.842 2.817zM17.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" opacity=".502"></path></g></svg>
+												<span>0</span>
+
+											</li>
+											<li>
+												<svg id="24x24_review" height="24" viewBox="0 0 24 24" width="24"><path d="M21 6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V6zm-5.88 10.428l-3.16-1.938-3.05 2.01.59-3.457L7 10.596l3.457-.505L11.96 6.5l1.582 3.59 3.458.506-2.5 2.447.62 3.385z"></path></svg>
+												<span id="modalbusinessreviews"></span>
+											</li>
+											<li>
+												<a href="#" id="modalbusinessrate">نظرات</a>
+
+											</li>
+										</ul>
+									</div>
+
+								</div>
+
+
+
+							</div>
+							<div class="recent-activities__modal__content__desc">
+								<p id="modalbusinssdescription"></p>
+							</div>
+							<div class="recent-activities__modal__content__date">
+								<span id="modalbusinessdate"></span>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<script>
+		window.onload = Load;
+		function Load() {
+		var swiper = document.querySelector('.swiper-container').swiper;
+			swiper.on('slideChange', function () {
+				$("#modalcreatorname").text(swiper.slides[swiper.activeIndex].getAttribute("name"));
+				$("#modalbusinessreviews").text(swiper.slides[swiper.activeIndex].getAttribute("usertotalreview"));
+				$("#modalbusinessdate").text(swiper.slides[swiper.activeIndex].getAttribute("date"));
+				$("#modalbusinssdescription").text(swiper.slides[swiper.activeIndex].getAttribute("description"));
+				$("#modalUserProfilePicture").attr('src', swiper.slides[swiper.activeIndex].getAttribute("userpic"))
+		});	
+		}
+		function setSliderIndex(index,elem) {
+			// Initialize Swiper
+			$("#modalcreatorname").text(elem.getAttribute("userName"));
+			$("#modalbusinessreviews").text(elem.getAttribute("usertotalreview"));
+			$("#modalbusinessdate").text(elem.getAttribute("date"));
+			$("#modalbusinssdescription").text(elem.getAttribute("description"));
+			$("#modalUserProfilePicture").attr('src', elem.getAttribute("userpic"))
+			var swiper = document.querySelector('.swiper-container').swiper;
+			swiper.slideTo(index);
+			swiper.autoplay.pause = true;
+		
+		}
+
+	</script>
+}

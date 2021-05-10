@@ -11,9 +11,10 @@ namespace DomainClass.Businesses
 		public Guid BusinessId { get; set; }
 		public int BusinessQouteId { get; set; }
 		[Required]
-		[Column("NVARCHAR(1000)")]
+		[Column(TypeName = "NVARCHAR(1000)")]
 		public string AnswerQoute { get; set; }
 		[Required]
+		[Column(TypeName = "NVARCHAR(450)")]
 		public string BizAppUserId { get; set; }
 
 		public virtual Business Business { get; set; }

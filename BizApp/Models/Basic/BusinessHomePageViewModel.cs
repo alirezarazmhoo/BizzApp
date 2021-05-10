@@ -11,6 +11,7 @@ namespace BizApp.Models.Basic
 	{
 		public Guid BusinessId { get; set; }
 		public string BusinessName { get; set; }
+		public bool FavoritConditation { get; set; }
 		public BusinessHomePage_SliderViewModel businessHomePage_SliderViewModel { get; set; }
 		public BusinessHomePage_SummaryViewModel businessHomePage_SummaryViewModel { get; set;  }
 		public BusinessHomePage_FeatureViewModel businessHomePage_FeatureViewModel { get; set; }
@@ -32,6 +33,7 @@ namespace BizApp.Models.Basic
 	#region BusinessSummary
 	public class BusinessHomePage_SummaryViewModel
 	{
+		public Guid BusinessId { get; set; }
 		public string Title { get; set; }
 		public int Rate { get; set; }
 		public int Reviews { get; set; }
@@ -45,8 +47,16 @@ namespace BizApp.Models.Basic
 	public class BusinessHomePage_FeatureViewModel
 	{
 		public string BoldFeature { get; set; }
-		public List<string> Features { get; set; }
+		public List<BusinessFeatureItem> Features { get; set; }
 	}
+
+	public class BusinessFeatureItem
+	{
+		public string Name { get; set; }
+		public string Icon { get; set; }
+	}
+
+
 	#endregion
 	#region NearSponsered
 	public class BusinessHomePage_NearSponseredViewModel
@@ -103,6 +113,7 @@ namespace BizApp.Models.Basic
 	public class BusinessHomePage_FaqViewModel
 	{
 		public Guid Id { get; set; }
+		public Guid BusinessId { get; set; }
 		public  int AnswersCount { get; set;  }
 		public string Question { get; set; }
 		public string Date { get; set; }
@@ -119,7 +130,6 @@ namespace BizApp.Models.Basic
 		public int Review { get; set;  }
 	}
 	#endregion
-
 	#region HoursAndLocations
 	public class BusinessHomePage_HoursAndLocationViewModel
 	{
@@ -129,5 +139,8 @@ namespace BizApp.Models.Basic
 		public List<DataLayer.Services.BusinessHomePageRepo.LocationHours> LocationHours { get; set;  }
 	}
 	#endregion
+
+
+
 
 }

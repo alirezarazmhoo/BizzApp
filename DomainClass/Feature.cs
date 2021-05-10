@@ -25,6 +25,8 @@ namespace DomainClass
 		[Required]
 		public BusinessFeatureType ValueType { get; set; }
 
+		public string Icon { get; set; }
+
 		public virtual ICollection<BusinessFeature> Businesses { get; set; }
 	}
 }

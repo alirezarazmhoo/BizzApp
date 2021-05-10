@@ -3,6 +3,8 @@
 
 function changeUsefull(element) {
 
+
+
 $.ajax({
 	type: "Post",
 	url: '/Review/ChangeUseFullCount?Id=' + $(element).data('assigned-id') + '',
@@ -13,10 +15,19 @@ $.ajax({
 		if (response.type == "add") {
 			var number = parseInt($(element).children().eq(2).text()) + 1;
 			$(element).children().eq(2).text(number);
+			$(element).children().children().css('fill', 'red');
+
+
+		}
+		else if (response.type == "authorize") {
+			window.location = "/Identity/Account/Login";
 		}
 		else {
 			var number = parseInt($(element).children().eq(2).text()) - 1;
 			$(element).children().eq(2).text(number);
+			$(element).children().children().css('fill', '');
+
+
 		}
 	}
 });
@@ -33,10 +44,20 @@ function changeFunny(element) {
 			if (response.type == "add") {
 				var number = parseInt($(element).children().eq(2).text()) + 1;
 				$(element).children().eq(2).text(number);
+
+				$(element).children().children().css('fill', 'orange');
+
+
+			}
+			else if (response.type == "authorize") {
+				window.location = "/Identity/Account/Login";
 			}
 			else {
 				var number = parseInt($(element).children().eq(2).text()) - 1;
 				$(element).children().eq(2).text(number);
+				$(element).children().children().css('fill', '');
+
+
 			}
 		}
 	});
@@ -52,10 +73,17 @@ function changeCool(element) {
 			if (response.type == "add") {
 				var number = parseInt($(element).children().eq(2).text()) + 1;
 				$(element).children().eq(2).text(number);
+				$(element).children().children().css('fill', 'green');
+
+			}
+			else if (response.type == "authorize") {
+				window.location = "/Identity/Account/Login";
 			}
 			else {
 				var number = parseInt($(element).children().eq(2).text()) - 1;
 				$(element).children().eq(2).text(number);
+				$(element).children().children().css('fill', '');
+
 			}
 		}
 	});
@@ -86,6 +114,8 @@ function BusinessHomeLoadMap(lon, lat) {
 }
 
 function AddOrRemvoeFavorit(element) {
+
+
 	$.ajax({
 		type: "Post",
 		url: '/UserFavorits/AddOrRemove?Id='+ $(element).data('assigned-id') + '',
@@ -96,6 +126,8 @@ function AddOrRemvoeFavorit(element) {
 			if (response.type == "add") {
 				$("#addToFavoritResult").text("با موفقیت به لیست علاقه مندی افزوده شد");
 				$("#favoritModal").modal('show');
+				$(element).children().children().eq(0).attr('class', 'fas fa-bookmark');
+
 			}
 			else if (response.type == "authorize") {
 				window.location = "/Identity/Account/Login";
@@ -103,13 +135,15 @@ function AddOrRemvoeFavorit(element) {
 			else {
 				$("#addToFavoritResult").text("با موفقیت از لیست علاقه مندی حذف شد");
 				$("#favoritModal").modal('toggle');
+				$(element).children().children().eq(0).attr('class', 'far fa-bookmark');
+
 			}
 		}
 	});
 }
 
 function sendMessageToBusiness() {
-	if ($('#mobile').val() === "" || $("#title").val() === "" ) {
+	if ( $("#title").val() === "" ) {
 		$("#errorsendmessage").text("اطلاعات فرم ناقص است");
 		return; 
 	}
@@ -131,6 +165,8 @@ function sendMessageToBusiness() {
 			$("#mobile").val('');
 			$("#message").val('');
 			$("#title").val('');
+			$("#errorsendmessage").text("");
+
 			$("#sendmessagetobusinessmodal").modal('toggle');
 			$("#addToFavoritResult").text("پیام شما با موفقیت برای صاحب کسب و کار ارسال گردید");
 			$("#favoritModal").modal('show');

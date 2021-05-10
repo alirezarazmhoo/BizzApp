@@ -12,5 +12,6 @@ namespace DataLayer.Infrastructure
 		Task<BusinessQoute> GetById(int id);
 		Task AddOrUpdate(BusinessQoute BusinessQoute);
 		void Remove(BusinessQoute BusinessQoute);
+		Task<List<BusinessQoute>> GetByCategoryId(int CategoryId);
 	}
 }

@@ -1,19 +1,19 @@
 ﻿@model BizApp.Areas.Profile.Models.SharedProfileDetailViewModel
 <div class="profile-content-all-photos__modal__content__title">
 	<div class="profile-content-all-photos__modal__content__title__avatar">
-		<a href="#"><img src="@Model.MainPhotoPath" alt=""></a>
+		<a href="/profile/overview?username=@Model.UserName"><img src="@Model.MainPhotoPath" alt=""></a>
 	</div>
 	<div class="profile-content-all-photos__modal__content__title__info">
 		<div class="profile-content-all-photos__modal__content__title__info__name">
-			<a asp-controller="overview" asp-action="index" asp-area="profile" asp->@Model.FullName</a>
+			<a href="/profile/overview?username=@Model.UserName">@Model.FullName</a>
 		</div>
 		<div class="profile-content-all-photos__modal__content__title__info__status">
 			<ul>
-				@*<li>
+				<li>
 					<svg id="24x24_friends" height="24" viewBox="0 0 24 24" width="24"><g><path d="M10.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946C1.618 12.48 2.586 11 4.018 11h4.964c1.432 0 2.4 1.48 1.842 2.817zM6.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path><path d="M21.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946c-.558-1.337.41-2.817 1.842-2.817h4.964c1.432 0 2.4 1.48 1.842 2.817zM17.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" opacity=".502"></path></g></svg>
-					<span>419</span>
+					<span>@Model.FriendsNumber</span>
 
-				</li>*@
+				</li>
 				<li>
 					<svg id="24x24_review" height="24" viewBox="0 0 24 24" width="24"><path d="M21 6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V6zm-5.88 10.428l-3.16-1.938-3.05 2.01.59-3.457L7 10.596l3.457-.505L11.96 6.5l1.582 3.59 3.458.506-2.5 2.447.62 3.385z"></path></svg>
 					<span>@Model.ReviewCount</span>
@@ -27,7 +27,4 @@
 		</div>
 
 	</div>
-
-
-
 </div>

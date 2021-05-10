@@ -16,10 +16,14 @@ namespace DataLayer.Services
 	{
 		private readonly string directoryPath;
 		private readonly string databasePath;
-		public UserPhotoRepo(ApplicationDbContext dbContext) : base(dbContext)
+		private readonly IUserActivityRepo _userActivity;
+
+		public UserPhotoRepo(ApplicationDbContext dbContext, IUserActivityRepo userActivity) : base(dbContext)
 		{
 			directoryPath = @"wwwroot\Upload\User\Profiles\";
 			databasePath = "/Upload/User/Profiles/";
+
+			_userActivity = userActivity;
 		}
 
 		private async Task<string> UploadPhoto(IFormFile file, string userId)
@@ -58,7 +62,7 @@ namespace DataLayer.Services
 		{
 			// get list of user photos
 			var items = 
-				await FindByCondition(f => f.BizAppUserId == userId)
+				await DbContext.ApplicationUserMedias.Where(f => f.BizAppUserId == userId)
 						.OrderByDescending(o => o.IsMainImage)
 						.ThenBy(c => c.CreatedAt)
 					.ToListAsync();
@@ -89,7 +93,7 @@ namespace DataLayer.Services
 			};
 
 			// check if user not have primary photo set for him or her
-			var hasPhoto = await FindByCondition(f => f.BizAppUserId == userId).AnyAsync();
+			bool hasPhoto = await DbContext.ApplicationUserMedias.AnyAsync(f => f.BizAppUserId == userId);
 			if (!hasPhoto)
 			{
 				addedItem.IsMainImage = true;
@@ -98,8 +102,12 @@ namespace DataLayer.Services
 			// add new items to database
 			await DbContext.ApplicationUserMedias.AddAsync(addedItem);
 
+			// add user activity
+			await _userActivity.AddAsync(TableName.UserPhotos, addedItem.Id.ToString(), userId, "اضافه کردن تصویر پروفایل");
+
 			// save changes in database 
 			await DbContext.SaveChangesAsync();
+
 
 			return UploadResult.Succeed;
 		}
@@ -111,7 +119,9 @@ namespace DataLayer.Services
 			// find photo
 			var photo = await DbContext.ApplicationUserMedias.FirstOrDefaultAsync(f => f.Id == id);
 
-			// delete from database
+			if (photo == null) throw new KeyNotFoundException();
+
+			// delete from directory
 			if (!string.IsNullOrEmpty(photo.UploadedPhoto))
 			{
 				File.Delete($"wwwroot/{photo.UploadedPhoto}");
@@ -119,6 +129,22 @@ namespace DataLayer.Services
 
 			// delete from database
 			DbContext.ApplicationUserMedias.Remove(photo);
+			
+			// change user primary image 
+			if (photo.IsMainImage)
+			{
+				//get user photos count
+				var firstUploadedPhoto =
+					await DbContext.ApplicationUserMedias.Where(w => w.BizAppUserId == currentUserId).OrderBy(x => x.CreatedAt).FirstOrDefaultAsync();
+
+				if (firstUploadedPhoto != null)
+				{
+					firstUploadedPhoto.IsMainImage = true;
+				}
+			}
+
+			// delete created activity
+			await _userActivity.Remove(id.ToString());
 
 			await DbContext.SaveChangesAsync();
 		}
@@ -128,11 +154,11 @@ namespace DataLayer.Services
 			if (!isOwner) throw new UnauthorizedAccessException();
 
 			// get selected photo
-			var photo = await FindByCondition(f => f.Id == id).FirstOrDefaultAsync();
+			var photo = await DbContext.ApplicationUserMedias.FirstOrDefaultAsync(f => f.Id == id);
 			photo.IsMainImage = true;
 
 			// get other user photos
-			var userPhotos = await FindByCondition(f => f.BizAppUserId == userId).ToListAsync();
+			var userPhotos = await DbContext.ApplicationUserMedias.Where(f => f.BizAppUserId == userId && f.Id != id).ToListAsync();
 			foreach (var userPhoto in userPhotos)
 			{
 				userPhoto.IsMainImage = false;
@@ -148,10 +174,16 @@ namespace DataLayer.Services
 				throw ex;
 			}
 		}
-
 		public async Task<ApplicationUserMedia> GetById(Guid id)
 		{
-			return await FindByCondition(f=> f.Id == id).FirstOrDefaultAsync();
+			return await DbContext.ApplicationUserMedias.FirstOrDefaultAsync(f=> f.Id == id);
+		}
+		public async Task<string> GetPathById(Guid id)
+		{
+			var fileDetail = await DbContext.ApplicationUserMedias.FirstOrDefaultAsync(f => f.Id == id);
+			if (fileDetail != null) return fileDetail.UploadedPhoto;
+
+			return null;
 		}
 	}
 }

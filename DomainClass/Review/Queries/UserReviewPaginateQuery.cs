@@ -1,10 +1,11 @@
 ﻿using DomainClass.Enums;
+using DomainClass.Queries;
 using System;
 using System.Collections.Generic;
 
 namespace DomainClass.Review.Queries
 {
-	public class UserReviewPaginateQuery
+	public class UserReviewPaginateQuery : IUserActivityQuery
 	{
 		public Guid Id { get; set; }
 		public int Rate { get; set; }

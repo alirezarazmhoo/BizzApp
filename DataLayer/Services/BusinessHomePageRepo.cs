@@ -41,12 +41,12 @@ namespace DataLayer.Services
 				return null; 
 			}	
 		}
-		public async Task<Tuple<string ,List<string>>> GetBusinessFeatures(Guid id)
+		public async Task<Tuple<string ,List<BusinessFeature>>> GetBusinessFeatures(Guid id)
 		{
 			var BusinessItem = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Id.Equals(id));
 			if(BusinessItem != null)
 			{
-				return new Tuple<string, List<string>>(BusinessItem.BoldFeature , await GetBusinessFeaturesTitle(id));
+				return new Tuple<string, List<BusinessFeature>>(BusinessItem.BoldFeature , await GetBusinessFeaturesTitle(id));
 			}
 			else
 			{
@@ -148,7 +148,7 @@ namespace DataLayer.Services
 			var BusinessItem = await DbContext.Businesses.FirstOrDefaultAsync(s=>s.Id.Equals(id));
 			if(BusinessItem != null)
 			{
-				return await DbContext.CustomerBusinessMediaPictures.Where(s => s.CustomerBusinessMedia.BusinessId.Equals(id) && s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted).ToListAsync();
+				return await DbContext.CustomerBusinessMediaPictures.Include(s=>s.CustomerBusinessMedia.BizAppUser.ApplicationUserMedias).Where(s => s.CustomerBusinessMedia.BusinessId.Equals(id) && s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted).ToListAsync();
 			}
 			else
 			{
@@ -206,13 +206,13 @@ namespace DataLayer.Services
 			}
 			return locationHours;
 		}
-		private  async Task<List<string>> GetBusinessFeaturesTitle(Guid id)
+		private  async Task<List<BusinessFeature>> GetBusinessFeaturesTitle(Guid id)
 		{
-			return  await DbContext.BusinessFeatures.Include(s=>s.Feature).Where(s => s.BusinessId.Equals(id)).Select(s => s.Feature.Name).ToListAsync();
+			return  await DbContext.BusinessFeatures.Include(s=>s.Feature).Where(s => s.BusinessId.Equals(id)).ToListAsync();
 		}
 		private async Task<int> GetTotalMediaReview(Guid id)
 		{
-			return await DbContext.CustomerBusinessMediaPictures.Where(s => s.CustomerBusinessMedia.BusinessId.Equals(id)).CountAsync();
+			return await DbContext.CustomerBusinessMediaPictures.Where(s => s.CustomerBusinessMedia.BusinessId.Equals(id) && s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted).CountAsync();
 		}
 		private async Task<int> GetTotalReview(Guid id)
 		{

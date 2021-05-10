@@ -88,5 +88,9 @@ namespace DataLayer.Services
 		{
 			Delete(district);
 		}
+		public async Task<List<int>> GetDeafults()
+		{
+			return await FindByCondition(s=>s.IsDefault).Select(s=>s.Id).ToListAsync();
+		}
 	}
 }

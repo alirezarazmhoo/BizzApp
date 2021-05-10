@@ -10,6 +10,7 @@ namespace DataLayer.Infrastructure
 		Task<List<District>> GetAll();
 		Task<List<District>> GetAll(int cityId);
 		Task<List<District>> GetAll(string searchString);
+		Task<List<int>> GetDeafults(); 
 		Task<District> GetById(int id);
 		Task<List<DistrictWithParentsNameQuery>> GetAllWithParentNames(string searchString);
 		Task<DistrictWithParentsNameQuery> GetAllWithParentNamesById(int id);

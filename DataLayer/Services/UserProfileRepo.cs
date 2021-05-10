@@ -1,6 +1,7 @@
 ﻿using DataLayer.Data;
 using DataLayer.Infrastructure;
 using DomainClass;
+using DomainClass.Enums;
 using DomainClass.Queries;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,6 +14,20 @@ namespace DataLayer.Services
 	{
 		public UserProfileRepo(ApplicationDbContext dbContext) : base(dbContext)
 		{
+		}
+
+		public async Task<Nullable<StatusEnum>> GetFriendShipStatus(string userName)
+		{
+			var user = await DbContext.Users.FirstOrDefaultAsync(f => f.UserName == userName);
+			if (user == null) return null;
+
+			var friend = await 
+				DbContext.Friends.FirstOrDefaultAsync(f => 
+									f.ApplicatorUserId == user.Id || 
+									f.ReceiverUserId == user.Id);
+			if (friend == null) return null;
+
+			return friend.Status;
 		}
 
 		public async Task<SharedUserProfileDetailQuery> GetSharedUserDetail(string userName)
@@ -28,7 +43,8 @@ namespace DataLayer.Services
 							UserName = s.UserName,
 							FullName = s.FullName,
 							ReviewCount = s.Reviews.Count,
-							MainPhotoPath = s.ApplicationUserMedias.FirstOrDefault(f => f.BizAppUserId == s.Id && f.IsMainImage).UploadedPhoto
+							MainPhotoPath = s.ApplicationUserMedias.FirstOrDefault(f => f.BizAppUserId == s.Id && f.IsMainImage).UploadedPhoto,
+							FriendsNumber = DbContext.Friends.Where(w => w.ApplicatorUserId == s.Id && w.Status == StatusEnum.Accepted).Count()
 						})
 						.FirstOrDefaultAsync();
 

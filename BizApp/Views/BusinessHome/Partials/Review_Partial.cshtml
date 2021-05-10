@@ -21,7 +21,7 @@
 <div class="stay-gold-content__wrapper__comment" style="margin-top:15px">
 	@foreach (var item in Model)
 	{
-		<div class="stay-gold-content__wrapper__comment__avatar">
+		<div class="stay-gold-content__wrapper__comment__avatar" style="margin-top:20px">
 			<div class="stay-gold-content__wrapper__comment__avatar__image">
 
 				<a href="#"><img src="@item.UserPicture" alt=""></a>
@@ -79,55 +79,76 @@
 		</div>
 
 
-		foreach (var item2 in item.ReviewPictures)
-		{
+		<div class="stay-gold-content__wrapper__comment__image ">
+			<div class="row" data-space="15">
+				<div class="col-6">
+					<div class="stay-gold-content__wrapper__comment__image ">
+						<div class="row" data-space="15">
+							@foreach (var item2 in item.ReviewPictures)
+							{
 
-			<div class="stay-gold-content__wrapper__comment__image ">
-				<div class="row" data-space="15">
-					<div class="col-6">
-						<div class="stay-gold-content__wrapper__comment__image__item  stay-gold-content__wrapper__comment__image__item--two-image">
-							<a href="#">
-								<img src="@item2" alt="">
-							</a>
+								if (item.ReviewPictures.Count > 1)
+								{
+									<div class="col-3" style="margin-left:10px">
+										<div class="stay-gold-content__wrapper__comment__image__item  stay-gold-content__wrapper__comment__image__item--there-image">
+											<a href="#">
+												<img src="@item2" alt="">
+											</a>
+										</div>
+									</div>
+								}
+								else
+								{
+									<div class="col-6">
+										<div class="stay-gold-content__wrapper__comment__image__item  stay-gold-content__wrapper__comment__image__item--two-image">
+											<a href="#">
+												<img src="@item2" alt="">
+											
+											</a>
+										</div>
+									</div>
+								}
+
+
+							}
 						</div>
 					</div>
 				</div>
-
 			</div>
-		}
+		</div>
 
 
 		<div class="stay-gold-content__wrapper__comment__actions">
 			<ul>
 				<li>
-					<a href="#" onclick="changeUsefull(this)"  data-assigned-id="@item.ReviewId">
+					<a href="#" onclick="changeUsefull(this)" data-assigned-id="@item.ReviewId">
 						<svg width="16" height="16" class="icon_svg"><path d="M8 1a7 7 0 110 14A7 7 0 018 1zm0 2a5 5 0 100 10A5 5 0 008 3zM4.785 5.803A3.5 3.5 0 1110 10.06v.74a1.5 1.5 0 01-1.5 1.5h-1A1.5 1.5 0 016 10.8v-.74a3.5 3.5 0 01-1.215-4.257zM8 5.7a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"></path></svg>
 						<span>مفید</span>
-				<span>
+						<span>
 
-					@item.UseFull
-				</span>
-			
-						
+							@item.UseFull
+						</span>
+
+
 					</a>
 				</li>
 				<li>
-					<a href="#" onclick="changeFunny(this)"  data-assigned-id="@item.ReviewId">
+					<a href="#" onclick="changeFunny(this)" data-assigned-id="@item.ReviewId">
 						<svg width="16" height="16" class="icon_svg"><path d="M8 1a7 7 0 110 14A7 7 0 018 1zm0 2a5 5 0 100 10A5 5 0 008 3zm3.43 6a.15.15 0 01.14.18 3.62 3.62 0 01-7.14 0A.15.15 0 014.57 9zm-1.07-2.553c.34.197.55.56.55.953h-2.2a1.1 1.1 0 011.65-.953zM6.19 6.3a1.1 1.1 0 011.1 1.1h-2.2a1.1 1.1 0 011.1-1.1z"></path></svg>
 						<span>خنده دار</span>
 						<span>
 
-						@item.Funny
+							@item.Funny
 						</span>
 					</a>
 				</li>
 				<li>
-					<a href="#" onclick="changeCool(this)"  data-assigned-id="@item.ReviewId">
+					<a href="#" onclick="changeCool(this)" data-assigned-id="@item.ReviewId">
 						<svg width="16" height="16" class="icon_svg"><path d="M8 1a7 7 0 110 14A7 7 0 018 1zm0 2a5 5 0 100 10A5 5 0 008 3zm2.58 7.32a.15.15 0 01.16.23A3.43 3.43 0 018 12a3.43 3.43 0 01-2.74-1.42.15.15 0 01.16-.23 9.82 9.82 0 005.16-.03zm1.66-3.66a.26.26 0 01.25.34L12 8.5a1.78 1.78 0 01-1.7 1.21l-.15-.007A1.78 1.78 0 018.62 8.51L8.45 8A.48.48 0 008 7.67l-.086.009A.48.48 0 007.55 8l-.17.5A1.78 1.78 0 015.7 9.71l-.152-.005A1.78 1.78 0 014 8.5L3.51 7a.26.26 0 01.25-.34z"></path></svg>
 						<span>جذاب</span>
 						<span>
 
-				@item.Cool
+							@item.Cool
 						</span>
 					</a>
 				</li>

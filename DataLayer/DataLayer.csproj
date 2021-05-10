@@ -73,6 +73,18 @@
     <Compile Remove="Migrations\20210414061854_AddBusinessQoute.Designer.cs" />
     <Compile Remove="Migrations\20210414063134_AddBusinessQoute.cs" />
     <Compile Remove="Migrations\20210414063134_AddBusinessQoute.Designer.cs" />
+    <Compile Remove="Migrations\20210421071728_AddUserActivityTable.cs" />
+    <Compile Remove="Migrations\20210421071728_AddUserActivityTable.Designer.cs" />
+    <Compile Remove="Migrations\20210505062556_AddCreatedAtToFriend.cs" />
+    <Compile Remove="Migrations\20210505062556_AddCreatedAtToFriend.Designer.cs" />
+    <Compile Remove="Migrations\20210505063313_AddCreatedAtToFriendAndNotification.cs" />
+    <Compile Remove="Migrations\20210505063313_AddCreatedAtToFriendAndNotification.Designer.cs" />
+    <Compile Remove="Migrations\20210509071311_FixFriendRelations.cs" />
+    <Compile Remove="Migrations\20210509071311_FixFriendRelations.Designer.cs" />
+    <Compile Remove="Migrations\20210509072254_FixFriendRelations.cs" />
+    <Compile Remove="Migrations\20210509072254_FixFriendRelations.Designer.cs" />
+    <Compile Remove="Migrations\20210509072614_RemoveOldFriendRelationColumns.cs" />
+    <Compile Remove="Migrations\20210509072614_RemoveOldFriendRelationColumns.Designer.cs" />
 
   </ItemGroup>
 

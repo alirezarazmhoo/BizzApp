@@ -16,6 +16,8 @@
 				</div>
 				<div class="stay-gold-content__modal__body">
 					<div class="stay-gold-content__modal__body__content">
+						@if (!User.Identity.IsAuthenticated)
+						{
 						<div class="stay-gold-content__modal__body__content__title">
 							<h5>نام و نام خانوادگی</h5>
 						</div>
@@ -29,6 +31,7 @@
 						<div class="stay-gold-content__modal__body__content__desc">
 							<input id="mobile" class="form-control" placeholder="شماره همراه خود را وارد کنید " />
 						</div>
+						}
 						<div class="stay-gold-content__modal__body__content__title">
 							<h5>عنوان</h5>
 						</div>

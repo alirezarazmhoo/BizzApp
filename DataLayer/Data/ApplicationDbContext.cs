@@ -46,10 +46,11 @@ namespace DataLayer.Data
 		public virtual DbSet<BusinessQoute> BusinessQoutes { get; set; }
 		public virtual DbSet<BusinessQouteUser> BusinessQouteUsers { get; set; }
 		public virtual DbSet<UserFavorits> UserFavorits { get; set;  }
-		public virtual DbSet<UserActivity> UserActivities { get; set;  }
-
-
+		public virtual DbSet<UserActivity> UserActivities { get; set; }
+		public virtual DbSet<Friend> Friends { get; set; }
+		public virtual DbSet<Notification> Notifications { get; set; }
 		#endregion
+		
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			base.OnModelCreating(builder);
@@ -90,32 +91,38 @@ namespace DataLayer.Data
 				.HasForeignKey(p => p.BusinessQouteId)
 				.OnDelete(DeleteBehavior.NoAction);
 
-			// relation between user and business owner
+			// relation between user and friends
+			builder.Entity<Friend>().HasOne(p => p.Receiver)
+				.WithMany()
+				.HasForeignKey(p => p.ReceiverUserId)
+				.OnDelete(DeleteBehavior.NoAction);
+
+			builder.Entity<Friend>().HasOne(p => p.Applicator)
+				.WithMany()
+				.HasForeignKey(p => p.ApplicatorUserId)
+				.OnDelete(DeleteBehavior.NoAction);
+
 			//builder.Entity<Business>().HasOne(b => b.Owner).WithMany(u => u.)
 
 
 			// User Id Auto Generator 
 			//builder.Entity<BizAppUser>().Property(p => p.Id).HasDefaultValueSql("NEWID()");
 		}
-
 		public override int SaveChanges()
 		{
 			UpdateSoftDeleteStatuses();
 			return base.SaveChanges();
 		}
-
 		public override int SaveChanges(bool acceptAllChangesOnSuccess)
 		{
 			UpdateSoftDeleteStatuses();
 			return base.SaveChanges(acceptAllChangesOnSuccess);
 		}
-
 		public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
 		{
 			UpdateSoftDeleteStatuses();
 			return base.SaveChangesAsync(cancellationToken);
 		}
-
 		private void UpdateSoftDeleteStatuses()
 		{
 			bool isSoftDelete;

@@ -22,5 +22,7 @@ namespace DomainClass.Review
 		public BizAppUser BizAppUser { get; set; }
 		public virtual ICollection<ReviewMedia> ReviewMedias { get; set; }
 		public virtual ICollection<UsersInReviewLike> UsersInReviewLikes { get; set; }
+		[System.ComponentModel.DataAnnotations.Schema.NotMapped]
+		public string[] caption { get; set; }
 	}
 }

@@ -1,0 +1,64 @@
+﻿@{ Layout = "~/Views/Shared/_AllPagesLayout.cshtml"; }
+@using BizApp.Extensions 
+
+@section head {
+
+	@RenderSection("head", required: false)
+
+	<style>
+		.edit__item__title {
+			padding: 10px;
+		}
+
+		.profile-content__list-profile ul li:first-child {
+			background: none;
+			border-right: 0;
+			border-top: 0;
+		}
+
+		.active_menu {
+			background: #f5f5f5 !important;
+			border-right: 3px solid #d32323 !important;
+			border-top: 1px solid #e6e6e6 !important;
+		}
+	</style>
+}
+
+<main>
+	<section class="edit">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3">
+					<div class="profile-content__list-profile">
+						<div class="profile-content__list-profile__title">
+							<h3>تنظیمات حساب @User.Identity.Name</h3>
+							<svg width="24" height="24" class="icon_svg">
+								<path d="M18.364 9.525L16.95 8.111 12 13.061l-4.95-4.95-1.414 1.414L12 15.889l6.364-6.364z"></path>
+							</svg>
+						</div>
+						<ul>
+							<li class="@Html.IsActive("account", "edit")">
+								<a asp-area="profile" asp-controller="account" asp-action="edit">
+									پروفایل
+								</a>
+							</li>
+							<li class="@Html.IsActive("account", "changepassword")">
+								<a asp-area="profile" asp-controller="account" asp-action="changepassword">
+									کلمه عبور
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-md-9">
+					<div class="edit__item">
+						@RenderBody()
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</main>
+
+
+@RenderSection("Scripts", required: false)

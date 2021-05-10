@@ -1,6 +1,7 @@
 ﻿@using BizApp.Utility
 @using Microsoft.AspNetCore.Identity
 @using BizApp.Extensions
+@using DomainClass.Enums
 
 @*@inject NavigationManager NavigationManager*@
 @inject UserManager<BizAppUser> UserManager
@@ -10,6 +11,7 @@
 
 	// get username from url or get current user
 	var userName = Context.Request.Query["username"];
+	var urlUserName = userName;
 	if (string.IsNullOrEmpty(userName))
 		userName = UserManager.GetUserName(User);
 
@@ -18,6 +20,37 @@
 
 	// get current user information, its make be null
 	var currentUser = User.Identity.Name;
+
+	ViewBag.UserName = userName;
+	ViewBag.FullName = "بدون نام";
+
+	Nullable<StatusEnum> friendShipStatus = null;
+
+	string friendLinkUrl = $"/profile/friend/add?username={urlUserName}",
+		   friendLinkText = "اضافه کردن به دوستان";
+
+	if (user != null)
+	{
+		ViewBag.FullName = user.FullName;
+		if (!string.IsNullOrEmpty(urlUserName))
+		{
+			friendShipStatus = await UserProfileService.GetFriendShipStatus(urlUserName);
+
+			switch (friendShipStatus)
+			{
+				case StatusEnum.Accepted:
+					friendLinkUrl = $"/profile/friend/remove?username={urlUserName}";
+					friendLinkText = "حذف از لیست دوستان";
+
+					break;
+				case StatusEnum.Waiting:
+					friendLinkUrl = "";
+					friendLinkText = "درخواست شما ارسال شده است";
+
+					break;
+			}
+		}
+	}
 }
 
 @section head {
@@ -79,10 +112,11 @@
 
 										@if (user.Photos.Count == 0)
 										{
+
 											<a asp-area="profile"
 											   asp-controller="userphoto"
 											   asp-action="upload">
-												<img class="profile-photo-img" src='~/Designs/MainWebSite/assets/img/profile-img.jpg' />
+												<img class="profile-photo-img" src="~/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" />
 											</a>
 										}
 										else
@@ -138,9 +172,9 @@
 								@if (userName != currentUser)
 								{
 									<li>
-										<a href="#">
+										<a href="@friendLinkUrl" class="@(string.IsNullOrEmpty(friendLinkUrl) ? "btn disabled" : "")" style="font-size: 12px; padding: 0;">
 											<svg id="18x18_add_friend" height="18" viewBox="0 0 18 18" width="18"><g><path d="M5.827 9.647l-2.013 4.127c-.448.922-1.18.915-1.628-.007L.173 9.65C-.275 8.73.178 8 1.18 8h3.64c1.002 0 1.455.725 1.007 1.647zM3 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"></path><path d="M12.827 9.647l-2.013 4.127c-.448.922-1.18.915-1.628-.007L7.173 9.65C6.725 8.73 7.178 8 8.18 8h3.64c1.002 0 1.455.725 1.007 1.647zM10 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" opacity=".502"></path><path d="M18 14h-2v-2h-2v2h-2v2h2v2h2v-2h2v-2z"></path></g></svg>
-											اضافه کردن به دوستان
+											@friendLinkText
 										</a>
 									</li>
 									@*< li>
@@ -177,7 +211,7 @@
 										</a>
 									</li>
 									<li>
-										<a href="#">
+										<a href="/profile/account/edit">
 											<svg id="18x18_compliment" height="18" viewBox="0 0 18 18" width="18"><path d="M14.5 6.75a5.5 5.5 0 0 0-11 0 5.495 5.495 0 0 0 2.993 4.892L5.5 16.75l3.505-2 3.495 2-.993-5.108A5.495 5.495 0 0 0 14.5 6.75zm-5.5 4c-2.206 0-4-1.794-4-4s1.794-4 4-4 4 1.794 4 4-1.794 4-4 4z"></path></svg>
 											ویرایش اطلاعات
 										</a>
@@ -207,12 +241,12 @@
 										نمای کلی
 									</a>
 								</li>
-								@*<li>
-										<a href="#">
-											<svg id="24x24_friends" height="24" viewBox="0 0 24 24" width="24"><g><path d="M10.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946C1.618 12.48 2.586 11 4.018 11h4.964c1.432 0 2.4 1.48 1.842 2.817zM6.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path><path d="M21.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946c-.558-1.337.41-2.817 1.842-2.817h4.964c1.432 0 2.4 1.48 1.842 2.817zM17.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" opacity=".502"></path></g></svg>
-											دوستان
-										</a>
-									</li>*@
+								<li class="@Html.IsActive("friend", "index")">
+									<a href="/profile/friend?username=@userName">
+										<svg id="24x24_friends" height="24" viewBox="0 0 24 24" width="24"><g><path d="M10.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946C1.618 12.48 2.586 11 4.018 11h4.964c1.432 0 2.4 1.48 1.842 2.817zM6.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path><path d="M21.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946c-.558-1.337.41-2.817 1.842-2.817h4.964c1.432 0 2.4 1.48 1.842 2.817zM17.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" opacity=".502"></path></g></svg>
+										دوستان
+									</a>
+								</li>
 								<li class="@Html.IsActive("reviews", "index")">
 									<a href="/profile/reviews?username=@userName">
 										<svg id="24x24_review" height="24" viewBox="0 0 24 24" width="24"><path d="M21 6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V6zm-5.88 10.428l-3.16-1.938-3.05 2.01.59-3.457L7 10.596l3.457-.505L11.96 6.5l1.582 3.59 3.458.506-2.5 2.447.62 3.385z"></path></svg>
@@ -226,17 +260,17 @@
 									</a>
 								</li>
 								@*<li>
-										<a href="#">
-											<svg id="24x24_compliment" height="24" viewBox="0 0 24 24" width="24"><path d="M19 9A7 7 0 0 0 5 9a6.995 6.995 0 0 0 3.957 6.297L8 21.992 12.005 19 16 21.992l-.957-6.695A6.995 6.995 0 0 0 19 9zm-7 5c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z"></path></svg>
-											تعارف
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<svg id="24x24_light_bulb" height="24" viewBox="0 0 24 24" width="24"><path d="M15 15.32V18H9v-2.68C6.64 14.19 5 11.79 5 9c0-3.87 3.13-7 7-7s7 3.13 7 7c0 2.79-1.64 5.19-4 6.32zM10.5 6C9.67 6 9 6.67 9 7.5S9.67 9 10.5 9 12 8.33 12 7.5 11.33 6 10.5 6zM13 22h-2a2 2 0 0 1-2-2h6a2 2 0 0 1-2 2z"></path></svg>
-											نکات
-										</a>
-									</li>*@
+						<a href="#">
+							<svg id="24x24_compliment" height="24" viewBox="0 0 24 24" width="24"><path d="M19 9A7 7 0 0 0 5 9a6.995 6.995 0 0 0 3.957 6.297L8 21.992 12.005 19 16 21.992l-.957-6.695A6.995 6.995 0 0 0 19 9zm-7 5c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z"></path></svg>
+							تعارف
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<svg id="24x24_light_bulb" height="24" viewBox="0 0 24 24" width="24"><path d="M15 15.32V18H9v-2.68C6.64 14.19 5 11.79 5 9c0-3.87 3.13-7 7-7s7 3.13 7 7c0 2.79-1.64 5.19-4 6.32zM10.5 6C9.67 6 9 6.67 9 7.5S9.67 9 10.5 9 12 8.33 12 7.5 11.33 6 10.5 6zM13 22h-2a2 2 0 0 1-2-2h6a2 2 0 0 1-2 2z"></path></svg>
+							نکات
+						</a>
+					</li>*@
 								<li>
 									<a href="#">
 										<svg id="24x24_bookmark" height="24" viewBox="0 0 24 24" width="24"><path d="M16 2H8a3 3 0 0 0-3 3v17l7-5 7 5V5a3 3 0 0 0-3-3zm-1.817 10.45l-2.21-1.357L9.837 12.5l.413-2.42L8.5 8.367l2.42-.353L11.973 5.5l1.107 2.514 2.42.353-1.75 1.713.433 2.37z"></path></svg>
@@ -244,17 +278,17 @@
 									</a>
 								</li>
 								@*<li>
-										<a href="#">
-											<svg id="24x24_save" height="24" viewBox="0 0 24 24" width="24"><path d="M16 2H8a3 3 0 0 0-3 3v17l7-5 7 5V5a3 3 0 0 0-3-3z"></path></svg>
-											مجموعه ها
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<svg id="24x24_following" height="24" viewBox="0 0 24 24" width="24"><path d="M21 17l-6 4v-3h-2.255l.835-2H15v-3l6 4zM9.842 19.763c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946C3.118 12.48 4.086 11 5.518 11h4.964c1.432 0 2.4 1.48 1.842 2.817l-2.482 5.946zM8 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path></svg>
-											دنبال کردن
-										</a>
-									</li>*@
+						<a href="#">
+							<svg id="24x24_save" height="24" viewBox="0 0 24 24" width="24"><path d="M16 2H8a3 3 0 0 0-3 3v17l7-5 7 5V5a3 3 0 0 0-3-3z"></path></svg>
+							مجموعه ها
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<svg id="24x24_following" height="24" viewBox="0 0 24 24" width="24"><path d="M21 17l-6 4v-3h-2.255l.835-2H15v-3l6 4zM9.842 19.763c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946C3.118 12.48 4.086 11 5.518 11h4.964c1.432 0 2.4 1.48 1.842 2.817l-2.482 5.946zM8 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path></svg>
+							دنبال کردن
+						</a>
+					</li>*@
 							</ul>
 							<div class="profile-content__list-profile__report">
 								<a href="#">
@@ -265,9 +299,10 @@
 						</div>
 					</div>
 
+					<partial name="~/Areas/Profile/Views/Shared/_ShowMessagePartial.cshtml" />
 					@RenderBody()
 
-					<div class="col-md-3">
+					<div class="col-md-3" id="profile-content-about">
 						<div class="profile-content__about">
 							<div class="profile-content__about__title">
 								<h3>درباره @user.GetFullName()</h3>
@@ -428,9 +463,9 @@
 										</li>
 
 										@*<li>
-												<h4></h4>
-												<p>You haven't told us yet ... do tell!</p>
-											</li>*@
+								<h4></h4>
+								<p>You haven't told us yet ... do tell!</p>
+							</li>*@
 
 									</ul>
 
@@ -442,17 +477,17 @@
 							<div class="profile-content__mobile-about__list1">
 								<ul>
 									@*<li>
-											<a href="#">
-												<svg id="24x24_friends" height="24" viewBox="0 0 24 24" width="24"><g><path d="M10.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946C1.618 12.48 2.586 11 4.018 11h4.964c1.432 0 2.4 1.48 1.842 2.817zM6.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path><path d="M21.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946c-.558-1.337.41-2.817 1.842-2.817h4.964c1.432 0 2.4 1.48 1.842 2.817zM17.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" opacity=".502"></path></g></svg>
-												دوستان
-												<span>418</span>
-											</a>
-											<div class="profile-content__mobile-about__list1__svg-left">
-												<svg width="24" height="24" class="icon_svg">
-													<path d="M14.25 17.58a1 1 0 01-.71-.3L9 12.7a1 1 0 010-1.4l4.5-4.58A1 1 0 0115 6.7a1 1 0 010 1.42L11.15 12 15 15.88a1 1 0 010 1.42 1 1 0 01-.75.28z"></path>
-												</svg>
-											</div>
-										</li>*@
+							<a href="#">
+								<svg id="24x24_friends" height="24" viewBox="0 0 24 24" width="24"><g><path d="M10.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946C1.618 12.48 2.586 11 4.018 11h4.964c1.432 0 2.4 1.48 1.842 2.817zM6.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path><path d="M21.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946c-.558-1.337.41-2.817 1.842-2.817h4.964c1.432 0 2.4 1.48 1.842 2.817zM17.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" opacity=".502"></path></g></svg>
+								دوستان
+								<span>418</span>
+							</a>
+							<div class="profile-content__mobile-about__list1__svg-left">
+								<svg width="24" height="24" class="icon_svg">
+									<path d="M14.25 17.58a1 1 0 01-.71-.3L9 12.7a1 1 0 010-1.4l4.5-4.58A1 1 0 0115 6.7a1 1 0 010 1.42L11.15 12 15 15.88a1 1 0 010 1.42 1 1 0 01-.75.28z"></path>
+								</svg>
+							</div>
+						</li>*@
 									<li>
 										<a href="#">
 											<svg id="24x24_review" height="24" viewBox="0 0 24 24" width="24"><path d="M21 6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V6zm-5.88 10.428l-3.16-1.938-3.05 2.01.59-3.457L7 10.596l3.457-.505L11.96 6.5l1.582 3.59 3.458.506-2.5 2.447.62 3.385z"></path></svg>

@@ -8,6 +8,8 @@ namespace BizApp.Models.Basic
 	#region Main
 	public class ReviewViewModel
 	{
+		public Guid BussinessId { get; set;}
+		public int CurrentRate { get; set;  }
 		public string BusinessName { get; set; }
 		public ICollection<Review_ReviewListViewModel> review_ReviewListViewModels { get; set;  }
 	}
