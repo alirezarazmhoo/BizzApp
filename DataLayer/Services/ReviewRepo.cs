@@ -610,5 +610,15 @@ namespace DataLayer.Services
 		{
 			return await DbContext.Reviews.Include(s=>s.Business).Include(s=>s.ReviewMedias).Where(s => s.BizAppUserId.Equals(Id) && s.StatusEnum == StatusEnum.Accepted).OrderByDescending(s => s.Date).ToListAsync();  
 		}
+		public async Task<ReviewMedia> GetReviewMediaDetail(Guid Id)
+		{
+			return await DbContext.ReviewMedias.Include(s=>s.Review.BizAppUser).Include(s=>s.Review.BizAppUser).ThenInclude(s=>s.ApplicationUserMedias).Include(s=>s.Review.Business).FirstOrDefaultAsync(s => s.Id.Equals(Id)); 
+		}
+		public async Task<IEnumerable<CustomerBusinessMediaPictures>> GetCustomerBusinessMediaPictures(string Id)
+		{
+			return await DbContext.CustomerBusinessMediaPictures.Include(s=>s.CustomerBusinessMedia).Where(s => s.CustomerBusinessMedia.BizAppUserId.Equals(Id) && s.StatusEnum == StatusEnum.Accepted).OrderByDescending(s => s.CustomerBusinessMedia.Date).ToListAsync();
+		}
+
+
 	}
 }

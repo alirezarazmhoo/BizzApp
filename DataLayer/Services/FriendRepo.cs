@@ -74,10 +74,12 @@ namespace DataLayer.Services
 							Id = s.ReceiverUserId,
 							UserName = s.Receiver.UserName,
 							FullName = s.Receiver.FullName,
+							City = s.Receiver.City.Name ,
 							MainPhotoPath =
 								s.Receiver.ApplicationUserMedias.FirstOrDefault(f => f.IsMainImage && f.BizAppUserId == s.ReceiverUserId).UploadedPhoto,
 							ReviewCount = s.Receiver.Reviews.Count,
-							FriendsNumber = DbContext.Friends.Where(w => w.ApplicatorUserId == user.Id && w.Status == StatusEnum.Accepted).Count()
+							FriendsNumber = DbContext.Friends.Where(w => w.ApplicatorUserId == user.Id && w.Status == StatusEnum.Accepted).Count(),
+							Address = s.Receiver.Address
 						})
 						.Paginate(page, 48)
 						.ToListAsync();

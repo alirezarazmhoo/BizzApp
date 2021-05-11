@@ -11,7 +11,8 @@ namespace DataLayer.Infrastructure
 		Task<List<BizAppUser>> GetAll(string roleId, string searchString);
 		Task<BizAppUser> GetById(string userId);
 		Task<BizAppUser> GetByUserName(string userName);
-		Task<string> GetUserName(string userId);
+		Task<string> GetFullName(string userId);
+		Task<string> GetUserName(string userId); 
 		Task<string> GetMainPhoto(string userId);
 		Task<string> UserTokenMaper(string userToken);
 		Task<bool> CheckUserToken(string userToken);

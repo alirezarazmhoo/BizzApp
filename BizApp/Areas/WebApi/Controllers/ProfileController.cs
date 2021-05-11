@@ -30,8 +30,6 @@ namespace BizApp.Areas.WebApi.Controllers
 
 				return NotFound();
 			}
-
-
 			try
 			{
 			var UserItem = await _UnitOfWork.UserRepo.GetById(Id);
@@ -49,5 +47,33 @@ namespace BizApp.Areas.WebApi.Controllers
 			}
 
 		}
+
+		[Route("AboutUser")]
+		public async Task<IActionResult> AboutUser(string Id)
+		{
+			AbutUserProfile abutUserProfile = new AbutUserProfile();
+			try
+			{
+			var UserItem = await _UnitOfWork.UserRepo.GetById(Id);
+			if(UserItem == null)
+			{
+				return NotFound();
+			}
+			else
+			{
+				abutUserProfile.HomeTown = UserItem.HomeTown;
+				abutUserProfile.MyFavoritMovie = UserItem.MyFavoritMovie;
+				abutUserProfile.WhenImNotYelping = UserItem.WhenImNotYelping;
+				abutUserProfile.WhyYouShouldReadMyReviews = UserItem.WhyYouShouldReadMyReviews;
+				return Ok(abutUserProfile);
+			}
+			}
+			catch (Exception)
+			{
+				throw; 
+			}
+		}
+
+
 	}
 }

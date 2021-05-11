@@ -37,6 +37,8 @@ namespace DataLayer.Infrastructure.Reviews
 		Task<int> GetBusinessTotalReview(Guid Id);
 		Task<int> GetBusinessTotalCustomerMedia(Guid Id);
 		Task<bool> CheckUserAlreadyExistsInBusinessLikeGallery(string Id, Guid GalleryId);
-		Task<IEnumerable<Review>> GetUserReview(string Id); 
+		Task<IEnumerable<Review>> GetUserReview(string Id);
+		Task<ReviewMedia> GetReviewMediaDetail(Guid Id);
+		Task<IEnumerable<CustomerBusinessMediaPictures>> GetCustomerBusinessMediaPictures(string Id); 
 	}
 }

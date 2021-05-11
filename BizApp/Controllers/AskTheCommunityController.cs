@@ -40,7 +40,7 @@ namespace BizApp.Controllers
 			{
 				var UserPhoto = item.BusinessFaqAnswers.FirstOrDefault().BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault() == null ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : item.BusinessFaqAnswers.FirstOrDefault().BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault().UploadedPhoto;
 				var Date = item.Date == DateTime.MinValue ? string.Empty : DateChanger.ToPersianDateString(item.Date);
-				askTheCommunity_QuestionListViewModels.Add(new AskTheCommunity_QuestionListViewModel() { Subject = item.Question , Answer = item.BusinessFaqAnswers.FirstOrDefault().Text ,  UserImage = UserPhoto , AnswersCount = item.BusinessFaqAnswers.Count , Date = Date, UserId = item.BizAppUserId , UserName =await _UnitOfWork.UserRepo.GetUserName(item.BizAppUserId)});
+				askTheCommunity_QuestionListViewModels.Add(new AskTheCommunity_QuestionListViewModel() { Subject = item.Question , Answer = item.BusinessFaqAnswers.FirstOrDefault().Text ,  UserImage = UserPhoto , AnswersCount = item.BusinessFaqAnswers.Count , Date = Date, UserId = item.BizAppUserId , UserName =await _UnitOfWork.UserRepo.GetFullName(item.BizAppUserId)});
 			}
 			#endregion
 			#region BusinessItem 

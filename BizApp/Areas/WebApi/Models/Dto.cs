@@ -48,6 +48,7 @@ namespace BizApp.Areas.WebApi.Models
 		public string districname { get; set; }
 		public string description { get; set; }
 		public string image { get; set; }
+		public List<string> BusinessGallery { get; set; }
 		public List<Review> reviews { get; set; }
 	}
 	public class Review
@@ -70,6 +71,7 @@ namespace BizApp.Areas.WebApi.Models
 	}
 	public class ReviewMedias
 	{
+		public Guid Id { get; set; }
 		public string Url { get; set; }
 		public string MediaType { get; set; }
 		public string Caption { get; set; }
@@ -111,6 +113,7 @@ namespace BizApp.Areas.WebApi.Models
 	}
 	public class UserProfile
 	{
+		public string Id { get; set;  }
 		public string UserName { get; set; }
 		public string Address { get; set; }
 		public int TotalReviewPicture { get; set; }
@@ -118,8 +121,7 @@ namespace BizApp.Areas.WebApi.Models
 		public int TotalBusinessMediaPicture { get; set; }
 		public int TotalFriends { get; set; }
 		public string Image { get; set; }
-
-
+		public string City { get; set;  }
 	}
 	public class Activity
 	{
@@ -168,5 +170,21 @@ namespace BizApp.Areas.WebApi.Models
 		public int TotalImages { get; set;  }
 		public string Text { get; set; }
 		public int Rate { get; set; }
+		public int UseFull { get; set; }
+		public int Cool { get; set; }
+		public int Funny { get; set; }
+		public Dictionary<Guid,string> ReviewMedias { get; set; }
+
+
 	}
+	public class AbutUserProfile
+	{
+		public string HomeTown { get; set;  }
+		public string MyFavoritMovie { get; set; }
+		public string WhyYouShouldReadMyReviews { get; set; }
+		public string WhenImNotYelping { get; set;  }
+
+	}
+
+
 }

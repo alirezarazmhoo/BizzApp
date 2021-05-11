@@ -257,7 +257,7 @@ namespace BizApp.Controllers
 
 				}
 				var UserId = GetUserId();
-			   var UserName = await _unitOfWork.UserRepo.GetUserName(UserId);
+			   var UserName = await _unitOfWork.UserRepo.GetFullName(UserId);
 				if (await _unitOfWork.ReviewRepo.ChangeLikeCount(Id, UserId) == DomainClass.Enums.VotesAction.Add)
 				{
 					type = "add";

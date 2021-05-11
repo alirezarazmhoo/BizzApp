@@ -51,12 +51,24 @@ namespace DataLayer.Services
 			return userPhoto.UploadedPhoto;
 		}
 
-		public async Task<string> GetUserName(string userId)
+		public async Task<string> GetFullName(string userId)
 		{
 			var Item = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(userId));
 			if (Item != null)
 			{
 				return Item.FullName;
+			}
+			else
+			{
+				return "بدون نام";
+			}
+		}
+		public async Task<string> GetUserName(string userId)
+		{
+			var Item = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(userId));
+			if (Item != null)
+			{
+				return Item.UserName;
 			}
 			else
 			{

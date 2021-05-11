@@ -56,6 +56,7 @@ namespace BizApp.Areas.WebApi.Controllers
 					businessPopop.image = string.IsNullOrEmpty(Item.FeatureImage) == true ?  "/Upload/DefaultPicutres/Bussiness/business-strategy-success-target-goals_1421-33.jpg" : Item.FeatureImage;
 					businessPopop.name = Item.Name;
 					businessPopop.rate = Item.Rate;
+					businessPopop.BusinessGallery = Item.Galleries.Select(s => s.FileAddress).ToList();
 					foreach (var item in Item.Reviews)
 					{
 						string UserPicture = string.IsNullOrEmpty(item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault()) == true ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault();
@@ -88,8 +89,8 @@ namespace BizApp.Areas.WebApi.Controllers
 			}
 			return medias; 
 		}
-		[Route("GetBusinessGallery")]
-		public async Task<IActionResult> GetBusinessGallery(Guid id)
+		[Route("GetBusinessCustomersMedia")]
+		public async Task<IActionResult> GetBusinessCustomersMedia(Guid id)
 		{
 			if(await _UnitOfWork.BusinessRepo.GetById(id) == null)
 			{
@@ -113,6 +114,18 @@ namespace BizApp.Areas.WebApi.Controllers
 				return BadRequest(ex);
 			}
 
+		}
+		[Route("GetBusinessGallery")]
+		public async Task<IActionResult> GetBusinessGallery(Guid Id)
+		{
+			if(await _UnitOfWork.BusinessRepo.GetById(Id) == null)
+			{
+				return NotFound();
+			}
+			else
+			{
+				return Ok(await _UnitOfWork.BusinessRepo.GetBusinessGallery(Id));
+			}
 		}
 		[Route("TimeAndFeatures")]
 		public async Task<IActionResult> GetBusinessTimeAndFeatures(Guid id)
@@ -156,7 +169,7 @@ namespace BizApp.Areas.WebApi.Controllers
 		}
 		[HttpPost]
 		[Route("LikeGallery")]
-		public async Task<bool> LikeCustomerBusinessGallery(Guid Id)
+		public async Task<IActionResult> LikeCustomerBusinessGallery(Guid Id)
 		{
 			try
 			{
@@ -164,7 +177,7 @@ namespace BizApp.Areas.WebApi.Controllers
 				string Token = HttpContext.Request?.Headers["Token"];
 				if (await _UnitOfWork.UserRepo.CheckUserToken(Token) == false)
 				{
-					throw new Exception();
+					return NotFound();
 				}
 				if (await _UnitOfWork.ReviewRepo.ChangeLikeCount(Id, await _UnitOfWork.UserRepo.UserTokenMaper(Token)) == DomainClass.Enums.VotesAction.Add)
 				{
@@ -176,7 +189,7 @@ namespace BizApp.Areas.WebApi.Controllers
 
 				}
 				await _UnitOfWork.SaveAsync();
-				return state;
+				return Ok(state);
 			}
 			catch (Exception)
 			{
@@ -185,7 +198,7 @@ namespace BizApp.Areas.WebApi.Controllers
 		}
 		[HttpGet]
 		[Route("CheckLikeGallery")]
-		public async Task<bool> CheckLikeGalleryAlreadyExists(Guid Id)
+		public async Task<IActionResult> CheckLikeGalleryAlreadyExists(Guid Id)
 		{
 			try
 			{
@@ -193,11 +206,7 @@ namespace BizApp.Areas.WebApi.Controllers
 				string Token = HttpContext.Request?.Headers["Token"];
 				if (await _UnitOfWork.UserRepo.CheckUserToken(Token) == false)
 				{
-					throw new Exception();
-				}
-				if (await _UnitOfWork.BusinessRepo.GetById(Id) == null)
-				{
-					throw new Exception();
+					return NotFound();
 				}
 				if (await _UnitOfWork.ReviewRepo.CheckUserAlreadyExistsInBusinessLikeGallery(await _UnitOfWork.UserRepo.UserTokenMaper(Token), Id ))
 				{
@@ -208,7 +217,7 @@ namespace BizApp.Areas.WebApi.Controllers
 					state = false;
 				}
 				await _UnitOfWork.SaveAsync();
-				return state;
+				return Ok(state);
 			}
 			catch (Exception)
 			{

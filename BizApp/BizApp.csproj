@@ -8,12 +8,16 @@
   <ItemGroup>
     <Compile Remove="Areas\Admin\Data\**" />
     <Compile Remove="Areas\Profile\Data\**" />
+    <Compile Remove="Areas\WebApi\Views\**" />
     <Content Remove="Areas\Admin\Data\**" />
     <Content Remove="Areas\Profile\Data\**" />
+    <Content Remove="Areas\WebApi\Views\**" />
     <EmbeddedResource Remove="Areas\Admin\Data\**" />
     <EmbeddedResource Remove="Areas\Profile\Data\**" />
+    <EmbeddedResource Remove="Areas\WebApi\Views\**" />
     <None Remove="Areas\Admin\Data\**" />
     <None Remove="Areas\Profile\Data\**" />
+    <None Remove="Areas\WebApi\Views\**" />
   </ItemGroup>
 
 
@@ -49,7 +53,6 @@
     <Folder Include="Areas\BusinessProfile\Data\" />
     <Folder Include="Areas\BusinessProfile\Models\" />
     <Folder Include="Areas\BusinessProfile\Views\" />
-    <Folder Include="Areas\WebApi\Views\" />
     <Folder Include="wwwroot\Admin\bower_components\" />
     <Folder Include="wwwroot\Upload\Bussiness\Files\" />
     <Folder Include="wwwroot\Upload\Categories\Files\" />
