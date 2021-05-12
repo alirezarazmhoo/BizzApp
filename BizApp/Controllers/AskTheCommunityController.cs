@@ -40,7 +40,7 @@ namespace BizApp.Controllers
 			{
 				var UserPhoto = item.BusinessFaqAnswers.FirstOrDefault().BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault() == null ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : item.BusinessFaqAnswers.FirstOrDefault().BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault().UploadedPhoto;
 				var Date = item.Date == DateTime.MinValue ? string.Empty : DateChanger.ToPersianDateString(item.Date);
-				askTheCommunity_QuestionListViewModels.Add(new AskTheCommunity_QuestionListViewModel() { Subject = item.Question , Answer = item.BusinessFaqAnswers.FirstOrDefault().Text ,  UserImage = UserPhoto , AnswersCount = item.BusinessFaqAnswers.Count , Date = Date, UserId = item.BizAppUserId , UserName =await _UnitOfWork.UserRepo.GetFullName(item.BizAppUserId)});
+				askTheCommunity_QuestionListViewModels.Add(new AskTheCommunity_QuestionListViewModel() { Subject = item.Question , Answer = item.BusinessFaqAnswers.FirstOrDefault().Text ,  UserImage = UserPhoto , AnswersCount = item.BusinessFaqAnswers.Count , Date = Date, UserId = item.BizAppUserId , UserName =await _UnitOfWork.UserRepo.GetFullName(item.BizAppUserId) , Id = item.Id});
 			}
 			#endregion
 			#region BusinessItem 
@@ -57,14 +57,13 @@ namespace BizApp.Controllers
 			return View(askTheCommunityViewModel);
 		}
 		[HttpPost]
-		[Authorize]
 		public async Task<IActionResult> Add(BusinessFaq model)
 		{
 			try
 			{
 				await _UnitOfWork.AskTheCommunityRepo.AddBusinessFaq(model);
 				await _UnitOfWork.SaveAsync();
-				return Json(new { success = true });
+				return RedirectToAction(nameof(GetFaqsAnswers));
 			}
 			catch (Exception)
 			{
@@ -73,22 +72,35 @@ namespace BizApp.Controllers
 		}
 		public async Task<IActionResult> GetFaqsAnswers(Guid Id , Guid BusinessFaqId)
 		{
-			var BusinessId = new Guid("4e9b06be-2a73-4c40-fea1-08d8e04ff1b3");
-			var BusinessFaqIId = new Guid("e9301ca0-8705-41b9-5fb2-08d8f8cc9de8");
+			var BusinessId = Id;
+			var BusinessFaqIId = BusinessFaqId;
 			#region Objects
 			AnswerAskTheCommunityViewModel answerAskTheCommunityViewModel = new AnswerAskTheCommunityViewModel();
 			AnswerAskTheCommunity_NavbarViewModel answerAskTheCommunity_NavbarViewModel = new AnswerAskTheCommunity_NavbarViewModel();
 			AnswerAskTheCommunity_AnswersCountViewModel answerAskTheCommunity_AnswersCountViewModel = new AnswerAskTheCommunity_AnswersCountViewModel();
 			List<AnswerAskTheCommunity_AnswersViewModel> answerAskTheCommunity_AnswersViewModels = new List<AnswerAskTheCommunity_AnswersViewModel>();
+			List<AskTheCommunity_QuestionListViewModel> askTheCommunity_QuestionListViewModels = new List<AskTheCommunity_QuestionListViewModel>();  
+
 			#endregion
 			#region Resource
 			var BusinessNameItem = await _UnitOfWork.BusinessRepo.GetBusinessName(BusinessId);
+			var BusinessItem = await _UnitOfWork.BusinessRepo.GetById(BusinessId);
 			var BusinessFaqItem = await _UnitOfWork.AskTheCommunityRepo.GetBusinessFaqById(BusinessFaqIId);
 			var Answers = await _UnitOfWork.AskTheCommunityRepo.GetBusinessFaqAnswers(BusinessFaqIId);
+			var OtherQuestions = await _UnitOfWork.AskTheCommunityRepo.GetBusinessFaq(BusinessId);
+
 			#endregion
 			#region Navbar
-			answerAskTheCommunity_NavbarViewModel.BusinessName = BusinessNameItem;
+			answerAskTheCommunity_NavbarViewModel.BusinessId = BusinessItem.Id;  
+			answerAskTheCommunity_NavbarViewModel.BusinessName = BusinessItem.Name;
+			answerAskTheCommunity_NavbarViewModel.BusinessDistricName = BusinessItem.District.Name;
+			answerAskTheCommunity_NavbarViewModel.BusinessCity = BusinessItem.District.City.Name;
+			answerAskTheCommunity_NavbarViewModel.BusinessRate = BusinessItem.Rate == 0 ? 1 : BusinessItem.Rate;
+			answerAskTheCommunity_NavbarViewModel.BusinessTotalReview = await _UnitOfWork.ReviewRepo.GetBusinessTotalReview(BusinessId);
+			answerAskTheCommunity_NavbarViewModel.BusinessImage = string.IsNullOrEmpty(BusinessItem.FeatureImage) == false ? "/Upload/DefaultPicutres/Bussiness/business-strategy-success-target-goals_1421-33.jpg" : BusinessItem.FeatureImage; 
 			answerAskTheCommunity_NavbarViewModel.Date = BusinessFaqItem.Date.ToPersianDateString();
+			answerAskTheCommunity_NavbarViewModel.QuestionSubject = BusinessFaqItem.Question;
+			answerAskTheCommunity_NavbarViewModel.UserName =await _UnitOfWork.UserRepo.GetUserName(BusinessFaqItem.BizAppUserId);
 			#endregion
 			#region AnswerCount
 			var AnswerCount = await _UnitOfWork.AskTheCommunityRepo.AnswerCount(BusinessFaqIId);
@@ -98,13 +110,22 @@ namespace BizApp.Controllers
 			foreach (var item in Answers)
 			{
 				var UserPhoto = item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault() == null ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault().UploadedPhoto;
-				answerAskTheCommunity_AnswersViewModels.Add(new AnswerAskTheCommunity_AnswersViewModel() { HelpFullCount = item.HelpFullCount, NotHelpFullCount = item.NotHelpFullCount, Text = item.Text, UserName = item.BizAppUser.FullName, UserPicture = UserPhoto });
+				answerAskTheCommunity_AnswersViewModels.Add(new AnswerAskTheCommunity_AnswersViewModel() { HelpFullCount = item.HelpFullCount, NotHelpFullCount = item.NotHelpFullCount, Text = item.Text, UserName = item.BizAppUser.FullName, UserPicture = UserPhoto ,  Date = item.Date.ToPersianDateString()  });
+			}
+			#endregion
+			#region OtherQuestions
+			foreach (var item in OtherQuestions.Where(s=>s.Id != BusinessFaqId))
+			{
+
+				var Date = item.Date == DateTime.MinValue ? string.Empty : DateChanger.ToPersianDateString(item.Date);
+				askTheCommunity_QuestionListViewModels.Add(new AskTheCommunity_QuestionListViewModel() { Subject = item.Question, UserImage = string.Empty, AnswersCount = item.BusinessFaqAnswers.Count, Date = Date, Id = item.Id });
 			}
 			#endregion
 			#region FinalResualts
 			answerAskTheCommunityViewModel.answerAskTheCommunity_AnswersCountViewModel = answerAskTheCommunity_AnswersCountViewModel;
 			answerAskTheCommunityViewModel.answerAskTheCommunity_NavbarViewModel = answerAskTheCommunity_NavbarViewModel;
 			answerAskTheCommunityViewModel.answerAskTheCommunity_AnswersViewModels = answerAskTheCommunity_AnswersViewModels;
+			answerAskTheCommunityViewModel.askTheCommunity_QuestionListViewModels = askTheCommunity_QuestionListViewModels; 
 			#endregion
 			return View(answerAskTheCommunityViewModel);
 		}

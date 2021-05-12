@@ -170,5 +170,15 @@ namespace DataLayer.Services
 				scope.Complete();
 			}
 		}
+
+		public async Task<bool> CheckRelation(Guid Id)
+		{
+			return await DbContext.Friends.AnyAsync(s => s.Id.Equals(Id) && s.Status == StatusEnum.Accepted);
+		}
+		public async Task<Friend> GetById(Guid Id)
+		{
+			return await DbContext.Friends.Include(s=>s.Receiver).Include(s=>s.Receiver).ThenInclude(s=>s.ApplicationUserMedias).FirstOrDefaultAsync(s => s.Id.Equals(Id));
+		}
+
 	}
 }

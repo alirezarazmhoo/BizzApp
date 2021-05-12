@@ -175,6 +175,15 @@ $(window).on('load', () => {
         },
 
     });
+    
+
+    var collection_content_slider = new Swiper('.collection-content .swiper-container', {
+        slidesPerView:3.5,
+        spaceBetween:7,
+    
+    
+    });
+
 
     $('.profile-content-all-photos__modal').on('shown.bs.modal', function (e) {
 
@@ -233,8 +242,6 @@ $(window).on('load', () => {
     });
 
    
-
-
     $('.main-header__search__left input').on('focus',function() {
         $(this).parent().addClass('main-header__search__left--open')
     })
@@ -255,6 +262,23 @@ $(window).on('load', () => {
 
 
 
+    $('.first-review__item__search__near input').keydown('focus',function() {
+        $(this).parent().addClass('first-review__item__search__near--open')
+    })
+    $('.first-review__item__search__near__menu-bottom li').on('click',function(){
+        var val = $(this).data('value');
+        $('.first-review__item__search__near input').val(val);
+        $('.first-review__item__search__near').removeClass('first-review__item__search__near--open')
+    })
+    $(document).on('click', function (event) {
+        if (!$(event.target).closest('.first-review__item__search').length) {
+            $('.first-review__item__search__near').removeClass('first-review__item__search__near--open')
+        }
+    });
+
+
+
+
 
 
 
@@ -263,7 +287,9 @@ $(window).on('load', () => {
         $('.header-mobile3__menu').toggle()
     })
 
-
+    $('.user').on('click',function() {
+        $('.main-header__nav__left__tolbar').toggleClass('main-header__nav__left__tolbar--open');
+    })
 
     $('.write-areviews__item__text__close').on('click',function(){
         $(this).closest('[class^="col"]').remove()
@@ -309,6 +335,27 @@ $(window).on('load', () => {
     if($('#mapid').length > 0)
     {
         var mymap = L.map('mapid').setView([32.6538472, 51.6724925], 18);
+        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox/streets-v11',
+            tileSize: 512,
+            zoomOffset: -1,
+            accessToken: 'your.mapbox.access.token'
+        }).addTo(mymap);
+
+        var map_icon = L.icon({
+            iconUrl: './assets/img/location.png',
+            iconSize: [30, 42],
+            iconAnchor: [30, 42],
+            popupAnchor: [0, -40]
+        });
+        var marker = L.marker([32.6538472, 51.6724925], { icon: map_icon, }).addTo(mymap);
+    }
+
+    if($('#map-collection').length > 0)
+    {
+        var mymap = L.map('map-collection').setView([32.6538472, 51.6724925], 18);
         L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             maxZoom: 18,

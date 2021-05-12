@@ -1,0 +1,117 @@
+﻿@model BizApp.Models.Basic.AnswerAskTheCommunityViewModel
+@{
+	ViewData["Title"] = "GetFaqsAnswers";
+	Layout = "~/Views/Shared/_AllPagesLayout.cshtml";
+}
+
+<section class="page-header">
+	<div class="container">
+		<div class="page-header__wrapper">
+			<ul>
+				<li><a href="#">@Model.answerAskTheCommunity_NavbarViewModel.BusinessName</a></li>
+				<li><svg id="24x24_chevron_right" height="24" viewBox="0 0 24 24" width="24"><path d="M9.525 5.636L8.11 7.05 13.06 12l-4.95 4.95 1.415 1.414L15.89 12 9.524 5.636z"></path></svg><a href="#">از مردم بپرسید</a></li>
+				<li><svg id="24x24_chevron_right" height="24" viewBox="0 0 24 24" width="24"><path d="M9.525 5.636L8.11 7.05 13.06 12l-4.95 4.95 1.415 1.414L15.89 12 9.524 5.636z"></path></svg>@Model.answerAskTheCommunity_NavbarViewModel.QuestionSubject</li>
+			</ul>
+		</div>
+	</div>
+</section>
+<section class="questions-detail">
+	<div class="container">
+		<div class="row" data-space="0">
+			<div class="col-lg-8">
+				<div class="questions-detail__content">
+					<div class="questions-detail__content__title">
+						<h2>@Model.answerAskTheCommunity_NavbarViewModel.QuestionSubject</h2>
+						@*<a href="#" data-toggle="tooltip" data-placement="top" title="گزارش سوال"><svg id="18x18_flag" height="18" viewBox="0 0 18 18" width="18"><path d="M6 10V3c4.976 1.098 4.024-1 8 0v7c-4.024-.976-3.024 1.024-8 0zM4 2h1v14H4V2z"></path></svg></a>*@
+					</div>
+					<div class="questions-detail__content__info">
+						<span>پرسیده شده توسط <a href="#">@Model.answerAskTheCommunity_NavbarViewModel.UserName</a> در  @Model.answerAskTheCommunity_NavbarViewModel.Date </span>
+					</div>
+					@*<div class="questions-detail__content__check">
+			<label><input name="" type="checkbox">پاسخهای جدید را به من اطلاع دهید</label>
+		</div>*@
+					<div class="questions-detail__content__answers-header">
+						<h3>@Model.answerAskTheCommunity_AnswersCountViewModel.Count پاسخ</h3>
+						@*<div class="questions-detail__content__answers-header__sort">
+				<span>مرتب سازی</span>
+				<div class="form-group">
+					<select name="" id="" class="form-control selectpicker">
+						<option value="">محبوب</option>
+						<option value="">آخرین پاسخ</option>
+						<option value="">جدید ترین</option>
+					</select>
+				</div>
+			</div>*@
+					</div>
+					@foreach (var item in Model.answerAskTheCommunity_AnswersViewModels)
+					{
+						<div class="questions-detail__content__answers-item">
+							<div class="questions-detail__content__answers-item__header">
+								<div class="questions-detail__content__answers-item__header__avatar">
+									<a href="#"><img src="@item.UserPicture" alt=""></a>
+								</div>
+								<div class="questions-detail__content__answers-item__header__name">
+									<span>@item.UserName</span>
+
+								</div>
+								<div class="questions-detail__content__answers-item__header__date">
+									<span>@item.Date</span>
+								</div>
+							</div>
+							<div class="questions-detail__content__answers-item__desc">
+								<p>@item.Text</p>
+							</div>
+							<div class="questions-detail__content__answers-item__btns">
+								<a href="#"><svg id="18x18_arrow_up" height="18" viewBox="0 0 18 18" width="18"><path d="M15 10L9 3l-6 7h4v5h4v-5h4z"></path></svg>کمک کرد<span>2</span></a>
+								<a href="#"><svg id="18x18_arrow_down" height="18" viewBox="0 0 18 18" width="18"><path d="M3 8l6 7 6-7h-4V3H7v5H3z"></path></svg>کمک نکرد</a>
+								@*<a href="#" class="left-view" data-toggle="tooltip" data-placement="top" title="گزارش پاسخ"><svg id="18x18_flag" height="18" viewBox="0 0 18 18" width="18"><path d="M6 10V3c4.976 1.098 4.024-1 8 0v7c-4.024-.976-3.024 1.024-8 0zM4 2h1v14H4V2z"></path></svg></a>*@
+							</div>
+						</div>
+					}
+
+					<div class="questions-detail__content__form">
+						<h3>پاسخی بنویسید:</h3>
+						<textarea class="form-control"></textarea>
+						<button class="btn">ارسال پاسخ</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4">
+				<div class="questions-detail__sidebar">
+					<div class="questions-detail__sidebar__location">
+						<div class="questions-detail__sidebar__location__image">
+							<a href="/BusinessHome/Index?Id=@Model.answerAskTheCommunity_NavbarViewModel.BusinessId">
+								<img src="@Model.answerAskTheCommunity_NavbarViewModel.BusinessImage" alt="">
+							</a>
+						</div>
+						<div class="questions-detail__sidebar__location__content">
+							<div class="questions-detail__sidebar__location__content__title">
+								<a href="/BusinessHome/Index?Id=@Model.answerAskTheCommunity_NavbarViewModel.BusinessId">@Model.answerAskTheCommunity_NavbarViewModel.BusinessName</a>
+							</div>
+							<div class="questions-detail__sidebar__location__content__star">
+								<div class="questions-detail__sidebar__location__content__star__icon-star" data-star="@Model.answerAskTheCommunity_NavbarViewModel.BusinessRate"></div>
+								<span> تعداد بازخورد @Model.answerAskTheCommunity_NavbarViewModel.BusinessTotalReview</span>
+							</div>
+							<div class="questions-detail__sidebar__location__content__info">
+								<span>$$ @Model.answerAskTheCommunity_NavbarViewModel.BusinessCity  ,  @Model.answerAskTheCommunity_NavbarViewModel.BusinessDistricName</span>
+							</div>
+						</div>
+					</div>
+					<div class="questions-detail__sidebar__other-questions">
+						<div class="questions-detail__sidebar__other-questions__title">
+							<h3>دیگر سوالات</h3>
+						</div>
+
+						@foreach (var item in Model.askTheCommunity_QuestionListViewModels)
+						{
+							<div class="questions-detail__sidebar__other-questions__item">
+								<span>@item.Subject</span>
+								<a href="/AskTheCommunity/GetFaqsAnswers?Id=@Model.answerAskTheCommunity_NavbarViewModel.BusinessId&BusinessFaqId=@item.Id">مشاهده @item.AnswersCount پاسخ</a>
+							</div>
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

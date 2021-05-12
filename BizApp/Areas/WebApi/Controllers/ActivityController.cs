@@ -24,10 +24,7 @@ namespace BizApp.Areas.WebApi.Controllers
 		[Route("Get")]
 		public async Task<IActionResult> Get(string Id, int Page)
 		{
-			Activity activity = new Activity();
-			List<UserReviewActivity> userReviewActivities = new List<UserReviewActivity>();
-			List<UserBusinessMediaActivity> userBusinessMediaActivities = new List<UserBusinessMediaActivity>();
-			List<UserChangeProfileActivity> userChangeProfileActivities = new List<UserChangeProfileActivity>();
+			List<Activity> activity = new List<Activity>();
 			if (await _UnitOfWork.UserRepo.GetById(Id) == null)
 			{
 				return NotFound();
@@ -42,7 +39,7 @@ namespace BizApp.Areas.WebApi.Controllers
 					if (item.TableName ==  DomainClass.TableName.Reviews)
 					{
 						var ReviewItem = await _UnitOfWork.ReviewRepo.GetById(item.TableKey);
-						userReviewActivities.Add(new UserReviewActivity()
+						activity.Add(new Activity()
 						{
 							Address = ReviewItem.BizAppUser.Address,
 							BusinessImage = string.IsNullOrEmpty(ReviewItem.Business.FeatureImage) == false ?
@@ -67,34 +64,55 @@ namespace BizApp.Areas.WebApi.Controllers
 							UseFullCount = ReviewItem.UsefulCount,
 							UserName = ReviewItem.BizAppUser.UserName , 
 							BusinessId = ReviewItem.BusinessId ,
-							Date = item.CreatedAt.ToPersianDateString()
+							Date = item.CreatedAt.ToPersianDateString(),
+							UserId = ReviewItem.BizAppUserId,
+							ReviewMedias = FillMediaType(ReviewItem.ReviewMedias)
 						});
 					}
 					else if(item.TableName ==  DomainClass.TableName.UserBusinessMedia)
 					{
 						Guid CustomerBusinessMediaItemId = new Guid(item.TableKey);
 						var CustomerBusinessMediaItem = await _UnitOfWork.ReviewRepo.GetCustomerBusinessMediaById(CustomerBusinessMediaItemId);
-						userBusinessMediaActivities.Add(new UserBusinessMediaActivity()
+						activity.Add(new Activity()
 						{
 							 BusinessId = CustomerBusinessMediaItem.BusinessId,
 							BusinessImage = string.IsNullOrEmpty(CustomerBusinessMediaItem.Business.FeatureImage) == false ?
 							"/Upload/DefaultPicutres/Bussiness/business-strategy-success-target-goals_1421-33.jpg" : CustomerBusinessMediaItem.Business.FeatureImage , BusinessName  = CustomerBusinessMediaItem.Business.Name ,
 							 BusinessRate = CustomerBusinessMediaItem.Business.Rate ,BusinessTotalReview  = await _UnitOfWork.ReviewRepo.GetBusinessTotalReview(CustomerBusinessMediaItem.BusinessId) , 
-							Pictures = FillPictures(CustomerBusinessMediaItem.CustomerBusinessMediaPictures.ToList()) 
+							Pictures = FillPictures(CustomerBusinessMediaItem.CustomerBusinessMediaPictures.ToList()) ,
+							 Type = 1
 						});
 					}
-					else
+					else if(item.TableName == DomainClass.TableName.UserPhotos)
 					{
-						userChangeProfileActivities.Add(new UserChangeProfileActivity() { Text ="عکس پروفایل خود را تغییر داد", UserName =UserItem.UserName,
+						activity.Add(new Activity() { Text ="عکس پروفایل خود را تغییر داد", UserName =UserItem.UserName,
 							TotalFriends = await _UnitOfWork.UserRepo.GetUserFriendsCount(Id),
 							TotalReview = await _UnitOfWork.ReviewRepo.GetUserTotalReview(Id),
-							TotalReviewPicture = await _UnitOfWork.BusinessHomePageRepo.GetTotalUserMedia(Id) , Date = item.CreatedAt.ToPersianDateString()
+							TotalReviewPicture = await _UnitOfWork.BusinessHomePageRepo.GetTotalUserMedia(Id) , Date = item.CreatedAt.ToPersianDateString() , Type =2
 						});
 					}
+					else if(item.TableName == DomainClass.TableName.SendRequest)
+					{
+						Guid _TableKey = new Guid(item.TableKey);
+						if(await _UnitOfWork.FriendRepo.CheckRelation(_TableKey))
+						{
+							var FriendItem = await _UnitOfWork.FriendRepo.GetById(_TableKey);
+
+							activity.Add(new Activity()
+							{
+								Text = "به دوستان وی اضافه شد",
+								UserName = FriendItem.Receiver.FullName,
+								 Image = string.IsNullOrEmpty(FriendItem.Receiver.ApplicationUserMedias
+							.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault()) == true ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : FriendItem.Receiver.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault() , 
+								TotalFriends = await _UnitOfWork.UserRepo.GetUserFriendsCount(FriendItem.ReceiverUserId),
+								TotalReview = await _UnitOfWork.ReviewRepo.GetUserTotalReview(FriendItem.ReceiverUserId),
+								TotalReviewPicture = await _UnitOfWork.BusinessHomePageRepo.GetTotalUserMedia(FriendItem.ReceiverUserId),
+								Date = item.CreatedAt.ToPersianDateString(),
+								Type = 3
+							});
+						}
+					}
 				}
-				activity.UserReviewActivities = userReviewActivities;
-				activity.UserChangeProfileActivities = userChangeProfileActivities;
-				activity.UserBusinessMediaActivities = userBusinessMediaActivities; 
 				return Ok(activity);
 			}
 			catch (Exception)
@@ -109,6 +127,15 @@ namespace BizApp.Areas.WebApi.Controllers
 			foreach (var item in lists)
 			{
 				keyValuePairs.Add(item.Id, item.Image);
+			}
+			return keyValuePairs;
+		}
+		private List<(Guid Id, string Image, string Description)> FillMediaType(ICollection<DomainClass.Review.ReviewMedia> reviewMedias)
+		{
+			List<(Guid Id, string Image, string Description)> keyValuePairs = new List<(Guid Id, string Image, string Description)>();
+			foreach (var item in reviewMedias)
+			{
+				keyValuePairs.Add((item.Id, item.Image, item.Description));
 			}
 			return keyValuePairs;
 		}

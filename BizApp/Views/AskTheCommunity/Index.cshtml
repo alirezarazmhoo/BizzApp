@@ -42,7 +42,7 @@
 					</div>
 					<div class="questions__item__desc">
 						<p>@item.Answer</p>
-						<a href="#">بیشتر بخوانید</a>
+				
 						<div class="questions__item__desc__info">
 
 							<span>@item.Date</span>
@@ -50,7 +50,7 @@
 					</div>
 				</div>
 				<div class="questions__item__more">
-					<a href="#">نمایش @item.AnswersCount پاسخ بیشتر</a>
+					<a href="/AskTheCommunity/GetFaqsAnswers?BusinessFaqId=@Model.askTheCommunity_BusinessViewModel.Id&&Id=@item.Id">نمایش @item.AnswersCount پاسخ بیشتر</a>
 				</div>
 			</div>
 		}
@@ -59,7 +59,7 @@
 			<h3>سوال خود را پیدا نکردید؟ بپرسید</h3>
 			<form action="/AskTheCommunity/Add" method="post">
 			<textarea name="Question" class="form-control" placeholder="دوست دارید درباره این مکان بیشتر بدانید؟"></textarea>
-				@*<input name="BusinessId" value="@Model." />*@
+			<input name="BusinessId" value="@Model.askTheCommunity_BusinessViewModel.Id" hidden />
 			@*<div class="questions__check">
 				<input type="checkbox" name="" id="questions">
 				<label for="questions">پاسخهای جدید را به من اطلاع دهید</label>

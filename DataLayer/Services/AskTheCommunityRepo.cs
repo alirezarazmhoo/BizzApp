@@ -22,7 +22,7 @@ namespace DataLayer.Services
 			var businessItem = await DbContext.Businesses.FirstOrDefaultAsync(s=>s.Id.Equals(Id));
 			if(businessItem != null)
 			{
-				return await DbContext.BusinessFaqs.Include(s=>s.Business).Include(s=>s.BusinessFaqAnswers).ThenInclude(s=>s.BizAppUser).ThenInclude(s=>s.ApplicationUserMedias).Where(s=>s.BusinessId.Equals(Id) && s.BusinessFaqAnswers.Count()>0).ToListAsync();
+				return await DbContext.BusinessFaqs.Include(s=>s.Business).Include(s=>s.BusinessFaqAnswers).ThenInclude(s=>s.BizAppUser).ThenInclude(s=>s.ApplicationUserMedias).Where(s=>s.BusinessId.Equals(Id) && s.BusinessFaqAnswers.Count()>0 && s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted).ToListAsync();
 			}
 			else
 			{
@@ -34,7 +34,7 @@ namespace DataLayer.Services
 			var BusinessFaqItem = await DbContext.BusinessFaqs.FirstOrDefaultAsync(s => s.Id.Equals(Id));
 			if(BusinessFaqItem != null)
 			{
-				return await DbContext.BusinessFaqAnswers.Include(s=>s.BusinessFaq).ThenInclude(s=>s.Business).Where(s => s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted && s.BusinessFaqId.Equals(Id)).ToListAsync();
+				return await DbContext.BusinessFaqAnswers.Include(s => s.BusinessFaq).ThenInclude(s => s.Business).Include(s => s.BizAppUser).Include(s => s.BizAppUser).ThenInclude(s => s.ApplicationUserMedias).Where(s => s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted && s.BusinessFaqId.Equals(Id)).ToListAsync();
 			}
 			else
 			{
@@ -52,7 +52,7 @@ namespace DataLayer.Services
 		}
 		public async Task<BusinessFaq> GetBusinessFaqById(Guid Id)
 		{
-			var BusinessFaqItem = await DbContext.BusinessFaqs.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+			var BusinessFaqItem = await DbContext.BusinessFaqs.Include(s=>s.BizAppUser).FirstOrDefaultAsync(s => s.Id.Equals(Id));
 			if(BusinessFaqItem != null)
 			{
 				return BusinessFaqItem; 

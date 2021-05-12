@@ -222,13 +222,12 @@ namespace BizApp.Areas.WebApi.Controllers
 				throw; 
 			}
 		}
-		private Dictionary<Guid , string> FillMediaType(ICollection<DomainClass.Review.ReviewMedia> reviewMedias)
+		private List<(Guid Id, string Image, string Description)> FillMediaType(ICollection<DomainClass.Review.ReviewMedia> reviewMedias)
 		{
-			Dictionary<Guid, string> keyValuePairs = new Dictionary<Guid, string>();
-			List<ReviewMedias> medias = new List<ReviewMedias>();
+			List<(Guid Id, string Image , string Description)> keyValuePairs = new List<(Guid Id, string Image, string Description)>();
 			foreach (var item in reviewMedias)
 			{
-				keyValuePairs.Add(item.Id, item.Image);
+				keyValuePairs.Add( (item.Id , item.Image , item.Description));
 			}
 			return keyValuePairs;
 		}

@@ -582,7 +582,7 @@ namespace DataLayer.Services
 				Include(s => s.Business).
 				Include(s => s.BizAppUser).
 				Include(s=>s.Business).
-				ThenInclude(s=>s.District)
+				ThenInclude(s=>s.District).Include(s=>s.ReviewMedias)
 				.Where(s => s.Id.Equals(ReviewId) && s.StatusEnum == StatusEnum.Accepted).
 				FirstOrDefaultAsync();
 		}

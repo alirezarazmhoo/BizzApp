@@ -123,45 +123,26 @@ namespace BizApp.Areas.WebApi.Models
 		public string Image { get; set; }
 		public string City { get; set;  }
 	}
-	public class Activity
-	{
-		public ICollection<UserReviewActivity> UserReviewActivities { get; set; }
-		public ICollection<UserBusinessMediaActivity>  UserBusinessMediaActivities { get; set; }
-		public ICollection<UserChangeProfileActivity>  UserChangeProfileActivities { get; set; }
-
-
-	}
-	public class UserReviewActivity : UserProfile 
+	public class Activity : UserProfile
 	{
 		public int Type { get; set; }
-		public string BusinessImage { get; set; }
-		public int BusinessRate { get; set;  }
-		public string BusinessName { get; set; }
-		public int BusinessTotalReview { get; set;  }
-		public Guid BusinessId { get; set; }
-		public int ReviewRate { get; set; }
-		public string Text { get; set;  }
-		public int CoolCount { get; set;  }
-		public int UseFullCount { get; set;  }
-		public int FunnyCount { get; set; }
-		public string Date { get; set; }
-
-	}
-	public class UserBusinessMediaActivity
-	{
 		public string BusinessImage { get; set; }
 		public int BusinessRate { get; set; }
 		public string BusinessName { get; set; }
 		public int BusinessTotalReview { get; set; }
 		public Guid BusinessId { get; set; }
-		public Dictionary<Guid , string> Pictures { get; set; }
-		public string Date { get; set; }
-	}
-	public class UserChangeProfileActivity : UserProfile
-	{
+		public int ReviewRate { get; set; }
 		public string Text { get; set; }
+		public int CoolCount { get; set; }
+		public int UseFullCount { get; set; }
+		public int FunnyCount { get; set; }
 		public string Date { get; set; }
+		public Dictionary<Guid, string> Pictures { get; set; }
+		public List<(Guid Id, string Image, string Description)> ReviewMedias { get; set; }
+
+		public string UserId { get; set;  }
 	}
+
 	public class ReviewProfile
 	{
 		public Guid Id { get; set; }
@@ -173,7 +154,7 @@ namespace BizApp.Areas.WebApi.Models
 		public int UseFull { get; set; }
 		public int Cool { get; set; }
 		public int Funny { get; set; }
-		public Dictionary<Guid,string> ReviewMedias { get; set; }
+		public List<(Guid Id, string Image, string Description)> ReviewMedias { get; set; }
 
 
 	}

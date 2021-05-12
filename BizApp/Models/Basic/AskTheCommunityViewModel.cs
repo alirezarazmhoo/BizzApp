@@ -22,6 +22,7 @@ namespace BizApp.Models.Basic
 	#region QuestionList
 	public class AskTheCommunity_QuestionListViewModel
 	{
+		public Guid Id { get; set;  }
 		public string Subject { get; set; }
 		public string UserId { get; set; }
 		public string UserName { get; set; }

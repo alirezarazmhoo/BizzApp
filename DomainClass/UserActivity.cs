@@ -27,9 +27,11 @@ namespace DomainClass
 
 	public enum TableName
 	{
-		Reviews = 0,
-		UserPhotos = 1,
-		UserBusinessMedia = 2,
-		Friend = 3
+		Reviews = 0 ,
+		UserPhotos =1, 
+		UserBusinessMedia = 2 , 
+		SendRequest = 3  , 
+		AddToFavorit = 4,
+		Friend = 5
 	}
 }
