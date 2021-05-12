@@ -24,12 +24,6 @@
 		Female = 0
 	}
 
-	public enum NotificationStatus
-	{
-		Unread = 0,
-		Read = 1
-	}
-
 	public enum NotificationModel
 	{
 		Friend = 0

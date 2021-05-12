@@ -102,8 +102,11 @@ namespace DataLayer.Data
 				.HasForeignKey(p => p.ApplicatorUserId)
 				.OnDelete(DeleteBehavior.NoAction);
 
-			//builder.Entity<Business>().HasOne(b => b.Owner).WithMany(u => u.)
-
+			// relation with creator notification and user
+			builder.Entity<Notification>().HasOne(p => p.Creator)
+				.WithMany()
+				.HasForeignKey(p => p.CreatorUserId)
+				.OnDelete(DeleteBehavior.NoAction);
 
 			// User Id Auto Generator 
 			//builder.Entity<BizAppUser>().Property(p => p.Id).HasDefaultValueSql("NEWID()");

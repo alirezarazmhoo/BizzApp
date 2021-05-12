@@ -10,6 +10,7 @@ namespace DomainClass.Queries
 		public string UserName { get; set; }
 		public DateTime RegisterDate { get; set; }
 		public int ReviewCount { get; set; }
+		public int FriendNumber { get; set; }
 		public int UploadedPhotoCount { get; set; }
 		public string ProvinceName { get; set; }
 		public string CityName { get; set; }

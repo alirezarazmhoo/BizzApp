@@ -17,8 +17,13 @@ namespace DataLayer.Services
 {
 	public class FriendRepo : RepositoryBase<Friend>, IFriendRepo
 	{
-		public FriendRepo(ApplicationDbContext dbContext) : base(dbContext)
+		private readonly IUserActivityRepo _userActivity;
+		private readonly INotificationRepo _notification;
+
+		public FriendRepo(ApplicationDbContext dbContext, IUserActivityRepo userActivity, INotificationRepo notificationRepo) : base(dbContext)
 		{
+			_userActivity = userActivity;
+			_notification = notificationRepo;
 		}
 
 		public async Task CreateRelation(CreateFriendRelationCommand model)
@@ -46,13 +51,7 @@ namespace DataLayer.Services
 				DbContext.Friends.Add(friend);
 
 				// add notfification
-				var notification = new Notification
-				{
-					UserId = model.ReceiverUserId,
-					Description = model.Description,
-					Status = NotificationStatus.Unread
-				};
-				DbContext.Notifications.Add(notification);
+				await _notification.Add(model.ReceiverUserId, NotificationModel.Friend);
 
 				// save changes
 				await DbContext.SaveChangesAsync();
@@ -74,7 +73,7 @@ namespace DataLayer.Services
 							Id = s.ReceiverUserId,
 							UserName = s.Receiver.UserName,
 							FullName = s.Receiver.FullName,
-							City = s.Receiver.City.Name ,
+							City = s.Receiver.City.Name,
 							MainPhotoPath =
 								s.Receiver.ApplicationUserMedias.FirstOrDefault(f => f.IsMainImage && f.BizAppUserId == s.ReceiverUserId).UploadedPhoto,
 							ReviewCount = s.Receiver.Reviews.Count,
@@ -89,57 +88,87 @@ namespace DataLayer.Services
 
 		public async Task RejectRelation(string receiverUserId, string applicatorUserId)
 		{
-			var relation = await DbContext.Friends.FirstOrDefaultAsync(f => f.ApplicatorUserId == applicatorUserId && f.ReceiverUserId == receiverUserId);
+			using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+			{
+				var relation = await DbContext.Friends.
+						FirstOrDefaultAsync(f => f.ApplicatorUserId == applicatorUserId && f.ReceiverUserId == receiverUserId);
 
-			if (relation == null) throw new KeyNotFoundException();
+				if (relation == null) throw new KeyNotFoundException();
 
-			// remove relation
-			DbContext.Friends.Remove(relation);
-			await DbContext.SaveChangesAsync();
+				// remove relation
+				DbContext.Friends.Remove(relation);
+
+				// remove notification
+				await _notification.Remove(NotificationModel.Friend, receiverUserId, applicatorUserId);
+
+				await DbContext.SaveChangesAsync();
+
+				scope.Complete();
+			}
+
+
 		}
 
 		public async Task AcceptedRelation(string receiverUserId, string applicatorUserId)
 		{
-			var relation = await DbContext.Friends.FirstOrDefaultAsync(f => f.ApplicatorUserId == applicatorUserId && f.ReceiverUserId == receiverUserId);
-
-			if (relation == null) throw new KeyNotFoundException();
-
-			// update saved relation status
-			relation.Status = StatusEnum.Accepted;
-
-			// add new relation for receiver user
-			var newRelation = new Friend
+			using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
 			{
-				Status = StatusEnum.Accepted,
-				ApplicatorUserId = receiverUserId,
-				ReceiverUserId = applicatorUserId
-			};
+				var relation = await DbContext.Friends.FirstOrDefaultAsync(f => f.ApplicatorUserId == applicatorUserId && f.ReceiverUserId == receiverUserId);
 
-			DbContext.Add(newRelation);
+				if (relation == null) throw new KeyNotFoundException();
 
-			await DbContext.SaveChangesAsync();
+				// update saved relation status
+				relation.Status = StatusEnum.Accepted;
+
+				// add new relation for receiver user
+				var newRelation = new Friend
+				{
+					Status = StatusEnum.Accepted,
+					ApplicatorUserId = receiverUserId,
+					ReceiverUserId = applicatorUserId
+				};
+
+				DbContext.Add(newRelation);
+
+				// remove notification
+				await _notification.Remove(NotificationModel.Friend, receiverUserId, applicatorUserId);
+
+				// set user activity
+				await _userActivity.AddAsync(TableName.Friend, relation.Id.ToString(), relation.ReceiverUserId);
+				await _userActivity.AddAsync(TableName.Friend, newRelation.Id.ToString(), newRelation.ReceiverUserId);
+
+				await DbContext.SaveChangesAsync();
+
+				scope.Complete();
+			}
+
 		}
 
 		public async Task RemoveRelation(RemoveFriendRelationCommand model)
 		{
-			// check request is excists or not 
-			var relations =
+			using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+			{
+				// check request is excists or not 
+				var relations =
 				await DbContext.Friends
 					.Where(w => (w.ApplicatorUserId == model.RemoverUserId && w.ReceiverUserId == model.FriendUserId)
 							|| (w.ReceiverUserId == model.RemoverUserId && w.ApplicatorUserId == model.FriendUserId))
 					.ToListAsync();
 
-			// if realtion not approved or not rejected then can't be delete
-			if (relations.Count != 2)
-			{
-				throw new KeyNotFoundException();
+				// if realtion not approved or not rejected then can't be delete
+				if (relations.Count != 2)
+				{
+					throw new KeyNotFoundException();
+				}
+
+				// remove relations
+				DbContext.Friends.RemoveRange(relations);
+
+				// save changes
+				await DbContext.SaveChangesAsync();
+
+				scope.Complete();
 			}
-
-			// remove relations
-			DbContext.Friends.RemoveRange(relations);
-
-			// save changes
-			await DbContext.SaveChangesAsync();
 		}
 	}
 }

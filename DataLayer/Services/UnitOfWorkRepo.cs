@@ -35,6 +35,7 @@ namespace DataLayer.Services
 		private readonly UserFavoritsRepo userFavoritsRepo;
 		private readonly UserActivityRepo userActivity;
 		private readonly FriendRepo friendRepo;
+		private readonly NotificationRepo notificationRepo;
 
 		public UnitOfWorkRepo(ApplicationDbContext DbContext, UserManager<BizAppUser> userManager, IUserActivityRepo userActivity)
 		{
@@ -67,7 +68,8 @@ namespace DataLayer.Services
 		public IAskTheCommunityRepo AskTheCommunityRepo => askTheCommunityRepo ?? new AskTheCommunityRepo(_DbContext);
 		public IUserFavoritsRepo UserFavoritsRepo => userFavoritsRepo ?? new UserFavoritsRepo(_DbContext);
 		public IUserActivityRepo UserActivityRepo => userActivity ?? new UserActivityRepo(_DbContext, _userManager);
-		public IFriendRepo FriendRepo => friendRepo ?? new FriendRepo(_DbContext);
+		public INotificationRepo NotificationRepo => notificationRepo ?? new NotificationRepo(_DbContext);
+		public IFriendRepo FriendRepo => friendRepo ?? new FriendRepo(_DbContext, UserActivityRepo, NotificationRepo);
 
 		public async Task SaveAsync()
 		{

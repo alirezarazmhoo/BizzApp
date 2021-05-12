@@ -25,6 +25,7 @@ namespace DataLayer.Infrastructure
 		IAskTheCommunityRepo  AskTheCommunityRepo { get; }
 		IUserFavoritsRepo UserFavoritsRepo { get; }
 		IUserActivityRepo UserActivityRepo { get; }
+		INotificationRepo NotificationRepo { get; }
 		IFriendRepo FriendRepo { get; }
 
 		Task SaveAsync();

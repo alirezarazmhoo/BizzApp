@@ -73,7 +73,8 @@ namespace DataLayer.Services
 							ProvinceName = s.City.Province.Name,
 							UploadedPhotoCount = s.CustomerBusinessMedia.Count,
 							ReviewCount = s.Reviews.Count,
-							Photos = (s.ApplicationUserMedias.Select(s => s.UploadedPhoto).ToList())
+							Photos = (s.ApplicationUserMedias.Select(s => s.UploadedPhoto).ToList()),
+							FriendNumber = DbContext.Friends.Where(w => w.ApplicatorUserId == s.Id && w.Status == StatusEnum.Accepted).Count()
 						})
 						.FirstOrDefaultAsync();
 

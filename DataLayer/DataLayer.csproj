@@ -85,6 +85,8 @@
     <Compile Remove="Migrations\20210509072254_FixFriendRelations.Designer.cs" />
     <Compile Remove="Migrations\20210509072614_RemoveOldFriendRelationColumns.cs" />
     <Compile Remove="Migrations\20210509072614_RemoveOldFriendRelationColumns.Designer.cs" />
+    <Compile Remove="Migrations\20210512080237_ChangeNotification.cs" />
+    <Compile Remove="Migrations\20210512080237_ChangeNotification.Designer.cs" />
 
   </ItemGroup>
 
