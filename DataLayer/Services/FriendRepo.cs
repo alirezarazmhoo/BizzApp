@@ -46,15 +46,17 @@ namespace DataLayer.Services
 				{
 					ApplicatorUserId = model.ApplicatorUserId,
 					ReceiverUserId = model.ReceiverUserId,
-					Status = StatusEnum.Waiting
+					Status = StatusEnum.Waiting,
+					Description = model.Description
 				};
 				DbContext.Friends.Add(friend);
 
-				// add notfification
-				await _notification.Add(model.ReceiverUserId, NotificationModel.Friend);
-
 				// save changes
 				await DbContext.SaveChangesAsync();
+
+				// add notfification
+				await _notification.Add(model.ReceiverUserId, NotificationModel.Friend, friend.Id.ToString());
+
 
 				scope.Complete();
 			}
@@ -99,7 +101,7 @@ namespace DataLayer.Services
 				DbContext.Friends.Remove(relation);
 
 				// remove notification
-				await _notification.Remove(NotificationModel.Friend, receiverUserId, applicatorUserId);
+				await _notification.Remove(relation.Id.ToString());
 
 				await DbContext.SaveChangesAsync();
 
@@ -131,7 +133,7 @@ namespace DataLayer.Services
 				DbContext.Add(newRelation);
 
 				// remove notification
-				await _notification.Remove(NotificationModel.Friend, receiverUserId, applicatorUserId);
+				await _notification.Remove(relation.Id.ToString());
 
 				// set user activity
 				await _userActivity.AddAsync(TableName.Friend, relation.Id.ToString(), relation.ReceiverUserId);

@@ -6,5 +6,6 @@ namespace BizApp.Areas.Profile.Models.UserActivities
 	{
 		public SharedProfileDetailViewModel UserDetail { get; set; }
 		public IList<ActivityViewModel> Activities { get; set; }
+		public IList<NotificationViewModel> Notifications { get; set; }
 	}
 }

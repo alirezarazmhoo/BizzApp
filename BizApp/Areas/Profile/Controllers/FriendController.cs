@@ -140,6 +140,40 @@ namespace BizApp.Areas.Profile.Controllers
 			return View(friendDetail);
 		}
 
+		[HttpGet]
+
+		public async Task<IActionResult> ConfirmRelation(Guid id)
+		{
+			var relation = await UnitOfWork.FriendRepo.GetById(id);
+			if (relation == null) return NotFound();
+
+			var userName = await UnitOfWork.UserRepo.GetUserName(relation.ApplicatorUserId);
+			var userDetail = await UnitOfWork.UserProfileRepo.GetUserDetail(userName);
+
+			var model = new ConfirmRelationViewModel
+			{
+				Id = relation.Id,
+				Message = relation.Description,
+				UserDetail = userDetail
+			};
+			
+			return View(model);
+		}
+		
+		//[HttpPost("accepted")]
+		//[Authorize]
+		//public async Task<IActionResult> ApprovedRelation(Guid id)
+		//{
+			
+		//}
+		//[HttpPost("reject")]
+		//[Authorize]
+		//public async Task<IActionResult> RejectRelation(Guid id)
+		//{
+		//	return RedirectToAction("index");
+		//}
+
+
 		[HttpPost]
 		[Authorize]
 		public async Task<IActionResult> RemoveRelation(RemoveRelationViewModel model)
@@ -167,8 +201,7 @@ namespace BizApp.Areas.Profile.Controllers
 			}
 		}
 
-		[HttpPost("accepted")]
-		[Authorize]
+		
 		public async Task<IActionResult> ApprovedRelation(string applicatorUserId)
 		{
 			try
@@ -187,9 +220,7 @@ namespace BizApp.Areas.Profile.Controllers
 				return StatusCode(500);
 			}
 		}
-
-		[HttpPost("reject")]
-		[Authorize]
+		
 		public async Task<IActionResult> RejectRelation(string applicatorUserId)
 		{
 			try

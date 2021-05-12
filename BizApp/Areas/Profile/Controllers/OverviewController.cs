@@ -3,6 +3,7 @@ using BizApp.Areas.Profile.Models;
 using BizApp.Areas.Profile.Models.UserActivities;
 using DataLayer.Infrastructure;
 using DomainClass;
+using DomainClass.Enums;
 using DomainClass.Review.Queries;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -58,13 +59,39 @@ namespace BizApp.Areas.Profile.Controllers
 				return StatusCode(500);
 			}
 
+			// get notifications
+			var notifications = await UnitOfWork.NotificationRepo.GetTopFive(userDetail.Id);
+			NotificationViewModel notificationModel;
+			var notificationList = new List<NotificationViewModel>();
+			
+			foreach (var notification in notifications)
+			{
+				switch (notification.Model)
+				{
+					case NotificationModel.Friend:
+						var friendUserFullName = await UnitOfWork.UserRepo.GetFullName(notification.CreatorUserId);
+						notificationModel = new NotificationViewModel
+						{
+							CreatedAt = notification.CreatedAt,
+							Title = $"{friendUserFullName} به شما درخواست دوستی داده است",
+							Link = $"/profile/friend/relationconfirm/{notification.ModelId}/",
+							Model = NotificationModel.Friend
+						};
+
+						notificationList.Add(notificationModel);
+
+						break;
+				}
+			}
+
 			// get activities
 			var activities = await UnitOfWork.UserActivityRepo.GetAllActivities(CurrentUser.FindFirst(ClaimTypes.NameIdentifier).Value, page);
 
 			var model = new BasicUserActivityViewModel
 			{
 				Activities = new List<ActivityViewModel>(),
-				UserDetail = userDetail
+				UserDetail = userDetail,
+				Notifications = notificationList
 			};
 			
 			ActivityViewModel item;
@@ -90,5 +117,6 @@ namespace BizApp.Areas.Profile.Controllers
 
 			return View("index", model);
 		}
+
 	}
 }

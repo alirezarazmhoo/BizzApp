@@ -1,0 +1,20 @@
+﻿@model System.Collections.Generic.IEnumerable<BizApp.Areas.Profile.Models.NotificationViewModel>
+@using BizApp.Utility;
+@foreach (var notification in Model)
+{
+
+	<div class="alert alert-dark d-flex align-items-center" role="alert">
+		@if (notification.Model == DomainClass.Enums.NotificationModel.Friend)
+		{
+			<svg id="24x24_friends" height="24" viewBox="0 0 24 24" width="24"><g><path d="M10.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946C1.618 12.48 2.586 11 4.018 11h4.964c1.432 0 2.4 1.48 1.842 2.817zM6.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path><path d="M21.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946c-.558-1.337.41-2.817 1.842-2.817h4.964c1.432 0 2.4 1.48 1.842 2.817zM17.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" opacity=".502"></path></g></svg>
+		}
+		<div>
+			<p>
+				<strong>
+					<a href="@notification.Link">@notification.Title</a>
+				</strong>
+			</p>
+			<span>@notification.CreatedAt.ToPersianDateString()</span>
+		</div>
+	</div>
+}

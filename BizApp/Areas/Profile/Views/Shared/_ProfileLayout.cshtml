@@ -27,7 +27,8 @@
 	Nullable<StatusEnum> friendShipStatus = null;
 
 	string friendLinkUrl = $"/profile/friend/add?username={urlUserName}",
-		   friendLinkText = "اضافه کردن به دوستان";
+		   friendLinkText = "اضافه کردن به دوستان",
+		   friendStyleClass = "";
 
 	if (user != null)
 	{
@@ -39,14 +40,16 @@
 			switch (friendShipStatus)
 			{
 				case StatusEnum.Accepted:
-					friendLinkUrl = $"/profile/friend/remove?username={urlUserName}";
-					friendLinkText = "حذف از لیست دوستان";
-
+					//friendLinkUrl = $"/profile/friend/remove?username={urlUserName}";
+					friendLinkUrl = "";
+					friendLinkText = "شما با یکدیگر دوست هستید";
+					friendStyleClass = "btn disable text-sucess";
 					break;
+
 				case StatusEnum.Waiting:
 					friendLinkUrl = "";
 					friendLinkText = "درخواست شما ارسال شده است";
-
+					friendStyleClass = "btn disable";
 					break;
 			}
 		}
@@ -146,11 +149,11 @@
 								</div>
 								<div class="profile-header__user-profile__info__stats">
 									<ul>
-										@*<li>
+										<li>
 												<svg id="24x24_friends" height="24" viewBox="0 0 24 24" width="24"><g><path d="M10.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946C1.618 12.48 2.586 11 4.018 11h4.964c1.432 0 2.4 1.48 1.842 2.817zM6.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path><path d="M21.824 13.817l-2.482 5.946c-.69 1.65-2.995 1.65-3.684 0l-2.482-5.946c-.558-1.337.41-2.817 1.842-2.817h4.964c1.432 0 2.4 1.48 1.842 2.817zM17.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" opacity=".502"></path></g></svg>
-												<span>419</span>
+												<span>@user.FriendNumber</span>
 												<small>دوست</small>
-											</li>*@
+											</li>
 										<li>
 											<svg id="24x24_review" height="24" viewBox="0 0 24 24" width="24"><path d="M21 6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V6zm-5.88 10.428l-3.16-1.938-3.05 2.01.59-3.457L7 10.596l3.457-.505L11.96 6.5l1.582 3.59 3.458.506-2.5 2.447.62 3.385z"></path></svg>
 											<span>@user.ReviewCount</span>
@@ -172,7 +175,7 @@
 								@if (userName != currentUser)
 								{
 									<li>
-										<a href="@friendLinkUrl" class="@(string.IsNullOrEmpty(friendLinkUrl) ? "btn disabled" : "")" style="font-size: 12px; padding: 0;">
+										<a href="@friendLinkUrl" class="@friendStyleClass" style="font-size: 12px; padding: 0;">
 											<svg id="18x18_add_friend" height="18" viewBox="0 0 18 18" width="18"><g><path d="M5.827 9.647l-2.013 4.127c-.448.922-1.18.915-1.628-.007L.173 9.65C-.275 8.73.178 8 1.18 8h3.64c1.002 0 1.455.725 1.007 1.647zM3 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"></path><path d="M12.827 9.647l-2.013 4.127c-.448.922-1.18.915-1.628-.007L7.173 9.65C6.725 8.73 7.178 8 8.18 8h3.64c1.002 0 1.455.725 1.007 1.647zM10 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" opacity=".502"></path><path d="M18 14h-2v-2h-2v2h-2v2h2v2h2v-2h2v-2z"></path></g></svg>
 											@friendLinkText
 										</a>

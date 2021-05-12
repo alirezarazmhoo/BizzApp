@@ -9,6 +9,24 @@
 }
 
 <div class="col-md-6 d-none d-sm-block ">
+	@* NOTIFICATIONS *@
+	<div class="profile-content__comment">
+		<div class="profile-content__comment__title">
+			<h2>اعلان ها</h2>
+		</div>
+		@if (Model.Notifications.Count == 0)
+		{
+			<div class="alert alert-info" role="alert">
+				تا کنون اعلانی برای شما ثبت نشده است!
+			</div>
+		}
+		else
+		{
+			<partial name="Partials/Notifications.Partial.cshtml" model="@Model.Notifications" />
+		}
+	</div>
+
+	@* RECENT ACTIVITIES *@
 	<div class="profile-content__comment">
 		<div class="profile-content__comment__title">
 			<h2>فعالیت های اخیر</h2>

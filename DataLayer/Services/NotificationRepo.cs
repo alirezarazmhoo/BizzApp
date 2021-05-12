@@ -3,7 +3,6 @@ using DataLayer.Infrastructure;
 using DomainClass;
 using DomainClass.Enums;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,19 +15,18 @@ namespace DataLayer.Services
 		{
 		}
 
-		public async Task Add(string userId, NotificationModel model) 
+		public async Task Add(string userId, NotificationModel model, string modelId) 
 		{
 			var notification = new Notification
 			{
 				UserId = userId,
-				Model = model
+				Model = model,
+				ModelId = modelId
 			};
 
 			await DbContext.Notifications.AddAsync(notification);
 			await DbContext.SaveChangesAsync();
-
 		}
-
 		public async Task<IEnumerable<Notification>> GetTopFive(string userId)
 		{
 			var result =
@@ -40,21 +38,11 @@ namespace DataLayer.Services
 
 			return result;
 		}
-
-		public async Task Remove(Guid id)
-		{
-			var notification = await DbContext.Notifications.FirstOrDefaultAsync(f => f.Id == id);
-
-			if (notification == null) return;
-
-			DbContext.Notifications.Remove(notification);
-			await DbContext.SaveChangesAsync();
-		}
-		public async Task Remove(NotificationModel model, string creatorUserId, string receiverUserId)
+		public async Task Remove(string modelId)
 		{
 			var notification =
 				await DbContext.Notifications
-						.FirstOrDefaultAsync(f => f.Model == model && f.CreatorUserId == creatorUserId && f.UserId == receiverUserId);
+						.FirstOrDefaultAsync(f => f.ModelId == modelId);
 
 			if (notification == null) return;
 
