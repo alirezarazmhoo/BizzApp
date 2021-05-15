@@ -10,6 +10,8 @@ namespace BizApp.Models.Basic
 	{
 		public AnswerAskTheCommunity_NavbarViewModel answerAskTheCommunity_NavbarViewModel { get; set; }
 		public ICollection<AnswerAskTheCommunity_AnswersViewModel> answerAskTheCommunity_AnswersViewModels { get; set; }
+		public AnswerAskTheCommunity_AnswersViewModel singleAnswerAskTheCommunity_AnswersViewModels { get; set; }
+
 		public AnswerAskTheCommunity_AnswersCountViewModel answerAskTheCommunity_AnswersCountViewModel { get; set; }
 		public ICollection<AskTheCommunity_QuestionListViewModel> askTheCommunity_QuestionListViewModels { get; set; }
 	}
@@ -17,6 +19,7 @@ namespace BizApp.Models.Basic
 	#region Navbar
 	public class AnswerAskTheCommunity_NavbarViewModel
 	{
+		public Guid BusinessFaqId { get; set;  }
 		public Guid BusinessId { get; set; }
 		public string BusinessImage { get; set; }
 		public string BusinessCity { get; set; }
@@ -42,9 +45,13 @@ namespace BizApp.Models.Basic
 	#region Answers
 	public class AnswerAskTheCommunity_AnswersViewModel
 	{
+		public Guid Id { get; set;  }
 		public string UserName { get; set; }
 		public string UserPicture { get; set; }
 		public string Text { get; set; }
+		public int TotalReview { get; set;  }
+		public int TotalBusinessImage { get; set; }
+		public int TotalFriend { get; set;   }
 		public int HelpFullCount { get; set; }
 		public int NotHelpFullCount { get; set; }
 		public string Date { get; set;  }

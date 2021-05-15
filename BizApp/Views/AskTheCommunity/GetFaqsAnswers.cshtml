@@ -68,11 +68,14 @@
 							</div>
 						</div>
 					}
-
 					<div class="questions-detail__content__form">
+						<form method="post" action="/AskTheCommunity/AddFaqsAnswers">
 						<h3>پاسخی بنویسید:</h3>
-						<textarea class="form-control"></textarea>
-						<button class="btn">ارسال پاسخ</button>
+						<input name="BusinessId" value="@Model.answerAskTheCommunity_NavbarViewModel.BusinessId" hidden/>
+						<input name="BusinessFaqId" value="@Model.answerAskTheCommunity_NavbarViewModel.BusinessFaqId" hidden/> 
+						<textarea class="form-control" name="Text" required></textarea>
+						<button type="submit" class="btn">ارسال پاسخ</button>
+						</form>
 					</div>
 				</div>
 			</div>

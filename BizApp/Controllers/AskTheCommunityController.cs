@@ -3,19 +3,25 @@ using BizApp.Utility;
 using DataLayer.Infrastructure;
 using DomainClass.Businesses;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 namespace BizApp.Controllers
 {
 	public class AskTheCommunityController : Controller
 	{
 		private readonly IUnitOfWorkRepo _UnitOfWork;
-		public AskTheCommunityController(IUnitOfWorkRepo unitOfWork)
+		private readonly IHttpContextAccessor _httpContextAccessor;
+
+		public AskTheCommunityController(IUnitOfWorkRepo unitOfWork, IHttpContextAccessor httpContextAccessor)
 		{
 			_UnitOfWork = unitOfWork;
+			_httpContextAccessor = httpContextAccessor;
+
 		}
 		public async Task<IActionResult>  Index(Guid Id)
 		{
@@ -56,14 +62,35 @@ namespace BizApp.Controllers
 			#endregion
 			return View(askTheCommunityViewModel);
 		}
+
+
+		[Authorize]
+		public IActionResult IndexAuthorize(Guid Id ,Guid BusinessFaqId, int redirectType)
+		{
+			switch (redirectType)
+			{
+				case 1: 
+			return RedirectToAction(nameof(Index), "AskTheCommunity", new { Id = Id });
+				case 2: 
+			return RedirectToAction(nameof(GetFaqsAnswers), "AskTheCommunity", new { Id = Id , BusinessFaqId = BusinessFaqId });
+				default:
+		    return RedirectToAction(nameof(Index), "AskTheCommunity", new { Id = Id });
+
+			}
+		} 
 		[HttpPost]
 		public async Task<IActionResult> Add(BusinessFaq model)
 		{
+			if (!User.Identity.IsAuthenticated)
+			{
+				return RedirectToAction(nameof(IndexAuthorize), "AskTheCommunity", new { Id = model.BusinessId  , redirectType  =1});
+
+			}
 			try
 			{
 				await _UnitOfWork.AskTheCommunityRepo.AddBusinessFaq(model);
 				await _UnitOfWork.SaveAsync();
-				return RedirectToAction(nameof(GetFaqsAnswers));
+				return RedirectToAction(nameof(GetFaqsAnswers)  , "AskTheCommunity" , new { Id = model.BusinessId, BusinessFaqId = model.Id });
 			}
 			catch (Exception)
 			{
@@ -80,18 +107,16 @@ namespace BizApp.Controllers
 			AnswerAskTheCommunity_AnswersCountViewModel answerAskTheCommunity_AnswersCountViewModel = new AnswerAskTheCommunity_AnswersCountViewModel();
 			List<AnswerAskTheCommunity_AnswersViewModel> answerAskTheCommunity_AnswersViewModels = new List<AnswerAskTheCommunity_AnswersViewModel>();
 			List<AskTheCommunity_QuestionListViewModel> askTheCommunity_QuestionListViewModels = new List<AskTheCommunity_QuestionListViewModel>();  
-
 			#endregion
 			#region Resource
-			var BusinessNameItem = await _UnitOfWork.BusinessRepo.GetBusinessName(BusinessId);
 			var BusinessItem = await _UnitOfWork.BusinessRepo.GetById(BusinessId);
 			var BusinessFaqItem = await _UnitOfWork.AskTheCommunityRepo.GetBusinessFaqById(BusinessFaqIId);
 			var Answers = await _UnitOfWork.AskTheCommunityRepo.GetBusinessFaqAnswers(BusinessFaqIId);
 			var OtherQuestions = await _UnitOfWork.AskTheCommunityRepo.GetBusinessFaq(BusinessId);
-
 			#endregion
 			#region Navbar
-			answerAskTheCommunity_NavbarViewModel.BusinessId = BusinessItem.Id;  
+			answerAskTheCommunity_NavbarViewModel.BusinessId = BusinessItem.Id;
+			answerAskTheCommunity_NavbarViewModel.BusinessFaqId = BusinessFaqIId; 
 			answerAskTheCommunity_NavbarViewModel.BusinessName = BusinessItem.Name;
 			answerAskTheCommunity_NavbarViewModel.BusinessDistricName = BusinessItem.District.Name;
 			answerAskTheCommunity_NavbarViewModel.BusinessCity = BusinessItem.District.City.Name;
@@ -130,11 +155,53 @@ namespace BizApp.Controllers
 			return View(answerAskTheCommunityViewModel);
 		}
 		[HttpPost]
-		public async Task<IActionResult> AddFaqsAnswers(BusinessFaqAnswer model)
+		public async Task<IActionResult> AddFaqsAnswers(BusinessFaqAnswer model ,Guid BusinessId)
 		{
+			AnswerAskTheCommunityViewModel answerAskTheCommunityViewModel = new AnswerAskTheCommunityViewModel();
+			AnswerAskTheCommunity_NavbarViewModel answerAskTheCommunity_NavbarViewModel = new AnswerAskTheCommunity_NavbarViewModel();
+			AnswerAskTheCommunity_AnswersCountViewModel answerAskTheCommunity_AnswersCountViewModel = new AnswerAskTheCommunity_AnswersCountViewModel();
+			AnswerAskTheCommunity_AnswersViewModel singleAnswerAskTheCommunity_AnswersViewModels = new AnswerAskTheCommunity_AnswersViewModel();
+			List<AskTheCommunity_QuestionListViewModel> askTheCommunity_QuestionListViewModels = new List<AskTheCommunity_QuestionListViewModel>();
+			if (!User.Identity.IsAuthenticated)
+			{
+				return RedirectToAction(nameof(IndexAuthorize), "AskTheCommunity", new { Id = BusinessId , BusinessFaqId = model.BusinessFaqId , redirectType =2 });
+			}
+			try
+			{
 			await _UnitOfWork.AskTheCommunityRepo.AddBusinessFaqAnswers(model);
 			await _UnitOfWork.SaveAsync();
-			return Json(new { success = true });
+			var BusinessItem = await _UnitOfWork.BusinessRepo.GetById(BusinessId);
+			var BusinessFaqItem = await _UnitOfWork.AskTheCommunityRepo.GetBusinessFaqById(model.BusinessFaqId);
+			var CurrentUser = await _UnitOfWork.UserRepo.GetById(GetUserId());
+            answerAskTheCommunity_NavbarViewModel.BusinessId = BusinessItem.Id;
+			answerAskTheCommunity_NavbarViewModel.BusinessFaqId = model.BusinessFaqId; 
+			answerAskTheCommunity_NavbarViewModel.BusinessName = BusinessItem.Name;
+			answerAskTheCommunity_NavbarViewModel.BusinessDistricName = BusinessItem.District.Name;
+			answerAskTheCommunity_NavbarViewModel.BusinessCity = BusinessItem.District.City.Name;
+			answerAskTheCommunity_NavbarViewModel.BusinessRate = BusinessItem.Rate == 0 ? 1 : BusinessItem.Rate;
+			answerAskTheCommunity_NavbarViewModel.BusinessTotalReview = await _UnitOfWork.ReviewRepo.GetBusinessTotalReview(BusinessId);
+			answerAskTheCommunity_NavbarViewModel.BusinessImage = string.IsNullOrEmpty(BusinessItem.FeatureImage) == false ? "/Upload/DefaultPicutres/Bussiness/business-strategy-success-target-goals_1421-33.jpg" : BusinessItem.FeatureImage; 
+			answerAskTheCommunity_NavbarViewModel.Date = BusinessFaqItem.Date.ToPersianDateString();
+			answerAskTheCommunity_NavbarViewModel.QuestionSubject = BusinessFaqItem.Question;
+			answerAskTheCommunity_NavbarViewModel.UserName =await _UnitOfWork.UserRepo.GetUserName(BusinessFaqItem.BizAppUserId);
+			singleAnswerAskTheCommunity_AnswersViewModels.Date = DateTime.Now.ToPersianDateString();
+			singleAnswerAskTheCommunity_AnswersViewModels.Id = model.Id;
+			singleAnswerAskTheCommunity_AnswersViewModels.Text = model.Text;
+			singleAnswerAskTheCommunity_AnswersViewModels.UserName = CurrentUser.UserName;
+			singleAnswerAskTheCommunity_AnswersViewModels.TotalBusinessImage = await _UnitOfWork.ReviewRepo.GetUserTotalBusinessMedia(GetUserId());
+			singleAnswerAskTheCommunity_AnswersViewModels.TotalFriend = await _UnitOfWork.UserRepo.GetUserFriendsCount(GetUserId());
+			singleAnswerAskTheCommunity_AnswersViewModels.TotalReview = await _UnitOfWork.ReviewRepo.GetUserTotalReview(GetUserId()) ;
+			singleAnswerAskTheCommunity_AnswersViewModels.UserPicture = CurrentUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault() == null ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : CurrentUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault().UploadedPhoto;
+				#region FinalResualts
+				answerAskTheCommunityViewModel.answerAskTheCommunity_NavbarViewModel = answerAskTheCommunity_NavbarViewModel;
+				answerAskTheCommunityViewModel.singleAnswerAskTheCommunity_AnswersViewModels = singleAnswerAskTheCommunity_AnswersViewModels;
+				#endregion
+				return View(answerAskTheCommunityViewModel);
+			}
+			catch (Exception)
+			{
+				return Json(new { success = false });
+			}
 		}
 		[HttpPost]
 		public async Task<IActionResult> AddHelpfullAnswers(Guid Id, string UserId)
@@ -149,6 +216,24 @@ namespace BizApp.Controllers
 			await _UnitOfWork.AskTheCommunityRepo.AddNotHelpFull(Id, UserId);
 			await _UnitOfWork.SaveAsync();
 			return Json(new { success = true });
+		}
+		[HttpPost]
+		public async Task<IActionResult> RemoveFaqsAnswer(Guid Id , Guid BusinessId)
+		{
+			try
+			{
+			await _UnitOfWork.AskTheCommunityRepo.RemoveFaqAnswer(Id);
+			await _UnitOfWork.SaveAsync();
+				return RedirectToAction(nameof(GetFaqsAnswers), "AskTheCommunity", new { Id = BusinessId, BusinessFaqId = Id });
+			}
+			catch (Exception)
+			{
+				return Json(new { success = false });
+			}
+		}
+		private string GetUserId()
+		{
+			return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 		}
 	}
 }

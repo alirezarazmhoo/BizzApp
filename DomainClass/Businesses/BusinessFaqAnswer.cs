@@ -17,7 +17,6 @@ namespace DomainClass.Businesses
 		public DateTime Date { get; set;  }
 		public string BizAppUserId { get; set;  }
 		public virtual BizAppUser BizAppUser { get; set; }
-
 	}
 
 }

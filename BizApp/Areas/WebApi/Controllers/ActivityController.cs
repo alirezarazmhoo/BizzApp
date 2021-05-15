@@ -88,7 +88,10 @@ namespace BizApp.Areas.WebApi.Controllers
 						activity.Add(new Activity() { Text ="عکس پروفایل خود را تغییر داد", UserName =UserItem.UserName,
 							TotalFriends = await _UnitOfWork.UserRepo.GetUserFriendsCount(Id),
 							TotalReview = await _UnitOfWork.ReviewRepo.GetUserTotalReview(Id),
-							TotalReviewPicture = await _UnitOfWork.BusinessHomePageRepo.GetTotalUserMedia(Id) , Date = item.CreatedAt.ToPersianDateString() , Type =2
+							TotalReviewPicture = await _UnitOfWork.BusinessHomePageRepo.GetTotalUserMedia(Id) , Date = item.CreatedAt.ToPersianDateString() , Type =2 ,
+							Image = string.IsNullOrEmpty(UserItem.ApplicationUserMedias
+							.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault()) == true ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : UserItem.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault(),
+
 						});
 					}
 					else if(item.TableName == DomainClass.TableName.SendRequest)
@@ -103,12 +106,15 @@ namespace BizApp.Areas.WebApi.Controllers
 								Text = "به دوستان وی اضافه شد",
 								UserName = FriendItem.Receiver.FullName,
 								 Image = string.IsNullOrEmpty(FriendItem.Receiver.ApplicationUserMedias
-							.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault()) == true ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : FriendItem.Receiver.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault() , 
+							.Where(s => s.IsMainImage && s.Status == 
+							DomainClass.Enums.StatusEnum.Accepted)
+							.Select(s => s.UploadedPhoto).FirstOrDefault())
+								 == true ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : FriendItem.Receiver.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault() , 
 								TotalFriends = await _UnitOfWork.UserRepo.GetUserFriendsCount(FriendItem.ReceiverUserId),
 								TotalReview = await _UnitOfWork.ReviewRepo.GetUserTotalReview(FriendItem.ReceiverUserId),
 								TotalReviewPicture = await _UnitOfWork.BusinessHomePageRepo.GetTotalUserMedia(FriendItem.ReceiverUserId),
 								Date = item.CreatedAt.ToPersianDateString(),
-								Type = 3
+								Type = 3 ,UserId = FriendItem.ReceiverUserId
 							});
 						}
 					}

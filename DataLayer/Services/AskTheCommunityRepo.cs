@@ -63,6 +63,17 @@ namespace DataLayer.Services
 				return null; 
 			}
 		}
+
+		public async Task RemoveFaqAnswer(Guid Id)
+		{
+			var Item = await DbContext.BusinessFaqAnswers.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+			if(Item != null)
+			{
+				 DbContext.BusinessFaqAnswers.Remove(Item);
+			}
+		}
+
+
 		public async Task<int> AnswerCount(Guid Id)
 		{
 			return  await DbContext.BusinessFaqAnswers.Where(s => s.BusinessFaqId.Equals(Id)).CountAsync();
