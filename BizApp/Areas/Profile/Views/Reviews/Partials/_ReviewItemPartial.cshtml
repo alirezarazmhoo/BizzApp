@@ -60,9 +60,10 @@
 					<img src="@firstImage.ImagePath" alt="">
 				</a>
 				<span>
-					@if (!string.IsNullOrEmpty(firstImage.Description)) 
-					{ 
-						firstImage.Description.Substring(0, 20); 
+					@if (!string.IsNullOrEmpty(firstImage.Description))
+					{
+						var length = firstImage.Description.Length > 20 ? 20 : firstImage.Description.Length;
+						firstImage.Description.Substring(0, length);
 					}
 				</span>
 			</div>
@@ -80,7 +81,8 @@
 								<span>
 									@if (!string.IsNullOrEmpty(Model.Media[i].Description))
 									{
-										Model.Media[i].Description.Substring(0, 20);
+										var length = Model.Media[i].Description.Length > 20 ? 20 : 0;
+										Model.Media[i].Description.Substring(0, length);
 									}
 								</span>
 							</div>

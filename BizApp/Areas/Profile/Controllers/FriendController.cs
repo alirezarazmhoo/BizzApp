@@ -201,7 +201,6 @@ namespace BizApp.Areas.Profile.Controllers
 			}
 		}
 
-		
 		public async Task<IActionResult> ApprovedRelation(string applicatorUserId)
 		{
 			try

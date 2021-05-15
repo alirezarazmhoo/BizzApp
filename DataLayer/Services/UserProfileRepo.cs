@@ -16,18 +16,21 @@ namespace DataLayer.Services
 		{
 		}
 
-		public async Task<Nullable<StatusEnum>> GetFriendShipStatus(string userName)
+		public async Task<Nullable<StatusEnum>> GetFriendShipStatus(string currentUserId, string friendUserName)
 		{
-			var user = await DbContext.Users.FirstOrDefaultAsync(f => f.UserName == userName);
-			if (user == null) return null;
-
-			var friend = await 
-				DbContext.Friends.FirstOrDefaultAsync(f => 
-									f.ApplicatorUserId == user.Id || 
-									f.ReceiverUserId == user.Id);
+			var friend = await DbContext.Users.FirstOrDefaultAsync(f => f.UserName == friendUserName);
 			if (friend == null) return null;
 
-			return friend.Status;
+			var relation = await 
+				DbContext.Friends.Where(f => f.ApplicatorUserId == friend.Id || 
+											 f.ReceiverUserId == friend.Id)
+								 .Where(f => f.ApplicatorUserId == currentUserId ||
+											 f.ReceiverUserId == currentUserId)
+							.FirstOrDefaultAsync();
+
+			if (relation == null) return null;
+
+			return relation.Status;
 		}
 
 		public async Task<SharedUserProfileDetailQuery> GetSharedUserDetail(string userName)

@@ -30,6 +30,10 @@ namespace DataLayer.Services
 		{
 			using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
 			{
+				// check send request for myself
+				var sentForMyself = model.ReceiverUserId == model.ApplicatorUserId;
+				if (sentForMyself) throw new ApplicationException();
+
 				// check request is excists or not 
 				var sentRequest =
 					await DbContext.Friends
@@ -37,9 +41,18 @@ namespace DataLayer.Services
 
 				if (sentRequest) throw new DuplicateNameException();
 
-				// check send request for myself
-				var sentForMyself = model.ReceiverUserId == model.ApplicatorUserId;
-				if (sentForMyself) throw new ApplicationException();
+				// check if reciever add connection before it
+				var sentFromReceiver =
+					await DbContext.Friends.FirstOrDefaultAsync(f => f.ApplicatorUserId == model.ReceiverUserId
+												&& f.ReceiverUserId == model.ApplicatorUserId);
+				if (sentFromReceiver != null) 
+				{
+					// if realtion exist from friend user make relation
+					await AcceptedRelation(sentFromReceiver.ReceiverUserId, sentFromReceiver.ApplicatorUserId);
+					scope.Complete();
+
+					return;
+				}
 
 				// add friend for user
 				var friend = new Friend
