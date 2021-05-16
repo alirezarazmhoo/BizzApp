@@ -46,7 +46,7 @@ namespace BizApp.Controllers
 			{
 				var UserPhoto = item.BusinessFaqAnswers.FirstOrDefault().BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault() == null ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : item.BusinessFaqAnswers.FirstOrDefault().BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault().UploadedPhoto;
 				var Date = item.Date == DateTime.MinValue ? string.Empty : DateChanger.ToPersianDateString(item.Date);
-				askTheCommunity_QuestionListViewModels.Add(new AskTheCommunity_QuestionListViewModel() { Subject = item.Question , Answer = item.BusinessFaqAnswers.FirstOrDefault().Text ,  UserImage = UserPhoto , AnswersCount = item.BusinessFaqAnswers.Count , Date = Date, UserId = item.BizAppUserId , UserName =await _UnitOfWork.UserRepo.GetFullName(item.BizAppUserId) , Id = item.Id});
+				askTheCommunity_QuestionListViewModels.Add(new AskTheCommunity_QuestionListViewModel() { Subject = item.Question , Answer = item.BusinessFaqAnswers.FirstOrDefault().Text ,  UserImage = UserPhoto , AnswersCount = item.BusinessFaqAnswers.Where(s=>s.StatusEnum ==  DomainClass.Enums.StatusEnum.Accepted).Count() , Date = Date, UserId = item.BizAppUserId , UserName =await _UnitOfWork.UserRepo.GetFullName(item.BizAppUserId) , Id = item.Id});
 			}
 			#endregion
 			#region BusinessItem 
@@ -157,52 +157,64 @@ namespace BizApp.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddFaqsAnswers(BusinessFaqAnswer model ,Guid BusinessId)
 		{
-			AnswerAskTheCommunityViewModel answerAskTheCommunityViewModel = new AnswerAskTheCommunityViewModel();
-			AnswerAskTheCommunity_NavbarViewModel answerAskTheCommunity_NavbarViewModel = new AnswerAskTheCommunity_NavbarViewModel();
-			AnswerAskTheCommunity_AnswersCountViewModel answerAskTheCommunity_AnswersCountViewModel = new AnswerAskTheCommunity_AnswersCountViewModel();
-			AnswerAskTheCommunity_AnswersViewModel singleAnswerAskTheCommunity_AnswersViewModels = new AnswerAskTheCommunity_AnswersViewModel();
-			List<AskTheCommunity_QuestionListViewModel> askTheCommunity_QuestionListViewModels = new List<AskTheCommunity_QuestionListViewModel>();
 			if (!User.Identity.IsAuthenticated)
 			{
 				return RedirectToAction(nameof(IndexAuthorize), "AskTheCommunity", new { Id = BusinessId , BusinessFaqId = model.BusinessFaqId , redirectType =2 });
 			}
 			try
 			{
+             
 			await _UnitOfWork.AskTheCommunityRepo.AddBusinessFaqAnswers(model);
 			await _UnitOfWork.SaveAsync();
-			var BusinessItem = await _UnitOfWork.BusinessRepo.GetById(BusinessId);
-			var BusinessFaqItem = await _UnitOfWork.AskTheCommunityRepo.GetBusinessFaqById(model.BusinessFaqId);
-			var CurrentUser = await _UnitOfWork.UserRepo.GetById(GetUserId());
-            answerAskTheCommunity_NavbarViewModel.BusinessId = BusinessItem.Id;
-			answerAskTheCommunity_NavbarViewModel.BusinessFaqId = model.BusinessFaqId; 
-			answerAskTheCommunity_NavbarViewModel.BusinessName = BusinessItem.Name;
-			answerAskTheCommunity_NavbarViewModel.BusinessDistricName = BusinessItem.District.Name;
-			answerAskTheCommunity_NavbarViewModel.BusinessCity = BusinessItem.District.City.Name;
-			answerAskTheCommunity_NavbarViewModel.BusinessRate = BusinessItem.Rate == 0 ? 1 : BusinessItem.Rate;
-			answerAskTheCommunity_NavbarViewModel.BusinessTotalReview = await _UnitOfWork.ReviewRepo.GetBusinessTotalReview(BusinessId);
-			answerAskTheCommunity_NavbarViewModel.BusinessImage = string.IsNullOrEmpty(BusinessItem.FeatureImage) == false ? "/Upload/DefaultPicutres/Bussiness/business-strategy-success-target-goals_1421-33.jpg" : BusinessItem.FeatureImage; 
-			answerAskTheCommunity_NavbarViewModel.Date = BusinessFaqItem.Date.ToPersianDateString();
-			answerAskTheCommunity_NavbarViewModel.QuestionSubject = BusinessFaqItem.Question;
-			answerAskTheCommunity_NavbarViewModel.UserName =await _UnitOfWork.UserRepo.GetUserName(BusinessFaqItem.BizAppUserId);
-			singleAnswerAskTheCommunity_AnswersViewModels.Date = DateTime.Now.ToPersianDateString();
-			singleAnswerAskTheCommunity_AnswersViewModels.Id = model.Id;
-			singleAnswerAskTheCommunity_AnswersViewModels.Text = model.Text;
-			singleAnswerAskTheCommunity_AnswersViewModels.UserName = CurrentUser.UserName;
-			singleAnswerAskTheCommunity_AnswersViewModels.TotalBusinessImage = await _UnitOfWork.ReviewRepo.GetUserTotalBusinessMedia(GetUserId());
-			singleAnswerAskTheCommunity_AnswersViewModels.TotalFriend = await _UnitOfWork.UserRepo.GetUserFriendsCount(GetUserId());
-			singleAnswerAskTheCommunity_AnswersViewModels.TotalReview = await _UnitOfWork.ReviewRepo.GetUserTotalReview(GetUserId()) ;
-			singleAnswerAskTheCommunity_AnswersViewModels.UserPicture = CurrentUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault() == null ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : CurrentUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault().UploadedPhoto;
-				#region FinalResualts
-				answerAskTheCommunityViewModel.answerAskTheCommunity_NavbarViewModel = answerAskTheCommunity_NavbarViewModel;
-				answerAskTheCommunityViewModel.singleAnswerAskTheCommunity_AnswersViewModels = singleAnswerAskTheCommunity_AnswersViewModels;
-				#endregion
-				return View(answerAskTheCommunityViewModel);
+			return RedirectToAction(nameof(PageAddFaqsAnswer), "AskTheCommunity", new { BusinessFaqId = model.BusinessFaqId, Id = model.Id , Text = model.Text, BusinessId = BusinessId });
 			}
 			catch (Exception)
 			{
 				return Json(new { success = false });
 			}
 		}
+
+
+		public async Task<IActionResult> PageAddFaqsAnswer(Guid BusinessFaqId ,Guid Id, string Text, Guid BusinessId)
+		{
+			AnswerAskTheCommunityViewModel answerAskTheCommunityViewModel = new AnswerAskTheCommunityViewModel();
+			AnswerAskTheCommunity_NavbarViewModel answerAskTheCommunity_NavbarViewModel = new AnswerAskTheCommunity_NavbarViewModel();
+			AnswerAskTheCommunity_AnswersCountViewModel answerAskTheCommunity_AnswersCountViewModel = new AnswerAskTheCommunity_AnswersCountViewModel();
+			AnswerAskTheCommunity_AnswersViewModel singleAnswerAskTheCommunity_AnswersViewModels = new AnswerAskTheCommunity_AnswersViewModel();
+			List<AskTheCommunity_QuestionListViewModel> askTheCommunity_QuestionListViewModels = new List<AskTheCommunity_QuestionListViewModel>();
+
+
+			var BusinessItem = await _UnitOfWork.BusinessRepo.GetById(BusinessId);
+			var BusinessFaqItem = await _UnitOfWork.AskTheCommunityRepo.GetBusinessFaqById(BusinessFaqId);
+			var CurrentUser = await _UnitOfWork.UserRepo.GetById(GetUserId());
+			answerAskTheCommunity_NavbarViewModel.BusinessId = BusinessItem.Id;
+			answerAskTheCommunity_NavbarViewModel.BusinessFaqId = BusinessFaqId;
+			answerAskTheCommunity_NavbarViewModel.BusinessName = BusinessItem.Name;
+			answerAskTheCommunity_NavbarViewModel.BusinessDistricName = BusinessItem.District.Name;
+			answerAskTheCommunity_NavbarViewModel.BusinessCity = BusinessItem.District.City.Name;
+			answerAskTheCommunity_NavbarViewModel.BusinessRate = BusinessItem.Rate == 0 ? 1 : BusinessItem.Rate;
+			answerAskTheCommunity_NavbarViewModel.BusinessTotalReview = await _UnitOfWork.ReviewRepo.GetBusinessTotalReview(BusinessId);
+			answerAskTheCommunity_NavbarViewModel.BusinessImage = string.IsNullOrEmpty(BusinessItem.FeatureImage) == false ? "/Upload/DefaultPicutres/Bussiness/business-strategy-success-target-goals_1421-33.jpg" : BusinessItem.FeatureImage;
+			answerAskTheCommunity_NavbarViewModel.Date = BusinessFaqItem.Date.ToPersianDateString();
+			answerAskTheCommunity_NavbarViewModel.QuestionSubject = BusinessFaqItem.Question;
+			answerAskTheCommunity_NavbarViewModel.UserName = await _UnitOfWork.UserRepo.GetUserName(BusinessFaqItem.BizAppUserId);
+			singleAnswerAskTheCommunity_AnswersViewModels.Date = DateTime.Now.ToPersianDateString();
+			singleAnswerAskTheCommunity_AnswersViewModels.Id = Id;
+			singleAnswerAskTheCommunity_AnswersViewModels.Text = Text;
+			singleAnswerAskTheCommunity_AnswersViewModels.UserName = CurrentUser.UserName;
+			singleAnswerAskTheCommunity_AnswersViewModels.TotalBusinessImage = await _UnitOfWork.ReviewRepo.GetUserTotalBusinessMedia(GetUserId());
+			singleAnswerAskTheCommunity_AnswersViewModels.TotalFriend = await _UnitOfWork.UserRepo.GetUserFriendsCount(GetUserId());
+			singleAnswerAskTheCommunity_AnswersViewModels.TotalReview = await _UnitOfWork.ReviewRepo.GetUserTotalReview(GetUserId());
+			singleAnswerAskTheCommunity_AnswersViewModels.UserPicture = CurrentUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault() == null ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : CurrentUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault().UploadedPhoto;
+			#region FinalResualts
+			answerAskTheCommunityViewModel.answerAskTheCommunity_NavbarViewModel = answerAskTheCommunity_NavbarViewModel;
+			answerAskTheCommunityViewModel.singleAnswerAskTheCommunity_AnswersViewModels = singleAnswerAskTheCommunity_AnswersViewModels;
+			#endregion
+			return View(answerAskTheCommunityViewModel);
+		}
+
+
+
 		[HttpPost]
 		public async Task<IActionResult> AddHelpfullAnswers(Guid Id, string UserId)
 		{
@@ -218,19 +230,37 @@ namespace BizApp.Controllers
 			return Json(new { success = true });
 		}
 		[HttpPost]
-		public async Task<IActionResult> RemoveFaqsAnswer(Guid Id , Guid BusinessId)
+		public async Task<IActionResult> RemoveFaqsAnswer(Guid BusinessFaqAnswerId, Guid BusinessId ,Guid BusinessFaqId)
 		{
 			try
 			{
-			await _UnitOfWork.AskTheCommunityRepo.RemoveFaqAnswer(Id);
+			await _UnitOfWork.AskTheCommunityRepo.RemoveFaqAnswer(BusinessFaqAnswerId);
 			await _UnitOfWork.SaveAsync();
-				return RedirectToAction(nameof(GetFaqsAnswers), "AskTheCommunity", new { Id = BusinessId, BusinessFaqId = Id });
+			return RedirectToAction(nameof(GetFaqsAnswers), "AskTheCommunity", new { Id = BusinessId, BusinessFaqId = BusinessFaqId });
 			}
 			catch (Exception)
 			{
 				return Json(new { success = false });
 			}
 		}
+
+		[HttpPost]
+		public async Task<IActionResult> EditFactAnswer(BusinessFaqAnswer model)
+		{
+			try
+			{
+				await _UnitOfWork.AskTheCommunityRepo.EditFactAnswer(model);
+		
+				return Json(new { success = true });
+			}
+			catch (Exception)
+			{
+				return Json(new { success = false });
+
+			}
+		}
+
+
 		private string GetUserId()
 		{
 			return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;

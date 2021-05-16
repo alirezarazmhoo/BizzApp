@@ -76,7 +76,7 @@ namespace DataLayer.Services
 
 		public async Task<int> AnswerCount(Guid Id)
 		{
-			return  await DbContext.BusinessFaqAnswers.Where(s => s.BusinessFaqId.Equals(Id)).CountAsync();
+			return  await DbContext.BusinessFaqAnswers.Where(s => s.BusinessFaqId.Equals(Id) && s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted).CountAsync();
 		}
 		public async Task AddHelpFull(Guid Id , string UserId)
 		{
@@ -102,5 +102,18 @@ namespace DataLayer.Services
 				}
 			}
 		}
+		public async Task EditFactAnswer(BusinessFaqAnswer model)
+		{
+			var Item = await DbContext.BusinessFaqAnswers.FirstOrDefaultAsync(s => s.Id.Equals(model.Id));
+			if(Item != null)
+			{
+				Item.Text = model.Text;
+				await DbContext.SaveChangesAsync();
+			}
+
+		}
+
+
+
 	}
 }

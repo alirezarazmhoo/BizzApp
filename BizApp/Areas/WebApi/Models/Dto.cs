@@ -155,7 +155,13 @@ namespace BizApp.Areas.WebApi.Models
 		public int Cool { get; set; }
 		public int Funny { get; set; }
 		public List<(Guid Id, string Image, string Description)> ReviewMedias { get; set; }
-
+		public string UserName { get; set; }
+		public string UserId { get; set;   }
+		public string UserPicture { get; set;  }
+		public int UserTotalReview { get; set;  }
+		public int UserTotalFriend { get; set; }
+		public int UserTotalBusinessMedia { get; set;  }
+		public string Date { get; set;  }
 
 	}
 	public class AbutUserProfile

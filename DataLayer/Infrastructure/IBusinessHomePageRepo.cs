@@ -17,7 +17,6 @@ namespace DataLayer.Infrastructure
 		Task<Tuple<string, double, double, List<LocationHours>>> GetBusinessLocationHours(Guid id);
 		Task<List<Tuple<string, string, int, int, Guid, string, string>>> GetNearByBusinessSponsored(Guid id);
 		Task<Tuple<string, string, string, string>> GetBusinessOtherInfo(Guid id); 
-		Task<IEnumerable<DomainClass.Businesses.BusinessFaq>> GetBusinessFaq(Guid id);
 		Task<IEnumerable<Review>> GetBusinessReview(Guid id);
 		Task<IEnumerable<Business>> GetRelatedBusiness(Guid id);
 		Task MessageToBusiness(MessageToBusiness model);

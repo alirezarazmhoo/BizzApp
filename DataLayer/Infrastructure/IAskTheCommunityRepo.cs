@@ -17,6 +17,7 @@ namespace DataLayer.Infrastructure
 		Task<int> AnswerCount(Guid Id);
 		Task AddHelpFull(Guid Id, string UserId);
 		Task AddNotHelpFull(Guid Id, string UserId);
-		Task RemoveFaqAnswer(Guid Id); 
+		Task RemoveFaqAnswer(Guid Id);
+		Task EditFactAnswer(BusinessFaqAnswer model); 
 	}
 }

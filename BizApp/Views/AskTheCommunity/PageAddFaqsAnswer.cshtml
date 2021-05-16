@@ -72,21 +72,23 @@
 
 						</div>
 						<div class="questions-detail__content__answers-item__desc">
-							<p>@Model.singleAnswerAskTheCommunity_AnswersViewModels.Text</p>
+							<p id="currentText">@Model.singleAnswerAskTheCommunity_AnswersViewModels.Text</p>
 						</div>
 						<div class="questions-detail__content__answers-item__btns">
-							<a href="#" style="height:30px" data-target="#click-question" data-toggle="modal"><i style="font-size:20px" class="fa">&#xf1f8;</i> <span></span></a>
-							<a href="#" style="height:30px"><i style="font-size:20px" class="fa">&#xf14b;</i> <span></span></a>
+							<a style="height:30px" data-target="#click-question" data-toggle="modal"><i style="font-size:20px" class="fa">&#xf1f8;</i> <span></span></a>
+							<a  style="height:30px" onclick="ActiveEdit();"><i style="font-size:20px" class="fa" >&#xf14b;</i> <span></span></a>
 						</div>
 					</div>
 
-					<div class="questions-detail__content__form">
-						<form method="post" action="/AskTheCommunity/AddFaqsAnswers">
-							<h3>پاسخی بنویسید:</h3>
+					<div id="questions-detail__content__form" class="questions-detail__content__form" style="display:none" >
+						<form method="post">
+							<h3>ویرایش پاسخ :</h3>
 							<input name="BusinessId" value="@Model.answerAskTheCommunity_NavbarViewModel.BusinessId" hidden />
 							<input name="BusinessFaqId" value="@Model.answerAskTheCommunity_NavbarViewModel.BusinessFaqId" hidden />
-							<textarea class="form-control" name="Text" required></textarea>
-							<button type="submit" class="btn">ارسال پاسخ</button>
+							<textarea class="form-control" name="Text" id="Text" required>@Model.singleAnswerAskTheCommunity_AnswersViewModels.Text</textarea>
+							<button type="button" onclick="Edit()" class="btn btn-success">ویرایش پاسخ</button>
+							<button type="button" onclick="cancellEdit()" class="btn btn-danger">انصراف</button>
+
 						</form>
 					</div>
 				</div>
@@ -118,15 +120,16 @@
 					<div class="questions-detail__sidebar__other-questions__title" style="margin-right:20px;cursor:pointer">
 						<h3>همه پاسخ ها</h3>
 					</div>
-
-
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<form action="/AskTheCommunity/RemoveFaqsAnswer" method="post" id="frmRemoveBusinessFaq">
-		<input value="@Model.answerAskTheCommunity_NavbarViewModel.BusinessFaqId" id="BusinessFaqId" />
+		<input value="@Model.singleAnswerAskTheCommunity_AnswersViewModels.Id" name="BusinessFaqAnswerId" id="BusinessFaqAnswerId" hidden />
+		<input value="@Model.answerAskTheCommunity_NavbarViewModel.BusinessId" name="BusinessId" hidden />
+		<input value="@Model.answerAskTheCommunity_NavbarViewModel.BusinessFaqId" name="BusinessFaqId" hidden />
+
 	</form>
 
 
@@ -163,5 +166,30 @@
 <script>
 	function Remove() {
 		$("#frmRemoveBusinessFaq").submit();
+	}
+	function ActiveEdit() {
+
+		$("#questions-detail__content__form").show(); 
+	}
+
+	function cancellEdit() {
+		$("#questions-detail__content__form").hide(); 
+	}
+	function Edit() {
+			var fd = new FormData();
+		    fd.append('Text', $("#Text").val());
+    		fd.append('Id', $("#BusinessFaqAnswerId").val());
+			fd.append('Title', $("#title").val());
+			$.ajax({
+				type: "Post",
+				url: '/AskTheCommunity/EditFactAnswer',
+				dataType: "json",
+				data: fd,
+				contentType: false,
+				processData: false,
+				success: function (response) {
+					$("#currentText").text($("#Text").val());
+				}
+			});
 	}
 </script>

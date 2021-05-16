@@ -82,23 +82,6 @@ namespace DataLayer.Services
 				return null;
 			}
 		}
-		public async Task<IEnumerable<BusinessFaq>> GetBusinessFaq(Guid id)
-		{
-			var BusinessItem = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Id.Equals(id));
-			if(BusinessItem != null)
-			{
-				List<BusinessFaq> businessFaqs = new List<BusinessFaq>();
-				foreach (var item in await DbContext.BusinessFaqs.Include(s=>s.BusinessFaqAnswers).Where(s => s.BusinessId.Equals(id)).ToListAsync())
-				{
-					businessFaqs.Add(new BusinessFaq() { BusinessId = id,  BusinessFaqAnswers = item.BusinessFaqAnswers, Question = item.Question, Id = item.Id });
-				}
-				return businessFaqs;				
-			}
-			else
-			{
-			return null; 
-			}
-		}
 		public async Task<IEnumerable<Review>> GetBusinessReview(Guid id)
 		{
 			var Items = await DbContext.Reviews

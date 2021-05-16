@@ -149,7 +149,9 @@ namespace BizApp.Areas.WebApi.Controllers
 				var Items = await _UnitOfWork.ReviewRepo.GetUserReview(Id);
 				foreach (var item in Items)
 				{
-					reviews.Add(new ReviewProfile() { Image = string.IsNullOrEmpty(item.Business.FeatureImage) == false ? "/Upload/DefaultPicutres/Bussiness/business-strategy-success-target-goals_1421-33.jpg" : item.Business.FeatureImage, Rate = item.Rate, TotalImages = item.ReviewMedias.Count, Text = item.Description, BusinessName = item.Business.Name, Id = item.Id, Cool = item.CoolCount , Funny = item.FunnyCount , UseFull = item.UsefulCount ,  ReviewMedias = FillMediaType(item.ReviewMedias)  });
+					reviews.Add(new ReviewProfile() { Image = string.IsNullOrEmpty(item.Business.FeatureImage) == false ? "/Upload/DefaultPicutres/Bussiness/business-strategy-success-target-goals_1421-33.jpg" : item.Business.FeatureImage, Rate = item.Rate, TotalImages = item.ReviewMedias.Count, Text = item.Description, BusinessName = item.Business.Name, Id = item.Id, Cool = item.CoolCount , Funny = item.FunnyCount , UseFull = item.UsefulCount ,  ReviewMedias = FillMediaType(item.ReviewMedias) , Date = item.Date.ToPersianDateString() , UserId = item.BizAppUserId , UserName = item.BizAppUser.UserName , UserPicture = string.IsNullOrEmpty(item.BizAppUser.ApplicationUserMedias
+							.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault()) == true ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault() , UserTotalBusinessMedia = await _UnitOfWork.ReviewRepo.GetUserTotalBusinessMedia(item.BizAppUserId) , UserTotalFriend = await _UnitOfWork.UserRepo.GetUserFriendsCount(Id) ,  UserTotalReview = await _UnitOfWork.ReviewRepo.GetUserTotalReview(Id)
+					});
 				}
 				return Ok(reviews);
 			}

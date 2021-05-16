@@ -53,7 +53,7 @@ namespace BizApp.Controllers
 			var SponseredBusinessItem = await _UnitOfWork.BusinessHomePageRepo.GetNearByBusinessSponsored(BusinessId);
 			var BusinessOtherInfoItem = await _UnitOfWork.BusinessHomePageRepo.GetBusinessOtherInfo(BusinessId);
 			var ReviewsItem = await _UnitOfWork.BusinessHomePageRepo.GetBusinessReview(BusinessId);
-			var CommunityItems = await _UnitOfWork.BusinessHomePageRepo.GetBusinessFaq(BusinessId);
+			var CommunityItems = await _UnitOfWork.AskTheCommunityRepo.GetBusinessFaq(BusinessId);
 			var RelatedBusinessItem = await _UnitOfWork.BusinessHomePageRepo.GetRelatedBusiness(BusinessId);
 			var LocationAndHours = await _UnitOfWork.BusinessHomePageRepo.GetBusinessLocationHours(BusinessId);
 			var BusinessName = await _UnitOfWork.BusinessRepo.GetBusinessName(BusinessId);
@@ -101,11 +101,11 @@ namespace BizApp.Controllers
 			}
 			#endregion
 			#region AsktheCommunity
-			foreach (var item in CommunityItems)
+			foreach (var item in CommunityItems.OrderByDescending(s=>s.Date).TakeLast(5))
 			{
 				string Date = item.Date == DateTime.MinValue ? "نامشخص" : item.Date.ToPersianDateString();
 
-				businessHomePage_FaqViewModels.Add(new BusinessHomePage_FaqViewModel() { Question = item.Question, Answers = item.BusinessFaqAnswers.Select(s => s.Text).ToList(), Date = Date, AnswersCount = item.BusinessFaqAnswers.Count()  ,Id = item.Id}) ;
+				businessHomePage_FaqViewModels.Add(new BusinessHomePage_FaqViewModel() { Question = item.Question, Answers = item.BusinessFaqAnswers.Select(s => s.Text).ToList(), Date = Date, AnswersCount = item.BusinessFaqAnswers.Where(s=>s.StatusEnum== DomainClass.Enums.StatusEnum.Accepted).Count()  ,Id = item.Id}) ;
 			}
 			
 			#endregion
