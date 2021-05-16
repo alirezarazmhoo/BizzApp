@@ -45,7 +45,7 @@ namespace BizApp.Areas.Profile.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Index(string userName, int page = 1)
+		public async Task<IActionResult> Index(string userName = "", int page = 1)
 		{
 			// if user is authentitcate
 			if (string.IsNullOrEmpty(userName)) return await Index(page);
@@ -141,23 +141,26 @@ namespace BizApp.Areas.Profile.Controllers
 		}
 
 		[HttpGet]
-
-		public async Task<IActionResult> ConfirmRelation(Guid id)
+		public async Task<IActionResult> Confirm()
 		{
-			var relation = await UnitOfWork.FriendRepo.GetById(id);
-			if (relation == null) return NotFound();
+			var requests = await UnitOfWork.FriendRepo.GetRequests(CurrentUserId);
 
-			var userName = await UnitOfWork.UserRepo.GetUserName(relation.ApplicatorUserId);
-			var userDetail = await UnitOfWork.UserProfileRepo.GetUserDetail(userName);
+			//var relation = await UnitOfWork.FriendRepo.GetById(id);
+			//if (relation == null) return NotFound();
 
-			var model = new ConfirmRelationViewModel
-			{
-				Id = relation.Id,
-				Message = relation.Description,
-				UserDetail = userDetail
-			};
+			//var userName = await UnitOfWork.UserRepo.GetUserName(relation.ApplicatorUserId);
+			//var userDetail = await UnitOfWork.UserProfileRepo.GetUserDetail(userName);
+
+			//var model = new ConfirmRelationViewModel
+			//{
+			//	Id = relation.Id,
+			//	Message = relation.Description,
+			//	CreatedAt = relation.CreatedAt,
+
+			//	UserDetail = userDetail
+			//};
 			
-			return View(model);
+			return View(requests);
 		}
 		
 		//[HttpPost("accepted")]
@@ -201,6 +204,8 @@ namespace BizApp.Areas.Profile.Controllers
 			}
 		}
 
+		[HttpPost]
+		[ActionName("approved")]
 		public async Task<IActionResult> ApprovedRelation(string applicatorUserId)
 		{
 			try
@@ -219,7 +224,8 @@ namespace BizApp.Areas.Profile.Controllers
 				return StatusCode(500);
 			}
 		}
-		
+
+		[ActionName("reject")]
 		public async Task<IActionResult> RejectRelation(string applicatorUserId)
 		{
 			try

@@ -120,8 +120,6 @@ namespace DataLayer.Services
 
 				scope.Complete();
 			}
-
-
 		}
 
 		public async Task AcceptedRelation(string receiverUserId, string applicatorUserId)
@@ -195,5 +193,42 @@ namespace DataLayer.Services
 			return await DbContext.Friends.Include(s=>s.Receiver).Include(s=>s.Receiver).ThenInclude(s=>s.ApplicationUserMedias).FirstOrDefaultAsync(s => s.Id.Equals(Id));
 		}
 
+		public int GetFriendsNumber(string userId)
+		{
+			var count = 
+				DbContext.Friends
+					.Where(w => w.Status == StatusEnum.Accepted
+								&& (w.ApplicatorUserId == userId || w.ReceiverUserId == userId)).Count();
+
+			return count / 2;
+		}
+
+		public async Task<IEnumerable<FriendRequestQuery>> GetRequests(string userId)
+		{
+			return await DbContext.Friends
+					.Where(w => w.ReceiverUserId == userId)
+					.Select(s => new FriendRequestQuery
+					{
+						Id = s.Id,
+						CreatedAt = s.CreatedAt,
+						Message = s.Description,
+						UserDetail = new UserProfileDetailQuery
+						{
+							Id = s.ApplicatorUserId,
+							FullName = s.Applicator.FullName,
+							UserName = s.Applicator.UserName,
+							ProvinceName = s.Applicator.City.Province.Name,
+							CityName = s.Applicator.City.Name,
+							FriendNumber = (
+								DbContext.Friends
+									.Where(w => w.Status == StatusEnum.Accepted
+										&& (w.ApplicatorUserId == s.ApplicatorUserId || 
+											w.ReceiverUserId == s.ApplicatorUserId)).Count()
+							),
+							ReviewCount = s.Applicator.Reviews.Count
+						}
+					})
+					.ToListAsync();
+		}
 	}
 }

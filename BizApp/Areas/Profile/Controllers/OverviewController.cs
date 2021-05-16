@@ -74,7 +74,7 @@ namespace BizApp.Areas.Profile.Controllers
 						{
 							CreatedAt = notification.CreatedAt,
 							Title = $"{friendUserFullName} به شما درخواست دوستی داده است",
-							Link = $"/profile/friend/relationconfirm/{notification.ModelId}/",
+							Link = $"/profile/friend/confirm",
 							Model = NotificationModel.Friend
 						};
 

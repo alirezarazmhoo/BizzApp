@@ -110,7 +110,12 @@ namespace DataLayer.Services
 		}
 		public async Task<int> GetUserFriendsCount(string Id)
 		{
-			return await DbContext.Friends.Where(s => s.ApplicatorUserId.Equals(Id)).CountAsync();
+			var friends = await
+				DbContext.Friends
+					.Where(w => w.Status == DomainClass.Enums.StatusEnum.Accepted
+								&& (w.ApplicatorUserId == Id || w.ReceiverUserId == Id)).CountAsync();
+
+			return friends / 2;
 		}
 	}
 }

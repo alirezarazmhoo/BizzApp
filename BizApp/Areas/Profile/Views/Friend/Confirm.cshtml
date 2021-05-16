@@ -1,0 +1,146 @@
+﻿@model System.Collections.Generic.IEnumerable<DomainClass.Queries.FriendRequestQuery>
+
+@using BizApp.Utility;
+@{
+	ViewData["title"] = "تاییدیه درخواست دوستی";
+	Layout = "~/Views/Shared/_AllPagesLayout.cshtml";
+}
+
+<section class="questions-detail">
+	<div class="container">
+		<div class="row" data-space="0">
+			<div class="col-lg-8">
+				<div class="questions-detail__content">
+					<div class="page-header__wrapper">
+						@if (Model.ToList().Count > 0)
+						{
+							<h2>شما درخواست دوستی جدید دارید</h2>
+							<p style="padding-top: 5px;">
+								لطفا وضعیت درخواست دوستی خود را مشخص نمایید
+							</p>
+						}
+						else
+						{
+							<h2>درخواست های دوستی</h2>
+							<p style="padding-top: 5px;">
+								لیست درخواست های دوستی شما
+							</p>
+						}
+					</div>
+					<div class="container">
+						@if (Model.ToList().Count > 0)
+						{
+							@foreach (var item in Model)
+							{
+								<div class="row" data-space="0">
+									<div class="col-lg-2">
+										<div class="questions-detail__content__answers-header__sort">
+											<a href="/profile/overview?username=@item.UserDetail.UserName">
+												<span>@item.UserDetail.FullName</span>
+											</a>
+										</div>
+									</div>
+									<div class="col-lg-9 col-lg-offset-1">
+										<div class="questions-detail__sidebar__location__content">
+											<div class="questions-detail__sidebar__location__content__title">
+												<a href="/profile/overview?username=@item.UserDetail.UserName">@item.UserDetail.FullName</a>
+											</div>
+											<div class="questions-detail__sidebar__location__content__info">
+												<strong>@item.UserDetail.ProvinceName @item.UserDetail.CityName</strong>
+											</div>
+											<div class="questions-detail__sidebar__location__content__star">
+												<svg id="18x18_friends" height="18" viewBox="0 0 18 18" width="18" style=" fill: #f15c00;"><g><path d="M7.904 9.43l-2.098 4.697a.9.9 0 0 1-1.612 0L2.096 9.43a.902.902 0 0 1 .806-1.305h4.196c.67 0 1.105.705.806 1.305zM5 7.375a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"></path><path d="M15.904 9.43l-2.098 4.697a.89.89 0 0 1-.806.498.89.89 0 0 1-.806-.498L10.096 9.43a.902.902 0 0 1 .806-1.305h4.195c.67 0 1.106.705.807 1.305zM13 7.375a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" opacity=".502"></path></g></svg>
+												<span>@item.UserDetail.FriendNumber</span>
+											</div>
+											<div class="questions-detail__sidebar__location__content__star">
+												<svg id="18x18_review" height="18" viewBox="0 0 18 18" width="18" style=" fill: #f15c00;"><path d="M13 3H5c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1.505 9.643l-2.526-1.55L6.526 12.7 7 9.934 5 7.977l2.766-.404L8.97 4.7l1.264 2.873L13 7.977l-2 1.957.495 2.71z"></path></svg>
+												<span>@item.UserDetail.ReviewCount</span>
+											</div>
+										</div>
+
+										<div class="questions-detail__sidebar__location__content">
+											<div class="alert alert-dark" role="alert">
+												<p>پیام @item.UserDetail.FullName - @item.CreatedAt.ToPersianDateString()</p>
+												<p>@item.Message</p>
+											</div>
+										</div>
+
+										<div class="edit__item__pro-edit__form">
+											<div class="row">
+												<div class="col-xs-6">
+													<form asp-action="approved" asp-controller="friend" asp-area="profile" method="post" class="form-inline">
+														<input type="hidden" name="applicatorUserId" value="@item.UserDetail.Id" />
+														<div class="input-group">
+															<span class="input-group-btn">
+																<button type="submit" class="btn btn-primary">پذیرفتن</button>
+															</span>
+														</div>
+													</form>
+												</div>
+												<div class="col-xs-6">
+													<form asp-action="reject" asp-controller="friend" asp-area="profile" method="post" class="form-inline">
+														<input type="hidden" name="applicatorUserId" value="@item.UserDetail.Id" />
+														<div class="input-group">
+															<span class="input-group-btn">
+																<button type="submit" style="font-size: 14px;" class="btn btn-link">رد کردن</button>
+															</span>
+														</div>
+													</form>
+												</div>
+											</div>
+										</div>
+
+									</div>
+								</div>
+							}
+						}
+						else
+						{
+							<div class="row page-header__wrapper" data-space="0">
+								<h4>درخواست دوستی جدیدی برای شما ارسال نشده است</h4>
+							</div>
+						}
+
+					</div>
+				</div>
+			</div>
+			@*<div class="col-lg-4">
+					<div class="questions-detail__sidebar">
+						<div class="questions-detail__sidebar__location">
+							<div class="questions-detail__sidebar__location__image">
+								<a href="#">
+									<img src="./assets/img/comments-img2.jpg" alt="">
+								</a>
+							</div>
+							<div class="questions-detail__sidebar__location__content">
+								<div class="questions-detail__sidebar__location__content__title">
+									<a href="#">مکان تست</a>
+								</div>
+								<div class="questions-detail__sidebar__location__content__star">
+									<div class="questions-detail__sidebar__location__content__star__icon-star" data-star="3"></div>
+									<span>217 نظر</span>
+								</div>
+								<div class="questions-detail__sidebar__location__content__info">
+									<span>$$  شهر, استان, نام محله</span>
+								</div>
+							</div>
+						</div>
+						<div class="questions-detail__sidebar__other-questions">
+							<div class="questions-detail__sidebar__other-questions__title">
+								<h3>دیگر سوالات</h3>
+							</div>
+							<div class="questions-detail__sidebar__other-questions__item">
+								<span>آیا این یک مکان دوستانه بچه است؟</span>
+								<a href="#">مشاهده 6 پاسخ</a>
+							</div>
+							<div class="questions-detail__sidebar__other-questions__item">
+								<span>آیا پارکینگ دوچرخه داخل سالن یا امن وجود دارد؟</span>
+								<a href="#">مشاهده 1 پاسخ</a>
+							</div>
+						</div>
+					</div>
+				</div>*@
+		</div>
+	</div>
+</section>
+

@@ -14,7 +14,9 @@ namespace DataLayer.Infrastructure
 		Task RemoveRelation(RemoveFriendRelationCommand model);
 		Task AcceptedRelation(string receiverUserId, string applicatorUserId);
 		Task RejectRelation(string receiverUserId, string applicatorUserId);
+		Task<IEnumerable<FriendRequestQuery>> GetRequests(string userId);
 		Task<bool> CheckRelation(Guid Id);
+		int GetFriendsNumber(string userId);
 		Task<Friend> GetById(Guid Id); 
 	}
 }

@@ -1,9 +1,8 @@
-﻿using DomainClass.Queries;
-using System;
+﻿using System;
 
-namespace BizApp.Areas.Profile.Models.Friends
+namespace DomainClass.Queries
 {
-	public class ConfirmRelationViewModel
+	public class FriendRequestQuery
 	{
 		public Guid Id { get; set; }
 		public string Message { get; set; }
