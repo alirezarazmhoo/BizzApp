@@ -77,7 +77,8 @@ namespace DataLayer.Services
 							UploadedPhotoCount = s.CustomerBusinessMedia.Count,
 							ReviewCount = s.Reviews.Count,
 							Photos = (s.ApplicationUserMedias.Select(s => s.UploadedPhoto).ToList()),
-							FriendNumber = DbContext.Friends.Where(w => w.ApplicatorUserId == s.Id && w.Status == StatusEnum.Accepted).Count()
+							FriendNumber = DbContext.Friends.Where(w => (w.ApplicatorUserId == s.Id || w.ReceiverUserId == s.Id) && w.Status == StatusEnum.Accepted).Count() / 2,
+							MainPhotoPath = s.ApplicationUserMedias.FirstOrDefault(f => f.IsMainImage).UploadedPhoto
 						})
 						.FirstOrDefaultAsync();
 

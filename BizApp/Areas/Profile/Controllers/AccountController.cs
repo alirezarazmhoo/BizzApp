@@ -12,6 +12,7 @@ using DomainClass.Commands;
 using DomainClass;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authentication;
 
 // change for commit
 

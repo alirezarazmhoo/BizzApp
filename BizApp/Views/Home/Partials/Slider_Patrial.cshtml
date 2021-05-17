@@ -1,101 +1,144 @@
-﻿@model BizApp.Models.Basic.MainPage_SliderViewModel
+﻿@using Microsoft.AspNetCore.Identity
 
-	<header class="main-header">
-		<div class="main-header__background">
-			@*<img src="@Model.Image">*@
-			<img src="~/Designs/MainWebSite/assets/img/backgrund.jpg">
-	
+@model BizApp.Models.Basic.MainPage_SliderViewModel
 
-		</div>
-		<div class="container">
-			<div class="main-header__nav">
-				<div class="main-header__nav__right">
-					<ul>
-						<li><a href="#">نوشتن نظر</a></li>
-						<li><a href="#">مناسبت ها</a></li>
-						<li><a href="#">تماس با ما</a></li>
-					</ul>
-				</div>
+@inject UserManager<DomainClass.BizAppUser> UserManager
+@inject DataLayer.Infrastructure.IUserProfileRepo UserProfileService
+
+@{
+	var userName = UserManager.GetUserName(User);
+
+	// get user information
+	var user = await UserProfileService.GetUserDetail(userName);
+	var userPhotoPath = "";
+
+	if (user != null)
+	{
+		userPhotoPath = !string.IsNullOrEmpty(user.MainPhotoPath) ? user.MainPhotoPath : "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg";
+	}
+
+}
+<header class="main-header">
+	<div class="main-header__background">
+		@*<img src="@Model.Image">*@
+		<img src="~/Designs/MainWebSite/assets/img/backgrund.jpg">
+	</div>
+	<div class="container">
+		<div class="main-header__nav">
+			<div class="main-header__nav__right">
+				<ul>
+					<li><a href="#">نوشتن نظر</a></li>
+					<li><a href="#">مناسبت ها</a></li>
+					<li><a href="#">تماس با ما</a></li>
+				</ul>
+			</div>
+
+			@{ bool isAuthenticated = User.Identity.IsAuthenticated; }
+			@if (!isAuthenticated)
+			{
 				<div class="main-header__nav__left">
 					<ul>
-						<li><a asp-area="admin" asp-page="/Account/Login">ورود به سیستم</a></li>
-						<li class="colored"><a href="#">ثبت نام کنید</a></li>
+						<li><a asp-area="Identity" asp-page="/Account/Login">ورود به سیستم</a></li>
+						<li class="colored"><a asp-area="Identity" asp-page="/Account/Register">ثبت نام کنید</a></li>
 					</ul>
 				</div>
-			</div>
-			<div class="main-header__logo">
-				<img src="~/Designs/MainWebSite/Logo/bizzapplogo.jpeg" style="border-radius:8px" />
-			</div>
-			<div class="main-header__search">
-				<div class="main-header__search__right">
-			
-						<label>جستجو</label>
-						<input type="text" name="idTxtCategorySearch" id="idTxtCategorySearch" oninput="AutoComplete(this.value)" placeholder="همبرگر ، آرایشگر ، اسپا ، لوله کش ...">
-						<div class="main-header__search__right__menu-bottom">
-							<ul id="cmbSearchCategoryAlternative" style="display:none">
-							</ul>
-							<ul id="cmbSearchCategoryPrimary">
-								@foreach (var item in Model.MainPage_Category)
-								{
-									<li>
-										<a href="~/Search/AllBussiness?CategoryId=@item.Id&page=1">
-											@{
-												<svg id="iconResult" class="svg-inline--fa fa-accusoft fa-w-20" aria-hidden="true" data-prefix="fab" data-icon="accusoft" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg=""><path fill="currentColor" d="@item.Image"></path></svg>
+			}
+			else
+			{
+				<div class="main-header__nav__left  main-header__nav__left--loggined">
+					<ul>
+						<li><a href="#"><svg id="24x24_speech" height="24" width="24"><path d="M18 3H6C4.34 3 3 4.34 3 6v7c0 1.66 1.34 3 3 3h2v5l5-5h5c1.66 0 3-1.34 3-3V6c0-1.66-1.34-3-3-3z"></path></svg></a></li>
+						<li class=""><a href="#"><svg id="24x24_notification" height="24" width="24"><path d="M20.984 17.177A1 1 0 0120 18H4a1 1 0 01-.348-1.938c2.429-.901 3.739-4.605 3.739-7.634 0-1.75 1.071-3.253 2.609-3.971V4a2 2 0 114 0v.457c1.538.718 2.609 2.221 2.609 3.971 0 3.029 1.31 6.733 3.739 7.634a1 1 0 01.636 1.115zM12 22a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path></svg></a></li>
+						<li class="user">
+							<a href="#">
+								<img src="@userPhotoPath" alt="">
+								<span><svg id="14x14_triangle_down" height="14" width="14"><path d="M7 9L3.5 5h7L7 9z"></path></svg></span>
 
-											}
-											@item.Name
-										</a>
-									</li>
-								}
-							</ul>
-						</div>
-					</div>
-				<div class="main-header__search__left">
-					<label>جنب</label>
-					<input  id="searchCityInput" type="" name="" oninput="CityAutoComplete(this.value)" placeholder="مکان مورد نظر خود را جستجو کنید">
-					<div class="main-header__search__left__menu-bottom" id="cmbSearchCity">
-				
-					</div>
+							</a>
+							<div class="main-header__nav__left__tolbar">
+								<div class="main-header__nav__left__tolbar__title">
+									<div class="main-header__nav__left__tolbar__title__avatar">
+										<a href="/profile/overview"><img src="@userPhotoPath" alt=""></a>
+									</div>
+									<div class="main-header__nav__left__tolbar__title__bio">
+										<div class="main-header__nav__left__tolbar__title__bio__name">
+											<a href="/profile/overview">@user.FullName</a>
+										</div>
+										<div class="main-header__nav__left__tolbar__title__bio__desc">
+											<span>@user.CityName</span>
+										</div>
+										<div class="main-header__nav__left__tolbar__title__bio__detail">
+											<ul>
+												<li>
+													<svg id="18x18_friends" height="18" width="18"><g><path d="M7.904 9.43l-2.098 4.697a.901.901 0 01-1.612 0L2.096 9.43a.902.902 0 01.806-1.305h4.196c.67 0 1.105.705.806 1.305zM5 7.375a2 2 0 110-4 2 2 0 010 4z"></path><path d="M15.904 9.43l-2.098 4.697a.89.89 0 01-.806.498.89.89 0 01-.806-.498L10.096 9.43a.902.902 0 01.806-1.305h4.195c.67 0 1.106.705.807 1.305zM13 7.375a2 2 0 11.001-4.001A2 2 0 0113 7.375z" opacity=".502"></path></g></svg>
+													@user.ReviewCount
+												</li>
+												<li>
+													<svg id="18x18_review" height="18" width="18"><path d="M13 3H5c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1.505 9.643l-2.526-1.551L6.528 12.7 7 9.934 5 7.977l2.766-.404L8.969 4.7l1.265 2.873L13 7.977l-2 1.957.495 2.709z"></path></svg>
+													@user.FriendNumber
+												</li>
+											</ul>
+										</div>
+
+									</div>
+								</div>
+								<div class="main-header__nav__left__tolbar__action">
+									<ul>
+										<li>
+											<svg id="24x24_profile" height="24" width="24"><path d="M4.371 22c.277-4.762 3.586-8 7.629-8 4.043 0 7.352 3.238 7.63 8H4.371zM12 12a5 5 0 11.001-10.001A5 5 0 0112 12z"></path></svg>
+											<a href="/profile/overview">پروفایل من</a>
+										</li>
+										<li>
+											<svg id="24x24_settings" height="24" width="24"><path d="M21.872 10.48c.076.497.128 1.002.128 1.52s-.051 1.022-.127 1.518l-3.165.475a6.97 6.97 0 01-.552 1.343l1.9 2.571c-.299.407-.62.798-.976 1.155l-.018.018a10.05 10.05 0 01-1.154.975l-2.571-1.9c-.423.23-.874.413-1.343.553l-.475 3.165c-.491.075-.99.127-1.502.127h-.034a9.914 9.914 0 01-1.502-.127l-.475-3.165a6.999 6.999 0 01-1.343-.553l-2.571 1.9a10.05 10.05 0 01-1.154-.975l-.018-.018a10.068 10.068 0 01-.976-1.155l1.9-2.571a6.97 6.97 0 01-.552-1.343l-3.165-.475C2.052 13.022 2 12.518 2 12s.052-1.023.128-1.52l3.164-.475c.14-.469.324-.919.553-1.342l-1.9-2.571a10.035 10.035 0 012.148-2.148l2.571 1.9a6.987 6.987 0 011.342-.552l.475-3.165A10.128 10.128 0 0112 2c.518 0 1.023.052 1.519.127l.475 3.165c.469.139.919.323 1.342.552l2.571-1.9a10.035 10.035 0 012.148 2.148l-1.9 2.571c.23.423.413.873.553 1.342l3.164.475zM12 8.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7z"></path></svg>
+											<a href="/profile/account/edit">تنظیمات حساب</a>
+										</li>
+									</ul>
+								</div>
+								<div class="main-header__nav__left__tolbar__log-out">
+									<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
+										  asp-route-returnUrl="@Url.Page("/", new { area = "" })"
+										  method="post">
+										<button type="submit" class="nav-link btn btn-link">خروج</button>
+									</form>
+								</div>
+							</div>
+						</li>
+					</ul>
 				</div>
-				<div class="main-header__search__button">
-					<button class="submit" title="search">
-						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="icon_svg">
-							<path d="M21.853 20.355l-3.444-3.443a9.428 9.428 0 10-16.761-6.171 9.428 9.428 0 0015.348 7.586l3.443 3.442a1 1 0 101.414-1.414zM5.82 16.245a7.429 7.429 0 115.253 2.175 7.38 7.38 0 01-5.253-2.176z"></path>
-						</svg>
-					</button>
-				</div>
-			</div>
-			@*<div class="main-header__search">
-			<div class="main-header__search__right" >
+			}
+		</div>
+		<div class="main-header__logo">
+			<img src="~/Designs/MainWebSite/Logo/bizzapplogo.jpeg" style="border-radius:8px" />
+		</div>
+		<div class="main-header__search">
+			<div class="main-header__search__right">
+
 				<label>جستجو</label>
 				<input type="text" name="idTxtCategorySearch" id="idTxtCategorySearch" oninput="AutoComplete(this.value)" placeholder="همبرگر ، آرایشگر ، اسپا ، لوله کش ...">
-				<div class="main-header__search__right__menu-bottom" >
+				<div class="main-header__search__right__menu-bottom">
 					<ul id="cmbSearchCategoryAlternative" style="display:none">
-
 					</ul>
-						<ul id="cmbSearchCategoryPrimary">
-							@foreach (var item in Model.MainPage_Category)
-							{
-								<li>
-									<a href="#">
-										@{
-											<svg id="iconResult" class="svg-inline--fa fa-accusoft fa-w-20" aria-hidden="true" data-prefix="fab" data-icon="accusoft" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg=""><path fill="currentColor" d="@item.Image"></path></svg>
+					<ul id="cmbSearchCategoryPrimary">
+						@foreach (var item in Model.MainPage_Category)
+						{
+							<li>
+								<a href="~/Search/AllBussiness?CategoryId=@item.Id&page=1">
+									@{
+										<svg id="iconResult" class="svg-inline--fa fa-accusoft fa-w-20" aria-hidden="true" data-prefix="fab" data-icon="accusoft" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg=""><path fill="currentColor" d="@item.Image"></path></svg>
 
-										}
-										@item.Name
-									</a>
-								</li>
-							}
-						</ul>
+									}
+									@item.Name
+								</a>
+							</li>
+						}
+					</ul>
 				</div>
 			</div>
 			<div class="main-header__search__left">
-				<label>ناحیه</label>
-				<input type="text" name="" oninput="CityAutoComplete(this.value)" placeholder="مکان مورد نظر خود را جستجو کنید">
-				<div class="main-header__search__left__menu-bottom">
-					<ul id="cmbSearchCity">
-						<li><a href="#"></a></li>
-					</ul>
+				<label>جنب</label>
+				<input id="searchCityInput" type="" name="" oninput="CityAutoComplete(this.value)" placeholder="مکان مورد نظر خود را جستجو کنید">
+				<div class="main-header__search__left__menu-bottom" id="cmbSearchCity">
+
 				</div>
 			</div>
 			<div class="main-header__search__button">
@@ -105,42 +148,83 @@
 					</svg>
 				</button>
 			</div>
-		</div>*@
-			<div class="main-header__menu-bottom">
-				<ul>
-
-					@foreach (var item in Model.MainPage_Category)
-					{
-						<li>
-							<a href="~/Search/AllBussiness?CategoryId=@item.Id&page=1">
-
-								<svg id="iconResult" class="svg-inline--fa fa-accusoft fa-w-20" aria-hidden="true" data-prefix="fab" data-icon="accusoft" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg=""><path fill="currentColor" d="@item.Image"></path></svg>
-								@item.Name <svg id="14x14_triangle_down" height="17" viewBox="0 0 14 14" width="14">
-									<path d="M7 9L3.5 5h7L7 9z"></path>
-								</svg>
-
-							</a>
-							@if (item.CategoryChilds.Count > 0)
-							{
-								<ul>
-
-									@foreach (var item2 in item.CategoryChilds.Take(15))
-									{
-
-										<li><a href="~/Search/AllBussiness?CategoryId=@item2.Key&page=1">@item2.Value</a></li>
-									}
-
-								</ul>
-							}
-						</li>
-					}
-
-				</ul>
-			</div>
-			<div class="main-header__text">
-				<a href="#" style="color:white">@Model.Title</a>
-			</div>
 		</div>
+		@*<div class="main-header__search">
+				<div class="main-header__search__right" >
+					<label>جستجو</label>
+					<input type="text" name="idTxtCategorySearch" id="idTxtCategorySearch" oninput="AutoComplete(this.value)" placeholder="همبرگر ، آرایشگر ، اسپا ، لوله کش ...">
+					<div class="main-header__search__right__menu-bottom" >
+						<ul id="cmbSearchCategoryAlternative" style="display:none">
 
-	</header>
+						</ul>
+							<ul id="cmbSearchCategoryPrimary">
+								@foreach (var item in Model.MainPage_Category)
+								{
+									<li>
+										<a href="#">
+											@{
+												<svg id="iconResult" class="svg-inline--fa fa-accusoft fa-w-20" aria-hidden="true" data-prefix="fab" data-icon="accusoft" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg=""><path fill="currentColor" d="@item.Image"></path></svg>
+
+											}
+											@item.Name
+										</a>
+									</li>
+								}
+							</ul>
+					</div>
+				</div>
+				<div class="main-header__search__left">
+					<label>ناحیه</label>
+					<input type="text" name="" oninput="CityAutoComplete(this.value)" placeholder="مکان مورد نظر خود را جستجو کنید">
+					<div class="main-header__search__left__menu-bottom">
+						<ul id="cmbSearchCity">
+							<li><a href="#"></a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="main-header__search__button">
+					<button class="submit" title="search">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="icon_svg">
+							<path d="M21.853 20.355l-3.444-3.443a9.428 9.428 0 10-16.761-6.171 9.428 9.428 0 0015.348 7.586l3.443 3.442a1 1 0 101.414-1.414zM5.82 16.245a7.429 7.429 0 115.253 2.175 7.38 7.38 0 01-5.253-2.176z"></path>
+						</svg>
+					</button>
+				</div>
+			</div>*@
+		<div class="main-header__menu-bottom">
+			<ul>
+
+				@foreach (var item in Model.MainPage_Category)
+				{
+					<li>
+						<a href="~/Search/AllBussiness?CategoryId=@item.Id&page=1">
+
+							<svg id="iconResult" class="svg-inline--fa fa-accusoft fa-w-20" aria-hidden="true" data-prefix="fab" data-icon="accusoft" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg=""><path fill="currentColor" d="@item.Image"></path></svg>
+							@item.Name <svg id="14x14_triangle_down" height="17" viewBox="0 0 14 14" width="14">
+								<path d="M7 9L3.5 5h7L7 9z"></path>
+							</svg>
+
+						</a>
+						@if (item.CategoryChilds.Count > 0)
+						{
+							<ul>
+
+								@foreach (var item2 in item.CategoryChilds.Take(15))
+								{
+
+									<li><a href="~/Search/AllBussiness?CategoryId=@item2.Key&page=1">@item2.Value</a></li>
+								}
+
+							</ul>
+						}
+					</li>
+				}
+
+			</ul>
+		</div>
+		<div class="main-header__text">
+			<a href="#" style="color:white">@Model.Title</a>
+		</div>
+	</div>
+
+</header>
 
