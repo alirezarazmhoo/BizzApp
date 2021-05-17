@@ -11,6 +11,7 @@ namespace DataLayer.Infrastructure
 	{
 		Task CreateRelation(CreateFriendRelationCommand model);
 		Task<IEnumerable<SharedUserProfileDetailQuery>> GetAll(string userName, int page = 1);
+		Task<UserProfileDetailQuery> FindFriend(Guid id, string currentUserId);
 		Task RemoveRelation(RemoveFriendRelationCommand model);
 		Task AcceptedRelation(string receiverUserId, string applicatorUserId);
 		Task RejectRelation(string receiverUserId, string applicatorUserId);

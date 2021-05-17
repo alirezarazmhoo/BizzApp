@@ -2,6 +2,7 @@
 @using DomainClass.Review.Queries
 @using BizApp.Areas.Profile.Models.UserActivities
 @using BizApp.Utility
+@using BizApp.Areas.Profile.Models
 
 @{
 	ViewData["Title"] = "فعالیت ها";
@@ -27,78 +28,97 @@
 	</div>
 
 	@* RECENT ACTIVITIES *@
-	<div class="profile-content__comment">
-		<div class="profile-content__comment__title">
-			<h2>فعالیت های اخیر</h2>
+<div class="profile-content__comment">
+	<div class="profile-content__comment__title">
+		<h2>فعالیت های اخیر</h2>
+	</div>
+	@if (Model.Activities == null)
+	{
+		<div class="alert alert-info" role="alert">
+			تا کنون فعالیتی توسط شما انحام نشده است!
 		</div>
-		@if (Model.Activities == null)
+	}
+	else
+	{
+		@foreach (var item in Model.Activities)
 		{
-			<div class="alert alert-info" role="alert">
-				تا کنون فعالیتی توسط شما انحام نشده است!
-			</div>
-		}
-		else
-		{
-			@foreach (var item in Model.Activities)
+			if (item.Data is UserReviewPaginateQuery)
 			{
-				if (item.Data is UserReviewPaginateQuery)
-				{
-					var review = item.Data as UserReviewPaginateQuery;
-					<div class="profile-content__comment__comments">
-						<div class="profile-content__comment__comments__info">
+				var review = item.Data as UserReviewPaginateQuery;
+				<div class="profile-content__comment__comments">
+					<div class="profile-content__comment__comments__info">
 
-							<div class="profile-content__comment__comments__info__image">
-								<a href="/profile/overview?username=@Model.UserDetail.UserName">
-									<img src="@Model.UserDetail.MainPhotoPath" alt="">
-								</a>
+						<div class="profile-content__comment__comments__info__image">
+							<a href="/profile/overview?username=@Model.UserDetail.UserName">
+								<img src="@Model.UserDetail.MainPhotoPath" alt="">
+							</a>
+						</div>
+						<div class="profile-content__comment__comments__info__text">
+							<div class="profile-content__comment__comments__info__text__name">
+								<span>ثبت بررسی برای <a href="#">@review.Business.Name</a></span>
 							</div>
-							<div class="profile-content__comment__comments__info__text">
-								<div class="profile-content__comment__comments__info__text__name">
-									<span>ثبت بررسی برای <a href="#">@review.Business.Name</a></span>
-								</div>
 
-							</div>
-						</div>
-						<div class="profile-content__comment__comments__Score">
-							<div class="profile-content__comment__comments__Score__star" data-star="@review.Rate">
-							</div>
-							<div class="profile-content__comment__comments__Score__data">
-								<span>@review.CreatedAt.ToPersianDateString()</span>
-							</div>
-						</div>
-						<div class="profile-content__comment__comments__txt">
-							@review.Description
 						</div>
 					</div>
-				}
-				else if (item.Data is AddedUserPhotoViewModel)
-				{
-					var adddedUserPhoto = item.Data as AddedUserPhotoViewModel;
-					<div class="profile-content__comment__comments">
-						<div class="profile-content__comment__comments__info">
-
-							<div class="profile-content__comment__comments__info__image">
-								<a href="/profile/overview?username=@Model.UserDetail.UserName">
-									<img src="@Model.UserDetail.MainPhotoPath" alt="">
-								</a>
-							</div>
-							<div class="profile-content__comment__comments__info__text">
-								<div class="profile-content__comment__comments__info__text__name">
-									<span>ثبت عکس پروفایل:</span>
-								</div>
-							</div>
+					<div class="profile-content__comment__comments__Score">
+						<div class="profile-content__comment__comments__Score__star" data-star="@review.Rate">
 						</div>
+						<div class="profile-content__comment__comments__Score__data">
+							<span>@review.CreatedAt.ToPersianDateString()</span>
+						</div>
+					</div>
+					<div class="profile-content__comment__comments__txt">
+						@review.Description
+					</div>
+				</div>
+			}
+			else if (item.Data is AddedUserPhotoViewModel)
+			{
+				var adddedUserPhoto = item.Data as AddedUserPhotoViewModel;
+				<div class="profile-content__comment__comments">
+					<div class="profile-content__comment__comments__info">
 
-						<div class="profile-content__comment__comments__image">
-							<div class="profile-content__comment__comments__image__img">
-								<a href="/profile/overview?username=@Model.UserDetail.UserName">
-									<img src="@adddedUserPhoto.ImagePath" alt="">
-								</a>
+						<div class="profile-content__comment__comments__info__image">
+							<a href="/profile/overview?username=@Model.UserDetail.UserName">
+								<img src="@Model.UserDetail.MainPhotoPath" alt="">
+							</a>
+						</div>
+						<div class="profile-content__comment__comments__info__text">
+							<div class="profile-content__comment__comments__info__text__name">
+								<span>ثبت عکس پروفایل:</span>
 							</div>
 						</div>
 					</div>
-				}
+
+					<div class="profile-content__comment__comments__image">
+						<div class="profile-content__comment__comments__image__img">
+							<a href="/profile/overview?username=@Model.UserDetail.UserName">
+								<img src="@adddedUserPhoto.ImagePath" alt="">
+							</a>
+						</div>
+					</div>
+				</div>
+			}
+			else if (item.Data == null)
+			{
+				<div class="profile-content__comment__comments">
+					<div class="profile-content__comment__comments__info">
+
+						<div class="profile-content__comment__comments__info__image">
+							<a href="/profile/overview?username=@Model.UserDetail.UserName">
+								<img src="@Model.UserDetail.MainPhotoPath" alt="">
+							</a>
+						</div>
+						<div class="profile-content__comment__comments__info__text">
+							<div class="profile-content__comment__comments__info__text__name">
+								<span>شما و  <a href="/profile/overview?username=@Model.UserDetail.UserName">
+									@Model.UserDetail.FullName</a> دوست هستید</span>
+							</div>
+						</div>
+					</div>
+				</div>
 			}
 		}
-	</div>
+	}
+</div>
 </div>

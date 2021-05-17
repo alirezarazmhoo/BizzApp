@@ -15,6 +15,7 @@ namespace DomainClass.Queries
 		public string ProvinceName { get; set; }
 		public string CityName { get; set; }
 		public IList<string> Photos { get; set; }
+		public string MainPhotoPath { get; set; }
 
 		public string GetFullName() 
 		{

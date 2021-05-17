@@ -1,4 +1,6 @@
-﻿namespace BizApp.Areas.Profile.Models
+﻿using DomainClass.Queries;
+
+namespace BizApp.Areas.Profile.Models
 {
 	public class SharedProfileDetailViewModel
 	{

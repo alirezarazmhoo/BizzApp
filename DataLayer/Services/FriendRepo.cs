@@ -101,6 +101,38 @@ namespace DataLayer.Services
 			return result;
 		}
 
+		public async Task<UserProfileDetailQuery> FindFriend(Guid id, string currentUserId)
+		{
+			var friend = await DbContext.Friends.FirstOrDefaultAsync(f => f.Id == id);
+			if (friend == null) return null;
+
+			var friendId = friend.ApplicatorUserId != currentUserId ? friend.ApplicatorUserId : friend.ReceiverUserId;
+
+			var result =
+				await DbContext.Friends
+						.Where(w => w.ApplicatorUserId == friendId)
+						.Select(s => new UserProfileDetailQuery
+						{
+							Id = s.ApplicatorUserId,
+							FullName = s.Applicator.FullName,
+							UserName = s.Applicator.UserName,
+							ProvinceName = s.Applicator.City.Province.Name,
+							CityName = s.Applicator.City.Name,
+							FriendNumber = (
+								DbContext.Friends
+									.Where(w => w.Status == StatusEnum.Accepted
+										&& (w.ApplicatorUserId == s.ApplicatorUserId ||
+											w.ReceiverUserId == s.ApplicatorUserId)).Count()
+							),
+							ReviewCount = s.Applicator.Reviews.Count,
+							MainPhotoPath = s.Applicator.ApplicationUserMedias.FirstOrDefault(f => f.IsMainImage).UploadedPhoto
+
+						})
+						.FirstOrDefaultAsync();
+
+			return result;
+
+		}
 		public async Task RejectRelation(string receiverUserId, string applicatorUserId)
 		{
 			using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -206,7 +238,7 @@ namespace DataLayer.Services
 		public async Task<IEnumerable<FriendRequestQuery>> GetRequests(string userId)
 		{
 			return await DbContext.Friends
-					.Where(w => w.ReceiverUserId == userId)
+					.Where(w => w.ReceiverUserId == userId && w.Status == StatusEnum.Waiting)
 					.Select(s => new FriendRequestQuery
 					{
 						Id = s.Id,
@@ -222,13 +254,15 @@ namespace DataLayer.Services
 							FriendNumber = (
 								DbContext.Friends
 									.Where(w => w.Status == StatusEnum.Accepted
-										&& (w.ApplicatorUserId == s.ApplicatorUserId || 
+										&& (w.ApplicatorUserId == s.ApplicatorUserId ||
 											w.ReceiverUserId == s.ApplicatorUserId)).Count()
 							),
-							ReviewCount = s.Applicator.Reviews.Count
+							ReviewCount = s.Applicator.Reviews.Count,
+							MainPhotoPath = s.Applicator.ApplicationUserMedias.FirstOrDefault(f => f.IsMainImage).UploadedPhoto
 						}
 					})
 					.ToListAsync();
 		}
+
 	}
 }

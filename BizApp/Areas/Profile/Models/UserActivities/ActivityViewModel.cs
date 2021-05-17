@@ -5,7 +5,7 @@ namespace BizApp.Areas.Profile.Models.UserActivities
 {
 	public class ActivityViewModel
 	{
-		public ActivityViewModel(DateTime createdAt ,string description)
+		public ActivityViewModel(DateTime createdAt, string description)
 		{
 			Description = description;
 			CreatedAt = createdAt;

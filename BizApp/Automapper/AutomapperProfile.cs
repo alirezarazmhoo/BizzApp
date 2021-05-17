@@ -78,6 +78,7 @@ namespace BizApp.Automapper
 			CreateMap<BizAppUser, UserViewModel>().ReverseMap();
 			CreateMap<BizAppUser, UpdateOperatorViewModel>().ReverseMap();
 			CreateMap<SharedUserProfileDetailQuery, SharedProfileDetailViewModel>().ReverseMap();
+			CreateMap<UserProfileDetailQuery, SharedProfileDetailViewModel>().ReverseMap();
 			CreateMap<UserProfileDetailQuery, ProfileViewModel>()
 				//.ForMember(dest => dest.RegisterDate, opt => opt.MapFrom(src => src.RegisterDate.ToPersianShortDate()))
 				.ReverseMap();

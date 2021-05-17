@@ -63,7 +63,7 @@ namespace BizApp.Areas.Profile.Controllers
 			var notifications = await UnitOfWork.NotificationRepo.GetTopFive(userDetail.Id);
 			NotificationViewModel notificationModel;
 			var notificationList = new List<NotificationViewModel>();
-			
+
 			foreach (var notification in notifications)
 			{
 				switch (notification.Model)
@@ -93,7 +93,7 @@ namespace BizApp.Areas.Profile.Controllers
 				UserDetail = userDetail,
 				Notifications = notificationList
 			};
-			
+
 			ActivityViewModel item;
 			foreach (var activity in activities)
 			{
@@ -104,15 +104,21 @@ namespace BizApp.Areas.Profile.Controllers
 					case TableName.Reviews:
 						item.Data = await UnitOfWork.ReviewRepo.GetUseReview(new Guid(activity.TableKey));
 						model.Activities.Add(item);
-						
 						break;
 					case TableName.UserPhotos:
 						var imagePath = await UnitOfWork.UserPhotoRepo.GetPathById(new Guid(activity.TableKey));
 						item.Data = new AddedUserPhotoViewModel(imagePath);
 						model.Activities.Add(item);
-
+						break;
+					case TableName.Friend:
+						// get friend info
+						var friendDetail = await UnitOfWork.FriendRepo.FindFriend(new Guid(activity.TableKey), CurrentUserId);
+						var data = Mapper.Map<SharedProfileDetailViewModel>(friendDetail);
+						model.UserDetail = data;
+						model.Activities.Add(item);
 						break;
 				}
+
 			}
 
 			return View("index", model);
