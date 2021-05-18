@@ -51,6 +51,7 @@ namespace BizApp
 			services.AddTransient<IUserActivityRepo, UserActivityRepo>();
 			services.AddTransient<IUserProfileRepo, UserProfileRepo>();
 			services.AddTransient<ICateogryRepo, CategoryRepo>();
+			services.AddTransient<IUserRepo, UserRepo>();
 
 			var config = new MapperConfiguration(c =>
 			{

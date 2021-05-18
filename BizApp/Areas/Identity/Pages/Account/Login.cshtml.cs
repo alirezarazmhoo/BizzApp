@@ -56,12 +56,14 @@ namespace BizApp.Areas.Identity.Pages.Account
 
 		public async Task OnGetAsync(string returnUrl = null)
 		{
+			if (User.Identity.IsAuthenticated) Response.Redirect("/");
+
 			if (!string.IsNullOrEmpty(ErrorMessage))
 			{
 				ModelState.AddModelError(string.Empty, ErrorMessage);
 			}
 
-			returnUrl = returnUrl ?? Url.Content("~/");
+			returnUrl ??= Url.Content("~/");
 
 			// Clear the existing external cookie to ensure a clean login process
 			await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
@@ -73,7 +75,7 @@ namespace BizApp.Areas.Identity.Pages.Account
 
 		public async Task<IActionResult> OnPostAsync(string returnUrl = null)
 		{
-			returnUrl = returnUrl ?? Url.Content("~/");
+			returnUrl ??= Url.Content("~/");
 
 			if (ModelState.IsValid)
 			{
@@ -95,6 +97,9 @@ namespace BizApp.Areas.Identity.Pages.Account
 				if (result.Succeeded)
 				{
 					_logger.LogInformation("User logged in.");
+
+					if (User.IsInRole("admin") || User.IsInRole("operator")) return RedirectToAction("index", "home", new { area = "admin" });
+
 					return LocalRedirect(returnUrl);
 				}
 				if (result.RequiresTwoFactor)

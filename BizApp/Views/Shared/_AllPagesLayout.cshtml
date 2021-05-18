@@ -3,54 +3,65 @@
 @using BizApp.Extensions
 @using BizApp.Models.Basic
 
+@inject DataLayer.Infrastructure.IUserRepo UserService
 @inject DataLayer.Infrastructure.ICateogryRepo CateogryService
 @{
-    var CategoryItems =await CateogryService.GetAllInSearchPage();
-    
+	var CategoryItems = await CateogryService.GetAllInSearchPage();
+	bool isAuthenticated = User.Identity.IsAuthenticated;
+
+	// get user information
+	var userAvatar = "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg";
+
+	if (isAuthenticated)
+	{
+		var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value;
+		var userMainAvatar = await UserService.GetMainPhoto(userId);
+		if (!string.IsNullOrEmpty(userMainAvatar)) userAvatar = userMainAvatar;
+	}
 }
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" id="top">
 <head>
-    <meta charset="utf-8">
-    <meta name="author" content="Luan Gjokaj, and GoPablo contributors">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-15" />
-    <title>BizzAp | @ViewData["Title"]</title>
-    <meta name="description" content="GoPablo is a static site generator with a modern development workflow, integrated web server, auto-reload, CSS preprocessors, and ES6 ready." />
-    <link rel="manifest" href="./manifest.json" />
-    <link rel="shortcut icon" href="~/Designs/MainWebSite/assets/img/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon" sizes="512x512" href="~/Designs/MainWebSite/assets/img/icon-512.png" />
-    <link rel="apple-touch-icon" sizes="192x192" href="~/Designs/MainWebSite/assets/img/icon-192.png" />
-    <link rel="apple-touch-icon-precomposed" href="~/Designs/MainWebSite/assets/img/icon-192.png" />
-    <link rel="icon" sizes="192x192" href="~/Designs/MainWebSite/assets/img/icon-192.png" />
-    <meta property="og:site_name" content="GoPablo" />
-    <meta property="og:title" content="GoPablo" />
-    <meta property="og:image" content="" />
+	<meta charset="utf-8">
+	<meta name="author" content="Luan Gjokaj, and GoPablo contributors">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-15" />
+	<title>BizzAp | @ViewData["Title"]</title>
+	<meta name="description" content="GoPablo is a static site generator with a modern development workflow, integrated web server, auto-reload, CSS preprocessors, and ES6 ready." />
+	<link rel="manifest" href="./manifest.json" />
+	<link rel="shortcut icon" href="~/Designs/MainWebSite/assets/img/favicon.ico" type="image/x-icon" />
+	<link rel="apple-touch-icon" sizes="512x512" href="~/Designs/MainWebSite/assets/img/icon-512.png" />
+	<link rel="apple-touch-icon" sizes="192x192" href="~/Designs/MainWebSite/assets/img/icon-192.png" />
+	<link rel="apple-touch-icon-precomposed" href="~/Designs/MainWebSite/assets/img/icon-192.png" />
+	<link rel="icon" sizes="192x192" href="~/Designs/MainWebSite/assets/img/icon-192.png" />
+	<meta property="og:site_name" content="GoPablo" />
+	<meta property="og:title" content="GoPablo" />
+	<meta property="og:image" content="" />
 
-    <meta property="og:url" content="https://www.gopablo.co" />
-    <meta property="article:author" content="http://facebook.com/luangjokaj" />
-    <!-- Main Style -->
-    <link href="~/Designs/MainWebSite/assets/css/styles.css" async defer rel="stylesheet">
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+	<meta property="og:url" content="https://www.gopablo.co" />
+	<meta property="article:author" content="http://facebook.com/luangjokaj" />
+	<!-- Main Style -->
+	<link href="~/Designs/MainWebSite/assets/css/styles.css" async defer rel="stylesheet">
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
 
 
-    <script src="~/Designs/MainWebSite/assets/js/header-bundle.js"></script>
-    <link href="~/lib/fontawesome-free/css/all.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-          crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-            crossorigin=""></script>
-    @RenderSection("Head", required: false)
+	<script src="~/Designs/MainWebSite/assets/js/header-bundle.js"></script>
+	<link href="~/lib/fontawesome-free/css/all.css" rel="stylesheet" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+		  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+		  crossorigin="" />
+	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+			integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+			crossorigin=""></script>
+	@RenderSection("Head", required: false)
 </head>
 <body class="header-fix">
-    <header class="header-type1">
+	<header class="header-type1">
 		<div class="header-type1__menu">
 			<div class="header-type1__menu__logo">
 				<a href="#"><img src="~/Designs/MainWebSite/Logo/bizzaplogomini.jpeg"></a>
@@ -133,290 +144,291 @@
 						<li><a href="#"><svg width="24" height="24" class="icon_svg"><path d="M7.39 11.75a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zm4.61 0a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zm4.61 0a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zM7 22.53a.94.94 0 01-.43-.1 1 1 0 01-.57-.9v-3a8.19 8.19 0 01-5-7.4v-.9A8.26 8.26 0 019.26 2h5.48A8.26 8.26 0 0123 10.26v.48A8.26 8.26 0 0114.74 19h-3l-4.12 3.31a1 1 0 01-.62.22zM9.26 4A6.27 6.27 0 003 10.26v.9A6.29 6.29 0 007.34 17a1 1 0 01.66.94v1.56l2.79-2.23a1 1 0 01.62-.22h3.33A6.27 6.27 0 0021 10.74v-.48A6.27 6.27 0 0014.74 4H9.26z"></path></svg></a></li>
 						<li><a href="#"><svg width="24" height="24" class="icon_svg"><path d="M22.64 17.23A7.31 7.31 0 0120 11.59V9A8 8 0 004 9v2.59a7.31 7.31 0 01-2.64 5.64A1 1 0 002 19h6a4 4 0 008 0h6a1 1 0 00.64-1.77zM6 9a6 6 0 0112 0v2.59c.001.472.038.943.11 1.41H5.89A9.36 9.36 0 006 11.59V9zm6 12a2 2 0 01-2-2h4a2 2 0 01-2 2zm-7.72-4a9.42 9.42 0 001.08-2h13.28a9.42 9.42 0 001.08 2H4.28z"></path></svg></a></li>
 						<li class="has-sub">
-							<a href="#"><img src="./assets/img/avatar.png" alt=""></a>
-							<ul style="display: block;">
-								<li><a href="/profile/overview"><svg width="24" height="24" class="icon_svg"><path d="M12 1a11 11 0 1011 11A11.012 11.012 0 0012 1zm0 2a8.986 8.986 0 017.33 14.205l-1.395-1.55a4.974 4.974 0 00-1.996-1.324 5.5 5.5 0 10-7.878 0 4.974 4.974 0 00-1.996 1.324l-1.395 1.55A8.986 8.986 0 0112 3zm-3.5 7.5a3.5 3.5 0 117 0 3.5 3.5 0 01-7 0zm-2.487 8.202l1.539-1.709A3.003 3.003 0 019.782 16h4.437a3.004 3.004 0 012.23.993l1.537 1.71a8.946 8.946 0 01-11.973-.001z"></path></svg>درباره من</a></li>
+							<a href="#"><img src="@userAvatar" alt=""></a>
+							<ul>
+								<li><a href="/profile/overview"><svg width="24" height="24" class="icon_svg"><path d="M12 1a11 11 0 1011 11A11.012 11.012 0 0012 1zm0 2a8.986 8.986 0 017.33 14.205l-1.395-1.55a4.974 4.974 0 00-1.996-1.324 5.5 5.5 0 10-7.878 0 4.974 4.974 0 00-1.996 1.324l-1.395 1.55A8.986 8.986 0 0112 3zm-3.5 7.5a3.5 3.5 0 117 0 3.5 3.5 0 01-7 0zm-2.487 8.202l1.539-1.709A3.003 3.003 0 019.782 16h4.437a3.004 3.004 0 012.23.993l1.537 1.71a8.946 8.946 0 01-11.973-.001z"></path></svg>پروفایل من</a></li>
 								<li class="has-seprator"><a href="/profile/account/edit"><svg width="24" height="24" class="icon_svg"><path d="M12 16.5a4.5 4.5 0 114.5-4.5 4.51 4.51 0 01-4.5 4.5zm0-7a2.5 2.5 0 100 5 2.5 2.5 0 000-5zM13.18 23h-2.36a2 2 0 01-2-1.61l-.1-.49a.49.49 0 00-.3-.36.49.49 0 00-.47.05l-.41.27a2 2 0 01-2.52-.25l-1.63-1.67a2 2 0 01-.25-2.52l.27-.42a.49.49 0 000-.47.49.49 0 00-.37-.3l-.48-.1a2 2 0 01-1.61-2v-2.31a2 2 0 011.61-2l.49-.1a.49.49 0 00.36-.3.49.49 0 000-.47l-.27-.41a2 2 0 01.25-2.52l1.67-1.63a2 2 0 012.52-.25l.42.27a.49.49 0 00.47 0 .49.49 0 00.3-.37l.1-.48a2 2 0 012-1.61h2.36a2 2 0 012 1.61l.1.49a.49.49 0 00.3.36.49.49 0 00.47 0l.41-.27a2 2 0 012.52.25l1.67 1.67a2 2 0 01.25 2.52l-.36.42a.49.49 0 00-.05.47.49.49 0 00.37.3l.48.1a2 2 0 011.61 2v2.36a2 2 0 01-1.61 2l-.49.1a.49.49 0 00-.36.3.49.49 0 00.05.47l.27.41a2 2 0 01-.25 2.52l-1.67 1.67a2 2 0 01-2.52.25l-.42-.36a.49.49 0 00-.47-.05.49.49 0 00-.3.37l-.1.48A2 2 0 0113.18 23zm-4.91-4.5c.342 0 .682.064 1 .19a2.49 2.49 0 011.49 1.82l.1.49h2.36l.1-.49c.16-.818.72-1.5 1.49-1.82a2.52 2.52 0 012.35.23l.41.28 1.67-1.67-.28-.41a2.52 2.52 0 01-.23-2.35 2.49 2.49 0 011.82-1.49l.49-.1v-2.36l-.49-.1a2.49 2.49 0 01-1.82-1.49 2.52 2.52 0 01.23-2.35l.28-.41-1.71-1.67-.41.28a2.52 2.52 0 01-2.35.23 2.49 2.49 0 01-1.49-1.82l-.1-.49h-2.36l-.1.49a2.49 2.49 0 01-1.49 1.82 2.52 2.52 0 01-2.35-.23l-.41-.28L4.8 6.47l.28.41a2.52 2.52 0 01.23 2.35 2.49 2.49 0 01-1.82 1.49l-.49.1v2.36l.49.1c.818.16 1.5.72 1.82 1.49a2.52 2.52 0 01-.23 2.35l-.28.41 1.67 1.67.41-.28a2.49 2.49 0 011.39-.42z"></path></svg>تنظیمات حساب</a></li>
-								<li style="display: flex; align-items: center;"><svg width="24" height="24" class="icon_svg"><path d="M15 2a1 1 0 110 2H4v16h11a1 1 0 110 2H3a1 1 0 01-1-1V3a1 1 0 011-1h12zm1.09 4.72a1 1 0 011.41 0L22 11.3a1 1 0 010 1.4l-4.59 4.58a1 1 0 01-1.41.02 1 1 0 010-1.42L18.87 13H7a1 1 0 110-2h11.87l-2.78-2.86a1 1 0 010-1.42z"></path></svg>
+								<li style="display: flex; align-items: center;">
+									<svg width="24" height="24" class="icon_svg"><path d="M15 2a1 1 0 110 2H4v16h11a1 1 0 110 2H3a1 1 0 01-1-1V3a1 1 0 011-1h12zm1.09 4.72a1 1 0 011.41 0L22 11.3a1 1 0 010 1.4l-4.59 4.58a1 1 0 01-1.41.02 1 1 0 010-1.42L18.87 13H7a1 1 0 110-2h11.87l-2.78-2.86a1 1 0 010-1.42z"></path></svg>
 									<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
-										  asp-route-returnUrl="@Url.Page("/", new { area = "" })"
+										  asp-route-returnUrl="@Url.Action("index", "home", new { area = "" })"
 										  method="post">
 										<button type="submit" class="nav-link btn btn-link text-dark">خروج</button>
 									</form>
-                                </li>
+								</li>
 							</ul>
 						</li>
 					</ul>
 				</div>
 			}
 		</div>
-        <div class="header-type1__menu-bottom">
-            <ul>
-                @*@foreach (var item in MainPage_Categories)
-        {
-            <li>
-                <a href="~/Search/AllBussiness?CategoryId=@item.Id&page=1">
+		<div class="header-type1__menu-bottom">
+			<ul>
+				@*@foreach (var item in MainPage_Categories)
+					{
+						<li>
+							<a href="~/Search/AllBussiness?CategoryId=@item.Id&page=1">
 
-                    <svg id="iconResult" class="svg-inline--fa fa-accusoft fa-w-20" aria-hidden="true" data-prefix="fab" data-icon="accusoft" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg=""><path fill="currentColor" d="@item.Image"></path></svg>
-                    @item.Name <svg id="14x14_triangle_down" height="17" viewBox="0 0 14 14" width="14">
-                        <path d="M7 9L3.5 5h7L7 9z"></path>
-                    </svg>
+								<svg id="iconResult" class="svg-inline--fa fa-accusoft fa-w-20" aria-hidden="true" data-prefix="fab" data-icon="accusoft" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg=""><path fill="currentColor" d="@item.Image"></path></svg>
+								@item.Name <svg id="14x14_triangle_down" height="17" viewBox="0 0 14 14" width="14">
+									<path d="M7 9L3.5 5h7L7 9z"></path>
+								</svg>
 
-                </a>
-                @if (item.CategoryChilds.Count > 0)
-                {
-                    <ul>
+							</a>
+							@if (item.CategoryChilds.Count > 0)
+							{
+								<ul>
 
-                        @foreach (var item2 in item.CategoryChilds.Take(15))
-                        {
+									@foreach (var item2 in item.CategoryChilds.Take(15))
+									{
 
-                            <li><a href="~/Search/AllBussiness?CategoryId=@item2.Key&page=1">@item2.Value</a></li>
-                        }
+										<li><a href="~/Search/AllBussiness?CategoryId=@item2.Key&page=1">@item2.Value</a></li>
+									}
 
-                    </ul>
-                }
-            </li>
-        }*@
-                @{var j = 0; }
-                @foreach (var item in CategoryItems.Where(x=>x.ParentCategoryId==null))
-                {
-                    if (j <= 5)
-                    {
-                <li>
-                    <a href="~/Search/AllBussiness?CategoryId=@item.Id&page=1">
-                        <svg id="iconResult" class="svg-inline--fa fa-accusoft fa-w-20" aria-hidden="true" data-prefix="fab" data-icon="accusoft" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg=""><path fill="currentColor" d="@item.svgIcon"></path></svg>
-                        @item.Name <svg id="14x14_triangle_down" height="17" viewBox="0 0 14 14" width="14">
-                            <path d="M7 9L3.5 5h7L7 9z"></path>
-                        </svg>
-                    </a> 
-                <ul>
-                    @foreach (var item2 in CategoryItems.Where(x => x.ParentCategoryId == item.Id).Take(15))
-                    {
+								</ul>
+							}
+						</li>
+					}*@
+				@{var j = 0; }
+				@foreach (var item in CategoryItems.Where(x => x.ParentCategoryId == null))
+				{
+					if (j <= 5)
+					{
+						<li>
+							<a href="~/Search/AllBussiness?CategoryId=@item.Id&page=1">
+								<svg id="iconResult" class="svg-inline--fa fa-accusoft fa-w-20" aria-hidden="true" data-prefix="fab" data-icon="accusoft" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg=""><path fill="currentColor" d="@item.svgIcon"></path></svg>
+								@item.Name <svg id="14x14_triangle_down" height="17" viewBox="0 0 14 14" width="14">
+									<path d="M7 9L3.5 5h7L7 9z"></path>
+								</svg>
+							</a>
+							<ul>
+								@foreach (var item2 in CategoryItems.Where(x => x.ParentCategoryId == item.Id).Take(15))
+								{
 
-                        <li>
-                            <a href="~/Search/AllBussiness?CategoryId=@item2.Id&page=1">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" version="1.1">
-                                    <path d="@item2.svgIcon" width="5" height="5" style="transform: scale(0.07);"></path>
-                                </svg>@item2.Name
-                               
-                            </a>
-                        </li>
-                    }
+									<li>
+										<a href="~/Search/AllBussiness?CategoryId=@item2.Id&page=1">
+											<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" version="1.1">
+												<path d="@item2.svgIcon" width="5" height="5" style="transform: scale(0.07);"></path>
+											</svg>@item2.Name
 
-                    </ul>
-                        
-                    </li>
-                        j++;
-                    }
-                }
+										</a>
+									</li>
+								}
 
-                </ul>
-        </div>
-    </header>
-    <main>
-        <header class="header-mobile3">
-            <div class="header-mobile3__menu-mobail">
-                <div class="header-mobile3__menu-mobail__top">
-                    <div class="header-mobile3__menu-mobail__top__icon">
-                        <svg width="24" height="24" class="icon_svg"><path d="M3 18v-2h18v2H3zm0-7h18v2H3v-2zm0-5h18v2H3V6z"></path></svg>
-                        <svg width="24" height="24" class="icon_svg"><path d="M17.657 19.071L12 13.414l-5.657 5.657-1.414-1.414L10.586 12 4.929 6.343l1.414-1.414L12 10.586l5.657-5.657 1.414 1.414L13.414 12l5.657 5.657-1.414 1.414z"></path></svg>
-                    </div>
-                    <div class="header-mobile3__menu-mobail__top__logo">
-                        <img src="./assets/img/logo.png">
-                    </div>
-                    <div class="header-mobile3__menu-mobail__top__open-app">
-                        <a href="#">
-                            <svg width="18" height="18" class="icon_svg">
-                                <path d="M13 17H5a1 1 0 01-1-1V2a1 1 0 011-1h8a1 1 0 011 1v14a1 1 0 01-1 1zm0-13.537A.463.463 0 0012.537 3H5.463A.463.463 0 005 3.463v11.074c0 .256.207.463.463.463h7.074a.463.463 0 00.463-.463V3.463zM9 14.499a1.15 1.15 0 11-.001-2.299A1.15 1.15 0 019 14.499z"></path>
-                            </svg>در برنامه باز کنید
-                        </a>
-                    </div>
-                </div>
-                <div class="header-mobile3__menu-mobail__bottom">
-                    <div class="header-mobile3__menu-mobail__bottom__search">
-                        <label for=""><svg id="18x18_search_small" height="18" viewBox="0 0 18 18" width="18"><path d="M15.913 14.224a1.324 1.324 0 0 0-.3-.466h.01l-3.378-3.376a5.49 5.49 0 0 0 .802-2.857 5.523 5.523 0 1 0-5.522 5.52 5.49 5.49 0 0 0 2.856-.8l3.37 3.368.006.003a1.364 1.364 0 0 0 .93.384C15.41 16 16 15.41 16 14.684c0-.163-.032-.317-.086-.46zM7.525 10.94a3.422 3.422 0 0 1-3.418-3.416 3.422 3.422 0 0 1 3.418-3.417 3.422 3.422 0 0 1 3.416 3.417 3.42 3.42 0 0 1-3.413 3.416z"></path></svg></label>
-                        <input type="text" placeholder="کاریوریست ، بوفه صبحانه ، ایتالیایی">
-                    </div>
-                </div>
-            </div>
-            <div class="header-mobile3__menu">
-                <ul>
-                    <li class="active"><a href="#"><svg width="24" height="24" class="icon_svg"><path d="M19.043 15.504l-3.339-1.085 3.375-.967a1.895 1.895 0 001.214-2.576 8.627 8.627 0 00-2.226-3.061 1.892 1.892 0 00-2.819.363l-1.965 2.912.001-.06V2.893a1.893 1.893 0 00-2.038-1.887 13.511 13.511 0 00-4.739 1.27 1.894 1.894 0 00-.822 2.653l4.068 7.047.031.052-3.157-1.54a1.89 1.89 0 00-2.623 1.095 8.62 8.62 0 00-.396 3.764 1.893 1.893 0 002.338 1.623l3.407-.849-2.349 2.609a1.893 1.893 0 00.334 2.826 8.823 8.823 0 003.503 1.418 1.886 1.886 0 002.206-1.801l.123-3.51 1.861 2.979c.348.557.948.889 1.606.889.438 0 .866-.154 1.205-.433a8.818 8.818 0 002.324-2.979 1.89 1.89 0 00-1.123-2.615zm-5.388-3.177l2.422-3.59a.893.893 0 011.329-.172 7.676 7.676 0 011.969 2.709.894.894 0 01-.572 1.216l-4.162 1.194a.923.923 0 01-.255.036c-.675 0-1.146-.778-.731-1.393zM6.551 4.429a.893.893 0 01.387-1.251A12.475 12.475 0 0111.395 2c.487 0 .889.397.889.893v8.137c0 .556-.448.893-.902.893a.867.867 0 01-.763-.447L6.551 4.429zM5.704 16a.895.895 0 01-1.103-.767 7.681 7.681 0 01.351-3.331.89.89 0 011.237-.515l3.892 1.898c.749.365.633 1.466-.175 1.668L5.704 16zm6.344 5.138a.894.894 0 01-1.041.849 7.758 7.758 0 01-3.103-1.255.893.893 0 01-.157-1.333l2.897-3.218a.891.891 0 011.555.628l-.151 4.329zm1.244-6.747v-.028c.006.004.01.01.016.015-.005.004-.01.01-.016.013zm5.972 3.297a7.762 7.762 0 01-2.059 2.639.891.891 0 01-1.326-.215l-2.296-3.674c-.387-.62.09-1.367.749-1.367.091 0 .187.014.284.046l4.118 1.338a.893.893 0 01.53 1.233z"></path></svg>ثبت نام</a></li>
-                    <li><a href="#"><svg width="24" height="24" class="icon_svg"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-19c-4.963 0-9 4.037-9 9 0 3.057 1.535 5.759 3.872 7.387.499-2.77 2.594-4.415 5.128-4.415 2.534 0 4.63 1.645 5.128 4.415C19.465 17.759 21 15.057 21 12c0-4.963-4.037-9-9-9zm0 10.007a3.273 3.273 0 11-.001-6.547A3.273 3.273 0 0112 13.007z"></path></svg>ورود</a></li>
-                    <li><a href="#"><svg width="24" height="24" class="icon_svg"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-19c-4.963 0-9 4.037-9 9s4.037 9 9 9 9-4.037 9-9-4.037-9-9-9zm-1.034 10.084l-3.96-.364 8.888-4.564-4.564 8.888-.364-3.96z"></path></svg>نزدیک ها</a></li>
-                    <li><a href="#"><svg width="24" height="24" class="icon_svg"><path d="M12 17l-7 5V5a3 3 0 013-3h8a3 3 0 013 3v17l-7-5zm6-12c0-1.103-.897-2-2-2H8c-1.103 0-2 .897-2 2v15.057l5.419-3.871.581-.415.581.415L18 20.057V5zm-6.027 6.093L9.837 12.5l.413-2.42L8.5 8.367l2.42-.353L11.973 5.5l1.107 2.514 2.42.353-1.75 1.713.433 2.37-2.21-1.357z"></path></svg>ذخیره شده ها</a></li>
-                    <li><a href="#"><svg width="24" height="24" class="icon_svg"><path d="M22 22v2h-1v-2h-2v-1h2v-2h1v2h2v1h-2zM0 5a2 2 0 012-2h6a2 2 0 012 2v12h2V9a2 2 0 012-2h2a2 2 0 012 2v12H0V5zm1 15h16V9c0-.551-.449-1-1-1h-2c-.551 0-1 .449-1 1v9H9V5c0-.551-.449-1-1-1H2c-.551 0-1 .449-1 1v15zM4 8H2V6h2v2zm0 4H2v-2h2v2zm0 4H2v-2h2v2zm4-8H6V6h2v2zm0 4H6v-2h2v2zm0 4H6v-2h2v2zm8-4h-2v-2h2v2zm0 4h-2v-2h2v2z"></path></svg>ارتبار با یلپ</a></li>
-                </ul>
-                <div class="header-mobile3__menu__links">
-                    <ul>
-                        <li><a href="#">تبلیغات</a></li>
-                        <li><a href="#">درباره ما</a></li>
-                    </ul>
-                </div>
-            </div>
-        </header>
-    </main>
-    @RenderBody()
-    <footer class="footer-type1">
-        <div class="container">
-            <div class="footer-type1__ln">
-                <div class="row">
-                    <div class="col-lg-3 col-sm-3">
-                        <div class="footer-type1__item">
-                            <div class="footer-type1__item__title">
-                                <h2>درباره ما</h2>
-                            </div>
-                            <ul>
-                                <li><a href="#">قوانین</a></li>
-                                <li><a href="#">قوانین</a></li>
-                                <li><a href="#">قوانین</a></li>
-                                <li><a href="#">قوانین</a></li>
-                                <li><a href="#">قوانین</a></li>
-                                <li><a href="#">قوانین</a></li>
-                                <li><a href="#">قوانین</a></li>
-                                <li><a href="#">قوانین</a></li>
+							</ul>
 
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-3">
-                        <div class="footer-type1__item">
-                            <div class="footer-type1__item__title">
-                                <h2>درباره ما</h2>
-                            </div>
-                            <ul>
-                                <li><a href="#">قوانین</a></li>
-                                <li><a href="#">قوانین</a></li>
-                                <li><a href="#">قوانین</a></li>
-                                <li><a href="#">قوانین</a></li>
-                                <li><a href="#">قوانین</a></li>
-                                <li><a href="#">قوانین</a></li>
-                                <li><a href="#">قوانین</a></li>
-                                <li><a href="#">قوانین</a></li>
+						</li>
+						j++;
+					}
+				}
 
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-3">
-                        <div class="footer-type1__item">
-                            <div class="footer-type1__item__title">
-                                <h2>درباره ما</h2>
-                            </div>
-                            <ul>
-                                <li><a href="#">قوانین</a></li>
-                                <li><a href="#">قوانین</a></li>
-                                <li><a href="#">قوانین</a></li>
-                                <li><a href="#">قوانین</a></li>
-                                <li><a href="#">قوانین</a></li>
-                                <li><a href="#">قوانین</a></li>
-                                <li><a href="#">قوانین</a></li>
-                                <li><a href="#">قوانین</a></li>
+			</ul>
+		</div>
+	</header>
+	<main>
+		<header class="header-mobile3">
+			<div class="header-mobile3__menu-mobail">
+				<div class="header-mobile3__menu-mobail__top">
+					<div class="header-mobile3__menu-mobail__top__icon">
+						<svg width="24" height="24" class="icon_svg"><path d="M3 18v-2h18v2H3zm0-7h18v2H3v-2zm0-5h18v2H3V6z"></path></svg>
+						<svg width="24" height="24" class="icon_svg"><path d="M17.657 19.071L12 13.414l-5.657 5.657-1.414-1.414L10.586 12 4.929 6.343l1.414-1.414L12 10.586l5.657-5.657 1.414 1.414L13.414 12l5.657 5.657-1.414 1.414z"></path></svg>
+					</div>
+					<div class="header-mobile3__menu-mobail__top__logo">
+						<img src="./assets/img/logo.png">
+					</div>
+					<div class="header-mobile3__menu-mobail__top__open-app">
+						<a href="#">
+							<svg width="18" height="18" class="icon_svg">
+								<path d="M13 17H5a1 1 0 01-1-1V2a1 1 0 011-1h8a1 1 0 011 1v14a1 1 0 01-1 1zm0-13.537A.463.463 0 0012.537 3H5.463A.463.463 0 005 3.463v11.074c0 .256.207.463.463.463h7.074a.463.463 0 00.463-.463V3.463zM9 14.499a1.15 1.15 0 11-.001-2.299A1.15 1.15 0 019 14.499z"></path>
+							</svg>در برنامه باز کنید
+						</a>
+					</div>
+				</div>
+				<div class="header-mobile3__menu-mobail__bottom">
+					<div class="header-mobile3__menu-mobail__bottom__search">
+						<label for=""><svg id="18x18_search_small" height="18" viewBox="0 0 18 18" width="18"><path d="M15.913 14.224a1.324 1.324 0 0 0-.3-.466h.01l-3.378-3.376a5.49 5.49 0 0 0 .802-2.857 5.523 5.523 0 1 0-5.522 5.52 5.49 5.49 0 0 0 2.856-.8l3.37 3.368.006.003a1.364 1.364 0 0 0 .93.384C15.41 16 16 15.41 16 14.684c0-.163-.032-.317-.086-.46zM7.525 10.94a3.422 3.422 0 0 1-3.418-3.416 3.422 3.422 0 0 1 3.418-3.417 3.422 3.422 0 0 1 3.416 3.417 3.42 3.42 0 0 1-3.413 3.416z"></path></svg></label>
+						<input type="text" placeholder="کاریوریست ، بوفه صبحانه ، ایتالیایی">
+					</div>
+				</div>
+			</div>
+			<div class="header-mobile3__menu">
+				<ul>
+					<li class="active"><a href="#"><svg width="24" height="24" class="icon_svg"><path d="M19.043 15.504l-3.339-1.085 3.375-.967a1.895 1.895 0 001.214-2.576 8.627 8.627 0 00-2.226-3.061 1.892 1.892 0 00-2.819.363l-1.965 2.912.001-.06V2.893a1.893 1.893 0 00-2.038-1.887 13.511 13.511 0 00-4.739 1.27 1.894 1.894 0 00-.822 2.653l4.068 7.047.031.052-3.157-1.54a1.89 1.89 0 00-2.623 1.095 8.62 8.62 0 00-.396 3.764 1.893 1.893 0 002.338 1.623l3.407-.849-2.349 2.609a1.893 1.893 0 00.334 2.826 8.823 8.823 0 003.503 1.418 1.886 1.886 0 002.206-1.801l.123-3.51 1.861 2.979c.348.557.948.889 1.606.889.438 0 .866-.154 1.205-.433a8.818 8.818 0 002.324-2.979 1.89 1.89 0 00-1.123-2.615zm-5.388-3.177l2.422-3.59a.893.893 0 011.329-.172 7.676 7.676 0 011.969 2.709.894.894 0 01-.572 1.216l-4.162 1.194a.923.923 0 01-.255.036c-.675 0-1.146-.778-.731-1.393zM6.551 4.429a.893.893 0 01.387-1.251A12.475 12.475 0 0111.395 2c.487 0 .889.397.889.893v8.137c0 .556-.448.893-.902.893a.867.867 0 01-.763-.447L6.551 4.429zM5.704 16a.895.895 0 01-1.103-.767 7.681 7.681 0 01.351-3.331.89.89 0 011.237-.515l3.892 1.898c.749.365.633 1.466-.175 1.668L5.704 16zm6.344 5.138a.894.894 0 01-1.041.849 7.758 7.758 0 01-3.103-1.255.893.893 0 01-.157-1.333l2.897-3.218a.891.891 0 011.555.628l-.151 4.329zm1.244-6.747v-.028c.006.004.01.01.016.015-.005.004-.01.01-.016.013zm5.972 3.297a7.762 7.762 0 01-2.059 2.639.891.891 0 01-1.326-.215l-2.296-3.674c-.387-.62.09-1.367.749-1.367.091 0 .187.014.284.046l4.118 1.338a.893.893 0 01.53 1.233z"></path></svg>ثبت نام</a></li>
+					<li><a href="#"><svg width="24" height="24" class="icon_svg"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-19c-4.963 0-9 4.037-9 9 0 3.057 1.535 5.759 3.872 7.387.499-2.77 2.594-4.415 5.128-4.415 2.534 0 4.63 1.645 5.128 4.415C19.465 17.759 21 15.057 21 12c0-4.963-4.037-9-9-9zm0 10.007a3.273 3.273 0 11-.001-6.547A3.273 3.273 0 0112 13.007z"></path></svg>ورود</a></li>
+					<li><a href="#"><svg width="24" height="24" class="icon_svg"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-19c-4.963 0-9 4.037-9 9s4.037 9 9 9 9-4.037 9-9-4.037-9-9-9zm-1.034 10.084l-3.96-.364 8.888-4.564-4.564 8.888-.364-3.96z"></path></svg>نزدیک ها</a></li>
+					<li><a href="#"><svg width="24" height="24" class="icon_svg"><path d="M12 17l-7 5V5a3 3 0 013-3h8a3 3 0 013 3v17l-7-5zm6-12c0-1.103-.897-2-2-2H8c-1.103 0-2 .897-2 2v15.057l5.419-3.871.581-.415.581.415L18 20.057V5zm-6.027 6.093L9.837 12.5l.413-2.42L8.5 8.367l2.42-.353L11.973 5.5l1.107 2.514 2.42.353-1.75 1.713.433 2.37-2.21-1.357z"></path></svg>ذخیره شده ها</a></li>
+					<li><a href="#"><svg width="24" height="24" class="icon_svg"><path d="M22 22v2h-1v-2h-2v-1h2v-2h1v2h2v1h-2zM0 5a2 2 0 012-2h6a2 2 0 012 2v12h2V9a2 2 0 012-2h2a2 2 0 012 2v12H0V5zm1 15h16V9c0-.551-.449-1-1-1h-2c-.551 0-1 .449-1 1v9H9V5c0-.551-.449-1-1-1H2c-.551 0-1 .449-1 1v15zM4 8H2V6h2v2zm0 4H2v-2h2v2zm0 4H2v-2h2v2zm4-8H6V6h2v2zm0 4H6v-2h2v2zm0 4H6v-2h2v2zm8-4h-2v-2h2v2zm0 4h-2v-2h2v2z"></path></svg>ارتبار با یلپ</a></li>
+				</ul>
+				<div class="header-mobile3__menu__links">
+					<ul>
+						<li><a href="#">تبلیغات</a></li>
+						<li><a href="#">درباره ما</a></li>
+					</ul>
+				</div>
+			</div>
+		</header>
+	</main>
+	@RenderBody()
+	<footer class="footer-type1">
+		<div class="container">
+			<div class="footer-type1__ln">
+				<div class="row">
+					<div class="col-lg-3 col-sm-3">
+						<div class="footer-type1__item">
+							<div class="footer-type1__item__title">
+								<h2>درباره ما</h2>
+							</div>
+							<ul>
+								<li><a href="#">قوانین</a></li>
+								<li><a href="#">قوانین</a></li>
+								<li><a href="#">قوانین</a></li>
+								<li><a href="#">قوانین</a></li>
+								<li><a href="#">قوانین</a></li>
+								<li><a href="#">قوانین</a></li>
+								<li><a href="#">قوانین</a></li>
+								<li><a href="#">قوانین</a></li>
 
-                            </ul>
-                        </div>
-                    </div>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-3">
+						<div class="footer-type1__item">
+							<div class="footer-type1__item__title">
+								<h2>درباره ما</h2>
+							</div>
+							<ul>
+								<li><a href="#">قوانین</a></li>
+								<li><a href="#">قوانین</a></li>
+								<li><a href="#">قوانین</a></li>
+								<li><a href="#">قوانین</a></li>
+								<li><a href="#">قوانین</a></li>
+								<li><a href="#">قوانین</a></li>
+								<li><a href="#">قوانین</a></li>
+								<li><a href="#">قوانین</a></li>
 
-                    <div class="col-lg-3  col-sm-3">
-                        <div class="footer-type1__ln__item">
-                            <div class="footer-type1__ln__item__language">
-                                <h2>زبان ها</h2>
-                            </div>
-                            <select class="selectpicker" data-size="12">
-                                <option>فارسی</option>
-                                <option>انگلیسی</option>
-                                <option>آلمانی</option>
-                                <option>ایتالیایی</option>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-3">
+						<div class="footer-type1__item">
+							<div class="footer-type1__item__title">
+								<h2>درباره ما</h2>
+							</div>
+							<ul>
+								<li><a href="#">قوانین</a></li>
+								<li><a href="#">قوانین</a></li>
+								<li><a href="#">قوانین</a></li>
+								<li><a href="#">قوانین</a></li>
+								<li><a href="#">قوانین</a></li>
+								<li><a href="#">قوانین</a></li>
+								<li><a href="#">قوانین</a></li>
+								<li><a href="#">قوانین</a></li>
 
-                            </select>
+							</ul>
+						</div>
+					</div>
 
+					<div class="col-lg-3  col-sm-3">
+						<div class="footer-type1__ln__item">
+							<div class="footer-type1__ln__item__language">
+								<h2>زبان ها</h2>
+							</div>
+							<select class="selectpicker" data-size="12">
+								<option>فارسی</option>
+								<option>انگلیسی</option>
+								<option>آلمانی</option>
+								<option>ایتالیایی</option>
 
-                        </div>
-                        <div class="footer-type1__ln__item">
-                            <div class="footer-type1__ln__item__Countries">
-                                <h2>کشور ها</h2>
-                            </div>
-                            <select class="selectpicker" data-size="12">
-                                <option>ایران </option>
-                                <option>ایران </option>
-                                <option>ایران </option>
-                                <option>ایران </option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-type1__image">
-                <img src="~/Designs/MainWebSite/assets/img/footer.png">
-            </div>
-            <div class="footer-type1__copyright">
-                <span>حق چاپ © 2004–2020</span>
-                <img src="~/Designs/MainWebSite/assets/img/logo.png">
-                <span>,</span>
-                <img src="~/Designs/MainWebSite/assets/img/logoo.png">
-                <span>و علائم مربوط به آن علائم تجاری ثبت شده یلپ هستند.</span>
-            </div>
-        </div>
-    </footer>
-    <footer class="footer-mobile2">
-        <div class="container">
-            <div class="row">
-                <div class="footer-mobile2__language">
-                    <div class="footer-mobile2__language__title">
-                        <p>زبان ها</p>
-                    </div>
-                    <div class="footer-mobile2__language__select">
-                        <select class="selectpicker" data-size="12">
-                            <option>فارسی</option>
-                            <option>فارسی</option>
-                            <option>فارسی</option>
-                            <option>فارسی</option>
-
-                        </select>
-                    </div>
-                </div>
-                <div class="footer-mobile2__country">
-                    <div class="footer-mobile2__country__title">
-                        <p>کشور ها</p>
-                    </div>
-                    <div class="footer-mobile2__country__select">
-                        <select class="selectpicker" data-size="12">
-                            <option>ایران </option>
-                            <option>ایران </option>
-                            <option>ایران </option>
-                            <option>ایران </option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-mobile2__list">
-                <ul>
-                    <li>
-                        <a href="#">درباره</a>
-                    </li>
-                    <li><a href="#">وبلاگ</a></li>
-                    <li><a href="#">حمایت کردن</a></li>
-                    <li><a href="#">مقررات</a></li>
-                    <li><a href="#">حریم خصوصی</a></li>
-                </ul>
-            </div>
-            <div class="footer-mobile2__add-work">
-                <a href="#">یک کسب و کار در Yelp اضافه کنید</a>
-            </div>
-            <div class="footer-mobile2__copyright">
-                <span>حق چاپ © 2004–2020</span>
-                <img src="~/Designs/MainWebSite/assets/img/logo.png" class="img">
-                <span>,</span>
-                <img src="~/Designs/MainWebSite/assets/img/logoo.png" class="">
-                <span>و علائم مربوط به آن علائم تجاری ثبت شده یلپ هستند.</span>
-            </div>
-        </div>
-    </footer>
+							</select>
 
 
-    <script src="~/Designs/MainWebSite/assets/js/footer-bundle.js"></script>
-    <script src="~/Designs/MainWebSite/assets/js/scripts.js"></script>
-    <script src="~/lib/fontawesome-free/js/all.js"></script>
-   
-    @RenderSection("Scripts", required: false)
+						</div>
+						<div class="footer-type1__ln__item">
+							<div class="footer-type1__ln__item__Countries">
+								<h2>کشور ها</h2>
+							</div>
+							<select class="selectpicker" data-size="12">
+								<option>ایران </option>
+								<option>ایران </option>
+								<option>ایران </option>
+								<option>ایران </option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="footer-type1__image">
+				<img src="~/Designs/MainWebSite/assets/img/footer.png">
+			</div>
+			<div class="footer-type1__copyright">
+				<span>حق چاپ © 2004–2020</span>
+				<img src="~/Designs/MainWebSite/assets/img/logo.png">
+				<span>,</span>
+				<img src="~/Designs/MainWebSite/assets/img/logoo.png">
+				<span>و علائم مربوط به آن علائم تجاری ثبت شده یلپ هستند.</span>
+			</div>
+		</div>
+	</footer>
+	<footer class="footer-mobile2">
+		<div class="container">
+			<div class="row">
+				<div class="footer-mobile2__language">
+					<div class="footer-mobile2__language__title">
+						<p>زبان ها</p>
+					</div>
+					<div class="footer-mobile2__language__select">
+						<select class="selectpicker" data-size="12">
+							<option>فارسی</option>
+							<option>فارسی</option>
+							<option>فارسی</option>
+							<option>فارسی</option>
+
+						</select>
+					</div>
+				</div>
+				<div class="footer-mobile2__country">
+					<div class="footer-mobile2__country__title">
+						<p>کشور ها</p>
+					</div>
+					<div class="footer-mobile2__country__select">
+						<select class="selectpicker" data-size="12">
+							<option>ایران </option>
+							<option>ایران </option>
+							<option>ایران </option>
+							<option>ایران </option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="footer-mobile2__list">
+				<ul>
+					<li>
+						<a href="#">درباره</a>
+					</li>
+					<li><a href="#">وبلاگ</a></li>
+					<li><a href="#">حمایت کردن</a></li>
+					<li><a href="#">مقررات</a></li>
+					<li><a href="#">حریم خصوصی</a></li>
+				</ul>
+			</div>
+			<div class="footer-mobile2__add-work">
+				<a href="#">یک کسب و کار در Yelp اضافه کنید</a>
+			</div>
+			<div class="footer-mobile2__copyright">
+				<span>حق چاپ © 2004–2020</span>
+				<img src="~/Designs/MainWebSite/assets/img/logo.png" class="img">
+				<span>,</span>
+				<img src="~/Designs/MainWebSite/assets/img/logoo.png" class="">
+				<span>و علائم مربوط به آن علائم تجاری ثبت شده یلپ هستند.</span>
+			</div>
+		</div>
+	</footer>
+
+
+	<script src="~/Designs/MainWebSite/assets/js/footer-bundle.js"></script>
+	<script src="~/Designs/MainWebSite/assets/js/scripts.js"></script>
+	<script src="~/lib/fontawesome-free/js/all.js"></script>
+
+	@RenderSection("Scripts", required: false)
 </body>
 </html>

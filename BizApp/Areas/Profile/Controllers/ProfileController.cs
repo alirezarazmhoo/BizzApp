@@ -1,13 +1,10 @@
 ﻿using AutoMapper;
 using BizApp.Areas.Profile.Models;
 using DataLayer.Infrastructure;
-using DomainClass;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Security.Claims;
-using System.Security.Principal;
 using System.Threading.Tasks;
 
 namespace BizApp.Areas.Profile.Controllers
