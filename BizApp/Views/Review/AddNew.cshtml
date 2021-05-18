@@ -1,5 +1,11 @@
 ﻿@model BizApp.Models.Basic.ReviewViewModel
-@{ Layout = null; }
+
+
+@{
+	
+	Layout = null;
+}
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" id="top">
 <head>
@@ -7,7 +13,7 @@
 	<meta name="author" content="Luan Gjokaj, and Yelp contributors">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-15" />
-	<title>یک بررسی بنویسید</title>
+	<title>Yelp</title>
 	<meta name="description" content="Yelp is a static site generator with a modern development workflow, integrated web server, auto-reload, CSS preprocessors, and ES6 ready." />
 	<link rel="manifest" href="~/Designs/MainWebSite/manifest.json" />
 
@@ -30,23 +36,18 @@
 	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 	<![endif]-->
 	<script src="~/Designs/MainWebSite/assets/js/header-bundle.js"></script>
-
-	<style>
-		.review-content__wrapper__attach__box {
-			margin-bottom: 10px;
-		}
-	</style>
-
 </head>
 <body>
+
+
 	<section class="header-review">
 		<div class="header-review__wrapper">
 			<div class="header-review__wrapper__logo">
-				<a href="@Url.Action("index", "home")"><img src="~/Designs/MainWebSite/Logo/bizzaplogomini.jpeg" style="width:60px;height:60px" alt=""></a>
+				<a href="#"><img src="~/Designs/MainWebSite/Logo/bizzaplogomini.jpeg" style="width:60px;height:60px" alt=""></a>
 			</div>
-			<div class="header-review__wrapper__image">
-				<partial name="~/Views/Shared/Partials/UserMenuPartial.cshtml" />
-			</div>
+			@*<div class="header-review__wrapper__image">
+					<a href="#"><img src="~/Designs/MainWebSite/assets/img/review-recent.jpg" alt=""></a>
+				</div>*@
 		</div>
 	</section>
 
@@ -58,7 +59,7 @@
 
 			<div class="review-content__wrapper__title">
 				<h2>@Model.BusinessName</h2>
-				<a href="#">دستورالعمل های نحوه نوشتن بررسی ما را بخوانید</a>
+				<a href="#" data-target="#ourroles" data-toggle="modal">دستورالعمل های  ما را بخوانید</a>
 			</div>
 			<div class="review-content__wrapper__box-comment">
 				<div class="review-content__wrapper__box-comment__score">
@@ -74,15 +75,13 @@
 						<input type="radio" name="star" id="star_1">
 						<label for="star_1" data-star="1" data-title="خوب نیست"></label>
 					</div>
-					<div class="review-content__wrapper__box-comment__score__text" data-text="رتبه بندی خود را انتخاب کنید">
+					<div class="review-content__wrapper__box-comment__score__text">
 						<span>رتبه بندی خود را انتخاب کنید</span>
 					</div>
-					@*<div class="review-content__wrapper__box-comment__score__save">
-							<span>در حال ذخیره ...</span>
-						</div>*@
+
 				</div>
 				<div class="review-content__wrapper__box-comment__desc">
-					<textarea placeholder="متن پیام را در این قسمت بنویسید ..."></textarea>
+					<textarea id="Description" placeholder="متن پیام را در این قسمت بنویسید ..."></textarea>
 				</div>
 			</div>
 			<div class="review-content__wrapper__attach">
@@ -93,34 +92,10 @@
 					<div class="review-content__wrapper__attach__box__icon-add">
 						<svg width="24" height="24" class="icon_svg"><path d="M16 2a1 1 0 011 .68L17.72 5H20a3 3 0 013 3v11a3 3 0 01-3 3H4a3 3 0 01-3-3V8a3 3 0 013-3h2.28L7 2.68A1 1 0 018 2zm-.72 2H8.72L8 6.32A1 1 0 017 7H4a1 1 0 00-1 1v11a1 1 0 001 1h16a1 1 0 001-1V8a1 1 0 00-1-1h-3a1 1 0 01-.95-.68L15.28 4zM12 9a1 1 0 011 1v2.5h2.5a1 1 0 110 2H13V17a1 1 0 11-2 0v-2.5H8.5a1 1 0 110-2H11V10a1 1 0 011-1z"></path></svg>
 					</div>
-
-				</div>
-
-				<div class="review-content__wrapper__attach__box-list">
-					<div class="review-content__wrapper__attach__box-list__image">
-						<img src="./assets/img/b5.jpg" alt="">
-						<a href="#"><svg id="18x18_trash" height="18" width="18"><path d="M3 5V3h4V2h4v1h4v2H3zm11 9c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V6h10v8zM8 8.5c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5zm3 0c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5z"></path></svg></a>
-					</div>
-					<div class="review-content__wrapper__attach__box-list__image">
-						<img src="./assets/img/b5.jpg" alt="">
-						<a href="#"><svg id="18x18_trash" height="18" width="18"><path d="M3 5V3h4V2h4v1h4v2H3zm11 9c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V6h10v8zM8 8.5c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5zm3 0c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5z"></path></svg></a>
-					</div>
-					<div class="review-content__wrapper__attach__box-list__image">
-						<img src="./assets/img/b5.jpg" alt="">
-						<a href="#"><svg id="18x18_trash" height="18" width="18"><path d="M3 5V3h4V2h4v1h4v2H3zm11 9c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V6h10v8zM8 8.5c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5zm3 0c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5z"></path></svg></a>
-					</div>
-					<div class="review-content__wrapper__attach__box-list__image">
-						<img src="./assets/img/b5.jpg" alt="">
-						<a href="#"><svg id="18x18_trash" height="18" width="18"><path d="M3 5V3h4V2h4v1h4v2H3zm11 9c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V6h10v8zM8 8.5c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5zm3 0c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5z"></path></svg></a>
-					</div>
-					<div class="review-content__wrapper__attach__box-list__image">
-						<img src="./assets/img/b5.jpg" alt="">
-						<a href="#"><svg id="18x18_trash" height="18" width="18"><path d="M3 5V3h4V2h4v1h4v2H3zm11 9c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V6h10v8zM8 8.5c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5zm3 0c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5z"></path></svg></a>
-					</div>
 				</div>
 			</div>
 			<div class="review-content__wrapper__button">
-				<a href="#">بررسی پست</a>
+				<a style="cursor:pointer" onclick="submitFrm()">ارسال نظر</a>
 			</div>
 		</div>
 		<div class="review-content__recent">
@@ -128,8 +103,10 @@
 			<div class="review-content__recent__title">
 				<h4>بررسیهای اخیر</h4>
 			</div>
+
 			@foreach (var item in Model.review_ReviewListViewModels)
 			{
+
 				<div class="review-content__recent__comment">
 					<div class="review-content__recent__comment__avatar">
 						<div class="review-content__recent__comment__avatar__image">
@@ -138,7 +115,7 @@
 						<div class="review-content__recent__comment__avatar__text">
 							<div class="review-content__recent__comment__avatar__text__name">
 								<span>@item.FullName</span>
-								<p></p>
+								<p>2o</p>
 							</div>
 							<div class="review-content__recent__comment__avatar__text__actions">
 								<ul>
@@ -170,16 +147,16 @@
 						<p>
 							@item.Text
 						</p>
-
 					</div>
 					@*<div class="review-content__recent__comment__more">
-							<p></p>
-						</div>
-						<div class="review-content__recent__comment__read-more">
-							<a href="#"></a>
+							<p>...</p>
+						</div>*@
+					@*<div class="review-content__recent__comment__read-more">
+							<a href="#">ادامه مطلب</a>
 						</div>*@
 				</div>
 			}
+
 		</div>
 	</section>
 
@@ -190,31 +167,100 @@
 					<div class="review-content__modal__content">
 						<div class="review-content__modal__content__close" data-dismiss="modal">
 							<a href="#"><svg width="24" height="24" class="icon_svg"><path d="M13.41 12l5.3-5.29a1.004 1.004 0 10-1.42-1.42L12 10.59l-5.29-5.3a1.004 1.004 0 00-1.42 1.42l5.3 5.29-5.3 5.29a1 1 0 000 1.42 1 1 0 001.42 0l5.29-5.3 5.29 5.3a1 1 0 001.42 0 1 1 0 000-1.42L13.41 12z"></path></svg></a>
-							<h3>همه چی انجام شد! لطفا توضیحات را بنویسید و روی پیوست کنید.</h3>
 						</div>
-						<div class="dropzone">
-							<form action="t" method="post" class="dropzone" id="dropzone1" enctype="multipart/form-data">
-								<div class="fallback">
-									<input name="file" type="file" multiple>
-								</div>
-								<div class="review-content__modal__content__image">
-									<input name="BusinessId" value="@Model.BussinessId" hidden />
-									<img src="./assets/img/review-madal.svg" alt="">
-								</div>
-								<div class="dz-message" data-dz-message>
-									<span>تصاویر خود را در این قسمت بکشید</span>
-									<div class="hr-line"><span>یا</span></div>
-									<button type="button">آدرس دهی</button>
-								</div>
-							</form>
-						</div>
-						<div class="review-content__modal__content__footer">
-							<a href="#" data-dismiss="modal">لغو</a>
-							<button data-dismiss="modal">پیوست</button>
-						</div>
+						<form action="t" method="post" class="dropzone" id="dropzone1" enctype="multipart/form-data">
+							@*<div class="fallback" id="fallbacktest">
+								</div>*@
+							<input id="reviewfiles" name="files" type="file" multiple>
+							<input name="BusinessId" value="@Model.BussinessId" hidden />
+							<input id="Description2" name="Description" value="" hidden />
+
+							<div class="review-content__modal__content__image">
+								<img src="~/Designs/MainWebSite/assets/img/review-madal.svg" alt="">
+							</div>
+							<div class="dz-message" data-dz-message>
+								<span>تصاویر خود را در این قسمت بکشید</span>
+								<div class="hr-line"><span>یا</span></div>
+								<button type="button" onclick="reviewfiles.click()">آدرس دهی</button>
+							</div>
+						</form>
 					</div>
 				</div>
 
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="reviewModal" role="dialog">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<p>متن پیام را وارد کنید</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="stay-gold-content__modal modal fade" id="ourroles" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="stay-gold-content__modal__header">
+						<div class="stay-gold-content__modal__header__title">
+							<h2>قوانین درج نظرات در بیزاَپ</h2>
+						</div>
+						<div class="stay-gold-content__modal__header__close">
+							<a href="#" data-dismiss="modal"><svg width="24" height="24" class="icon_svg"><path d="M13.41 12l5.3-5.29a1.004 1.004 0 10-1.42-1.42L12 10.59l-5.29-5.3a1.004 1.004 0 00-1.42 1.42l5.3 5.29-5.3 5.29a1 1 0 000 1.42 1 1 0 001.42 0l5.29-5.3 5.29 5.3a1 1 0 001.42 0 1 1 0 000-1.42L13.41 12z"></path></svg></a>
+						</div>
+					</div>
+					<div class="stay-gold-content__modal__body" style="height:auto">
+						<div class="stay-gold-content__modal__body__content">
+							<div class="stay-gold-content__modal__body__content__title">
+				
+							</div>
+							<div class="stay-gold-content__modal__body__content__desc" >
+								<p>مردم برای ارتباط با مشاغل و همچنین ارزیابی انواع کسب و کارها به بیزاپ می‌آیند. پس انتظار ما از شما به عنوان یک کاربر، صداقت و احترام به یکدیگر است. ما این دستورالعمل را برای کمک به ایجاد محیطی سالم گردآوری کردیم. همچنین لطفاً دستورالعمل‌های زیر را برای بالا بردن هرچه دقیق‌تر نظرات سایت بخوانید و به آن پایبند باشید.</p>
+								<p>
+									•	استفاده از کلمات و جملاتی که رنگ و بوی ایجاد هرگونه تفرقه بین ادیان و نژادهای مختلف کشور داشته باشد، ممنوع است. همچنین توهین به اشخاص و افراد نیز خلاف موازین کاری ما می‌باشد.
+								</p>
+								<p>
+									•	نظرات در مورد کسب وکار نباید باعث ایجاد جنجال در مورد ایدئولوژی‌های دینی، سیاسی و شیوه‌های استخدام یک کسب و کار شود و باید به تجربه یک فرد در مورد یک کسب و کار بپردازد. نظرات خود را ارسال کنید و عکس‌ها و فیلم‌های خود را به اشتراک بگذارید.
+								</p>
+								<p>
+									•	اطلاعات خصوصی افراد را نیز منتشر نکنید. به عنوان مثال، عکس‌ها ویا فیلم‌های مراجعه کنندگان دیگر را بدون اجازه آنها ارسال نکنید؛ مگر اینکه با رضایت کامل طرف مقابل نسبت به انتشار این اطلاعات اقدام می‌کنید. ما می خواهیم در مورد تجربه دست اول شما را بشنویم، نه آنچه از دیگران شنیده اید یا آنچه در اخبار دیده‌اید. نظرات خود را بی پرده و قاطعانه بیان کنید.
+								</p>
+								<p>
+									•	نظرات شما در بیزاپ باید بی طرفانه و عینی باشد. اطمینان حاصل کنید که بررسی شما از آن کسب و کار صحت دارد. اما بزرگنمایی نکنید و پشت بررسی خود بایستید. همچنین نباید در مورد مشاغل یا کارفرمای خود، تجارت دوستان یا اقوام و رقباء نظراتی بنویسید. درخواست از مشتریان جهت درج نظرات تحمیلی نیز صحیح نمی‌باشد.
+								</p>
+								<p>
+									•	در صورت امکان از زبان فارسی و از کیبورد فارسی جهت نوشتن نظرات استفاده کنید. استفاده از زبان فارسی می‌تواند به تمامی کاربران کمک نماید.
+								</p>
+								<p>
+									•	به هیچ وجه مطالب تبلیغاتی را ارسال نکنید؛ زیرا باید بیزاپ را برای جامعه مفید نگه داریم. همچنین استفاده از تصاویر خشونت، مصرف مواد مخدر، تصاویر تحریک کننده، عدم رعایت شئونات اسلامی در محتوا و همچنین تصاویری که با قوانین جمهوری اسلامی ایران مطابق نداشته باشد، ممنوع است.
+								</p>
+								<p>
+									•	عکس‌ها و فیلم‌ها باید کاملاً مربوط به کسب و کار بوده و منعکس کننده تجربه معمول مشتریان آن کسب و کار باشد. همچنین اگر صاحب کسب و کار هستید به ما نشان دهید که چه چیزی پیشنهاد می‌کنید و چه چیزی باعث بی نظیر بودن تجارت شما می‌شود.
+								</p>
+								<p>
+									•	از عکس‌ها یا فیلم‌های خود برای حمله به دیگران یا تحقیر آنها استفاده نکنید. یک عکس 1000 کلمه است؛ بنابراین بهتر است این کلمات را با دقت انتخاب کنید و نظر خود را در قالب یک پیام مستقیم، ارسال کنید.
+								</p>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="stay-gold-content__modal__footer">
+						<div class="stay-gold-content__modal__footer__close">
+							<a href="#" data-dismiss="modal">بستن</a>
+						</div>
+						<div class="stay-gold-content__modal__footer__report">
+							@*<a href="#" data-toggle="tooltip" title="ریپورت">
+									<svg width="18" height="18" class="icon_svg"><path d="M6 10V3c4.976 1.098 4.024-1 8 0v7c-4.024-.976-3.024 1.024-8 0zM4 2h1v14H4V2z"></path></svg>
+								</a>*@
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

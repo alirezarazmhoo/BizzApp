@@ -1,0 +1,36 @@
+﻿@inject DataLayer.Infrastructure.IUserRepo UserService
+
+@{
+	bool isAuthenticated = User.Identity.IsAuthenticated;
+
+	// get user information
+	var userAvatar = "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg";
+
+	if (isAuthenticated)
+	{
+		var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value;
+		var userMainAvatar = await UserService.GetMainPhoto(userId);
+
+		if (!string.IsNullOrEmpty(userMainAvatar)) userAvatar = userMainAvatar;
+	}
+}
+
+<div class="header-type1__menu__user-nav">
+	<ul>
+		<li class="has-sub">
+			<a href="#"><img src="@userAvatar" alt=""></a>
+			<ul>
+				<li><a href="/profile/overview"><svg width="24" height="24" class="icon_svg"><path d="M12 1a11 11 0 1011 11A11.012 11.012 0 0012 1zm0 2a8.986 8.986 0 017.33 14.205l-1.395-1.55a4.974 4.974 0 00-1.996-1.324 5.5 5.5 0 10-7.878 0 4.974 4.974 0 00-1.996 1.324l-1.395 1.55A8.986 8.986 0 0112 3zm-3.5 7.5a3.5 3.5 0 117 0 3.5 3.5 0 01-7 0zm-2.487 8.202l1.539-1.709A3.003 3.003 0 019.782 16h4.437a3.004 3.004 0 012.23.993l1.537 1.71a8.946 8.946 0 01-11.973-.001z"></path></svg>پروفایل من</a></li>
+				<li class="has-seprator"><a href="/profile/account/edit"><svg width="24" height="24" class="icon_svg"><path d="M12 16.5a4.5 4.5 0 114.5-4.5 4.51 4.51 0 01-4.5 4.5zm0-7a2.5 2.5 0 100 5 2.5 2.5 0 000-5zM13.18 23h-2.36a2 2 0 01-2-1.61l-.1-.49a.49.49 0 00-.3-.36.49.49 0 00-.47.05l-.41.27a2 2 0 01-2.52-.25l-1.63-1.67a2 2 0 01-.25-2.52l.27-.42a.49.49 0 000-.47.49.49 0 00-.37-.3l-.48-.1a2 2 0 01-1.61-2v-2.31a2 2 0 011.61-2l.49-.1a.49.49 0 00.36-.3.49.49 0 000-.47l-.27-.41a2 2 0 01.25-2.52l1.67-1.63a2 2 0 012.52-.25l.42.27a.49.49 0 00.47 0 .49.49 0 00.3-.37l.1-.48a2 2 0 012-1.61h2.36a2 2 0 012 1.61l.1.49a.49.49 0 00.3.36.49.49 0 00.47 0l.41-.27a2 2 0 012.52.25l1.67 1.67a2 2 0 01.25 2.52l-.36.42a.49.49 0 00-.05.47.49.49 0 00.37.3l.48.1a2 2 0 011.61 2v2.36a2 2 0 01-1.61 2l-.49.1a.49.49 0 00-.36.3.49.49 0 00.05.47l.27.41a2 2 0 01-.25 2.52l-1.67 1.67a2 2 0 01-2.52.25l-.42-.36a.49.49 0 00-.47-.05.49.49 0 00-.3.37l-.1.48A2 2 0 0113.18 23zm-4.91-4.5c.342 0 .682.064 1 .19a2.49 2.49 0 011.49 1.82l.1.49h2.36l.1-.49c.16-.818.72-1.5 1.49-1.82a2.52 2.52 0 012.35.23l.41.28 1.67-1.67-.28-.41a2.52 2.52 0 01-.23-2.35 2.49 2.49 0 011.82-1.49l.49-.1v-2.36l-.49-.1a2.49 2.49 0 01-1.82-1.49 2.52 2.52 0 01.23-2.35l.28-.41-1.71-1.67-.41.28a2.52 2.52 0 01-2.35.23 2.49 2.49 0 01-1.49-1.82l-.1-.49h-2.36l-.1.49a2.49 2.49 0 01-1.49 1.82 2.52 2.52 0 01-2.35-.23l-.41-.28L4.8 6.47l.28.41a2.52 2.52 0 01.23 2.35 2.49 2.49 0 01-1.82 1.49l-.49.1v2.36l.49.1c.818.16 1.5.72 1.82 1.49a2.52 2.52 0 01-.23 2.35l-.28.41 1.67 1.67.41-.28a2.49 2.49 0 011.39-.42z"></path></svg>تنظیمات حساب</a></li>
+				<li style="display: flex; align-items: center;">
+					<svg width="24" height="24" class="icon_svg"><path d="M15 2a1 1 0 110 2H4v16h11a1 1 0 110 2H3a1 1 0 01-1-1V3a1 1 0 011-1h12zm1.09 4.72a1 1 0 011.41 0L22 11.3a1 1 0 010 1.4l-4.59 4.58a1 1 0 01-1.41.02 1 1 0 010-1.42L18.87 13H7a1 1 0 110-2h11.87l-2.78-2.86a1 1 0 010-1.42z"></path></svg>
+					<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
+						  asp-route-returnUrl="@Url.Action("index", "home", new { area = "" })"
+						  method="post">
+						<button type="submit" class="nav-link btn btn-link text-dark">خروج</button>
+					</form>
+				</li>
+			</ul>
+		</li>
+	</ul>
+</div>
