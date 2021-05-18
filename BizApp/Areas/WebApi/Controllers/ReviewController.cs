@@ -183,6 +183,7 @@ namespace BizApp.Areas.WebApi.Controllers
 				reviewMedias.UserTotalFriends = await _UnitOfWork.UserRepo.GetUserFriendsCount(Item.Review.BizAppUserId);
 				reviewMedias.UserTotalPictures = await _UnitOfWork.BusinessHomePageRepo.GetTotalUserMedia(Item.Review.BizAppUserId);
 				reviewMedias.UserTotalReview = await _UnitOfWork.ReviewRepo.GetUserTotalReview(Item.Review.BizAppUserId);
+				reviewMedias.BusinessId = Item.Review.BusinessId; 
 				return Ok(reviewMedias);
 			}
 		}

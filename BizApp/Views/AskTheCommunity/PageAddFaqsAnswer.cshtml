@@ -118,7 +118,7 @@
 				</div>
 				<div class="questions-detail__sidebar__other-questions">
 					<div class="questions-detail__sidebar__other-questions__title" style="margin-right:20px;cursor:pointer">
-						<h3>همه پاسخ ها</h3>
+						<a href="/AskTheCommunity/GetFaqsAnswers?Id=@Model.answerAskTheCommunity_NavbarViewModel.BusinessId&BusinessFaqId=@Model.answerAskTheCommunity_NavbarViewModel.BusinessFaqId">همه پاسخ ها</a>
 					</div>
 				</div>
 			</div>
@@ -189,6 +189,8 @@
 				processData: false,
 				success: function (response) {
 					$("#currentText").text($("#Text").val());
+					$("#questions-detail__content__form").hide(); 
+
 				}
 			});
 	}

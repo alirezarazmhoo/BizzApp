@@ -53,10 +53,18 @@ namespace BizApp.Areas.WebApi.Controllers
 					businessPopop.description = Item.Description;
 					businessPopop.districname = Item.District.Name;
 					businessPopop.id = Item.Id;
-					businessPopop.image = string.IsNullOrEmpty(Item.FeatureImage) == true ?  "/Upload/DefaultPicutres/Bussiness/business-strategy-success-target-goals_1421-33.jpg" : Item.FeatureImage;
+					businessPopop.address = Item.Address;
+					businessPopop.boldfeature  = Item.BoldFeature;
+					businessPopop.category = Item.Category.Name;
+					businessPopop.phonenumber = Item.CallNumber.ToString();
+					businessPopop.website = Item.WebsiteUrl;
+					businessPopop.longitude = Item.Longitude;
+					businessPopop.latitude = Item.Latitude;
+					businessPopop.totalreview = Item.Reviews.Where(s => s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted).Count();
+					businessPopop.featureimage = string.IsNullOrEmpty(Item.FeatureImage) == true ?  "/Upload/DefaultPicutres/Bussiness/business-strategy-success-target-goals_1421-33.jpg" : Item.FeatureImage;
 					businessPopop.name = Item.Name;
 					businessPopop.rate = Item.Rate;
-					businessPopop.BusinessGallery = Item.Galleries.Select(s => s.FileAddress).ToList();
+					businessPopop.images = Item.Galleries.Select(s => s.FileAddress).ToList();
 					foreach (var item in Item.Reviews)
 					{
 						string UserPicture = string.IsNullOrEmpty(item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault()) == true ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault();
