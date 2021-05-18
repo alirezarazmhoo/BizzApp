@@ -300,7 +300,7 @@ namespace DataLayer.Services
         }
         public async Task<Business> GetById(Guid id)
         {
-            return await FindByCondition(f => f.Id == id).Include(s => s.Galleries).Include(s=>s.Reviews).ThenInclude(s=>s.BizAppUser).ThenInclude(s=>s.ApplicationUserMedias).Include(s=>s.Reviews).ThenInclude(s=>s.ReviewMedias).Include(s=>s.District).Include(s=>s.District).ThenInclude(s=>s.City).FirstOrDefaultAsync();
+            return await FindByCondition(f => f.Id == id).Include(s => s.Galleries).Include(s=>s.Reviews).ThenInclude(s=>s.BizAppUser).ThenInclude(s=>s.ApplicationUserMedias).Include(s=>s.Reviews).ThenInclude(s=>s.ReviewMedias).Include(s=>s.District).Include(s=>s.District).ThenInclude(s=>s.City).Include(s=>s.Category).FirstOrDefaultAsync();
         }
         public async Task Remove(Business model)
         {

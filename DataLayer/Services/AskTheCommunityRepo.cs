@@ -43,6 +43,7 @@ namespace DataLayer.Services
 		}
 		public async Task AddBusinessFaqAnswers(BusinessFaqAnswer model)
 		{
+			model.Date = DateTime.Now; 
 			await DbContext.BusinessFaqAnswers.AddAsync(model);
 		}
 		public async Task AddBusinessFaq(BusinessFaq model)
@@ -63,7 +64,6 @@ namespace DataLayer.Services
 				return null; 
 			}
 		}
-
 		public async Task RemoveFaqAnswer(Guid Id)
 		{
 			var Item = await DbContext.BusinessFaqAnswers.FirstOrDefaultAsync(s => s.Id.Equals(Id));
@@ -72,8 +72,6 @@ namespace DataLayer.Services
 				 DbContext.BusinessFaqAnswers.Remove(Item);
 			}
 		}
-
-
 		public async Task<int> AnswerCount(Guid Id)
 		{
 			return  await DbContext.BusinessFaqAnswers.Where(s => s.BusinessFaqId.Equals(Id) && s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted).CountAsync();
@@ -112,7 +110,10 @@ namespace DataLayer.Services
 			}
 
 		}
-
+		public async Task<BusinessFaqAnswer> GetBusinessFaqAnswerById(Guid Id)
+		{
+			return await DbContext.BusinessFaqAnswers.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+		}
 
 
 	}

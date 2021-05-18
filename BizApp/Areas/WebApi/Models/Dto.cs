@@ -41,14 +41,21 @@ namespace BizApp.Areas.WebApi.Models
 	public class BusinessItem
 	{
 		public Guid id { get; set; }
+		public double longitude { get; set; }
+		public double latitude { get; set; }
+		public string website { get; set; }
+		public string boldfeature { get; set; }
+		public string phonenumber { get; set; }
+		public string category { get; set; }
+
 		public string name { get; set; }
 		public int rate { get; set; }
 		public int totalreview { get; set; }
 		public string address { get; set; }
 		public string districname { get; set; }
 		public string description { get; set; }
-		public string image { get; set; }
-		public List<string> BusinessGallery { get; set; }
+		public string featureimage { get; set; }
+		public List<string> images { get; set; }
 		public List<Review> reviews { get; set; }
 	}
 	public class Review
@@ -89,6 +96,7 @@ namespace BizApp.Areas.WebApi.Models
 		public string UserPicture { get; set; }
 		public string UserId { get; set; }
 		public string Date { get; set;   }
+		public Guid BusinessId { get; set; }
 	}
 	public class BusinessTimeAndFeature
 	{
@@ -142,7 +150,6 @@ namespace BizApp.Areas.WebApi.Models
 
 		public string UserId { get; set;  }
 	}
-
 	public class ReviewProfile
 	{
 		public Guid Id { get; set; }
@@ -171,6 +178,15 @@ namespace BizApp.Areas.WebApi.Models
 		public string WhyYouShouldReadMyReviews { get; set; }
 		public string WhenImNotYelping { get; set;  }
 
+	}
+	public class BookMark 
+	{
+		public Guid id { get; set; }
+		public string name { get; set; }
+		public int rate { get; set;  }
+		public string businessImage { get; set; }
+		
+	
 	}
 
 

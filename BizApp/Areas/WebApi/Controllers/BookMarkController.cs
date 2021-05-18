@@ -1,4 +1,5 @@
-﻿using DataLayer.Data;
+﻿using BizApp.Areas.WebApi.Models;
+using DataLayer.Data;
 using DataLayer.Infrastructure;
 using DomainClass.Enums;
 using Microsoft.AspNetCore.Http;
@@ -19,9 +20,34 @@ namespace BizApp.Areas.WebApi.Controllers
 		{
 			_UnitOfWork = unitOfWork;
 		}
+		[HttpGet]
+		[Route("UserBookMark")]
+		public async Task<IActionResult> GetUserBookMark()
+		{
+			List<BookMark> bookMarks = new List<BookMark>();
+			try
+			{
+				string Token = HttpContext.Request?.Headers["Token"];
+				if (await _UnitOfWork.UserRepo.CheckUserToken(Token) == false)
+				{
+					return NotFound();
+				}
+				var Items = await _UnitOfWork.UserFavoritsRepo.GetAll(await _UnitOfWork.UserRepo.UserTokenMaper(Token));
+				foreach (var item in Items)
+				{
+					bookMarks.Add(new BookMark() { id = item.BusinessId , name = item.Business.Name ,  rate = item.Business.Rate , businessImage = string.IsNullOrEmpty(item.Business.FeatureImage) == true ? "/Upload/DefaultPicutres/Bussiness/business-strategy-success-target-goals_1421-33.jpg" : item.Business.FeatureImage });
+				}
+				return Ok(bookMarks); 
+			}
+			catch (Exception)
+			{
+				throw; 
+			}
+		}
+
 		[HttpPost]
 		[Route("AddOrRemove")]
-		public async Task<bool> AddOrRemove(Guid Id)
+		public async Task<IActionResult> AddOrRemove(Guid Id)
 		{
 			try
 			{
@@ -29,11 +55,12 @@ namespace BizApp.Areas.WebApi.Controllers
 				string Token = HttpContext.Request?.Headers["Token"];
 				if (await _UnitOfWork.UserRepo.CheckUserToken(Token) == false)
 				{
-					throw new Exception();
+					return NotFound();
 				}
 				if (await _UnitOfWork.BusinessRepo.GetById(Id) == null)
 				{
-					throw new Exception();
+					return NotFound();
+
 				}
 				if (await _UnitOfWork.UserFavoritsRepo.AddOrRemove(Id, await _UnitOfWork.UserRepo.UserTokenMaper(Token)) == VotesAction.Add)
 				{
@@ -45,7 +72,7 @@ namespace BizApp.Areas.WebApi.Controllers
 					state = false;
 				}
 				await _UnitOfWork.SaveAsync();
-				return state;
+				return Ok(state);
 			}
 			catch (Exception)
 			{
@@ -53,10 +80,9 @@ namespace BizApp.Areas.WebApi.Controllers
 
 			}
 		}
-
 		[HttpGet]
 		[Route("Check")]
-		public async Task<bool> CheckIsAlreadyExists(Guid Id)
+		public async Task<IActionResult> CheckIsAlreadyExists(Guid Id)
 		{
 			try
 			{
@@ -64,11 +90,13 @@ namespace BizApp.Areas.WebApi.Controllers
 				string Token = HttpContext.Request?.Headers["Token"];
 				if (await _UnitOfWork.UserRepo.CheckUserToken(Token) == false)
 				{
-					throw new Exception();
+					return NotFound();
+
 				}
 				if (await _UnitOfWork.BusinessRepo.GetById(Id) == null)
 				{
-					throw new Exception();
+					return NotFound();
+
 				}
 				if (await _UnitOfWork.BusinessRepo.CheckBisinessFavorit(Id,await _UnitOfWork.UserRepo.UserTokenMaper(Token)) )
 				{
@@ -80,7 +108,7 @@ namespace BizApp.Areas.WebApi.Controllers
 					state = false;
 				}
 				await _UnitOfWork.SaveAsync();
-				return state;
+				return Ok(state);
 			}
 			catch (Exception)
 			{

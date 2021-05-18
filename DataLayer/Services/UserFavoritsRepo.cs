@@ -16,9 +16,9 @@ namespace DataLayer.Services
 		public UserFavoritsRepo(ApplicationDbContext DbContext) : base(DbContext)
 		{
 		}
-		public async Task<IEnumerable< UserFavorits>> GetAll(Guid Id)
+		public async Task<IEnumerable< UserFavorits>> GetAll(string Id)
 		{
-			return await DbContext.UserFavorits.Where(s => s.BizAppUserId.Equals(Id)).ToListAsync();
+			return await DbContext.UserFavorits.Include(s=>s.Business).Where(s => s.BizAppUserId.Equals(Id)).ToListAsync();
 		}
 		public async  Task<VotesAction> AddOrRemove(Guid Id, string UserId)
 		{
@@ -39,7 +39,6 @@ namespace DataLayer.Services
 				return VotesAction.Add; 
 			}
 		}
-
 
 	}
 }

@@ -16,7 +16,6 @@ namespace BizApp.Controllers
 	{
 		private readonly IUnitOfWorkRepo _UnitOfWork;
 		private readonly IHttpContextAccessor _httpContextAccessor;
-
 		public AskTheCommunityController(IUnitOfWorkRepo unitOfWork, IHttpContextAccessor httpContextAccessor)
 		{
 			_UnitOfWork = unitOfWork;
@@ -62,8 +61,6 @@ namespace BizApp.Controllers
 			#endregion
 			return View(askTheCommunityViewModel);
 		}
-
-
 		[Authorize]
 		public IActionResult IndexAuthorize(Guid Id ,Guid BusinessFaqId, int redirectType)
 		{
@@ -163,30 +160,27 @@ namespace BizApp.Controllers
 			}
 			try
 			{
-             
+			model.BizAppUserId = GetUserId(); 
 			await _UnitOfWork.AskTheCommunityRepo.AddBusinessFaqAnswers(model);
 			await _UnitOfWork.SaveAsync();
-			return RedirectToAction(nameof(PageAddFaqsAnswer), "AskTheCommunity", new { BusinessFaqId = model.BusinessFaqId, Id = model.Id , Text = model.Text, BusinessId = BusinessId });
+			return RedirectToAction(nameof(PageAddFaqsAnswer), "AskTheCommunity", new { BusinessFaqId = model.BusinessFaqId, Id = model.Id , BusinessId = BusinessId , CurrentUserId = model.BizAppUserId });
 			}
 			catch (Exception)
 			{
 				return Json(new { success = false });
 			}
 		}
-
-
-		public async Task<IActionResult> PageAddFaqsAnswer(Guid BusinessFaqId ,Guid Id, string Text, Guid BusinessId)
+		public async Task<IActionResult> PageAddFaqsAnswer(Guid BusinessFaqId ,Guid Id, Guid BusinessId , string CurrentUserId)
 		{
 			AnswerAskTheCommunityViewModel answerAskTheCommunityViewModel = new AnswerAskTheCommunityViewModel();
 			AnswerAskTheCommunity_NavbarViewModel answerAskTheCommunity_NavbarViewModel = new AnswerAskTheCommunity_NavbarViewModel();
 			AnswerAskTheCommunity_AnswersCountViewModel answerAskTheCommunity_AnswersCountViewModel = new AnswerAskTheCommunity_AnswersCountViewModel();
 			AnswerAskTheCommunity_AnswersViewModel singleAnswerAskTheCommunity_AnswersViewModels = new AnswerAskTheCommunity_AnswersViewModel();
 			List<AskTheCommunity_QuestionListViewModel> askTheCommunity_QuestionListViewModels = new List<AskTheCommunity_QuestionListViewModel>();
-
-
 			var BusinessItem = await _UnitOfWork.BusinessRepo.GetById(BusinessId);
 			var BusinessFaqItem = await _UnitOfWork.AskTheCommunityRepo.GetBusinessFaqById(BusinessFaqId);
-			var CurrentUser = await _UnitOfWork.UserRepo.GetById(GetUserId());
+			var CurrentUser = await _UnitOfWork.UserRepo.GetById(CurrentUserId);
+			var BusinessFaqAnswer = await _UnitOfWork.AskTheCommunityRepo.GetBusinessFaqAnswerById(Id); 
 			answerAskTheCommunity_NavbarViewModel.BusinessId = BusinessItem.Id;
 			answerAskTheCommunity_NavbarViewModel.BusinessFaqId = BusinessFaqId;
 			answerAskTheCommunity_NavbarViewModel.BusinessName = BusinessItem.Name;
@@ -200,7 +194,7 @@ namespace BizApp.Controllers
 			answerAskTheCommunity_NavbarViewModel.UserName = await _UnitOfWork.UserRepo.GetUserName(BusinessFaqItem.BizAppUserId);
 			singleAnswerAskTheCommunity_AnswersViewModels.Date = DateTime.Now.ToPersianDateString();
 			singleAnswerAskTheCommunity_AnswersViewModels.Id = Id;
-			singleAnswerAskTheCommunity_AnswersViewModels.Text = Text;
+			singleAnswerAskTheCommunity_AnswersViewModels.Text = BusinessFaqAnswer.Text;
 			singleAnswerAskTheCommunity_AnswersViewModels.UserName = CurrentUser.UserName;
 			singleAnswerAskTheCommunity_AnswersViewModels.TotalBusinessImage = await _UnitOfWork.ReviewRepo.GetUserTotalBusinessMedia(GetUserId());
 			singleAnswerAskTheCommunity_AnswersViewModels.TotalFriend = await _UnitOfWork.UserRepo.GetUserFriendsCount(GetUserId());
@@ -212,9 +206,6 @@ namespace BizApp.Controllers
 			#endregion
 			return View(answerAskTheCommunityViewModel);
 		}
-
-
-
 		[HttpPost]
 		public async Task<IActionResult> AddHelpfullAnswers(Guid Id, string UserId)
 		{
@@ -243,7 +234,6 @@ namespace BizApp.Controllers
 				return Json(new { success = false });
 			}
 		}
-
 		[HttpPost]
 		public async Task<IActionResult> EditFactAnswer(BusinessFaqAnswer model)
 		{
@@ -259,8 +249,6 @@ namespace BizApp.Controllers
 
 			}
 		}
-
-
 		private string GetUserId()
 		{
 			return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;

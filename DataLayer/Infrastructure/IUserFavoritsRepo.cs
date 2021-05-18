@@ -9,7 +9,7 @@ namespace DataLayer.Infrastructure
 {
 	public  interface IUserFavoritsRepo
 	{
-		Task<IEnumerable<UserFavorits>> GetAll(Guid Id);
+		Task<IEnumerable<UserFavorits>> GetAll(string Id);
 		Task<VotesAction> AddOrRemove(Guid Id, string UserId); 
 
 	}

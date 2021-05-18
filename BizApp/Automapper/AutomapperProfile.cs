@@ -130,7 +130,7 @@ namespace BizApp.Automapper
 				.ForMember(dest => dest.rate , opt => opt.MapFrom(src => src.Rate))
 				.ForMember(dest => dest.totalreview, opt => opt.MapFrom(src => src.Reviews.Count))
 				.ForMember(dest => dest.description, opt => opt.MapFrom(src => src.Description))
-				.ForMember(dest => dest.image, opt => opt.MapFrom(src => src.FeatureImage))
+				.ForMember(dest => dest.featureimage, opt => opt.MapFrom(src => src.FeatureImage))
 				.ForMember(dest => dest.name, opt => opt.MapFrom(src => src.Name))
 				.ForMember(dest => dest.reviews, opt => opt.MapFrom(src => src.Reviews))
 				.ReverseMap();
