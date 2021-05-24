@@ -118,7 +118,6 @@ namespace BizApp.Areas.Profile.Controllers
 						model.Activities.Add(item);
 						break;
 				}
-
 			}
 
 			return View("index", model);

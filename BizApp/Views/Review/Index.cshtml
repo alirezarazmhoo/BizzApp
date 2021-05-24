@@ -60,68 +60,72 @@
 				<h2>@Model.BusinessName</h2>
 				<a href="#">دستورالعمل های نحوه نوشتن بررسی ما را بخوانید</a>
 			</div>
-			<div class="review-content__wrapper__box-comment">
-				<div class="review-content__wrapper__box-comment__score">
-					<div class="review-content__wrapper__box-comment__score__star">
-						<input type="radio" name="star" id="star_5">
-						<label for="star_5" data-star="5" data-title="بسیار عالی"></label>
-						<input type="radio" name="star" id="star_4">
-						<label for="star_4" data-star="4" data-title="عالی"></label>
-						<input type="radio" name="star" id="star_3">
-						<label for="star_3" data-star="3" data-title="خوب"></label>
-						<input type="radio" name="star" id="star_2">
-						<label for="star_2" data-star="2" data-title="آیا بهتر بوده است"></label>
-						<input type="radio" name="star" id="star_1">
-						<label for="star_1" data-star="1" data-title="خوب نیست"></label>
+			<form asp-controller="review" asp-action="postreview"
+				  method="post" accept-charset="utf-8" enctype="multipart/form-data">
+				<div class="review-content__wrapper__box-comment">
+					<div class="review-content__wrapper__box-comment__score">
+						<div class="review-content__wrapper__box-comment__score__star">
+							<input type="radio" name="rate" id="star_5">
+							<label for="star_5" data-star="5" data-title="بسیار عالی"></label>
+							<input type="radio" name="rate" id="star_4">
+							<label for="star_4" data-star="4" data-title="عالی"></label>
+							<input type="radio" name="rate" id="star_3">
+							<label for="star_3" data-star="3" data-title="خوب"></label>
+							<input type="radio" name="rate" id="star_2">
+							<label for="star_2" data-star="2" data-title="آیا بهتر بوده است"></label>
+							<input type="radio" name="rate" id="star_1">
+							<label for="star_1" data-star="1" data-title="خوب نیست"></label>
+						</div>
+						<div class="review-content__wrapper__box-comment__score__text" data-text="رتبه بندی خود را انتخاب کنید">
+							<span>رتبه بندی خود را انتخاب کنید</span>
+						</div>
+						@*<div class="review-content__wrapper__box-comment__score__save">
+								<span>در حال ذخیره ...</span>
+							</div>*@
 					</div>
-					<div class="review-content__wrapper__box-comment__score__text" data-text="رتبه بندی خود را انتخاب کنید">
-						<span>رتبه بندی خود را انتخاب کنید</span>
+					<div class="review-content__wrapper__box-comment__desc">
+						<textarea placeholder="متن پیام را در این قسمت بنویسید ..."></textarea>
 					</div>
-					@*<div class="review-content__wrapper__box-comment__score__save">
-							<span>در حال ذخیره ...</span>
-						</div>*@
 				</div>
-				<div class="review-content__wrapper__box-comment__desc">
-					<textarea placeholder="متن پیام را در این قسمت بنویسید ..."></textarea>
-				</div>
-			</div>
-			<div class="review-content__wrapper__attach">
-				<div class="review-content__wrapper__attach__title">
-					<h4>پیوست عکسها</h4>
-				</div>
-				<div class="review-content__wrapper__attach__box" id="add-image" data-toggle="modal" data-target="#add_image">
-					<div class="review-content__wrapper__attach__box__icon-add">
-						<svg width="24" height="24" class="icon_svg"><path d="M16 2a1 1 0 011 .68L17.72 5H20a3 3 0 013 3v11a3 3 0 01-3 3H4a3 3 0 01-3-3V8a3 3 0 013-3h2.28L7 2.68A1 1 0 018 2zm-.72 2H8.72L8 6.32A1 1 0 017 7H4a1 1 0 00-1 1v11a1 1 0 001 1h16a1 1 0 001-1V8a1 1 0 00-1-1h-3a1 1 0 01-.95-.68L15.28 4zM12 9a1 1 0 011 1v2.5h2.5a1 1 0 110 2H13V17a1 1 0 11-2 0v-2.5H8.5a1 1 0 110-2H11V10a1 1 0 011-1z"></path></svg>
+				<div class="review-content__wrapper__attach">
+					<div class="review-content__wrapper__attach__title">
+						<h4>پیوست عکسها</h4>
+					</div>
+					<div class="review-content__wrapper__attach__box" id="add-image" data-toggle="modal" data-target="#add_image">
+						<div class="review-content__wrapper__attach__box__icon-add">
+							<svg width="24" height="24" class="icon_svg"><path d="M16 2a1 1 0 011 .68L17.72 5H20a3 3 0 013 3v11a3 3 0 01-3 3H4a3 3 0 01-3-3V8a3 3 0 013-3h2.28L7 2.68A1 1 0 018 2zm-.72 2H8.72L8 6.32A1 1 0 017 7H4a1 1 0 00-1 1v11a1 1 0 001 1h16a1 1 0 001-1V8a1 1 0 00-1-1h-3a1 1 0 01-.95-.68L15.28 4zM12 9a1 1 0 011 1v2.5h2.5a1 1 0 110 2H13V17a1 1 0 11-2 0v-2.5H8.5a1 1 0 110-2H11V10a1 1 0 011-1z"></path></svg>
+						</div>
+
 					</div>
 
+					<div class="review-content__wrapper__attach__box-list">
+						<div class="review-content__wrapper__attach__box-list__image">
+							<img src="./assets/img/b5.jpg" alt="">
+							<a href="#"><svg id="18x18_trash" height="18" width="18"><path d="M3 5V3h4V2h4v1h4v2H3zm11 9c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V6h10v8zM8 8.5c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5zm3 0c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5z"></path></svg></a>
+						</div>
+						<div class="review-content__wrapper__attach__box-list__image">
+							<img src="./assets/img/b5.jpg" alt="">
+							<a href="#"><svg id="18x18_trash" height="18" width="18"><path d="M3 5V3h4V2h4v1h4v2H3zm11 9c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V6h10v8zM8 8.5c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5zm3 0c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5z"></path></svg></a>
+						</div>
+						<div class="review-content__wrapper__attach__box-list__image">
+							<img src="./assets/img/b5.jpg" alt="">
+							<a href="#"><svg id="18x18_trash" height="18" width="18"><path d="M3 5V3h4V2h4v1h4v2H3zm11 9c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V6h10v8zM8 8.5c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5zm3 0c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5z"></path></svg></a>
+						</div>
+						<div class="review-content__wrapper__attach__box-list__image">
+							<img src="./assets/img/b5.jpg" alt="">
+							<a href="#"><svg id="18x18_trash" height="18" width="18"><path d="M3 5V3h4V2h4v1h4v2H3zm11 9c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V6h10v8zM8 8.5c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5zm3 0c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5z"></path></svg></a>
+						</div>
+						<div class="review-content__wrapper__attach__box-list__image">
+							<img src="./assets/img/b5.jpg" alt="">
+							<a href="#"><svg id="18x18_trash" height="18" width="18"><path d="M3 5V3h4V2h4v1h4v2H3zm11 9c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V6h10v8zM8 8.5c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5zm3 0c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5z"></path></svg></a>
+						</div>
+					</div>
 				</div>
-
-				<div class="review-content__wrapper__attach__box-list">
-					<div class="review-content__wrapper__attach__box-list__image">
-						<img src="./assets/img/b5.jpg" alt="">
-						<a href="#"><svg id="18x18_trash" height="18" width="18"><path d="M3 5V3h4V2h4v1h4v2H3zm11 9c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V6h10v8zM8 8.5c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5zm3 0c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5z"></path></svg></a>
-					</div>
-					<div class="review-content__wrapper__attach__box-list__image">
-						<img src="./assets/img/b5.jpg" alt="">
-						<a href="#"><svg id="18x18_trash" height="18" width="18"><path d="M3 5V3h4V2h4v1h4v2H3zm11 9c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V6h10v8zM8 8.5c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5zm3 0c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5z"></path></svg></a>
-					</div>
-					<div class="review-content__wrapper__attach__box-list__image">
-						<img src="./assets/img/b5.jpg" alt="">
-						<a href="#"><svg id="18x18_trash" height="18" width="18"><path d="M3 5V3h4V2h4v1h4v2H3zm11 9c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V6h10v8zM8 8.5c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5zm3 0c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5z"></path></svg></a>
-					</div>
-					<div class="review-content__wrapper__attach__box-list__image">
-						<img src="./assets/img/b5.jpg" alt="">
-						<a href="#"><svg id="18x18_trash" height="18" width="18"><path d="M3 5V3h4V2h4v1h4v2H3zm11 9c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V6h10v8zM8 8.5c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5zm3 0c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5z"></path></svg></a>
-					</div>
-					<div class="review-content__wrapper__attach__box-list__image">
-						<img src="./assets/img/b5.jpg" alt="">
-						<a href="#"><svg id="18x18_trash" height="18" width="18"><path d="M3 5V3h4V2h4v1h4v2H3zm11 9c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V6h10v8zM8 8.5c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5zm3 0c0-.275-.225-.5-.5-.5s-.5.225-.5.5v5c0 .275.225.5.5.5s.5-.225.5-.5v-5z"></path></svg></a>
-					</div>
+				<div class="review-content__wrapper__button">
+					<input type="hidden" name="businessId" value="@Context.Request.Query["id"]" />
+					<input type="submit" class="btn btn-primary" value="بررسی پست" />
 				</div>
-			</div>
-			<div class="review-content__wrapper__button">
-				<a href="#">بررسی پست</a>
-			</div>
+			</form>
 		</div>
 		<div class="review-content__recent">
 

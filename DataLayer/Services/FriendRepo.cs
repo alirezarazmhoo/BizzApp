@@ -64,12 +64,11 @@ namespace DataLayer.Services
 				};
 				DbContext.Friends.Add(friend);
 
+				// add notfification
+				await _notification.Add(model.ReceiverUserId, NotificationModel.Friend, friend.Id.ToString(), friend.ApplicatorUserId);
+
 				// save changes
 				await DbContext.SaveChangesAsync();
-
-				// add notfification
-				await _notification.Add(model.ReceiverUserId, NotificationModel.Friend, friend.Id.ToString());
-
 
 				scope.Complete();
 			}
@@ -82,7 +81,7 @@ namespace DataLayer.Services
 
 			var result =
 				await DbContext.Friends
-						.Where(w => w.ApplicatorUserId == user.Id)
+						.Where(w => w.ApplicatorUserId == user.Id && w.Status == StatusEnum.Accepted)
 						.Select(s => new SharedUserProfileDetailQuery
 						{
 							Id = s.ReceiverUserId,
