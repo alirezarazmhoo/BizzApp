@@ -59,4 +59,16 @@
 		Undefined
 
 	}
+	public enum CommunityVoteType
+	{
+		AddHelpFullCount = 1 , 
+		AddNotHelpFullCount =2 , 
+		AddHelpFullCountAndRemoveNotHelpFull = 3 , 
+		AddNotHelpFullCountAndRemoveHelpFull = 4 ,
+		RemoveHelpFullCount = 5 , 
+		RemoveNotHelpFullCount =6 , 
+		Undefined= 7
+
+
+	}
 }

@@ -31,7 +31,8 @@ namespace DataLayer.Infrastructure
 		Task<bool> CheckBisinessFavorit(Guid Id, string UserId);
 		Task<IEnumerable<CustomerBusinessMedia>> GetCustomerBusinessMedia(Guid Id);
 		Task<IEnumerable<BusinessGallery>> GetBusinessGallery(Guid Id);
-
+		Task<IEnumerable<Business>> GetByCategoryIdBasedLocation(int CategoryId, int CityId);
+		Task<IEnumerable<Business>> SearchBusinessByTitle(string txtSearch, int DistrictId, double Longitude, double Latitude);  
 
 	}
 }

@@ -49,11 +49,9 @@ namespace BizApp.Controllers
 		}
 		public async Task<IActionResult> GuessReivew()
 		{
-	
-			string UserId = string.Empty;
+				string UserId = string.Empty;
 			List<int> Districts = new List<int>();
 			int District = 0; 
-
 			#region Objects
 			GuessReviewViewModel guessReviewViewModel = new GuessReviewViewModel();
 			List<GuessReview_BusinessListViewModel> guessReview_BusinessListViewModels = new List<GuessReview_BusinessListViewModel>();
@@ -71,7 +69,7 @@ namespace BizApp.Controllers
 			{
 				Districts.AddRange(await _unitOfWork.DistrictRepo.GetDeafults());
 			}
-			var items = await _unitOfWork.ReviewRepo.GuessReview(Districts, District, UserId, null);
+			var items = await _unitOfWork.ReviewRepo.GuessReview(Districts, District, UserId, null , 0 , 0 );
 			#endregion
 			#region ListBusiness
 			foreach (var item in items)
@@ -84,14 +82,12 @@ namespace BizApp.Controllers
 			#endregion
 			return View(guessReviewViewModel);
 		}
-		public async Task<JsonResult> GetMoreGuessReivew(int? page)
+		public async Task<JsonResult> GetMoreGuessReivew(int? page , int cityId , int categoryId)
 		{
 			bool HasNext = true;
-			int CurrentPage = 0;
 			string UserId = string.Empty;
 			List<int> Districts = new List<int>();
 			int District = 0;
-
 			#region Objects
 			GuessReviewViewModel guessReviewViewModel = new GuessReviewViewModel();
 			List<GuessReview_BusinessListViewModel> guessReview_BusinessListViewModels = new List<GuessReview_BusinessListViewModel>();
@@ -109,13 +105,14 @@ namespace BizApp.Controllers
 			{
 				Districts.AddRange(await _unitOfWork.DistrictRepo.GetDeafults());
 			}
-			var items = await _unitOfWork.ReviewRepo.GuessReview(Districts, District, UserId, page);
+			var items = await _unitOfWork.ReviewRepo.GuessReview(Districts, District, UserId, page , cityId , categoryId);
 			#endregion
 			#region ListBusiness
 			foreach (var item in items)
 			{
 				guessReview_BusinessListViewModels.Add(new GuessReview_BusinessListViewModel() { Id = item.Id, Image = string.IsNullOrEmpty(item.FeatureImage) == true ? "/Upload/DefaultPicutres/Bussiness/Business.jpg" : item.FeatureImage, Name = item.Name });
 			}
+			int CurrentPage;
 			if (HasNext)
 			{
 				CurrentPage = (page.HasValue ? page.Value : 1) + 1;

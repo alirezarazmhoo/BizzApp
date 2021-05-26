@@ -4,12 +4,16 @@ using BizApp.Utility;
 using DataLayer.Data;
 using DataLayer.Extensions;
 using DataLayer.Infrastructure;
+using DomainClass.Businesses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BusinessFeature = BizApp.Areas.WebApi.Models.BusinessFeature;
+using BusinessGallery = BizApp.Areas.WebApi.Models.BusinessGallery;
+using BusinessTime = BizApp.Areas.WebApi.Models.BusinessTime;
 
 namespace BizApp.Areas.WebApi.Controllers
 {
@@ -44,6 +48,9 @@ namespace BizApp.Areas.WebApi.Controllers
 		{
 			try
 			{
+				string UserToken = HttpContext.Request?.Headers["Token"];
+
+				BusinessRecentlyViewed businessRecentlyViewed = new BusinessRecentlyViewed();
 			BusinessItem businessPopop = new BusinessItem();
 				List<Review> reviews = new List<Review>();
 			var Item = await _UnitOfWork.BusinessRepo.GetById(id);
@@ -75,6 +82,19 @@ namespace BizApp.Areas.WebApi.Controllers
 					}
 					businessPopop.reviews = reviews;
 					businessPopop.totalreview = Item.Reviews.Count;
+
+					if (!string.IsNullOrEmpty(UserToken))
+					{
+
+						string UserId = await _UnitOfWork.UserRepo.UserTokenMaper(UserToken);
+						if(!await _UnitOfWork.BusinessRecentlyViewdRepo.CheckDuplicate(UserId , id))
+						{
+							businessRecentlyViewed.BizAppUserId = UserId;
+							businessRecentlyViewed.BusinessId = id;
+							await _UnitOfWork.BusinessRecentlyViewdRepo.Add(businessRecentlyViewed);
+							await _UnitOfWork.SaveAsync();
+						}
+					}
 					return businessPopop;
 			}
 				else
@@ -224,7 +244,6 @@ namespace BizApp.Areas.WebApi.Controllers
 				{
 					state = false;
 				}
-				await _UnitOfWork.SaveAsync();
 				return Ok(state);
 			}
 			catch (Exception)
@@ -233,5 +252,43 @@ namespace BizApp.Areas.WebApi.Controllers
 			}
 		}
 
+		[HttpGet]
+		[Route("GetByCategoryAndLocation")]
+		public async Task<IActionResult> GetBusinessByCategoryId(int CategoryId, int CityId)
+		{
+			if(await _UnitOfWork.CategoryRepo.GetById(CategoryId) == null)
+			{
+				return NotFound("دسته بندی مورد نظر یافت نشد"); 
+			}
+			if(await _UnitOfWork.CityRepo.GetById(CityId) == null)
+			{
+				return NotFound("شهر  مورد نظر یافت نشد");
+			}
+			return Ok(await _UnitOfWork.BusinessRepo.GetByCategoryIdBasedLocation(CategoryId  , CityId));
+		}
+		[HttpGet]
+		[Route("SearchByTitle")]
+		public async Task<IActionResult> SearchBusinessByTitleAndLocations(string txtSearch , int DistrictId , double Longitude , double Latitude)
+		{
+			List<BusinessShortModel> businessShortModels = new List<BusinessShortModel>();
+		  string UserToken = HttpContext.Request?.Headers["Token"];
+          if(!await _UnitOfWork.UserRepo.CheckUserToken(UserToken))
+			{
+				return NotFound("کاربر مورد نظر یافت نشد ");
+			}
+			try
+			{
+			
+				foreach (var item in await _UnitOfWork.BusinessRepo.SearchBusinessByTitle(txtSearch, DistrictId, Longitude, Latitude))
+				{
+					businessShortModels.Add(new BusinessShortModel() { districtname =$"{ item.District.City.Name} {item.District.Name}" , featureimage = string.IsNullOrEmpty(item.FeatureImage) == true ? ReturnDefaults.BusinessImage() : item.FeatureImage, id = item.Id, name = item.Name });
+				}
+				return Ok(businessShortModels);
+			}catch(Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+
+		}
 	}
 }

@@ -119,7 +119,8 @@ namespace BizApp.Areas.Identity.Pages.Account
 					UserName = Input.UserName,
 					Email = Input.Email,
 					PostalCode = Input.PostalCode,
-					CityId = Input.CityId
+					CityId = Input.CityId ,
+					SecurityStamp = Guid.NewGuid().ToString()
 				};
 
 				// validate birth date

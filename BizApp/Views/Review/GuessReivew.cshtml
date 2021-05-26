@@ -13,18 +13,25 @@
 						<h1>اولین بررسی شما در انتظار است</h1>
 					</div>
 					<div class="first-review__item__text">
-						<p>مشاغل مورد علاقه خود را مرور کرده و تجربیات خود را با انجمن ما در میان بگذارید. برای شروع به کمی کمک </p>
+						<p>مشاغل مورد علاقه خود را مرور کرده و تجربیات خود را با انجمن ما در میان بگذارید. </p>
 					</div>
 					<div class="first-review__item__search">
-						<div class="first-review__item__search__find">
-							<label for="">پیدا کردن</label>
-							<input type="text" placeholder="پیتزا ، میخانه ، فاکس و سگ شکاری">
+
+						<div class="first-review__item__search__near">
+							<label for="">گروه</label>
+							<input placeholder="رستوران،کافی شاپ و..." name="idTxtCategorySearch" id="idTxtCategorySearch"  oninput="AutoComplete(this.value)" type="text" >
+							<div class="first-review__item__search__near__menu-bottom">
+								<ul id="cmbSearchCategoryAlternative" style="display:none">
+								</ul>
+							</div>
 						</div>
 						<div class="first-review__item__search__near">
 							<label for="">نزدیک </label>
-							<input type="text" placeholder="تورنتو ، کانادا">
+							<input type="text" name="searchCityInput" id="searchCityInput"  oninput="CityAutoComplete(this.value)" placeholder=" تهران , اصفهان">
+							<div class="first-review__item__search__near__menu-bottom" id="cmbSearchCity">
+							</div>
 						</div>
-						<button><svg width="18" height="18" class="icon_svg"><path d="M15.913 14.224a1.324 1.324 0 00-.3-.466h.009l-3.377-3.376a5.492 5.492 0 00.802-2.857 5.523 5.523 0 10-5.522 5.52 5.491 5.491 0 002.856-.801l3.369 3.369.004.003c.132.131.293.231.471.298.143.053.296.086.458.086.727 0 1.317-.589 1.317-1.316 0-.163-.033-.317-.087-.46zM7.525 10.94a3.422 3.422 0 01-3.418-3.416 3.422 3.422 0 013.418-3.417 3.422 3.422 0 013.416 3.417 3.421 3.421 0 01-3.416 3.416z"></path></svg></button>
+						<button onclick="search()"><svg width="18" height="18" class="icon_svg"><path d="M15.913 14.224a1.324 1.324 0 00-.3-.466h.009l-3.377-3.376a5.492 5.492 0 00.802-2.857 5.523 5.523 0 10-5.522 5.52 5.491 5.491 0 002.856-.801l3.369 3.369.004.003c.132.131.293.231.471.298.143.053.296.086.458.086.727 0 1.317-.589 1.317-1.316 0-.163-.033-.317-.087-.46zM7.525 10.94a3.422 3.422 0 01-3.418-3.416 3.422 3.422 0 013.418-3.417 3.422 3.422 0 013.416 3.417 3.421 3.421 0 01-3.416 3.416z"></path></svg></button>
 					</div>
 				</div>
 
@@ -32,11 +39,9 @@
 			<div class="col-md-3">
 				<div class="first-review__image">
 					<img src="~/Designs/MainWebSite/assets/img/first-review.png" />
-	
 				</div>
 			</div>
 		</div>
-
 	</div>
 </section>
 <section class="write-areviews">
@@ -45,16 +50,16 @@
 			<h2>اخیراً به این مشاغل مراجعه کرده اید؟</h2>
 		</div>
 		<input id="currentpage" value="" hidden />
-		<input id="hasnext" value="true"  hidden/>
+		<input id="hasnext" value="true" hidden />
 		<div class="row" id="testrew">
 			@foreach (var item in Model.guessReview_BusinessListViewModels)
 			{
 				<div class="col-lg-6">
 					<div class="write-areviews__item">
 						<div class="write-areviews__item__image">
-							<a  href="/BusinessHome?Id=@item.Id">
+							<a href="/BusinessHome?Id=@item.Id">
 
-							<img src="@item.Image" alt="">
+								<img src="@item.Image" alt="">
 							</a>
 						</div>
 						<div class="write-areviews__item__text">
@@ -64,8 +69,8 @@
 							<div class="write-areviews__item__text__desc">
 								<p>جهت تصمیم گیری بهتر، نظر دهید</p>
 							</div>
-							<div class="write-areviews__item__text__star" >
-								<div class="write-areviews__item__text__star__icon"  >
+							<div class="write-areviews__item__text__star">
+								<div class="write-areviews__item__text__star__icon">
 									<input type="radio" name="star5" data-star="5" id="radio_@item.Id'_5" data-assigned-id="@item.Id" onclick="getStar(this)">
 									<label for="radio_@item.Id'_5" data-star="5"></label>
 									<input type="radio" name="star4" data-star="4" id="radio_@item.Id'_4" data-assigned-id="@item.Id" onclick="getStar(this)">
@@ -74,8 +79,8 @@
 									<label for="radio_@item.Id'_3" data-star="3"></label>
 									<input type="radio" name="star2" data-star="2" id="radio_@item.Id'_2" data-assigned-id="@item.Id" onclick="getStar(this)">
 									<label for="radio_@item.Id'_2" data-star="2"></label>
-									<input type="radio" name="star1" data-star="1" id="radio_@item.Id'_1" data-assigned-id="@item.Id" onclick="getStar(this)" >
-									<label for="radio_@item.Id'_1" ></label>
+									<input type="radio" name="star1" data-star="1" id="radio_@item.Id'_1" data-assigned-id="@item.Id" onclick="getStar(this)">
+									<label for="radio_@item.Id'_1"></label>
 								</div>
 							</div>
 							<div class="write-areviews__item__text__close">
@@ -87,19 +92,23 @@
 
 			}
 		</div>
-		<div class="write-areviews__item__text__show-more">
+		<div class="write-areviews__item__text__show-more" >
 			<a href="#" onclick="getMore();">
 				پیشنهادات بیشتری را نشان دهید
 				<svg width="24" height="24" class="icon_svg"><path d="M18.364 9.525L16.95 8.111 12 13.061l-4.95-4.95-1.414 1.414L12 15.889l6.364-6.364z"></path></svg>
 			</a>
 		</div>
 	</div>
+
+	<input id="tcityId" hidden/>
+	<input id="tcategoryId"  hidden/>
+
+
+
 </section> 
 
 <script>
-
 	function getStar(elem) {
-
 		document.location.href = '/Review/Index?Id=' + $(elem).data("assigned-id") +'&&star='+ $(elem).data("star")+'';
 	}
 	function getMore() {
@@ -107,7 +116,7 @@
 		if ($("#hasnext").val() == 'true') {
 			$.ajax({
 				type: "GET",
-				url: '/Review/GetMoreGuessReivew?page=' + $("#currentpage").val() + '',
+				url: '/Review/GetMoreGuessReivew?page=' + $("#currentpage").val() + '&cityId=' + $("#tcityId").val() + '&categoryId=' + $("#tcategoryId").val()+'',
 				dataType: "json",
 				contentType: false,
 				processData: false,
@@ -115,22 +124,86 @@
 					$("#currentpage").val('');
 					$("#currentpage").val(response.currentpage);
 					$("#hasnext").val(response.hasnext);
-
 					if (response.items.length > 0) {
 						$.each(response.items, function () {
-							data = '<div class="col-lg-6"><div class="write-areviews__item"><div class="write-areviews__item__image">	<a  href="/BusinessHome?Id=' + this.id + '"><img src="' + this.image + '" alt=""></a></div><div class="write-areviews__item__text"><div class="write-areviews__item__text__title"><h3><a href="/BusinessHome?Id=' + this.id + '">' + this.name + '</a></h3></div><div class="write-areviews__item__text__desc"><p>جهت تصمیم گیری بهتر، نظر دهید</p></div><div class="write-areviews__item__text__star"><div onclick="removediv(this)" class="write-areviews__item__text__close"><svg class="icon_svg"height="24" width="24"><path d="M17.657 19.071L12 13.414l-5.657 5.657-1.414-1.414L10.586 12 4.929 6.343l1.414-1.414L12 10.586l5.657-5.657 1.414 1.414L13.414 12l5.657 5.657-1.414 1.414z"></path></svg></div><div class="write-areviews__item__text__star__icon" ><input type="radio" name="star" id="radio_' + this.id + '_5" data-star="5"  data-assigned-id="' + this.id + '" onclick="getStar(this)" ><label  for="radio_' + this.id +'_5"    data-star="5"></label><input type="radio" name="star" id="radio_' + this.id + '_4" data-star="4"  data-assigned-id="' + this.id + '" onclick="getStar(this)" ><label  for="radio_' + this.id +'_4"    data-star="4"></label><label  for="radio_' + this.id +'_3"    data-star="3"></label><input type="radio" name="star" id="radio_' + this.id + '_2" data-star="2"  data-assigned-id="' + this.id + '" onclick="getStar(this)" ><label  for="radio_' + this.id +'_2"    data-star="2"></label><input type="radio" name="star" id="radio_' + this.id+'_1" data-star="1"  data-assigned-id="' + this.id + '" onclick="getStar(this)" ><label  for="radio_'+this.id+'_1"    data-star="1"></label>';
+							data = '<div class="col-lg-6"><div class="write-areviews__item"><div class="write-areviews__item__image"><a  href="/BusinessHome?Id=' + this.id + '"><img src="' + this.image + '" alt=""></a></div><div class="write-areviews__item__text"><div class="write-areviews__item__text__title"><h3><a href="/BusinessHome?Id=' + this.id + '">' + this.name + '</a></h3></div><div class="write-areviews__item__text__desc"><p>جهت تصمیم گیری بهتر، نظر دهید</p></div><div class="write-areviews__item__text__star"><div onclick="removediv(this)" class="write-areviews__item__text__close"><svg class="icon_svg"height="24" width="24"><path d="M17.657 19.071L12 13.414l-5.657 5.657-1.414-1.414L10.586 12 4.929 6.343l1.414-1.414L12 10.586l5.657-5.657 1.414 1.414L13.414 12l5.657 5.657-1.414 1.414z"></path></svg></div><div class="write-areviews__item__text__star__icon" ><input type="radio" name="star" id="radio_' + this.id + '_5" data-star="5"  data-assigned-id="' + this.id + '" onclick="getStar(this)" ><label  for="radio_' + this.id +'_5"    data-star="5"></label><input type="radio" name="star" id="radio_' + this.id + '_4" data-star="4"  data-assigned-id="' + this.id + '" onclick="getStar(this)" ><label  for="radio_' + this.id +'_4"    data-star="4"></label><label  for="radio_' + this.id +'_3"    data-star="3"></label><input type="radio" name="star" id="radio_' + this.id + '_2" data-star="2"  data-assigned-id="' + this.id + '" onclick="getStar(this)" ><label  for="radio_' + this.id +'_2"    data-star="2"></label><input type="radio" name="star" id="radio_' + this.id+'_1" data-star="1"  data-assigned-id="' + this.id + '" onclick="getStar(this)" ><label  for="radio_'+this.id+'_1"    data-star="1"></label>';
 						$('#testrew').append(data);
 						});
 					}
 					else {
-
 					}
-
 				},
 			});
 		}
 	}
 	function  removediv(elem){
 		$(elem).closest('[class^="col"]').remove()
+	}
+	function CityAutoComplete(parameter) {
+		var res = "";
+		var finalres = "";
+		$('#cmbSearchCity').empty();
+		$.ajax({
+			type: "GET",
+			url: '/Home/GetAllWithParentNames?txtSearch=' + parameter + '',
+			dataType: "json",
+			contentType: false,
+			processData: false,
+			success: function (response) {
+				$.each(response.districts, function () {
+					res += "<li  data-value=" + this.id + " onclick='FillCitySearchInput(\"" + this.listName + "\" ,\"" + this.id + "\")'><a href='#'  style='margin-right:15px'>" + this.listName + "</a></li>";
+				});
+				finalres = "<ul>" + res + "</ul>";
+				$('#cmbSearchCity').append(finalres);
+				$('#cmbSearchCity').click();
+			},
+		});
+	}
+	function FillCitySearchInput(listname, id) {
+		$("#tcityId").val(id);
+		$("#searchCityInput").val(listname);
+		$('#cmbSearchCity').empty();
+	}
+	function FillCategorySearchInput(listname, id) {
+		$("#tcategoryId").val(id);
+		$("#idTxtCategorySearch").val(listname);
+		$('#cmbSearchCategoryAlternative').empty();
+	}
+	function AutoComplete(parameter) {
+		var input = document.getElementById('idTxtCategorySearch');
+		if (input.value.length == 0) {
+			$('#cmbSearchCategoryAlternative').empty();
+			$('#cmbSearchCategoryAlternative').css("display", "none");
+			$('#cmbSearchCategoryPrimary').css("display", "block");
+		}
+		else {
+			$('#cmbSearchCategoryPrimary').css("display", "none");
+			$('#cmbSearchCategoryAlternative').empty();
+			$('#cmbSearchCategoryAlternative').css("display", "block");
+			$.ajax({
+				type: "GET",
+				url: '/Home/SearchCategory?txtSearch=' + parameter + '',
+				dataType: "json",
+				contentType: false,
+				processData: false,
+				success: function (response) {
+					$.each(response.categories, function () {
+						$('#cmbSearchCategoryAlternative').append($("<li onclick='FillCategorySearchInput(\"" + this.name + "\",\"" + this.categoryId + "\")'><a href=#this.id style='margin-right:15px'>" + this.name + "<a><li>"));
+					});
+				},
+			});
+		}
+	}
+	function search() {
+		if ($("#searchCityInput").val() === "" ) {
+			$("#tcityId").val('0');
+		}
+		if ($("#idTxtCategorySearch").val() === "") {
+			$("#tcategoryId").val('0') 
+		}
+			$("#currentpage").val(0);
+		$("#hasnext").val('true');
+		$("#testrew").html('');
+		getMore();
 	}
 </script>

@@ -57,7 +57,6 @@ namespace BizApp.Areas.WebApi.Controllers
 			throw;
 			}
 		}
-
 		[Route("GetPopular")]
 		public async Task<IEnumerable<CategoryDto>> GetPopular(double latitude , double longitude)
 		{
@@ -98,6 +97,25 @@ namespace BizApp.Areas.WebApi.Controllers
 
 			}
 
+		}
+
+		[Route("Search")]
+		public async Task<IActionResult> SearchCategoryByName(string txtSearch)
+		{
+			List<CategoryDto> categoryDtos = new List<CategoryDto>();
+			try
+			{
+			var Items = await _UnitOfWork.CategoryRepo.GetAll(txtSearch);
+			foreach (var item in Items)
+			{
+				categoryDtos.Add(new CategoryDto() { Icon = string.Empty, Id = item.Id, Name = item.Name });
+			}
+				return Ok(categoryDtos);
+			}
+			catch(Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
 		}
 	}
 }

@@ -1,7 +1,9 @@
-﻿using DomainClass.Businesses;
+﻿using BizApp.Extensions;
+using DomainClass.Businesses;
 using DomainClass.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -184,10 +186,69 @@ namespace BizApp.Areas.WebApi.Models
 		public Guid id { get; set; }
 		public string name { get; set; }
 		public int rate { get; set;  }
-		public string businessImage { get; set; }
-		
-	
-	}
+		public string businessImage { get; set; }	}
+	public class UserInputModel
+	{
+		[Required(ErrorMessage = "نام و نام خانوادگی خود را وارد کنید")]
+		[Display(Name = "نام و نام خانوادگی", Prompt = "نام و نام خانوادگی")]
+		public string FullName { get; set; }
+		[Required(ErrorMessage = "نام کاربری را وارد کنید")]
+		[Display(Name = "نام کاربری", Prompt = "نام کاربری")]
+		[UniqueUserName]
+		[RegularExpression(@"^([a-zA-Z]+)([a-zA-Z0-9]+)$", ErrorMessage = "نام کاربری تنها باید تلفیقی از حروف و اعداد باشد")]
+		public string UserName { get; set; }
+		[Required(ErrorMessage = "موبایل خود را وارد کنید")]
+		[Display(Name = "موبایل", Prompt = "موبایل")]
+		[Mobile(ErrorMessage = "شماره موبایل نامعتبر است")]
+		[UniqueMemberMobile]
+		public long Mobile { get; set; }
 
+	
+		[Display(Name = "ایمیل", Prompt = "ایمیل")]
+		public string Email { get; set; }
+
+		[Required(ErrorMessage = "رمز عبور را وارد کنید")]
+		[DataType(DataType.Password)]
+		[Display(Name = "رمز عبور", Prompt = "رمز عبور")]
+		public string Password { get; set; }
+
+
+		[Display(Name = "کد پستی", Prompt = "کد پستی")]
+		public string PostalCode { get; set; }
+		// birth date fields
+		public int? Year { get; set; }
+		public int? Month { get; set; }
+		public int? Day { get; set; }
+		public int? CityId { get; set; }
+	}
+	public class UserLoginModel
+	{
+		[Required(ErrorMessage = "نام کاربری را وارد کنید")]
+		[Display(Name = "نام کاربری", Prompt = "نام کاربری")]
+		public string UserName { get; set; }
+		[Required(ErrorMessage = "رمز عبور را وارد کنید")]
+		[DataType(DataType.Password)]
+		[Display(Name = "رمز عبور", Prompt = "رمز عبور")]
+		public string Password { get; set; }
+	}
+	public class UserBusinessRecentlyViewed
+	{
+		public Guid recentlyviewedid { get; set; }
+		public Guid id { get; set; }
+		public string name { get; set; }
+		public string featureimage { get; set; }
+		public string districtname { get; set; }
+
+
+	}
+	public class BusinessShortModel
+	{
+		public Guid id { get; set; }
+		public string name { get; set; }
+		public string districtname { get; set; }
+		public string featureimage { get; set; }
+
+
+	}
 
 }

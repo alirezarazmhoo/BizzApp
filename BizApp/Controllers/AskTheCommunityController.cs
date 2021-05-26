@@ -2,6 +2,7 @@
 using BizApp.Utility;
 using DataLayer.Infrastructure;
 using DomainClass.Businesses;
+using DomainClass.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -43,9 +44,18 @@ namespace BizApp.Controllers
 			#region QuestionItems
 			foreach (var item in NavbarItem)
 			{
-				var UserPhoto = item.BusinessFaqAnswers.FirstOrDefault().BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault() == null ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : item.BusinessFaqAnswers.FirstOrDefault().BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault().UploadedPhoto;
+				string UserPhoto = string.Empty; 
+				if (item.BusinessFaqAnswers.FirstOrDefault() != null)
+				{
+					UserPhoto = item.BusinessFaqAnswers.FirstOrDefault().BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault() == null ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : item.BusinessFaqAnswers.FirstOrDefault().BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault().UploadedPhoto;
+				}
+				else
+				{
+					UserPhoto = "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg"; 
+				}
+				
 				var Date = item.Date == DateTime.MinValue ? string.Empty : DateChanger.ToPersianDateString(item.Date);
-				askTheCommunity_QuestionListViewModels.Add(new AskTheCommunity_QuestionListViewModel() { Subject = item.Question , Answer = item.BusinessFaqAnswers.FirstOrDefault().Text ,  UserImage = UserPhoto , AnswersCount = item.BusinessFaqAnswers.Where(s=>s.StatusEnum ==  DomainClass.Enums.StatusEnum.Accepted).Count() , Date = Date, UserId = item.BizAppUserId , UserName =await _UnitOfWork.UserRepo.GetFullName(item.BizAppUserId) , Id = item.Id});
+				askTheCommunity_QuestionListViewModels.Add(new AskTheCommunity_QuestionListViewModel() { Subject = item.Question , Answer = item.BusinessFaqAnswers.FirstOrDefault() == null ? "بدون پاسخ"  : item.BusinessFaqAnswers.FirstOrDefault().Text,  UserImage = UserPhoto , AnswersCount = item.BusinessFaqAnswers.Where(s=>s.StatusEnum ==  DomainClass.Enums.StatusEnum.Accepted).Count() , Date = Date, UserId = item.BizAppUserId , UserName =await _UnitOfWork.UserRepo.GetFullName(item.BizAppUserId) , Id = item.Id});
 			}
 			#endregion
 			#region BusinessItem 
@@ -132,7 +142,7 @@ namespace BizApp.Controllers
 			foreach (var item in Answers)
 			{
 				var UserPhoto = item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault() == null ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : item.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage).FirstOrDefault().UploadedPhoto;
-				answerAskTheCommunity_AnswersViewModels.Add(new AnswerAskTheCommunity_AnswersViewModel() { HelpFullCount = item.HelpFullCount, NotHelpFullCount = item.NotHelpFullCount, Text = item.Text, UserName = item.BizAppUser.FullName, UserPicture = UserPhoto ,  Date = item.Date.ToPersianDateString()  });
+				answerAskTheCommunity_AnswersViewModels.Add(new AnswerAskTheCommunity_AnswersViewModel() { HelpFullCount = item.HelpFullCount, NotHelpFullCount = item.NotHelpFullCount, Text = item.Text, UserName = item.BizAppUser.FullName, UserPicture = UserPhoto ,  Date = item.Date.ToPersianDateString() , Id  = item.Id  });
 			}
 			#endregion
 			#region OtherQuestions
@@ -207,18 +217,48 @@ namespace BizApp.Controllers
 			return View(answerAskTheCommunityViewModel);
 		}
 		[HttpPost]
-		public async Task<IActionResult> AddHelpfullAnswers(Guid Id, string UserId)
-		{
-			await _UnitOfWork.AskTheCommunityRepo.AddHelpFull(Id, UserId);
+		public async Task<IActionResult> AddHelpfullAnswers(Guid Id )
+		{		
+			if (!User.Identity.IsAuthenticated)
+			{
+				return Json(new { success = true, type = "authorize" });
+			}
+			CommunityVoteType voteType =  await _UnitOfWork.AskTheCommunityRepo.AddHelpFull(Id, GetUserId());
 			await _UnitOfWork.SaveAsync();
-			return Json(new { success = true });
+			if(voteType == CommunityVoteType.AddHelpFullCount)
+			{
+				return Json(new { success = true , type = "add" });
+			}
+			else if (voteType == CommunityVoteType.RemoveHelpFullCount)
+			{
+				return Json(new { success = true, type = "remove" });
+			}
+			else
+			{
+				return Json(new { success = true, type = "addbyremove" });
+			}
 		}
 		[HttpPost]
-		public async Task<IActionResult> AddNotHelpfullAnswers(Guid Id, string UserId)
+		public async Task<IActionResult> AddNotHelpfullAnswers(Guid Id)
 		{
-			await _UnitOfWork.AskTheCommunityRepo.AddNotHelpFull(Id, UserId);
+			CommunityVoteType voteType = await _UnitOfWork.AskTheCommunityRepo.AddNotHelpFull(Id, GetUserId());
 			await _UnitOfWork.SaveAsync();
-			return Json(new { success = true });
+			if (!User.Identity.IsAuthenticated)
+			{
+				return Json(new { success = true, type = "authorize" });
+			}
+			if (voteType == CommunityVoteType.AddNotHelpFullCount)
+			{
+				return Json(new { success = true, type = "add" });
+			}
+			else if(voteType == CommunityVoteType.RemoveNotHelpFullCount)
+			{
+				return Json(new { success = true, type = "remove" });
+			}
+			else
+			{
+				return Json(new { success = true, type = "addbyremove" });
+			}
 		}
 		[HttpPost]
 		public async Task<IActionResult> RemoveFaqsAnswer(Guid BusinessFaqAnswerId, Guid BusinessId ,Guid BusinessFaqId)

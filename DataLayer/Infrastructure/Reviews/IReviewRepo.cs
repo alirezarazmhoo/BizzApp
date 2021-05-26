@@ -20,11 +20,10 @@ namespace DataLayer.Infrastructure.Reviews
 		Task<IEnumerable<UserReviewPaginateQuery>> GetUseReviews(string userName, int page);
 		Task<UserReviewPaginateQuery> GetUseReview(Guid id);
 		//Task<IEnumerable<UserReviewPaginateQuery>> GetCurrentUserReviews(string userId, int page);
-
 		Task<IEnumerable<Review>> GetBusinessReviews(Guid Id);
 		Task AddReview(Review model, IFormFile[] files , string[] captions);
 		Task AddBusinessMedia(CustomerBusinessMedia model, IFormFile[] files);
-		Task<IEnumerable<Business>> GuessReview(List<int> Districts, int DistricId, string UserId , int? pageNumber);
+		Task<IEnumerable<Business>> GuessReview(List<int> Districts, int DistricId, string UserId , int? pageNumber, int districtId, int categoryId);
 		Task<VotesAction> ChangeHelpFull(Guid Id, string UserId);
 		Task<VotesAction> ChangeFunnyCount(Guid Id, string UserId);
 		Task<VotesAction> ChangeCoolCount(Guid Id, string UserId);

@@ -2,9 +2,6 @@
 
 
 function changeUsefull(element) {
-
-
-
 $.ajax({
 	type: "Post",
 	url: '/Review/ChangeUseFullCount?Id=' + $(element).data('assigned-id') + '',

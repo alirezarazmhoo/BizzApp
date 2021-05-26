@@ -18726,17 +18726,17 @@ a:visited {
       margin-right: 12px;
       border: 1px solid #e6e6e6;
       border-radius: 2px;
-      position: relative; }
+      position: relative;}
       .recent-activities__item1__icon__left span:first-child {
         margin-right: 0; }
-      .recent-activities__item1__icon__left span::before {
+/*      .recent-activities__item1__icon__left span::before {
         position: absolute;
         content: "";
         border-width: 5px 5px 5px 0;
         border-style: solid;
         border-color: transparent #d2d2d2 transparent transparent;
         top: 5px;
-        left: -5px; }
+        left: -5px; }*/
       .recent-activities__item1__icon__left span::after {
         position: absolute;
         content: "";

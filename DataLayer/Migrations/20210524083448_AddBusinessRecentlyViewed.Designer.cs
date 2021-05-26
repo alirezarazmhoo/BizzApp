@@ -4,14 +4,16 @@ using DataLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210524083448_AddBusinessRecentlyViewed")]
+    partial class AddBusinessRecentlyViewed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +41,7 @@ namespace DataLayer.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 5, 24, 13, 55, 8, 996, DateTimeKind.Local).AddTicks(5299));
+                        .HasDefaultValue(new DateTime(2021, 5, 24, 13, 4, 47, 728, DateTimeKind.Local).AddTicks(7966));
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -286,8 +288,8 @@ namespace DataLayer.Migrations
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1f6b7961-3914-44f4-a02e-34083b9d87d4",
-                            CreateDate = new DateTime(2021, 5, 24, 13, 55, 9, 2, DateTimeKind.Local).AddTicks(7615),
+                            ConcurrencyStamp = "163862b5-d1c4-4e02-9f35-4186659cbb51",
+                            CreateDate = new DateTime(2021, 5, 24, 13, 4, 47, 733, DateTimeKind.Local).AddTicks(5588),
                             Email = "mainadmin@email.com",
                             EmailConfirmed = true,
                             Gender = 0,
@@ -299,10 +301,10 @@ namespace DataLayer.Migrations
                             Mobile = 0L,
                             NormalizedEmail = "mainadmin@email.com",
                             NormalizedUserName = "mainadmin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEz7TupQ+4v1+1WHFguj6vZpHFJXye5XtX5iWRHNPD/UE81m+ioN11ijxMqUXGopzg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEELNKllmEQC/bEWAMMPcrYW3VnG8P5PWdfq7hyCp+TVPasqaqlXZ/WcZuiu7bTG/xA==",
                             PhoneNumberConfirmed = false,
                             PhotoChanged = false,
-                            SecurityStamp = "f465a44e-c731-402b-a6de-89d3517b0736",
+                            SecurityStamp = "2ca1e4fe-3875-4013-bf56-27d4128e2271",
                             TwoFactorEnabled = false,
                             UserName = "mainadmin"
                         });
@@ -595,7 +597,10 @@ namespace DataLayer.Migrations
                     b.Property<string>("BizAppUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid>("BusinessId")
+                    b.Property<string>("BusinessId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("BusinessId1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Date")
@@ -605,7 +610,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("BizAppUserId");
 
-                    b.HasIndex("BusinessId");
+                    b.HasIndex("BusinessId1");
 
                     b.ToTable("BusinessRecentlyVieweds");
                 });
@@ -1511,9 +1516,7 @@ namespace DataLayer.Migrations
 
                     b.HasOne("DomainClass.Businesses.Business", "Business")
                         .WithMany()
-                        .HasForeignKey("BusinessId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BusinessId1");
                 });
 
             modelBuilder.Entity("DomainClass.Businesses.BusinessTime", b =>

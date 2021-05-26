@@ -26,13 +26,11 @@ namespace DataLayer.Services
     {
         private readonly ClaimsPrincipal _currentUser;
         private readonly UserManager<BizAppUser> _userManager;
-
         public BusinessRepo(ApplicationDbContext dbContext, ClaimsPrincipal currentUser, UserManager<BizAppUser> userManager) : base(dbContext)
         {
             _currentUser = currentUser;
             _userManager = userManager;
         }
-
         private string UploadFeutreImage(IFormFile image)
         {
             string fileName, filePath;
@@ -552,7 +550,6 @@ namespace DataLayer.Services
                 return new List<CustomerBusinessMedia>();
 			}
         }
-
         public async Task<IEnumerable<BusinessGallery>> GetBusinessGallery(Guid Id)
 		{
             var MainItem = await GetById(Id);
@@ -566,7 +563,101 @@ namespace DataLayer.Services
             }
 
         }
+        public async Task<IEnumerable<Business>> GetByCategoryIdBasedLocation (int CategoryId , int CityId)
+		{
+            List<Business> businesses = new List<Business>();
+            var Items = await DbContext.Businesses.Where(s => s.District.CityId.Equals(CityId)).ToListAsync();
+			foreach (var item in Items)
+			{
+              if(item.CategoryId == CategoryId)
+				{
+                    businesses.Add(item);
+				}
+				else
+				{
+                    var categoryItem1 = await DbContext.Categories.Where(s => s.Id.Equals(item.CategoryId)).FirstOrDefaultAsync();
+                    var parentcategoryItem1 = await DbContext.Categories.Where(s => s.ParentCategoryId.Equals(categoryItem1.Id)).FirstOrDefaultAsync();
+                    if(item.CategoryId == parentcategoryItem1.Id)
+					{
+                        businesses.Add(item);
+                    }
+					else
+					{
+                        var categoryItem2 = await DbContext.Categories.Where(s => s.Id.Equals(categoryItem1.Id)).FirstOrDefaultAsync();
+                        var parentcategoryItem2 = await DbContext.Categories.Where(s => s.ParentCategoryId.Equals(categoryItem2.Id)).FirstOrDefaultAsync();
+                        if (item.CategoryId == parentcategoryItem2.Id)
+                        {
+                            businesses.Add(item);
+                        }
+						else
+						{
+                            var categoryItem3 = await DbContext.Categories.Where(s => s.Id.Equals(categoryItem2.Id)).FirstOrDefaultAsync();
+                            var parentcategoryItem3 = await DbContext.Categories.Where(s => s.ParentCategoryId.Equals(categoryItem3.Id)).FirstOrDefaultAsync();
+                            if (item.CategoryId == parentcategoryItem3.Id)
+                            {
+                                businesses.Add(item);
+                            }
+							else
+							{
+                                var categoryItem4 = await DbContext.Categories.Where(s => s.Id.Equals(categoryItem3.Id)).FirstOrDefaultAsync();
+                                var parentcategoryItem4 = await DbContext.Categories.Where(s => s.ParentCategoryId.Equals(categoryItem4.Id)).FirstOrDefaultAsync();
+                                if (item.CategoryId == parentcategoryItem4.Id)
+                                {
+                                    businesses.Add(item);
+                                }
+								else
+								{
+                                    var categoryItem5 = await DbContext.Categories.Where(s => s.Id.Equals(categoryItem4.Id)).FirstOrDefaultAsync();
+                                    var parentcategoryItem5 = await DbContext.Categories.Where(s => s.ParentCategoryId.Equals(categoryItem5.Id)).FirstOrDefaultAsync();
+                                    if (item.CategoryId == parentcategoryItem5.Id)
+                                    {
+                                        businesses.Add(item);
+                                    }
+									else
+									{
+                                        continue;
+									}
+                                }
+                            }
+                        }
+                    }
 
+
+
+                }
+
+			}
+                return businesses; 
+		}
+
+        public async Task<IEnumerable<Business>> SearchBusinessByTitle(string txtSearch , int DistrictId , double Longitude , double Latitude)
+		{
+            List<Business> List = new List<Business>();
+            List<Business> GeoList = new List<Business>();
+            List = await DbContext.Businesses.Include(s=>s.District).Include(s=>s.District).ThenInclude(s=>s.City).ToListAsync();
+			if (!string.IsNullOrEmpty(txtSearch))
+			{
+                List = List.Where(s => s.Name.Contains(txtSearch)).ToList();
+			}
+            if(DistrictId != 0)
+			{
+                List = List.Where(s => s.DistrictId == DistrictId).ToList();
+            }
+            if(Longitude !=0 && Latitude != 0 && DistrictId == 0 )
+			{
+				foreach (var item in List)
+				{
+                    if (GetDistance.distance(Latitude, Longitude, item.Latitude, item.Longitude, 'K') < 10)
+                    {
+                        GeoList.Add(item);
+                    }
+                }
+                List.Clear();
+                List = GeoList; 
+
+            }
+            return List; 
+		}
 
     }
 }

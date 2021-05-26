@@ -49,8 +49,9 @@ namespace DataLayer.Data
 		public virtual DbSet<UserActivity> UserActivities { get; set; }
 		public virtual DbSet<Friend> Friends { get; set; }
 		public virtual DbSet<Notification> Notifications { get; set; }
+		public virtual DbSet<BusinessRecentlyViewed>  BusinessRecentlyVieweds { get; set; }
+
 		#endregion
-		
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			base.OnModelCreating(builder);

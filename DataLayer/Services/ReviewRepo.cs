@@ -39,7 +39,7 @@ namespace DataLayer.Services
 				.Include(s => s.BizAppUser)
 				.ThenInclude(s => s.ApplicationUserMedias)
 				.Include(s => s.Business).Where(s => s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted)
-				.Skip((pageNumber.Value - 1) * 3).Take(3).ToListAsync();
+				.Skip((pageNumber.Value - 1) * 2).Take(2).ToListAsync();
 			return Items;
 		}
 		public async Task<IEnumerable<CustomerBusinessMedia>> GetRecentActivityBusinessMedia(int? pageNumber)
@@ -51,7 +51,7 @@ namespace DataLayer.Services
 				.Include(s => s.BizAppUser)
 				.ThenInclude(s => s.ApplicationUserMedias)
 				.Include(s => s.UsersInCustomerBusinessMediaLikes).Include(s => s.Business).Where(s => s.StatusEnum == StatusEnum.Accepted && s.CustomerBusinessMediaPictures.Where(s => s.StatusEnum == StatusEnum.Accepted).Count() > 0)
-				.Skip((pageNumber.Value - 1) * 3).Take(3).ToListAsync();
+				.Skip((pageNumber.Value - 1) * 2).Take(2).ToListAsync();
 			return Items;
 		}
 		public async Task<string> GetUsersFullName(Guid Id)
@@ -319,7 +319,8 @@ namespace DataLayer.Services
 				}
 			}
 		}
-		public async Task<IEnumerable<Business>> GuessReview(List<int> Districts, int DistricId , string UserId , int? pageNumber)
+		public async Task<IEnumerable<Business>> GuessReview(List<int> Districts, int DistricId , string UserId 
+			, int? pageNumber , int districtId , int categoryId)
 		{
 			List<Business> FinalList = new List<Business>();
 			List<Business> FinalList2 = new List<Business>();
@@ -364,6 +365,15 @@ namespace DataLayer.Services
 				FinalList.Clear();
 				FinalList = FinalList2;
 			}
+			if(districtId != 0)
+			{
+				FinalList =  FinalList.Where(s => s.DistrictId == districtId).ToList();
+			}
+			if(categoryId != 0)
+			{
+				FinalList = FinalList.Where(s => s.CategoryId == categoryId).ToList();
+			}
+
 			return FinalList.Skip((pageNumber.Value - 1) * 3).Take(3).ToList(); 
 		}
 		public async Task<VotesAction> ChangeHelpFull(Guid Id, string UserId)

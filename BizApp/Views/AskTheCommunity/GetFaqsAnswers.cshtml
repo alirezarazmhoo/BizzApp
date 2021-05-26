@@ -28,20 +28,20 @@
 						<span>پرسیده شده توسط <a href="#">@Model.answerAskTheCommunity_NavbarViewModel.UserName</a> در  @Model.answerAskTheCommunity_NavbarViewModel.Date </span>
 					</div>
 					@*<div class="questions-detail__content__check">
-			<label><input name="" type="checkbox">پاسخهای جدید را به من اطلاع دهید</label>
-		</div>*@
+							<label><input name="" type="checkbox">پاسخهای جدید را به من اطلاع دهید</label>
+						</div>*@
 					<div class="questions-detail__content__answers-header">
 						<h3>@Model.answerAskTheCommunity_AnswersCountViewModel.Count پاسخ</h3>
 						@*<div class="questions-detail__content__answers-header__sort">
-				<span>مرتب سازی</span>
-				<div class="form-group">
-					<select name="" id="" class="form-control selectpicker">
-						<option value="">محبوب</option>
-						<option value="">آخرین پاسخ</option>
-						<option value="">جدید ترین</option>
-					</select>
-				</div>
-			</div>*@
+								<span>مرتب سازی</span>
+								<div class="form-group">
+									<select name="" id="" class="form-control selectpicker">
+										<option value="">محبوب</option>
+										<option value="">آخرین پاسخ</option>
+										<option value="">جدید ترین</option>
+									</select>
+								</div>
+							</div>*@
 					</div>
 					@foreach (var item in Model.answerAskTheCommunity_AnswersViewModels)
 					{
@@ -62,19 +62,19 @@
 								<p>@item.Text</p>
 							</div>
 							<div class="questions-detail__content__answers-item__btns">
-								<a href="#"><svg id="18x18_arrow_up" height="18" viewBox="0 0 18 18" width="18"><path d="M15 10L9 3l-6 7h4v5h4v-5h4z"></path></svg>کمک کرد<span>2</span></a>
-								<a href="#"><svg id="18x18_arrow_down" height="18" viewBox="0 0 18 18" width="18"><path d="M3 8l6 7 6-7h-4V3H7v5H3z"></path></svg>کمک نکرد</a>
+								<a  onclick="AddHelpFull(this)" data-assigned-id="@item.Id"><svg id="18x18_arrow_up" height="18" viewBox="0 0 18 18" width="18"><path d="M15 10L9 3l-6 7h4v5h4v-5h4z"></path></svg><span>کمک کرد</span><span>@item.HelpFullCount</span></a>
+								<a  onclick="AddNotHelpFull(this)" data-assigned-id="@item.Id"><svg id="18x18_arrow_down" height="18" viewBox="0 0 18 18" width="18"><path d="M3 8l6 7 6-7h-4V3H7v5H3z"></path></svg><span>کمک نکرد</span><span>@item.NotHelpFullCount</span></a>
 								@*<a href="#" class="left-view" data-toggle="tooltip" data-placement="top" title="گزارش پاسخ"><svg id="18x18_flag" height="18" viewBox="0 0 18 18" width="18"><path d="M6 10V3c4.976 1.098 4.024-1 8 0v7c-4.024-.976-3.024 1.024-8 0zM4 2h1v14H4V2z"></path></svg></a>*@
 							</div>
 						</div>
 					}
 					<div class="questions-detail__content__form">
 						<form method="post" action="/AskTheCommunity/AddFaqsAnswers">
-						<h3>پاسخی بنویسید:</h3>
-						<input name="BusinessId" value="@Model.answerAskTheCommunity_NavbarViewModel.BusinessId" hidden/>
-						<input name="BusinessFaqId" value="@Model.answerAskTheCommunity_NavbarViewModel.BusinessFaqId" hidden/> 
-						<textarea class="form-control" name="Text" required></textarea>
-						<button type="submit" class="btn">ارسال پاسخ</button>
+							<h3>پاسخی بنویسید:</h3>
+							<input name="BusinessId" value="@Model.answerAskTheCommunity_NavbarViewModel.BusinessId" hidden />
+							<input name="BusinessFaqId" value="@Model.answerAskTheCommunity_NavbarViewModel.BusinessFaqId" hidden />
+							<textarea class="form-control" name="Text" required></textarea>
+							<button type="submit" class="btn">ارسال پاسخ</button>
 						</form>
 					</div>
 				</div>
@@ -118,3 +118,77 @@
 		</div>
 	</div>
 </section>
+<input value="@Model.answerAskTheCommunity_NavbarViewModel.BusinessId" id="TBusinessId" hidden/>
+<input value="@Model.answerAskTheCommunity_NavbarViewModel.BusinessFaqId" id="TBusinessFaqId"  hidden/>
+
+
+<script>
+	function AddHelpFull(element) {
+		$.ajax({
+			type: "Post",
+			url: '/AskTheCommunity/AddHelpfullAnswers?Id=' + $(element).data('assigned-id') + '',
+			dataType: "json",
+			contentType: false,
+			processData: false,
+			success: function (response) {
+				if (response.type == "add") {
+					var number = parseInt($(element).children().eq(2).text()) + 1;
+					$(element).children().eq(2).text(number);
+					$(element).children().children().css('fill', 'blue');
+				}
+				if (response.type == "remove") {
+					var number = parseInt($(element).children().eq(2).text()) - 1;
+					$(element).children().eq(2).text(number);
+					$(element).children().children().css('fill', '');
+				}
+				if (response.type == "addbyremove") {
+					var number = parseInt($(element).children().eq(2).text()) + 1;
+					$(element).children().eq(2).text(number);
+					$(element).children().children().css('fill', 'blue');
+					$(element).next().children().children().css('fill', 'red');
+					var nextnumber = parseInt($(element).next().children().eq(2).text()) - 1;
+					$(element).next().children().eq(2).text(nextnumber);
+				} 
+				if (response.type == "authorize") {
+					window.location = "/Identity/Account/Login?returnUrl=/AskTheCommunity/GetFaqsAnswers?Id=" + $("#TBusinessId").val() +"&"+ "BusinessFaqId=" + $("#TBusinessFaqId").val()+ "";
+
+}
+
+}
+});
+}
+function AddNotHelpFull(element) {
+$.ajax({
+type: "Post",
+url: '/AskTheCommunity/AddNotHelpfullAnswers?Id=' + $(element).data('assigned-id') + '',
+dataType: "json",
+contentType: false,
+processData: false,
+success: function (response) {
+if (response.type == "add") {
+	var number = parseInt($(element).children().eq(2).text()) + 1;
+	$(element).children().eq(2).text(number);
+	$(element).children().children().css('fill', 'red');
+}
+if (response.type == "remove") {
+	var number = parseInt($(element).children().eq(2).text()) - 1;
+	$(element).children().eq(2).text(number);
+	$(element).children().children().css('fill', '');
+}
+if (response.type == "addbyremove") {
+	var number = parseInt($(element).children().eq(2).text()) + 1;
+	$(element).children().eq(2).text(number);
+	$(element).children().children().css('fill', 'red');
+	$(element).prev().children().children().css('fill', 'blue');
+	var nextnumber = parseInt($(element).prev().children().eq(2).text()) - 1;
+	$(element).prev().children().eq(2).text(nextnumber);
+}
+else if (response.type == "authorize") {
+	window.location = "/Identity/Account/Login";
+}
+
+}
+});
+}
+
+</script>

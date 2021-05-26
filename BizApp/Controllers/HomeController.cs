@@ -203,6 +203,7 @@ namespace BizApp.Controllers
 				MainPage_RecentActivityContent.Image = item.Business.FeatureImage;
 				MainPage_RecentActivityContent.Name = item.Business.Name;
 				MainPage_RecentActivityContent.Rate = item.Rate;
+				MainPage_RecentActivityContent.BusinessId = item.BusinessId; 
 				MainPage_RecentActivityContent.Text = item.Description;
 				MainPage_RecentActivityContent.UseFulCount = item.UsefulCount;
 				MainPage_RecentActivityContent.Likes = item.UsersInReviewLikes.Count;

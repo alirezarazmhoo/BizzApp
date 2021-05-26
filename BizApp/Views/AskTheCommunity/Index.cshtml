@@ -33,7 +33,7 @@
 				<div class="questions__item__title">
 					<h2>@item.Subject</h2>
 				</div>
-				<div class="questions__item__author">
+				<div class="questions__item__author" style="margin-top:10px">
 					<span>پرسش توسط<a href="#">@item.UserName</a></span>
 				</div>
 				<div class="questions__item__row">
@@ -50,7 +50,18 @@
 					</div>
 				</div>
 				<div class="questions__item__more">
-					<a href="/AskTheCommunity/GetFaqsAnswers?BusinessFaqId=@item.Id&&Id=@Model.askTheCommunity_BusinessViewModel.Id">نمایش @item.AnswersCount پاسخ بیشتر</a>
+					@{
+
+						if (item.AnswersCount > 0)
+						{
+							<a href="/AskTheCommunity/GetFaqsAnswers?BusinessFaqId=@item.Id&&Id=@Model.askTheCommunity_BusinessViewModel.Id">نمایش @item.AnswersCount پاسخ بیشتر</a>
+						}
+						else
+						{
+							<a href="/AskTheCommunity/GetFaqsAnswers?BusinessFaqId=@item.Id&&Id=@Model.askTheCommunity_BusinessViewModel.Id">پاسخ دهید</a>
+						}
+					}
+
 				</div>
 			</div>
 		}

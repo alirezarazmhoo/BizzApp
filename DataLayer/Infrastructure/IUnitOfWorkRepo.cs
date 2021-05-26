@@ -27,7 +27,8 @@ namespace DataLayer.Infrastructure
 		IUserActivityRepo UserActivityRepo { get; }
 		INotificationRepo NotificationRepo { get; }
 		IFriendRepo FriendRepo { get; }
-
+		IBusinessRecentlyViewdRepo   BusinessRecentlyViewdRepo { get; }
+		INearBusinessSuggestProfileRepo  NearBusinessSuggestProfileRepo { get; }
 		Task SaveAsync();
 	}
 }

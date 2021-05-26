@@ -1,5 +1,6 @@
 ﻿
 using DomainClass.Businesses;
+using DomainClass.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,8 +16,8 @@ namespace DataLayer.Infrastructure
 		Task AddBusinessFaq(BusinessFaq model);
 		Task<BusinessFaq> GetBusinessFaqById(Guid Id);
 		Task<int> AnswerCount(Guid Id);
-		Task AddHelpFull(Guid Id, string UserId);
-		Task AddNotHelpFull(Guid Id, string UserId);
+		Task<CommunityVoteType> AddHelpFull(Guid Id, string UserId);
+		Task<CommunityVoteType> AddNotHelpFull(Guid Id, string UserId);
 		Task RemoveFaqAnswer(Guid Id);
 		Task EditFactAnswer(BusinessFaqAnswer model);
 		Task<BusinessFaqAnswer> GetBusinessFaqAnswerById(Guid Id); 

@@ -214,7 +214,8 @@ namespace BizApp.Areas.WebApi.Controllers
 						UserPicture = string.IsNullOrEmpty(item.CustomerBusinessMedia.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault()) == true ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : item.CustomerBusinessMedia.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault(),
 						UserTotalFriends = await _UnitOfWork.UserRepo.GetUserFriendsCount(item.CustomerBusinessMedia.BizAppUserId),
 						UserTotalPictures = await _UnitOfWork.BusinessHomePageRepo.GetTotalUserMedia(item.CustomerBusinessMedia.BizAppUserId),
-						UserTotalReview = await _UnitOfWork.ReviewRepo.GetUserTotalReview(item.CustomerBusinessMedia.BizAppUserId)
+						UserTotalReview = await _UnitOfWork.ReviewRepo.GetUserTotalReview(item.CustomerBusinessMedia.BizAppUserId) , 
+						 BusinessId = item.CustomerBusinessMedia.BusinessId
 					}); 
 				}
 				return Ok(businessGalleries);
