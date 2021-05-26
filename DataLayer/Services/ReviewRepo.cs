@@ -242,17 +242,11 @@ namespace DataLayer.Services
 		}
 		public async Task<IEnumerable<Review>> GetBusinessReviews(Guid Id)
 		{
-			var BusinessItem = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Id.Equals(Id));
-			if (BusinessItem != null)
-			{
-				return await DbContext.Reviews.Include(s => s.BizAppUser).ThenInclude(s => s.ApplicationUserMedias).Where(s => s.BusinessId.Equals(Id) && s.StatusEnum == StatusEnum.Accepted).ToListAsync();
-			}
-			else
-			{
-				return new List<Review>();
-			}
+			var result = await DbContext.Reviews.Include(s => s.BizAppUser).ThenInclude(s => s.ApplicationUserMedias).Where(s => s.BusinessId.Equals(Id) && s.StatusEnum == StatusEnum.Accepted).ToListAsync();
+
+			return result ?? new List<Review>();
 		}
-		public async Task AddReview(Review model, IFormFile[] files , string[] captions)
+		public async Task AddReview(Review model, IFormFile[] files, string[] captions)
 		{
 
 			if (await DbContext.Users.AnyAsync(s => s.Id.Equals(model.BizAppUserId)) && await DbContext.Businesses.AnyAsync(s => s.Id.Equals(model.BusinessId)))
@@ -273,7 +267,7 @@ namespace DataLayer.Services
 						var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Upload\Review\Files\", fileName);
 						using (var stream = new FileStream(filePath, FileMode.Create))
 						{
-								files[i].CopyTo(stream);
+							files[i].CopyTo(stream);
 						}
 						DbContext.ReviewMedias.Add(new ReviewMedia()
 						{
@@ -319,8 +313,7 @@ namespace DataLayer.Services
 				}
 			}
 		}
-		public async Task<IEnumerable<Business>> GuessReview(List<int> Districts, int DistricId , string UserId 
-			, int? pageNumber , int districtId , int categoryId)
+		public async Task<IEnumerable<Business>> GuessReview(List<int> Districts, int DistricId , string UserId , int? pageNumber)
 		{
 			List<Business> FinalList = new List<Business>();
 			List<Business> FinalList2 = new List<Business>();
@@ -335,11 +328,11 @@ namespace DataLayer.Services
 			{
 				pageNumber = pageNumber.HasValue == false ? 1 : pageNumber;
 			}
-			if (DistricId !=0)
+			if (DistricId != 0)
 			{
 				Businesses = await DbContext.Businesses.Where(s => s.DistrictId.Equals(DistricId)).ToListAsync();
 			}
-			else if(Districts.Count>0)
+			else if (Districts.Count > 0)
 			{
 				foreach (var item in Districts)
 				{
@@ -348,9 +341,9 @@ namespace DataLayer.Services
 			}
 			FinalList.AddRange(Businesses);
 			if (!string.IsNullOrEmpty(UserId))
-			{	
+			{
 				var UserItem = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(UserId));
-				var Reveiws = await DbContext.Reviews.Include(s=>s.Business).Where(s => s.BizAppUserId.Equals(UserItem.Id)).ToListAsync();
+				var Reveiws = await DbContext.Reviews.Include(s => s.Business).Where(s => s.BizAppUserId.Equals(UserItem.Id)).ToListAsync();
 				foreach (var item in Reveiws)
 				{
 					BusinessesHelper.Add(item.BusinessId);
@@ -591,8 +584,8 @@ namespace DataLayer.Services
 			return await DbContext.Reviews.
 				Include(s => s.Business).
 				Include(s => s.BizAppUser).
-				Include(s=>s.Business).
-				ThenInclude(s=>s.District).Include(s=>s.ReviewMedias)
+				Include(s => s.Business).
+				ThenInclude(s => s.District).Include(s => s.ReviewMedias)
 				.Where(s => s.Id.Equals(ReviewId) && s.StatusEnum == StatusEnum.Accepted).
 				FirstOrDefaultAsync();
 		}
@@ -604,7 +597,7 @@ namespace DataLayer.Services
 		{
 			return await DbContext.CustomerBusinessMediaPictures.Where(s => s.CustomerBusinessMedia.BusinessId.Equals(Id) && s.CustomerBusinessMedia.StatusEnum == StatusEnum.Accepted).CountAsync();
 		}
-		public async Task<bool> CheckUserAlreadyExistsInBusinessLikeGallery(string Id , Guid GalleryId)
+		public async Task<bool> CheckUserAlreadyExistsInBusinessLikeGallery(string Id, Guid GalleryId)
 		{
 			var CustomerBusinessMediaPicture = await DbContext.CustomerBusinessMediaPictures.Where(s => s.Id.Equals(GalleryId)).FirstOrDefaultAsync();
 			if (CustomerBusinessMediaPicture != null)
@@ -618,17 +611,15 @@ namespace DataLayer.Services
 		}
 		public async Task<IEnumerable<Review>> GetUserReview(string Id)
 		{
-			return await DbContext.Reviews.Include(s=>s.Business).Include(s=>s.ReviewMedias).Where(s => s.BizAppUserId.Equals(Id) && s.StatusEnum == StatusEnum.Accepted).OrderByDescending(s => s.Date).ToListAsync();  
+			return await DbContext.Reviews.Include(s => s.Business).Include(s => s.ReviewMedias).Where(s => s.BizAppUserId.Equals(Id) && s.StatusEnum == StatusEnum.Accepted).OrderByDescending(s => s.Date).ToListAsync();
 		}
 		public async Task<ReviewMedia> GetReviewMediaDetail(Guid Id)
 		{
-			return await DbContext.ReviewMedias.Include(s=>s.Review.BizAppUser).Include(s=>s.Review.BizAppUser).ThenInclude(s=>s.ApplicationUserMedias).Include(s=>s.Review.Business).FirstOrDefaultAsync(s => s.Id.Equals(Id)); 
+			return await DbContext.ReviewMedias.Include(s => s.Review.BizAppUser).Include(s => s.Review.BizAppUser).ThenInclude(s => s.ApplicationUserMedias).Include(s => s.Review.Business).FirstOrDefaultAsync(s => s.Id.Equals(Id));
 		}
 		public async Task<IEnumerable<CustomerBusinessMediaPictures>> GetCustomerBusinessMediaPictures(string Id)
 		{
-			return await DbContext.CustomerBusinessMediaPictures.Include(s=>s.CustomerBusinessMedia).Where(s => s.CustomerBusinessMedia.BizAppUserId.Equals(Id) && s.StatusEnum == StatusEnum.Accepted).OrderByDescending(s => s.CustomerBusinessMedia.Date).ToListAsync();
+			return await DbContext.CustomerBusinessMediaPictures.Include(s => s.CustomerBusinessMedia).Where(s => s.CustomerBusinessMedia.BizAppUserId.Equals(Id) && s.StatusEnum == StatusEnum.Accepted).OrderByDescending(s => s.CustomerBusinessMedia.Date).ToListAsync();
 		}
-
-
 	}
 }

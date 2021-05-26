@@ -15,13 +15,14 @@ namespace DataLayer.Services
 		{
 		}
 
-		public async Task Add(string userId, NotificationModel model, string modelId) 
+		public async Task Add(string userId, NotificationModel model, string modelId, string creatorUserId = null) 
 		{
 			var notification = new Notification
 			{
 				UserId = userId,
 				Model = model,
-				ModelId = modelId
+				ModelId = modelId,
+				CreatorUserId = creatorUserId
 			};
 
 			await DbContext.Notifications.AddAsync(notification);
