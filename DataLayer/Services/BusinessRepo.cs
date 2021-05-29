@@ -513,11 +513,11 @@ namespace DataLayer.Services
                 return string.Empty;
             }
         }
-        public async Task<IEnumerable<Business>> GetBusinessOnMap(int Id ,double Longitude , double Latitude)
+        public async Task<IEnumerable<Business>> GetBusinessOnMap(int? Id ,double Longitude , double Latitude)
 		{
-            var CategroyItem = await DbContext.Categories.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+            var CategroyItem = await DbContext.Categories.FirstOrDefaultAsync(s => s.Id.Equals(Id.Value));
             List<Business> businesses = new List<Business>();
-            if (CategroyItem != null)
+            if (CategroyItem != null && Id.HasValue)
 			{
                 var BusinessItems = await DbContext.Businesses.Include(s=>s.Reviews).Include(s=>s.Galleries).Include(s=>s.District).Include(s=>s.Category).Where(s => s.CategoryId.Equals(CategroyItem.Id)).ToListAsync();
 				foreach (var item in BusinessItems)
@@ -528,6 +528,18 @@ namespace DataLayer.Services
                     }
                 }
                 return businesses; 
+            }
+			else if(Id.HasValue == false)
+			{
+                var BusinessItems = await DbContext.Businesses.Include(s => s.Reviews).Include(s => s.Galleries).Include(s => s.District).Include(s => s.Category).ToListAsync();
+                foreach (var item in BusinessItems)
+                {
+                    if (GetDistance.distance(Latitude, Longitude, item.Latitude, item.Longitude, 'K') < 10)
+                    {
+                        businesses.Add(item);
+                    }
+                }
+                return businesses;
             }
 			else
 			{
@@ -629,7 +641,6 @@ namespace DataLayer.Services
 			}
                 return businesses; 
 		}
-
         public async Task<IEnumerable<Business>> SearchBusinessByTitle(string txtSearch , int DistrictId , double Longitude , double Latitude)
 		{
             List<Business> List = new List<Business>();

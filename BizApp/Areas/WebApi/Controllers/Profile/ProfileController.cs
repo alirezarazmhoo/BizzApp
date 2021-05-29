@@ -6,6 +6,7 @@ using DomainClass.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -19,7 +20,6 @@ namespace BizApp.Areas.WebApi.Controllers
 		private readonly IUnitOfWorkRepo _UnitOfWork;
 		private readonly UserManager<BizAppUser> _userManager;
 		private readonly SignInManager<BizAppUser> _signInManager;
-
 		public ProfileController( IUnitOfWorkRepo unitOfWork, UserManager<BizAppUser> userManager , SignInManager<BizAppUser> signInManager
 		)
 		{
@@ -31,7 +31,9 @@ namespace BizApp.Areas.WebApi.Controllers
 		public async Task<IActionResult> GetUsersInformation(string Id)
 		{
 			UserProfile userProfile = new UserProfile();
-			if(await _UnitOfWork.UserRepo.GetById(Id) == null)
+			Dictionary<Guid, string> UserProfileImages = new Dictionary<Guid, string>();
+
+			if (await _UnitOfWork.UserRepo.GetById(Id) == null)
 			{
 
 				return NotFound();
@@ -47,7 +49,12 @@ namespace BizApp.Areas.WebApi.Controllers
 			userProfile.TotalReview = UserItem.Reviews.Count;
 			userProfile.TotalReviewPicture = await _UnitOfWork.ReviewRepo.GetUserTotalReviewMedia(Id);
 			userProfile.UserName = UserItem.UserName;
-			userProfile.Id = UserItem.Id; 
+			userProfile.Id = UserItem.Id;
+				foreach (var item in UserItem.ApplicationUserMedias
+				.ToList())
+				{
+					UserProfileImages.Add(item.Id , item.UploadedPhoto);
+				}
 		   return Ok(userProfile); 
 			}
 			catch(Exception ex)
@@ -57,6 +64,16 @@ namespace BizApp.Areas.WebApi.Controllers
 
 		}
 
+		[Route("AboutUserByToken")]
+		public async Task<IActionResult> AboutUserByToken()
+		{
+			string UserToken = HttpContext.Request?.Headers["Token"];
+			if (!await _UnitOfWork.UserRepo.CheckUserToken(UserToken))
+			{
+				return NotFound("کاربر مورد نظر یافت نشد ");
+			}
+			return RedirectToAction(nameof(AboutUser), "Profile", new { Id = await _UnitOfWork.UserRepo.UserTokenMaper(UserToken) });
+		}
 		[Route("AboutUser")]
 		public async Task<IActionResult> AboutUser(string Id)
 		{
@@ -145,16 +162,21 @@ namespace BizApp.Areas.WebApi.Controllers
 		}
 
 		[Route("OwnerProfile")]
-		public async Task<IActionResult> OwnerProfile(string Token)
+		public async Task<IActionResult> OwnerProfile()
 		{
+			string UserToken = HttpContext.Request?.Headers["Token"];
+			if (!await _UnitOfWork.UserRepo.CheckUserToken(UserToken))
+			{
+				return NotFound("کاربر مورد نظر یافت نشد ");
+			}
 			UserProfile userProfile = new UserProfile();
-			if (await _UnitOfWork.UserRepo.GetById(await _UnitOfWork.UserRepo.UserTokenMaper(Token)) == null)
+			if (await _UnitOfWork.UserRepo.GetById(await _UnitOfWork.UserRepo.UserTokenMaper(UserToken)) == null)
 			{ 
 				return NotFound();
 			}
 			try
 			{
-				return RedirectToAction(nameof(GetUsersInformation), "Profile", new { Id = await _UnitOfWork.UserRepo.UserTokenMaper(Token) });
+				return RedirectToAction(nameof(GetUsersInformation), "Profile", new { Id = await _UnitOfWork.UserRepo.UserTokenMaper(UserToken)});
 			}
 			catch (Exception ex)
 			{

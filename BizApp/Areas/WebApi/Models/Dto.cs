@@ -118,6 +118,8 @@ namespace BizApp.Areas.WebApi.Models
 	}
 	public class BusinessFeature
 	{
+		public int id { get; set; }
+
 		public string Title { get; set; }
 		public string Icon { get; set; }
 	}
@@ -132,6 +134,8 @@ namespace BizApp.Areas.WebApi.Models
 		public int TotalFriends { get; set; }
 		public string Image { get; set; }
 		public string City { get; set;  }
+		public Dictionary<Guid , string > UserProfileImages { get; set;  }
+
 	}
 	public class Activity : UserProfile
 	{

@@ -20,6 +20,17 @@ namespace BizApp.Areas.WebApi.Controllers
 		{
 			_UnitOfWork = unitOfWork;
 		}
+		[Route("GetByToken")]
+		public async Task<IActionResult> GetByToken(int Page)
+		{
+			string UserToken = HttpContext.Request?.Headers["Token"];
+			if (!await _UnitOfWork.UserRepo.CheckUserToken(UserToken))
+			{
+				return NotFound("کاربر مورد نظر یافت نشد ");
+			}
+			string url = string.Format("/api/Activity/Get?Id={0}&Page={1}",await _UnitOfWork.UserRepo.UserTokenMaper(UserToken), Page);
+			return Redirect(url);
+		}
 
 		[Route("Get")]
 		public async Task<IActionResult> Get(string Id, int Page)

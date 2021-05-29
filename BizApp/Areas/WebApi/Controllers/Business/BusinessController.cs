@@ -277,8 +277,7 @@ namespace BizApp.Areas.WebApi.Controllers
 				return NotFound("کاربر مورد نظر یافت نشد ");
 			}
 			try
-			{
-			
+			{			
 				foreach (var item in await _UnitOfWork.BusinessRepo.SearchBusinessByTitle(txtSearch, DistrictId, Longitude, Latitude))
 				{
 					businessShortModels.Add(new BusinessShortModel() { districtname =$"{ item.District.City.Name} {item.District.Name}" , featureimage = string.IsNullOrEmpty(item.FeatureImage) == true ? ReturnDefaults.BusinessImage() : item.FeatureImage, id = item.Id, name = item.Name });

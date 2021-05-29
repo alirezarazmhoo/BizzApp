@@ -16,5 +16,6 @@ namespace DataLayer.Infrastructure
 		Task DeletePhoto(Guid id, string currentUserId);
 		Task SetAsPrimary(Guid id, string userId);
 		Task<string> GetPathById(Guid id);
+		Task<UploadResult> UploadPhotos(string userId, IFormFile[] files); 
 	}
 }

@@ -185,5 +185,40 @@ namespace DataLayer.Services
 
 			return null;
 		}
+
+		public async Task<UploadResult> UploadPhotos(string userId, IFormFile[] files)
+		{
+			if (files == null) return UploadResult.EmptyFile;
+			// upload photos in directory
+			string fileName;
+			ApplicationUserMedia addedItem;
+			foreach (var item in files)
+			{
+			fileName = await UploadPhoto(item, userId);
+			// if file not uploadded
+			if (fileName == null) return UploadResult.Failed;
+
+			// save info in memeory
+			addedItem = new ApplicationUserMedia
+			{
+				BizAppUserId = userId,
+				Status = StatusEnum.Accepted,
+				IsNew = true,
+				UploadedPhoto = $"{databasePath}{userId}/{fileName}",
+				CreatedAt = DateTime.Now
+			};
+			await DbContext.ApplicationUserMedias.AddAsync(addedItem);
+			// check if user not have primary photo set for him or her
+			bool hasPhoto = await DbContext.ApplicationUserMedias.AnyAsync(f => f.BizAppUserId == userId);
+			if (!hasPhoto)
+			{
+				addedItem.IsMainImage = true;
+			}
+			await _userActivity.AddAsync(TableName.UserPhotos, addedItem.Id.ToString(), userId);
+			}
+			await DbContext.SaveChangesAsync();
+			return UploadResult.Succeed;
+		}
+
 	}
 }

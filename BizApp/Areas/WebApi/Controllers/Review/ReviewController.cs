@@ -161,6 +161,16 @@ namespace BizApp.Areas.WebApi.Controllers
 			}
 		}
 
+		[Route("GetUserReviewByToken")]
+		public async Task<IActionResult> GetUserReviewByToken()
+		{
+			string UserToken = HttpContext.Request?.Headers["Token"];
+			if (!await _UnitOfWork.UserRepo.CheckUserToken(UserToken))
+			{
+				return NotFound("کاربر مورد نظر یافت نشد ");
+			}
+			return RedirectToAction(nameof(GetUserReview), "Review", new { Id = await _UnitOfWork.UserRepo.UserTokenMaper(UserToken) });
+		}
 		[Route("GetReviewPicture")]
 		public async Task<IActionResult> GetReviewPictureDetail(Guid Id)
 		{

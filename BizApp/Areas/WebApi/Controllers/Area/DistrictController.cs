@@ -49,7 +49,11 @@ namespace BizApp.Areas.WebApi.Controllers.City
 
             foreach (var item in items.Take(10))
             {
+				if (!Districts.ContainsKey(item.Id))
+				{
+
                 Districts.Add(item.Id, item.ListName);
+				}
             }
             return Ok(Districts);
         }

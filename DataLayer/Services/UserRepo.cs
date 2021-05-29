@@ -97,7 +97,6 @@ namespace DataLayer.Services
 			var user = await DbContext.Users.FirstOrDefaultAsync(f => f.Id == command.Id);
 
 			if (user == null) throw new KeyNotFoundException();
-
 			user.FullName = command.FullName;
 			user.Gender = command.Gender;
 			user.NationalCode = command.NationalCode;
@@ -105,7 +104,6 @@ namespace DataLayer.Services
 			user.Address = command.Address;
 			user.CityId = command.CityId != null && command.CityId > 0 ? command.CityId : null;
 			user.BirthDate = command.BirthDate;
-
 			await DbContext.SaveChangesAsync();
 		}
 		public async Task<int> GetUserFriendsCount(string Id)

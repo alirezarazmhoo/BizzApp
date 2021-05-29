@@ -313,7 +313,7 @@ namespace DataLayer.Services
 				}
 			}
 		}
-		public async Task<IEnumerable<Business>> GuessReview(List<int> Districts, int DistricId , string UserId , int? pageNumber)
+		public async Task<IEnumerable<Business>> GuessReview(List<int> Districts, int DistricId, string UserId, int? pageNumber, int districtId, int categoryId)
 		{
 			List<Business> FinalList = new List<Business>();
 			List<Business> FinalList2 = new List<Business>();
@@ -620,6 +620,34 @@ namespace DataLayer.Services
 		public async Task<IEnumerable<CustomerBusinessMediaPictures>> GetCustomerBusinessMediaPictures(string Id)
 		{
 			return await DbContext.CustomerBusinessMediaPictures.Include(s => s.CustomerBusinessMedia).Where(s => s.CustomerBusinessMedia.BizAppUserId.Equals(Id) && s.StatusEnum == StatusEnum.Accepted).OrderByDescending(s => s.CustomerBusinessMedia.Date).ToListAsync();
+		}
+
+	    public async Task AddCustomerBusinessMedia(CustomerBusinessMedia model, IFormFile[] files, string[] captions)
+		{
+	
+				model.StatusEnum = StatusEnum.Waiting;
+				model.Date = DateTime.Now;
+				await DbContext.CustomerBusinessMedias.AddAsync(model);
+				if (files != null && files.Count() > 0)
+				{
+					for (int i = 0; i < files.Count(); i++)
+					{
+						var fileName = Guid.NewGuid().ToString().Replace('-', '0') + Path.GetExtension(files[i].FileName).ToLower();
+						var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Upload\CustomerMediaBusiess\Files\", fileName);
+						using (var stream = new FileStream(filePath, FileMode.Create))
+						{
+							files[i].CopyTo(stream);
+						}
+						DbContext.CustomerBusinessMediaPictures.Add(new  CustomerBusinessMediaPictures()
+						{
+							LikeCount = 0,
+							CustomerBusinessMediaId = model.Id,
+							Description = captions[i],
+							Image = "/Upload/CustomerMediaBusiess/Files/" + fileName,
+						});
+					}
+				}
+			
 		}
 	}
 }

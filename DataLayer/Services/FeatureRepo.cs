@@ -1,9 +1,11 @@
 ﻿using DataLayer.Data;
 using DataLayer.Infrastructure;
 using DomainClass;
+using DomainClass.Businesses;
 using DomainClass.Enums;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DataLayer.Services
@@ -48,5 +50,87 @@ namespace DataLayer.Services
             return await FindByCondition(f => f.ValueType == BusinessFeatureType.Boolean).ToListAsync();
 
         }
+
+        public async Task<List<Feature>> ExtractFeaturesByCategoryId(int CategoryId)
+		{
+            List<Feature> features = new List<Feature>();
+            List<Business> businesses = new List<Business>();
+            List<Category> categoryItem2 = new List<Category>();
+            List<Category> categoryItem3 = new List<Category>();
+
+            bool NeedNext = false; 
+            var Items = await DbContext.Businesses.ToListAsync();
+            foreach (var item in Items)
+            {
+                if(item.CategoryId == CategoryId)
+				{
+                    businesses.Add(item);
+				}
+				else
+				{
+                    var categoryItem1 = await DbContext.Categories.Where(s => s.ParentCategoryId == CategoryId).ToListAsync();
+					foreach (var item2 in categoryItem1)
+					{
+                        if(item.CategoryId == item2.Id)
+						{
+                            businesses.Add(item);
+                            NeedNext = true; 
+                            break;
+                        }
+                    }
+                    if(NeedNext == false)
+					{
+						foreach (var item3 in categoryItem1)
+						{
+                          categoryItem2 = await DbContext.Categories.Where(s => s.ParentCategoryId == item3.Id).ToListAsync();
+                            foreach (var item4 in categoryItem2)
+                            {
+                                if (item.CategoryId == item4.Id)
+                                {
+                                    if(businesses.Any(s=>s.Id == item.Id) == false)
+									{
+                                    businesses.Add(item);
+                                    NeedNext = true;
+                                    break;
+									}
+                                }
+                            }
+
+                        }
+                    }
+                    if(NeedNext == false)
+					{
+                        foreach (var item5 in categoryItem2)
+						{
+                        categoryItem3 = await DbContext.Categories.Where(s => s.ParentCategoryId == item5.Id).ToListAsync();
+							foreach (var item7 in categoryItem3)
+							{
+                                if (item.CategoryId == item7.Id)
+                                {
+                                    if (businesses.Any(s => s.Id == item.Id) == false)
+                                    {
+                                        businesses.Add(item);
+                                        NeedNext = true;
+                                        break;
+                                    }
+                                }
+                            }
+						}
+					}
+                }
+            }
+			foreach (var item in businesses)
+			{
+                if(features.Any(s=>s.Id.Equals(item.Id)) == false)
+				{
+                features.AddRange(await DbContext.BusinessFeatures.Where(s=>s.BusinessId.Equals(item.Id) && s.Value==null).Select(s=>s.Feature).ToListAsync());
+				}
+			}
+            return features; 
+        }
+
+
+
+
     }
 }

@@ -19,10 +19,10 @@ namespace DataLayer.Services
 
 		public async Task<IList<UserActivity>> GetAllActivities(string userId, int page = 1)
 		{
-			return await DbContext.UserActivities.Paginate(page, 10)
-				.Where(w => w.UserId == userId)
+
+			return await DbContext.UserActivities.Where(s => s.UserId == userId).Paginate(page, 10)
 				.OrderByDescending(x => x.CreatedAt)
-				.ToListAsync();
+				.ToListAsync(); ;
 		}
 
 		public async Task AddAsync(TableName table, string tableKey, string currentUserId, string description)
