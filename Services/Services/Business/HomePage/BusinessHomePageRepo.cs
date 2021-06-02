@@ -1,4 +1,5 @@
-﻿using DataLayer.Data;
+﻿using BizzAppInfrastructure.Model;
+using DataLayer.Data;
 using DataLayer.Infrastructure;
 using DomainClass;
 using DomainClass.Businesses;
@@ -138,13 +139,13 @@ namespace DataLayer.Services
 				return new List<CustomerBusinessMediaPictures>();
 			}
 		}
-		public class LocationHours
-		{
-			public WeekDaysEnum Day { get; set; }
-			public string DayName { get; set; }
-			public TimeSpan? FromTime { get; set; }
-			public TimeSpan? ToTime { get; set;  }
-		}
+		//public class LocationHours
+		//{
+		//	public WeekDaysEnum Day { get; set; }
+		//	public string DayName { get; set; }
+		//	public TimeSpan? FromTime { get; set; }
+		//	public TimeSpan? ToTime { get; set;  }
+		//}
 		public async Task<IEnumerable<Business>> PepoleAlsoViewd(Guid id)
 		{
 			var businessItem = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Id.Equals(id));

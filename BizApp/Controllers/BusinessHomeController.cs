@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BizApp.Models.Basic;
 using BizApp.Utility;
+using BizzAppInfrastructure.Model;
 using DataLayer.Infrastructure;
 using DomainClass.Businesses;
 using DomainClass.Review;
@@ -43,7 +44,7 @@ namespace BizApp.Controllers
 			List<BusinessHomePage_FaqViewModel> businessHomePage_FaqViewModels = new List<BusinessHomePage_FaqViewModel>();
 			List<BusinessHomePage_RelatedBusinessViewModel> businessHomePage_RelatedBusinessViewModels = new List<BusinessHomePage_RelatedBusinessViewModel>();
 			BusinessHomePage_HoursAndLocationViewModel businessHomePage_HoursAndLocationViewModel = new BusinessHomePage_HoursAndLocationViewModel();
-			List<DataLayer.Services.BusinessHomePageRepo.LocationHours> locationHours = new List<DataLayer.Services.BusinessHomePageRepo.LocationHours>();
+			List<LocationHours> locationHours = new List<LocationHours>();
 			List<BusinessFeatureItem> businessFeatureItems = new List<BusinessFeatureItem>();
 			#endregion
 			#region Resource

@@ -1,11 +1,11 @@
-﻿using DataLayer.Migrations;
+﻿using BizzAppInfrastructure.Model;
 using DomainClass.Businesses;
 using DomainClass.Review;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using static DataLayer.Services.BusinessHomePageRepo;
+
 
 namespace DataLayer.Infrastructure
 {

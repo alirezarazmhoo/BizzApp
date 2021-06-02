@@ -98,7 +98,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BizzAppEvents\BizzAppEvents.csproj" />
+    <ProjectReference Include="..\BizzAppInfrastructure\BizzAppInfrastructure.csproj" />
     <ProjectReference Include="..\DomainClass\DomainClass.csproj" />
+    <ProjectReference Include="..\Extensions\Extensions.csproj" />
   </ItemGroup>
 
 </Project>
