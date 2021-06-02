@@ -517,11 +517,12 @@ namespace DataLayer.Services
 		{
             var CategroyItem = await DbContext.Categories.FirstOrDefaultAsync(s => s.Id.Equals(Id.Value));
             List<Business> businesses = new List<Business>();
-            if (CategroyItem != null && Id.HasValue)
+            if (CategroyItem != null && Id !=0)
 			{
-                var BusinessItems = await DbContext.Businesses.Include(s=>s.Reviews).Include(s=>s.Galleries).Include(s=>s.District).Include(s=>s.Category).Where(s => s.CategoryId.Equals(CategroyItem.Id)).ToListAsync();
+                var BusinessItems = await DbContext.Businesses.Include(s=>s.Reviews).Include(s=>s.Galleries).Include(s=>s.District).Include(s=>s.Category).Include(s=>s.Features).Where(s => s.CategoryId.Equals(CategroyItem.Id)).ToListAsync();
 				foreach (var item in BusinessItems)
 				{
+        
                     if (GetDistance.distance(Latitude, Longitude, item.Latitude, item.Longitude, 'K') < 10)
                     {
                         businesses.Add(item);
@@ -529,9 +530,9 @@ namespace DataLayer.Services
                 }
                 return businesses; 
             }
-			else if(Id.HasValue == false)
+			else if(Id == 0)
 			{
-                var BusinessItems = await DbContext.Businesses.Include(s => s.Reviews).Include(s => s.Galleries).Include(s => s.District).Include(s => s.Category).ToListAsync();
+                var BusinessItems = await DbContext.Businesses.Include(s => s.Reviews).Include(s => s.Galleries).Include(s => s.District).Include(s => s.Category).Include(s => s.Features).ToListAsync();
                 foreach (var item in BusinessItems)
                 {
                     if (GetDistance.distance(Latitude, Longitude, item.Latitude, item.Longitude, 'K') < 10)
@@ -668,6 +669,28 @@ namespace DataLayer.Services
 
             }
             return List; 
+		}
+        public async Task UpdateFrequenstlyFeature(Guid Id , string FeaturesLists)
+		{
+            var Item = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+            List<BusinessFeature> businessFeatures = new List<BusinessFeature>();
+            if(Item != null)
+			{
+				foreach (var item in await DbContext.BusinessFeatures.Where(s=>s.BusinessId.Equals(Id)).ToListAsync())
+				{
+                     DbContext.BusinessFeatures.Remove(item);
+				}
+				if (string.IsNullOrEmpty(FeaturesLists))
+				{
+                    string[] _featuresIdList = new string[] { };
+                    _featuresIdList = FeaturesLists.Split(",");
+					foreach (var item in _featuresIdList)
+					{
+                        businessFeatures.Add(new BusinessFeature() { BusinessId = Id, FeatureId = Convert.ToInt32(item) });
+                    }
+                    await DbContext.BusinessFeatures.AddRangeAsync(businessFeatures);
+                }
+			}
 		}
 
     }

@@ -32,7 +32,7 @@ namespace DataLayer.Infrastructure
 		Task<IEnumerable<CustomerBusinessMedia>> GetCustomerBusinessMedia(Guid Id);
 		Task<IEnumerable<BusinessGallery>> GetBusinessGallery(Guid Id);
 		Task<IEnumerable<Business>> GetByCategoryIdBasedLocation(int CategoryId, int CityId);
-		Task<IEnumerable<Business>> SearchBusinessByTitle(string txtSearch, int DistrictId, double Longitude, double Latitude);  
-
+		Task<IEnumerable<Business>> SearchBusinessByTitle(string txtSearch, int DistrictId, double Longitude, double Latitude);
+		Task UpdateFrequenstlyFeature(Guid Id, string FeaturesLists); 
 	}
 }

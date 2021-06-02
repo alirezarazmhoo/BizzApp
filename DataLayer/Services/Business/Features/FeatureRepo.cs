@@ -48,16 +48,15 @@ namespace DataLayer.Services
         public async Task<List<Feature>> GetAllIsBoolValue()
         {
             return await FindByCondition(f => f.ValueType == BusinessFeatureType.Boolean).ToListAsync();
-
         }
-
         public async Task<List<Feature>> ExtractFeaturesByCategoryId(int CategoryId)
 		{
-            List<Feature> features = new List<Feature>();
-            List<Business> businesses = new List<Business>();
+            List<Feature>  features      = new List<Feature>();
+            List<Business> businesses    = new List<Business>();
             List<Category> categoryItem2 = new List<Category>();
             List<Category> categoryItem3 = new List<Category>();
-
+            List<Category> categoryItem4 = new List<Category>();
+            List<Category> categoryItem5 = new List<Category>();
             bool NeedNext = false; 
             var Items = await DbContext.Businesses.ToListAsync();
             foreach (var item in Items)
@@ -95,7 +94,6 @@ namespace DataLayer.Services
 									}
                                 }
                             }
-
                         }
                     }
                     if(NeedNext == false)
@@ -117,6 +115,44 @@ namespace DataLayer.Services
                             }
 						}
 					}
+					if (NeedNext)
+					{
+                        foreach (var item6 in categoryItem3)
+                        {
+                            categoryItem4 = await DbContext.Categories.Where(s => s.ParentCategoryId == item6.Id).ToListAsync();
+                            foreach (var item8 in categoryItem4)
+                            {
+                                if (item.CategoryId == item8.Id)
+                                {
+                                    if (businesses.Any(s => s.Id == item.Id) == false)
+                                    {
+                                        businesses.Add(item);
+                                        NeedNext = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (NeedNext)
+                    {
+                        foreach (var item7 in categoryItem4)
+                        {
+                            categoryItem5 = await DbContext.Categories.Where(s => s.ParentCategoryId == item7.Id).ToListAsync();
+                            foreach (var item9 in categoryItem5)
+                            {
+                                if (item.CategoryId == item9.Id)
+                                {
+                                    if (businesses.Any(s => s.Id == item.Id) == false)
+                                    {
+                                        businesses.Add(item);
+                                        NeedNext = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
 			foreach (var item in businesses)

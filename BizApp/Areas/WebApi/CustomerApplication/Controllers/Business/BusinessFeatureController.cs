@@ -18,6 +18,24 @@ namespace BizApp.Areas.WebApi.Controllers.Business
 		{
 			_UnitOfWork = unitOfWork;
 		}
+		[Route("GetAll")]
+		public async Task<IActionResult> GetAllFeatures()
+		{
+			List<BusinessFeature> businessFeatures = new List<BusinessFeature>();
+			try
+			{
+				var Items = await _UnitOfWork.FeatureRepo.GetAll();
+				foreach (var item in Items.Where(s=>s.ValueType == DomainClass.Enums.BusinessFeatureType.Boolean))
+				{
+					businessFeatures.Add(new BusinessFeature() { id = item.Id , Title = item.Name });
+				}
+				return Ok(businessFeatures); 
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+		}
 		[Route("GetByCategoryId")]
 		public async Task<IActionResult> GetFeaturesBasedByCategoryId(int Id)
 		{
@@ -36,6 +54,5 @@ namespace BizApp.Areas.WebApi.Controllers.Business
 				return BadRequest(ex.Message);
 			}
 		}
-
 	}
 }

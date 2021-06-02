@@ -27,14 +27,61 @@ namespace BizApp.Areas.WebApi.Controllers
 			_UnitOfWork = unitOfWork;
 		}
 		[Route("GetOnMap")]
-		public async Task<IEnumerable<BusinessOnMap>> GetOnMap(int categoryId , double latitude, double longitude)
-		{
+		public async Task<IEnumerable<BusinessOnMap>> GetOnMap(int categoryId , double latitude, double longitude , bool sortByMostReveiw , bool sortByRating  , bool filterByOpenNow , bool sortByDistance , bool sortByCreateDate , string featuresId )
+		{			
 			List<BusinessOnMap> categoryDto = new List<BusinessOnMap>();
+			List<BusinessOnMap> _categoryDtoHelper = new List<BusinessOnMap>();
 			try
 			{			
 				foreach (var item in await _UnitOfWork.BusinessRepo.GetBusinessOnMap(categoryId, longitude, latitude))
 				{
-					categoryDto.Add(new BusinessOnMap() { id = item.Id, latitude = item.Latitude, longitude = item.Longitude ,  totalreview = item.Reviews.Where(s=>s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted).Count() , name = item.Name , rate = item.Rate == 0? 1 : item.Rate , images = item.Galleries.Select(s=>s.FileAddress).ToList() , address = item.Address , description = item.Description , districtname = item.District.Name , featureimage = string.IsNullOrEmpty(item.FeatureImage) == false ? "/Upload/DefaultPicutres/Bussiness/business-strategy-success-target-goals_1421-33.jpg" : item.FeatureImage , boldfeature = string.IsNullOrEmpty( item.BoldFeature) ? "بدون ویژگی خاص" : item.BoldFeature, category = _UnitOfWork.CategoryRepo.GetCategoryHierarchyNamesById(item.CategoryId) !=null ? _UnitOfWork.CategoryRepo.GetCategoryHierarchyNamesById(item.CategoryId).ListName : item.Category.Name , phonenumber = item.CallNumber.ToString() , website = item.WebsiteUrl}  );  
+					categoryDto.Add(new BusinessOnMap() { id = item.Id, latitude = item.Latitude, longitude = item.Longitude ,  totalreview = item.Reviews.Where(s=>s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted).Count() , name = item.Name , rate = item.Rate == 0? 1 : item.Rate , images = item.Galleries.Select(s=>s.FileAddress).ToList() , address = item.Address , description = item.Description , districtname = item.District.Name , featureimage = string.IsNullOrEmpty(item.FeatureImage) == false ? "/Upload/DefaultPicutres/Bussiness/business-strategy-success-target-goals_1421-33.jpg" : item.FeatureImage , boldfeature = string.IsNullOrEmpty( item.BoldFeature) ? "بدون ویژگی خاص" : item.BoldFeature, category = _UnitOfWork.CategoryRepo.GetCategoryHierarchyNamesById(item.CategoryId) !=null ? _UnitOfWork.CategoryRepo.GetCategoryHierarchyNamesById(item.CategoryId).ListName : item.Category.Name , phonenumber = item.CallNumber.ToString() , website = item.WebsiteUrl , isOpen = item.IsOpenNow , categoryId = item.CategoryId , date = item.CreatedDate , featuresId = item.Features.Select(s=>s.FeatureId).ToList()}  );  
+				}
+				if (sortByMostReveiw)
+				{
+					categoryDto = categoryDto.OrderByDescending(s => s.totalreview).ToList();
+				}
+				if (sortByRating)
+				{
+					categoryDto = categoryDto.OrderByDescending(s => s.rate).ToList();
+				}
+				if (filterByOpenNow)
+				{
+					categoryDto = categoryDto.Where(s => s.isOpen).ToList();
+				}
+				if (sortByDistance)
+				{
+					foreach (var item in categoryDto)
+					{
+						item.distance = GetDistance.distance(latitude, longitude, item.latitude, item.longitude, 'K');
+					}
+					categoryDto = categoryDto.OrderBy(s=>s.distance).ToList();
+				}
+				if (sortByCreateDate)
+				{
+					categoryDto = categoryDto.OrderByDescending(s => s.date).ToList();
+				}
+				if (!string.IsNullOrEmpty(featuresId) )
+				{
+					List<FeaturesHelperDto> featuresHelperDtos = new List<FeaturesHelperDto>();
+					string[] _featuresIdList = new string[] { };
+					_featuresIdList = featuresId.Split(",");
+					foreach (var item in _featuresIdList)
+					{
+						featuresHelperDtos.Add(new FeaturesHelperDto() { Id = Convert.ToInt32(item) });  
+					}
+					foreach (var item in categoryDto)
+					{
+						foreach (var item2 in item.featuresId)
+						{
+							if(featuresHelperDtos.Any(s=>s.Id == item2))
+							{
+								_categoryDtoHelper.Add(item);
+							}
+						}
+					}
+					categoryDto.Clear();
+					categoryDto = _categoryDtoHelper; 
 				}
 				return categoryDto;
 			}
@@ -42,6 +89,10 @@ namespace BizApp.Areas.WebApi.Controllers
 			{
 				throw;
 			}
+		}
+		public class FeaturesHelperDto { 
+		public int Id { get; set; }
+
 		}
 		[Route("GetById")]
 		public async Task<BusinessItem> GetById(Guid id)

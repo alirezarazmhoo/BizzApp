@@ -31,11 +31,10 @@ namespace BizApp.Areas.WebApi.Controllers
 		public async Task<IActionResult> GetUsersInformation(string Id)
 		{
 			UserProfile userProfile = new UserProfile();
-			Dictionary<Guid, string> UserProfileImages = new Dictionary<Guid, string>();
-
+			List<Tuple<Guid, string, string>> UserProfileImages = new List<Tuple<Guid, string, string>>();
+			//Dictionary<Guid, string> UserProfileImages = new Dictionary<Guid, string>();
 			if (await _UnitOfWork.UserRepo.GetById(Id) == null)
 			{
-
 				return NotFound();
 			}
 			try
@@ -53,8 +52,9 @@ namespace BizApp.Areas.WebApi.Controllers
 				foreach (var item in UserItem.ApplicationUserMedias
 				.ToList())
 				{
-					UserProfileImages.Add(item.Id , item.UploadedPhoto);
+					UserProfileImages.Add(new Tuple<Guid, string, string>(item.Id, item.UploadedPhoto, item.CreatedAt.ToPersianDateString()));
 				}
+				userProfile.UserProfileImages = UserProfileImages; 
 		   return Ok(userProfile); 
 			}
 			catch(Exception ex)

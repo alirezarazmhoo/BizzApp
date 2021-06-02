@@ -38,6 +38,11 @@ namespace BizApp.Areas.WebApi.Models
 		public int rate { get; set; }
 		public double longitude { get; set; }
 		public double latitude { get; set; }
+		public bool isOpen { get; set; }
+		public int categoryId { get; set; }
+		public double distance { get; set;  }
+		public DateTime date { get; set; } 
+		public List<int> featuresId { get; set;  }
 		public Guid id { get; set; }
 	}
 	public class BusinessItem
@@ -134,7 +139,7 @@ namespace BizApp.Areas.WebApi.Models
 		public int TotalFriends { get; set; }
 		public string Image { get; set; }
 		public string City { get; set;  }
-		public Dictionary<Guid , string > UserProfileImages { get; set;  }
+		public List<Tuple<Guid,string,string>> UserProfileImages { get; set;  }
 
 	}
 	public class Activity : UserProfile
