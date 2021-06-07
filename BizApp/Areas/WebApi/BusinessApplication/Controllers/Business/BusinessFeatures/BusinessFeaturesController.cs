@@ -23,16 +23,16 @@ namespace BizApp.Areas.WebApi.BusinessApplication.Controllers.Business.BusinessF
 		{
 		     List<BusinessApplicationFeatures> businessApplicationFeatures = new List<BusinessApplicationFeatures> ();
 			string Token = HttpContext.Request?.Headers["Token"];
-			if (await _UnitOfWork.UserRepo.CheckUserToken(Token) == false)
+			if (await _UnitOfWork.UserRepo.CheckBusinessUserValidity( Id,Token) == false)
 			{
-				return NotFound();
+				return NotFound("کاربر غیرمجاز");
 			}
 			try
 			{
 				var Item = await _UnitOfWork.BusinessRepo.GetBusinessFature(Id);
 				foreach (var item in Item)
 				{
-					businessApplicationFeatures.Add(new BusinessApplicationFeatures() { Id = item.Id, Name = item.FeatureName, Icon = item.Icon });
+					businessApplicationFeatures.Add(new BusinessApplicationFeatures() { Id = item.FeatureId, Name = item.FeatureName, Icon = item.Icon ,IsInFeatrue = item.IsInFeature });
 				}
 				return Ok(businessApplicationFeatures);
 			}
@@ -42,12 +42,14 @@ namespace BizApp.Areas.WebApi.BusinessApplication.Controllers.Business.BusinessF
 			}
 
 		}
+		[Route("Update")]
+		[HttpPost]
 		public async Task<IActionResult> UpdateFeatures(Guid Id , string FeaturesId)
 		{
 			string Token = HttpContext.Request?.Headers["Token"];
-			if (await _UnitOfWork.UserRepo.CheckUserToken(Token) == false)
+			if (await _UnitOfWork.UserRepo.CheckBusinessUserValidity(Id, Token) == false)
 			{
-				return NotFound();
+				return NotFound("کاربر غیرمجاز");
 			}
 			try
 			{

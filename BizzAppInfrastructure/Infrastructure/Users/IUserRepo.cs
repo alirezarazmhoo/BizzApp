@@ -1,5 +1,6 @@
 ﻿using DomainClass;
 using DomainClass.Commands;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -17,6 +18,8 @@ namespace DataLayer.Infrastructure
 		Task<string> UserTokenMaper(string userToken);
 		Task<bool> CheckUserToken(string userToken);
 		Task UpdateProfile(EditAcountCommand command);
-		Task<int> GetUserFriendsCount(string Id);  
+		Task<int> GetUserFriendsCount(string Id);
+
+		Task<bool> CheckBusinessUserValidity(Guid BusinessId, string UserToken); 
 	}
 }

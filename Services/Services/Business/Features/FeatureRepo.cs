@@ -157,16 +157,15 @@ namespace DataLayer.Services
             }
 			foreach (var item in businesses)
 			{
-                if(features.Any(s=>s.Id.Equals(item.Id)) == false)
+				foreach (var item2 in await DbContext.BusinessFeatures.Where(s => s.BusinessId.Equals(item.Id) && s.Value == null).Select(s => s.Feature).ToListAsync())
 				{
-                features.AddRange(await DbContext.BusinessFeatures.Where(s=>s.BusinessId.Equals(item.Id) && s.Value==null).Select(s=>s.Feature).ToListAsync());
+					if (features.Any(s => s.Id.Equals(item2.Id)) == false)
+					{
+                        features.Add(item2);
+                    }
 				}
 			}
             return features; 
         }
-
-
-
-
     }
 }

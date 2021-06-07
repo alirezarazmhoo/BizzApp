@@ -21,9 +21,9 @@ namespace BizApp.Areas.WebApi.BusinessApplication.Controllers.Business.BusinessI
 		{
 			BusinessApplicationInformation businessApplicationInformation = new BusinessApplicationInformation();
 			string Token = HttpContext.Request?.Headers["Token"];
-			if (await _UnitOfWork.UserRepo.CheckUserToken(Token) == false)
+			if (await _UnitOfWork.UserRepo.CheckBusinessUserValidity(Id, Token) == false)
 			{
-				return NotFound();
+				return NotFound("کاربر غیرمجاز");
 			}
 			try
 			{
@@ -42,16 +42,25 @@ namespace BizApp.Areas.WebApi.BusinessApplication.Controllers.Business.BusinessI
 		}
 		[Route("ChangeLocationAndAddress")]
 		[HttpPost]
-		public async Task<IActionResult> ChangeLocationAndAddress(DomainClass.Businesses.Business model)
+		public async Task<IActionResult> ChangeLocationAndAddress(BusinessApplicationChangeInformation model)
 		{
+			DomainClass.Businesses.Business business = new DomainClass.Businesses.Business();
+			business.Address = model.Address;
+			business.CallNumber = model.CallNumber;
+			business.WebsiteUrl = model.WebSiteUrl;
+			business.Longitude = model.Longitude;
+			business.Latitude = model.Latitude;
+			business.Id = model.Id;  
+
 			string Token = HttpContext.Request?.Headers["Token"];
-			if (await _UnitOfWork.UserRepo.CheckUserToken(Token) == false)
+			if (await _UnitOfWork.UserRepo.CheckBusinessUserValidity(model.Id, Token) == false)
 			{
-				return NotFound();
+				return NotFound("کاربر غیرمجاز");
 			}
 			try
 			{
-				await _UnitOfWork.BusinessRepo.Update(model , false , null , null);
+				await _UnitOfWork.BusinessRepo.UpdateBaseInformations(business);
+				await _UnitOfWork.SaveAsync();
 				return Ok();
 			}
 			catch(Exception ex)

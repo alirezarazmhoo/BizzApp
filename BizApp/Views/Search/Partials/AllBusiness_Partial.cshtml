@@ -14,15 +14,18 @@
     <div class="category-content__item__cat-product" data-assigned-lon="@item.Longitude" id="@pageNumber" data-assigned-count="@pageNumber" data-assigned-lat="@item.Latitude" data-assigned-isSponsor="@item.IsSponsor" data-assigned-datas="<div style='width:80%!important;height;80%!important;align-items: center !important;' ><img src='@item.FeatureImage'  ></div><br/><h6>@item.Name </h6><br/><div class='category-content__item__cat-product__content__text__desc__icon__star' data-star='3.5'></div>">
 
         <div class="category-content__item__cat-product__image">
+            <a href="/BusinessHome/Index?Id=@item.Id">
             <img src="@item.FeatureImage">
+            </a>
         </div>
         <div class="category-content__item__cat-product__content">
             <div class="category-content__item__cat-product__content__text">
                 <div class="category-content__item__cat-product__content__text__desc">
                     <div class="category-content__item__cat-product__content__text__desc__title">
-                        <a href="#">
-                            <h4>@pageNumber - @item.Name </h4>
-                        </a>
+						<a href="/BusinessHome/Index?Id=@item.Id">
+						
+							<h4>@pageNumber - @item.Name </h4>
+						</a>
                     </div>
                     <div class="category-content__item__cat-product__content__text__desc__icon">
                         <div class="category-content__item__cat-product__content__text__desc__icon__star"
@@ -30,7 +33,7 @@
                         <span>@item.Rate</span>
                     </div>
                     <div class="category-content__item__cat-product__content__text__desc__link">
-                        <a href="#">@item.Address</a>
+                        <a href="/BusinessHome/Index?Id=@item.Id">@item.Address</a>
                     </div>
                     <div class="category-content__item__cat-product__content__text__desc__link">
                         <button class="reqbtn" data-categoryid="@item.CategoryId" data-id="@item.Id" onclick="OpenQuotes(this)">درخواست از کسب و کار</button>

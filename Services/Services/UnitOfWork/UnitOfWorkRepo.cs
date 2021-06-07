@@ -39,7 +39,10 @@ namespace DataLayer.Services
 		private readonly BusinessRecentlyViewdRepo  businessRecentlyViewdRepo;
 		private readonly NearBusinessSuggestProfileRepo  nearBusinessSuggestProfileRepo;
 
-
+		public UnitOfWorkRepo(ApplicationDbContext DbContext)
+		{
+			_DbContext = DbContext;
+		}
 
 		public UnitOfWorkRepo(ApplicationDbContext DbContext, UserManager<BizAppUser> userManager, IUserActivityRepo userActivity)
 		{

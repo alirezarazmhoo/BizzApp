@@ -115,5 +115,25 @@ namespace DataLayer.Services
 
 			return friends / 2;
 		}
+
+		public async Task<bool> CheckBusinessUserValidity(Guid BusinessId , string UserToken )
+		{
+			var BusinessItem = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Id.Equals(BusinessId));
+			if (BusinessItem != null)
+			{
+				var BusinessUserItem = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(BusinessItem.OwnerId));
+				var CurrentUserItem = await DbContext.Users.FirstOrDefaultAsync(s => s.SecurityStamp.Equals(UserToken));
+				if (BusinessUserItem != null && CurrentUserItem != null)
+				{
+					if (BusinessUserItem.SecurityStamp.Equals(CurrentUserItem.SecurityStamp))
+					{
+						return true;
+					}
+					else return false;
+				}
+				else return false;
+			}
+			else return false; 
+		}
 	}
 }

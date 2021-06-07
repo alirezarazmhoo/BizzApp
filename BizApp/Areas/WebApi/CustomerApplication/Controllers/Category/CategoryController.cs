@@ -15,11 +15,11 @@ namespace BizApp.Areas.WebApi.Controllers
 	public class CategoryController : ControllerBase
 	{
 		private readonly IUnitOfWorkRepo _UnitOfWork;
-		private readonly IMapper _mapper;
-		public CategoryController(IUnitOfWorkRepo unitOfWork, IMapper mapper)
+
+		public CategoryController(IUnitOfWorkRepo unitOfWork)
 		{
 			_UnitOfWork = unitOfWork;
-			_mapper = mapper;
+
 		}
 		[Route("GetChosen")]
 		public async Task<IEnumerable<CategoryDto>> GetChosen()

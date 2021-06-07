@@ -34,7 +34,16 @@ namespace BizApp.Areas.WebApi.BusinessApplication.Models
 		public int Id { get; set;  }
 		public string Name { get; set;  }
 		public string Icon { get; set;  }
-
+		public bool IsInFeatrue { get; set;  }
+	}
+	public class BusinessApplicationChangeInformation
+	{
+		public Guid Id { get; set;  }
+		public double Longitude { get; set; }
+		public double Latitude { get; set; }
+		public string Address { get; set; }
+		public long CallNumber { get; set; }
+		public string WebSiteUrl { get; set; }
 	}
 
 }
