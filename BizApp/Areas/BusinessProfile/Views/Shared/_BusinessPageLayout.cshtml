@@ -1,0 +1,167 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="author" content="Luan Gjokaj, and بیزاپ contributors">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-15" />
+	<title>BizzAp</title>
+	<meta name="description" content="بیزاپ is a static site generator with a modern development workflow, integrated web server, auto-reload, CSS preprocessors, and ES6 ready." />
+	<link rel="manifest" href="./manifest.json" />
+	<link rel="shortcut icon" href="~/Designs/MainWebSite/assets/img/favicon.ico" type="image/x-icon" />
+	<link rel="apple-touch-icon" sizes="512x512" href="~/Designs/MainWebSite/assets/img/icon-512.png" />
+	<link rel="apple-touch-icon" sizes="192x192" href="~/Designs/MainWebSite/assets/img/icon-192.png" />
+	<link rel="apple-touch-icon-precomposed" href="./assets/img/icon-192.png" />
+	<link rel="icon" sizes="192x192" href="~/Designs/MainWebSite/assets/img/icon-192.png" />
+	<meta property="og:site_name" content="بیزاپ" />
+	<meta property="og:title" content="بیزاپ" />
+	<meta property="og:image" content="" />
+	<meta property="og:url" content="https://www.بیزاپ.co" />
+	<meta property="article:author" content="http://facebook.com/luangjokaj" />
+	<!-- Main Style -->
+	<link href="~/Designs/MainWebSite/assets/css/styles.css" async defer rel="stylesheet">
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+	<script src="~/Designs/MainWebSite/assets/js/header-bundle.js"></script>
+</head>
+<body class="header-bussiness-fix">
+
+	<header class="header-type3">
+		<div class="container-fluid">
+			<div class="header-type3__logo">
+				<a href="/BusinessProfile/BusinessPage/Index">
+				<img src="~/Designs/MainWebSite/Logo/bizzapplogo.jpeg" alt="">
+				<span>بیزاپ برای کسب و کار</span>
+					</a>
+			</div>
+			<div class="header-type3__nav">
+				<ul>
+					<li>
+						<a href="#">محصولات<svg width="16" height="16" class="icon_svg"><path d="M8 10.5a1 1 0 01-.7-.29l-3.06-3a1 1 0 111.41-1.42L8 8.1l2.35-2.31a1 1 0 111.41 1.42l-3.06 3a1 1 0 01-.7.29z"></path></svg></a>
+						<ul>
+							<li><a href="/BusinessProfile/BusinessPage/PageBusiness">صفحه کسب و کار</a></li>
+
+							<li><a href="/BusinessProfile/BusinessPage/BusinessPageUpgrade">اپدیت صفحه کسب و کار</a></li>
+							<li><a href="/BusinessProfile/BusinessPage/PageAds">تبلیغات</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">صنایع <svg width="16" height="16" class="icon_svg"><path d="M8 10.5a1 1 0 01-.7-.29l-3.06-3a1 1 0 111.41-1.42L8 8.1l2.35-2.31a1 1 0 111.41 1.42l-3.06 3a1 1 0 01-.7.29z"></path></svg></a>
+						<ul>
+							<li><a href="/BusinessProfile/BusinessPage/HomeAndLocalService">خانه و مشاغل خدماتی</a></li>
+						</ul>
+					</li>
+					<li><a href="#">وبلاگ</a></li>
+				</ul>
+			</div>
+			<div class="header-type3__phone">
+				<a href="#"> 303-0768 (910)</a>
+				<svg width="24" height="24" class="icon_svg"><path d="M19.78 4.22C15.484-.074 8.52-.073 4.225 4.222c-4.295 4.296-4.295 11.26 0 15.556 4.295 4.295 11.259 4.296 15.555.002a11 11 0 000-15.56zM17.62 5l-2.15 2.11a6 6 0 00-6.94 0L6.38 5a9 9 0 0111.24 0zM8 12a4 4 0 116.83 2.83 4.1 4.1 0 01-5.66 0A4 4 0 018 12zM5 6.38l2.11 2.15a6 6 0 000 6.94L5 17.62A9 9 0 015 6.38zM6.38 19l2.15-2.14a6 6 0 006.94 0L17.62 19a9 9 0 01-11.24 0zM19 17.62l-2.14-2.15a6 6 0 000-6.94L19 6.38a9 9 0 010 11.24z"></path></svg>
+
+			</div>
+			<div class="header-type3__button">
+				<ul>
+					<li><a href="/BusinessProfile/BusinessProfileLogin/Index">وارد شدن</a></li>
+					@*<li><a href="#">لیست رایگان من را مدیریت کنید</a></li>*@
+				</ul>
+			</div>
+
+
+		</div>
+	</header>
+	<header class="header-mobile5">
+		<div class="container">
+			<div class="header-mobile5__menu-mobile">
+				<svg width="24" height="24" class="icon_svg">
+					<path d="M3 18v-2h18v2H3zm0-7h18v2H3v-2zm0-5h18v2H3V6z"></path>
+				</svg>
+			</div>
+			<div class="header-mobile5__logo">
+				<img src="~/Designs/MainWebSite/Logo/bizzapplogo.jpeg" alt="">
+				<span>بیزاپ برای کسب و کار</span>
+			</div>
+
+			<div class="header-mobile5__button">
+				<ul>
+					<li><a href="#">وارد شدن</a></li>
+					@*<li><a href="#">لیست رایگان من را مدیریت کنید</a></li>*@
+					<li><a href="#">شروع کنید</a></li>
+				</ul>
+			</div>
+
+
+		</div>
+	</header>
+@RenderBody()
+	<footer class="footer-type5">
+		<div class="footer-type5__top">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-3 col-md-4 col-sm-6">
+						<div class="footer-type5__top__item">
+							<div class="footer-type5__top__item__title">
+								<p>محصولات</p>
+								<ul>
+									<li><a href="/BusinessProfile/BusinessPage/PageBusiness">صفحه تجارت</a></li>
+									<li><a href="#">تبلیغات</a></li>
+									<li><a href="#">متصل شوید</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6">
+						<div class="footer-type5__top__item">
+							<div class="footer-type5__top__item__title">
+								<p>محصولات</p>
+								<ul>
+									<li><a href="#">صفحه تجارت</a></li>
+									<li><a href="#">تبلیغات</a></li>
+									<li><a href="#">متصل شوید</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6">
+						<div class="footer-type5__top__item">
+							<div class="footer-type5__top__item__title">
+								<p>محصولات</p>
+								<ul>
+									<li><a href="#">صفحه تجارت</a></li>
+									<li><a href="#">تبلیغات</a></li>
+									<li><a href="#">متصل شوید</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="container">
+			<div class="footer-type5__copyright">
+				<span>حق چاپ © 2020–2021</span>
+				<img src="~/Designs/MainWebSite/Logo/bizzapplogo.jpeg">
+				<span>,</span>
+				<img src="~/Designs/MainWebSite/Logo/bizzapplogo.jpeg">
+				<span>و علائم مربوط به آن علائم تجاری ثبت شده یلپ هستند.</span>
+			</div>
+		</div>
+	</footer>
+	<script src="~/Designs/MainWebSite/assets/js/footer-bundle.js"></script>
+	<script src="~/Designs/MainWebSite/assets/js/scripts.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,142 @@
+﻿@model BizApp.Areas.BusinessProfile.Models.BusinessProfileInputModelDto
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" id="top">
+<head>
+	<meta charset="utf-8">
+	<meta name="author" content="Luan Gjokaj, and بیزآپ contributors">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-15" />
+	<title>بیزآپ</title>
+	
+	<meta name="description" content="بیزآپ is a static site generator with a modern development workflow, integrated web server, auto-reload, CSS preprocessors, and ES6 ready." />
+	<link rel="manifest" href="./manifest.json" />
+	<link rel="shortcut icon" href="~/Designs/MainWebSite/assets/img/favicon.ico" type="image/x-icon" />
+	<link rel="apple-touch-icon" sizes="512x512" href="~/Designs/MainWebSite/assets/img/icon-512.png" />
+	<link rel="apple-touch-icon" sizes="192x192" href="~/Designs/MainWebSite/assets/img/icon-192.png" />
+	<link rel="apple-touch-icon-precomposed" href="~/Designs/MainWebSite/assets/img/icon-192.png" />
+	<link rel="icon" sizes="192x192" href="~/Designs/MainWebSite/assets/img/icon-192.png" />
+	<meta property="og:site_name" content="بیزآپ" />
+	<meta property="og:title" content="بیزآپ" />
+	<meta property="og:image" content="" />
+	<meta property="og:url" content="https://www.بیزآپ.co" />
+	<meta property="article:author" content="http://facebook.com/luangjokaj" />
+	<!-- Main Style -->
+	<link href="~/Designs/MainWebSite/assets/css/styles.css" async defer rel="stylesheet">
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+	<script src="~/Designs/MainWebSite/assets/js/header-bundle.js"></script>
+</head>
+<body>
+
+	<section class="header-business">
+		<div class="container">
+			<div class="header-business__logo">
+				<a href="/BusinessProfile/BusinessPage/Index">
+					<img src="~/Designs/MainWebSite/Logo/bizzapplogo.jpeg" style="width:50px;height:60px;border-radius:8px" alt="">
+					<span>بیزاپ برای کسب و کار</span>
+				</a>
+			</div>
+			<div class="header-business__nav">
+				<ul>
+
+					@*<li><a href="#"> ثبت نام</a></li>*@
+				</ul>
+			</div>
+
+		</div>
+	</section>
+	<section class="start-business">
+		<div class="container">
+			<div class="start-business__form">
+				<div class="start-business__form__image">
+					<img src="~/Designs/MainWebSite/assets/img/start-business.png" alt="">
+				</div>
+				<div class="start-business__form__title">
+					<h1>وارد پنل کسب و کار خود شوید!</h1>
+					@*<p>ممکن است تجارت شما از قبل در بیزآپ باشد. اگر اینگونه نباشد ، می توانید آن را اضافه کنید.</p>*@
+				</div>
+				<form action="/BusinessProfile/BusinessProfileLogin/ConfirmLogin" method="get">
+					<div asp-validation-summary="ModelOnly"></div>
+					<div class="start-business__form__input">
+
+						<div class="start-business__form__input__input-form-name">
+							<div class="start-business__form__input__input-form-name__lable">
+								<span>نام کاربری</span>
+							</div>
+							<div class="start-business__form__input__input-form-name__input">
+								<input asp-for="Username" type="text" placeholder="نام کاربری خودراواردکنید" required>
+								<span asp-validation-for="Username"></span>
+							</div>
+						</div>
+						<div class="start-business__form__input__input-form-name">
+							<div class="start-business__form__input__input-form-name__lable">
+								<span>رمزعبور</span>
+							</div>
+							<div class="start-business__form__input__input-form-name__input">
+								<input asp-for="Password" type="text" placeholder="نام کاربری خودراواردکنید" required>
+								<span asp-validation-for="Password"></span>
+
+							</div>
+						</div>
+						<div class="start-business__form__input__button">
+							<button type="submit" style="width:100%">ورود</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
+
+	<footer class="footer-business">
+		<div class="container">
+			<div class="footer-business__top">
+				<div class="footer-business__top__right">
+					<div class="footer-business__top__right__nav">
+						<ul>
+							<li><a href="#">شرایط استفاده از خدمات</a></li>
+							<li><a href="#">سیاست حفظ حریم خصوصی</a></li>
+							<li><a href="#">گزینه های تبلیغات</a></li>
+							<li><a href="#">رهنمودهای محتوا</a></li>
+							<li><a href="#">وبلاگ</a></li>
+							<li><a href="#">وبینارها</a></li>
+							<li><a href="#">حمایت کردن</a></li>
+						</ul>
+					</div>
+					<div class="footer-business__top__right__bottom">
+
+						<div class="footer-business__top__right__bottom__phone">
+							<span>نیاز به پشتیبانی دارید؟</span>
+							<span>0768-303 (910)</span>
+						</div>
+					</div>
+				</div>
+				<div class="footer-business__top__left">
+					<div class="footer-business__top__left__text">
+						<p>با برنامه <a href="#">بیزآپ برای کسب و کار برای</a> iOS و Android به تلفن همراه بروید.</p>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="footer-business__bottom">
+				<div class="footer-business__bottom__image">
+					<img src="~/Designs/MainWebSite/assets/img/footer.png">
+				</div>
+				<div class="footer-business__bottom__copyright">
+					<span>حق چاپ © 2004–2020</span>
+					<img src="~/Designs/MainWebSite/assets/img/logo.png">
+					<span>,</span>
+					<img src="~/Designs/MainWebSite/assets/img/logoo.png">
+					<span>و علائم مربوط به آن علائم تجاری ثبت شده یلپ هستند.</span>
+				</div>
+			</div>
+		</div>
+	</footer>
+	<script src="~/Designs/MainWebSite/assets/js/footer-bundle.js"></script>
+	<script src="~/Designs/MainWebSite/assets/js/scripts.js"></script>
+</body>
+</html>

@@ -51,10 +51,7 @@
   <ItemGroup>
     <Folder Include="Areas\AdminControllPanel\Data\" />
     <Folder Include="Areas\AdminControllPanel\Models\" />
-    <Folder Include="Areas\BusinessProfile\Controllers\" />
     <Folder Include="Areas\BusinessProfile\Data\" />
-    <Folder Include="Areas\BusinessProfile\Models\" />
-    <Folder Include="Areas\BusinessProfile\Views\" />
     <Folder Include="wwwroot\Admin\bower_components\" />
     <Folder Include="wwwroot\Upload\Bussiness\Files\" />
     <Folder Include="wwwroot\Upload\Categories\Files\" />
@@ -154,6 +151,12 @@
     <None Include="wwwroot\Designs\AdminControllPanel\js\plugins\summernote\summernote.min.js" />
     <None Include="wwwroot\Designs\AdminControllPanel\js\plugins\wizard\jquery.bootstrap.wizard.min.js" />
     <None Include="wwwroot\Designs\AdminControllPanel\js\respond.min.js" />
+    <None Include="wwwroot\Designs\BusinessProfile\fonts\yekan\woff2\iranyekanwebbold%28fanum%29.woff2" />
+    <None Include="wwwroot\Designs\BusinessProfile\fonts\yekan\woff2\iranyekanweblight%28fanum%29.woff2" />
+    <None Include="wwwroot\Designs\BusinessProfile\fonts\yekan\woff2\iranyekanwebregular%28fanum%29.woff2" />
+    <None Include="wwwroot\Designs\BusinessProfile\js\main.js" />
+    <None Include="wwwroot\Designs\BusinessProfile\js\swiper-items.js" />
+    <None Include="wwwroot\Designs\BusinessProfile\js\swiper.min.js" />
     <None Include="wwwroot\Designs\MainWebSite\assets\css\styles.css.map" />
     <None Include="wwwroot\Designs\MainWebSite\assets\fonts\yekan\woff2\iranyekanwebbold%28fanum%29.woff2" />
     <None Include="wwwroot\Designs\MainWebSite\assets\fonts\yekan\woff2\iranyekanweblight%28fanum%29.woff2" />
