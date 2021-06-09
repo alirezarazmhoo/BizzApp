@@ -39,6 +39,8 @@ namespace DataLayer.Infrastructure.Reviews
 		Task<IEnumerable<Review>> GetUserReview(string Id);
 		Task<ReviewMedia> GetReviewMediaDetail(Guid Id);
 		Task<IEnumerable<CustomerBusinessMediaPictures>> GetCustomerBusinessMediaPictures(string Id);
-		Task AddCustomerBusinessMedia(CustomerBusinessMedia model, IFormFile[] files, string[] captions); 
+		Task AddCustomerBusinessMedia(CustomerBusinessMedia model, IFormFile[] files, string[] captions);
+		Task<int> GetUserTotalVotes(string UserId);
+		Task<int> GetUserTotalBusinessLike(string UserId); 
 	}
 }

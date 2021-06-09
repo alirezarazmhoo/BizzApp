@@ -647,7 +647,25 @@ namespace DataLayer.Services
 						});
 					}
 				}
-			
 		}
+		public async Task<int> GetUserTotalVotes(string UserId)
+		{
+			var UserItem = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(UserId));
+			if(UserItem != null)
+			{
+				return await DbContext.UsersInReviewVotes.Where(s => s.BizAppUserId.Equals(UserItem.Id)).CountAsync();
+			}
+			return 0; 
+		}
+		public async Task<int> GetUserTotalBusinessLike(string UserId)
+		{
+			var UserItem = await DbContext.Users.FirstOrDefaultAsync(s => s.Id.Equals(UserId));
+			if (UserItem != null)
+			{
+				return await DbContext.UsersInCustomerBusinessMediaLikes.Where(s => s.BizAppUserId.Equals(UserItem.Id)).CountAsync();
+			}
+			return 0;
+		}
+
 	}
 }

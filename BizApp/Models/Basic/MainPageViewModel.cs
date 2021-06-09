@@ -22,6 +22,7 @@ namespace BizApp.Models.Basic
 	{
 		public string Image { get; set; }
 		public string Title { get; set; }
+		public IList< string> UserRoles {get;set;}
 		//public MainPage_PhotoBusinessOwner MainPage_PhotoBusinessOwner { get; set;  }
 		//public MainPage_PhotoCreator  MainPage_PhotoCreator { get; set; }
 		public List<MainPage_Category>  MainPage_Category { get; set; }

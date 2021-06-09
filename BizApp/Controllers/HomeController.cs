@@ -4,7 +4,9 @@ using BizApp.Models;
 using BizApp.Models.Basic;
 using BizApp.Utility;
 using DataLayer.Infrastructure;
+using DomainClass;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -21,15 +23,22 @@ namespace BizApp.Controllers
 		private readonly ILogger<HomeController> _logger;
 		private readonly IUnitOfWorkRepo _UnitOfWork;
 		private readonly IMapper _mapper;
-		public HomeController(ILogger<HomeController> logger, IUnitOfWorkRepo unitOfWork, IMapper mapper)
+		private readonly UserManager<BizAppUser> _userManager;
+
+
+
+		public HomeController(ILogger<HomeController> logger, IUnitOfWorkRepo unitOfWork, IMapper mapper , UserManager<BizAppUser> userManager)
 		{
 			_logger = logger;
 			_UnitOfWork = unitOfWork;
 			_mapper = mapper;
+			_userManager = userManager; 
 
 		}
 		public async Task<IActionResult> Index()
 		{
+
+
 			#region Objects
 			MainPageViewModel MainPageViewModel = new MainPageViewModel();
 			MainPage_SliderViewModel MainPageViewModel_Slider = new MainPage_SliderViewModel();
@@ -39,11 +48,17 @@ namespace BizApp.Controllers
 			MainPage_BusinessesByCategoryMain MainPage_BusinessesByCategoryMain = new MainPage_BusinessesByCategoryMain();
 			MainPage_BusinessesByCategoryMoreCategories MainPage_BusinessesByCategoryMoreCategories = new MainPage_BusinessesByCategoryMoreCategories();
 			List<MainPage_RecentActivity> MainPage_RecentActivity = new List<MainPage_RecentActivity>();
+
 			#endregion
 			#region Slider
 			var SliderItem = await _UnitOfWork.SliderRepo.GetRandom();
 			MainPageViewModel_Slider.Image = SliderItem.Image;
 			MainPageViewModel_Slider.Title = SliderItem.Title;
+			if (User.Identity.IsAuthenticated)
+			{
+			var user = await _userManager.FindByNameAsync(User.Identity.Name);
+			MainPageViewModel_Slider.UserRoles = await _userManager.GetRolesAsync(user);
+			}
 			#endregion
 			#region Category
 			var CategoryItems = await _UnitOfWork.CategoryRepo.GetChosens();
@@ -159,7 +174,7 @@ namespace BizApp.Controllers
 		}
 		public async Task<JsonResult> SearchCategory(string txtSearch)
 		{
-			var Items = await _UnitOfWork.CategoryRepo.GetAll(txtSearch);
+			var Items = await _UnitOfWork.CategoryRepo.GetAll(txtSearch,0);
 			List<CategorySearchViewModel> categories = new List<CategorySearchViewModel>();
 			foreach (var item in Items.Take(10))
 			{

@@ -49,6 +49,9 @@ namespace BizApp.Areas.WebApi.Controllers
 			userProfile.TotalReviewPicture = await _UnitOfWork.ReviewRepo.GetUserTotalReviewMedia(Id);
 			userProfile.UserName = UserItem.UserName;
 			userProfile.Id = UserItem.Id;
+			userProfile.TotalVotes = await _UnitOfWork.ReviewRepo.GetUserTotalVotes(UserItem.Id);
+			userProfile.TotalLikes = await _UnitOfWork.ReviewRepo.GetUserTotalBusinessLike(UserItem.Id);
+
 				foreach (var item in UserItem.ApplicationUserMedias
 				.ToList())
 				{

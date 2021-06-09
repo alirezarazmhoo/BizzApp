@@ -95,7 +95,7 @@ namespace BizApp.Areas.WebApi.Controllers
 
 		}
 		[Route("GetById")]
-		public async Task<BusinessItem> GetById(Guid id)
+		public async Task<IActionResult> GetById(Guid id)
 		{
 			try
 			{
@@ -108,6 +108,7 @@ namespace BizApp.Areas.WebApi.Controllers
 			if(Item != null)
 			{
 					businessPopop.address = Item.Address;
+					businessPopop.isOpenNow =        Item.IsOpenNow; 
 					businessPopop.description = Item.Description;
 					businessPopop.districname = Item.District.Name;
 					businessPopop.id = Item.Id;
@@ -146,16 +147,16 @@ namespace BizApp.Areas.WebApi.Controllers
 							await _UnitOfWork.SaveAsync();
 						}
 					}
-					return businessPopop;
+					return Ok( businessPopop);
 			}
 				else
 				{
 					return null; 
 				}
 			}
-		   catch (Exception )
+		   catch (Exception e)
 			{
-				throw; 
+				return BadRequest(e.Message);
 
 			}
 		}

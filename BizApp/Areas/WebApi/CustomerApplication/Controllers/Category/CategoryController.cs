@@ -98,14 +98,13 @@ namespace BizApp.Areas.WebApi.Controllers
 			}
 
 		}
-
 		[Route("Search")]
-		public async Task<IActionResult> SearchCategoryByName(string txtSearch)
+		public async Task<IActionResult> SearchCategoryByName(string txtSearch , int DistrictId)
 		{
 			List<CategoryDto> categoryDtos = new List<CategoryDto>();
 			try
 			{
-			var Items = await _UnitOfWork.CategoryRepo.GetAll(txtSearch);
+			var Items = await _UnitOfWork.CategoryRepo.GetAll(txtSearch, DistrictId);
 			foreach (var item in Items)
 			{
 				categoryDtos.Add(new CategoryDto() { Icon = string.Empty, Id = item.Id, Name = item.Name });
@@ -113,6 +112,44 @@ namespace BizApp.Areas.WebApi.Controllers
 				return Ok(categoryDtos);
 			}
 			catch(Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+		}
+		[Route("GetSubCategories")]
+		public async Task<IActionResult> GetSubCategoriesByParentId(int Id)
+		{
+			List<CategoryDto> categoryDtos = new List<CategoryDto>();
+			try
+			{
+				var Items = await _UnitOfWork.CategoryRepo.GetSubCategories(Id);
+				foreach (var item in Items)
+				{
+					string Image = string.IsNullOrEmpty(item.Terms.Where(s => s.Key.Equals("png-icon")).Select(s => s.Value).FirstOrDefault()) == true ? "/Upload/DefaultPicutres/Category/categorydefault.jpg" : item.Terms.Where(s => s.Key.Equals("png-icon")).Select(s => s.Value).FirstOrDefault();
+					categoryDtos.Add(new CategoryDto() {   Icon = string.IsNullOrEmpty(item.Terms.Where(s => s.Key.Equals("icon")).Select(s => s.Value).FirstOrDefault()) == true ? Defaults.DefultCategoryIcon : item.Terms.Where(s => s.Key.Equals("icon")).Select(s => s.Value).FirstOrDefault(), Id = item.Id, Name = item.Name });
+				}
+				return Ok(categoryDtos);
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+		}
+		[Route("GetAllParents")]
+		public async Task<IActionResult> GetAllParents()
+		{
+			List<CategoryDto> categoryDtos = new List<CategoryDto>();
+			try
+			{
+				var Items = await _UnitOfWork.CategoryRepo.GetAll();
+				foreach (var item in Items)
+				{
+					string Image = string.IsNullOrEmpty(item.Terms.Where(s => s.Key.Equals("png-icon")).Select(s => s.Value).FirstOrDefault()) == true ? "/Upload/DefaultPicutres/Category/categorydefault.jpg" : item.Terms.Where(s => s.Key.Equals("png-icon")).Select(s => s.Value).FirstOrDefault();
+					categoryDtos.Add(new CategoryDto() { Icon = string.IsNullOrEmpty(item.Terms.Where(s => s.Key.Equals("icon")).Select(s => s.Value).FirstOrDefault()) == true ? Defaults.DefultCategoryIcon : item.Terms.Where(s => s.Key.Equals("icon")).Select(s => s.Value).FirstOrDefault(), Id = item.Id, Name = item.Name });
+				}
+				return Ok(categoryDtos);
+			}
+			catch (Exception ex)
 			{
 				return BadRequest(ex.Message);
 			}

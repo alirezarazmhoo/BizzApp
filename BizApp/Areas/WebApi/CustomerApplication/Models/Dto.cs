@@ -62,6 +62,7 @@ namespace BizApp.Areas.WebApi.Models
 		public string districname { get; set; }
 		public string description { get; set; }
 		public string featureimage { get; set; }
+		public bool isOpenNow { get; set; }
 		public List<string> images { get; set; }
 		public List<Review> reviews { get; set; }
 	}
@@ -137,6 +138,9 @@ namespace BizApp.Areas.WebApi.Models
 		public int TotalReview { get; set; }
 		public int TotalBusinessMediaPicture { get; set; }
 		public int TotalFriends { get; set; }
+		public int TotalLikes { get; set; }
+		public int TotalVotes { get; set;  }
+
 		public string Image { get; set; }
 		public string City { get; set;  }
 		public List<Tuple<Guid,string,string>> UserProfileImages { get; set;  }

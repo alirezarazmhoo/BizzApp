@@ -36,7 +36,7 @@ namespace BizApp.Areas.Admin.Controllers
 				int pageSize = 5;
 				var items = (shouldSearch == false) ?
 						await _UnitOfWork.CategoryRepo.GetAll()
-						: await _UnitOfWork.CategoryRepo.GetAll(searchString);
+						: await _UnitOfWork.CategoryRepo.GetAll(searchString,0);
 
 				bool hasChild;
 				var childCount = 0;

@@ -1,4 +1,5 @@
 ﻿using DataLayer.Data;
+using DataLayer.Extensions;
 using DataLayer.Infrastructure;
 using DomainClass;
 using DomainClass.Businesses;
@@ -231,11 +232,32 @@ namespace DataLayer.Services
 		}
 		public async Task<IEnumerable<Category>> GetAll()
 		{
-			return await FindByCondition(f => f.ParentCategoryId == null).OrderByDescending(o => o.Id).ToListAsync();
+			return await FindByCondition(f => f.ParentCategoryId == null).Include(s=>s.Terms).OrderByDescending(o => o.Id).ToListAsync();
 		}
-		public async Task<List<Category>> GetAll(string searchString)
+		public async Task<List<Category>> GetAll(string searchString, int DistrictId )
 		{
+			List<Category> categories = new List<Category>();  
+			if(DistrictId !=0)
+			{
+				var BusinessItems = await DbContext.Businesses.Include(s=>s.Category).Select(s=>new { s.Category , s.DistrictId}).Where(s => s.DistrictId == DistrictId).ToListAsync();
+				foreach (var item in BusinessItems)
+				{
+					categories.Add(item.Category);
+				}
+				if (!string.IsNullOrEmpty(searchString))
+				{
+					categories = categories.Where(s => s.Name.Contains(searchString)).ToList();
+					return categories;  
+				}
+				else
+				{
+					return categories;
+				}
+			}
+			else
+			{
 			return await FindByCondition(f => f.Name.Contains(searchString)).OrderByDescending(o => o.Id).ToListAsync();
+			}
 		}
 		public async Task<GetCategoryByIdQuery> GetWithTermsById(int id)
 		{
@@ -481,6 +503,21 @@ namespace DataLayer.Services
 			public double latitude { get; set; }
 			public string id { get; set; }
 		}
+		public async Task<IEnumerable<Category>> GetSubCategories(int Id)
+		{
+			var Item = await DbContext.Categories.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+			if(Item != null)
+			{
+				return await DbContext.Categories.Include(s=>s.Terms).Where(s => s.ParentCategoryId.Equals(Item.Id)).ToListAsync(); 
+			}
+			else
+			{
+				return new List<Category>();
+			}
+
+		}
+
+
 
 	}
 }

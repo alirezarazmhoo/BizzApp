@@ -51,16 +51,28 @@ namespace BizApp.Areas.BusinessProfile.Controllers
 
 				var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: false);
 
+
 				if (result.Succeeded)
 				{			
-					if (User.IsInRole("Owner"))
+				var roles = await _userManager.GetRolesAsync(user);
+					if (roles.Contains("Owner"))
 					{
-						return RedirectToAction("index", "home", new { area = "admin" });
+						return RedirectToAction("Index", "ManageBusinessAccount", new { area = "BusinessProfile" });
 					}
 					return RedirectToAction(nameof(Index));
 				}
 			}
 					return RedirectToAction(nameof(Index));
 		}
+		public async Task<IActionResult> ExitFromBusinessProfile()
+		{
+			await _signInManager.SignOutAsync();
+			
+		
+				return RedirectPermanent("/Home/Index");
+			
+		}
+
+
 	}
 }

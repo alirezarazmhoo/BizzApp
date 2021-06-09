@@ -11,7 +11,7 @@ namespace DataLayer.Infrastructure
 	public  interface ICateogryRepo
 	{
 		Task<IEnumerable<Category>> GetAll();
-		Task<List<Category>> GetAll(string searchString);
+		Task<List<Category>> GetAll(string searchString , int DistrictId);
 		Task<Category> GetById(int id);
 		Task<GetCategoryByIdQuery> GetWithTermsById(int id);
 		//Task<int> Add(CreateCategoryCommand model);
@@ -32,6 +32,7 @@ namespace DataLayer.Infrastructure
 		Task<List<MenuCategoryViewModel>> GetAllInSearchPage();
 
 		Task<IEnumerable<Category>> GetAllParents(int id);
-		Task<List<Category>> GetPopular(double Longitude, double Latitude); 
+		Task<List<Category>> GetPopular(double Longitude, double Latitude);
+		Task<IEnumerable<Category>> GetSubCategories(int Id); 
 	}
 }
