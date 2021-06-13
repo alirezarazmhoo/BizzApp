@@ -782,7 +782,6 @@ namespace DataLayer.Services
 			}
 			return hierarchy;
 		}
-
 		public async Task UpdateBaseInformations(Business business)
 		{
 			var Item = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Id.Equals(business.Id));
@@ -810,7 +809,6 @@ namespace DataLayer.Services
 
 
 		}
-
 		public async Task UpdateBusinessTime(List<BusinessTime> times , Guid businessId)
 		{
 			List<BusinessTime> businessTimes = new List<BusinessTime>();
@@ -827,5 +825,10 @@ namespace DataLayer.Services
 				await DbContext.BusinessTimes.AddRangeAsync(businessTimes);
 				}
 			}
+		public async Task<List<Guid>> GetUserBusinessesIds (string UserId)
+		{
+			var Items  = await DbContext.Businesses.Select(s => new { s.Id, s.OwnerId ,s.CreatedDate}).Where(s => s.OwnerId.Equals(UserId)).OrderByDescending(s=>s.CreatedDate).ToListAsync();
+			return Items.Select(s=>s.Id).ToList(); 
+		}
 	}
 }

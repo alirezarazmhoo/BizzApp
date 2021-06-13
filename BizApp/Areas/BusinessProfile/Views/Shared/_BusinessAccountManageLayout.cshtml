@@ -6,9 +6,15 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>بیزآپ_اکانت کسب و کار</title>
-
 	<link rel="stylesheet" href="~/Designs/BusinessProfile/css/styles.css">
 	<link rel="stylesheet" href="~/Designs/BusinessProfile/css/swiper.min.css">
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+		  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+		  crossorigin="" />
+	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+			integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+			crossorigin=""></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<style>
 		.swiper-container {
 			width: 100%;
@@ -50,7 +56,10 @@
 						</svg>
 
 					</div>
+					<a href="/Home/Index">
+
 					<img src="~/Designs/MainWebSite/Logo/bizzapplogo.jpeg" style="width:60px;height:50px" alt="">
+					</a>
 					<h4 class=" hide-under-768">بیزاپ برای کسب وکار</h4>
 				</div>
 				<div class="navbar-left">
@@ -193,7 +202,16 @@
 								</div>
 								<li>صندوق ورودی</li>
 							</a>
+							<a href="/BusinessProfile/BusinessProfileLogin/ExitFromBusinessProfile">
+								<div class="list-icon">
 
+									<svg width="24" height="24" class="icon_svg"><path d="M15 2a1 1 0 110 2H4v16h11a1 1 0 110 2H3a1 1 0 01-1-1V3a1 1 0 011-1h12zm1.09 4.72a1 1 0 011.41 0L22 11.3a1 1 0 010 1.4l-4.59 4.58a1 1 0 01-1.41.02 1 1 0 010-1.42L18.87 13H7a1 1 0 110-2h11.87l-2.78-2.86a1 1 0 010-1.42z"></path></svg>
+								</div>
+								<li>خروج</li>
+
+
+
+							</a>
 						</ul>
 					</div>
 				</div>

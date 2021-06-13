@@ -1,0 +1,43 @@
+@font-face {
+  font-family: yekan;
+  font-style: normal;
+  font-weight: 300;
+  src: url("../fonts/yekan/eot/iranyekanweblight(fanum).eot");
+  src: url("../fonts/yekan/eot/iranyekanweblight(fanum).eot") format("embedded-opentype"), url("../fonts/yekan/ttf/iranyekanweblight(fanum).ttf") format("ttf"), url("../fonts/yekan/woff/iranyekanweblight(fanum).woff") format("woff"), url("../fonts/yekan/woff2/iranyekanweblight(fanum).woff2") format("woff2"); }
+
+@font-face {
+  font-family: yekan;
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/yekan/eot/iranyekanwebregular(fanum).eot");
+  src: url("../fonts/yekan/eot/iranyekanwebregular(fanum).eot") format("embedded-opentype"), url("../fonts/yekan/ttf/iranyekanwebregular(fanum).ttf"), url("../fonts/yekan/woff/iranyekanwebregular(fanum).woff") format("woff"), url("../fonts/yekan/woff2/iranyekanwebregular(fanum).woff2") format("woff2"); }
+
+@font-face {
+  font-family: yekan;
+  font-style: normal;
+  font-weight: 500;
+  src: url("../fonts/yakan/eot/iranyekanwebbold(fanum).eot");
+  src: url("../fonts/yakan/eot/iranyekanwebbold(fanum).eot") format("embedded-opentype"), url("../fonts/yakan/ttf/iranyekanwebbold(fanum).ttf") format("ttf"), url("../fonts/yekan/woff/iranyekanwebbold(fanum).woff") format("woff"), url("../fonts/yekan/woff2/iranyekanwebbold(fanum).woff2") format("woff2"); }
+
+* {
+  font-family: yekan; }
+
+body {
+  color: #2b273c;
+  margin: 0;
+  direction: rtl;
+  text-align: right;
+  padding: 0;
+  font-size: 13px;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw; }
+
+a {
+  text-decoration: none;
+  color: inherit; }
+
+body {
+  font-family: "yekan" !important; }
+  body input, body textarea {
+    font-family: "yekan" !important; }

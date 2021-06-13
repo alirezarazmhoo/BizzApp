@@ -1,0 +1,386 @@
+﻿
+@{
+	ViewData["Title"] = "BasicInformations";
+	Layout = "~/Areas/BusinessProfile/Views/Shared/_BusinessAccountManageLayout.cshtml";
+}
+
+<link href="~/Designs/BusinessProfile/css/basic_info.css" rel="stylesheet" />
+<link href="~/css/BasicInformation/style.css" rel="stylesheet" />
+
+
+<section>
+	<div class="section-container">
+
+		<div class="main-info">
+			<div class="header">
+				<h1>اطلاعات اولیه</h1>
+			</div>
+			<div class="main">
+				<div class="main-fields">
+					<div class="inputs">
+						<div class="textfield">
+							<div class="textfield-header">
+								<label for="">نام کسب و کار</label>
+								<div class="guiderlines">
+									<svg role="img" class="icon_svg">
+										<use xlink:href="#14x14_info">
+											<symbol id="14x14_info" height="14" width="14">
+												<path d="M7 13A6 6 0 117 1a6 6 0 010 12zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5zM6 6h2v4H6V6zm0-2h2v1H6V4z">
+												</path>
+											</symbol>
+										</use>
+									</svg>
+									<span>مشاهده خط مشی ها</span>
+									<div class="guider">
+										<div class="guider-container">
+											<div class="guider-header">
+												در این قسمت نام کسب و کار خود را وارد کنید
+											</div>
+											<div class="items">
+
+												<div class="item">
+
+													<img src="~/Designs/BusinessProfile/images/icon_computer.png" alt="">
+													<div class="content">
+														<div class="content-header">
+															درصورت نیاز با پشتیبانی تماس بگیرید
+														</div>
+														<p>عنوان کسب و کار باید مطابق مدارک کسب و کار شما باشد، در صورت تغییر نام کسب و کار ، با پشتیبانی بیزآپ هماهنگ فرمایید </p>
+													</div>
+												</div>
+
+
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<input placeholder="عنوان کسب و کار " type="text" name="" id="">
+						</div>
+						<div class="textfield">
+							<div class="textfield-header">
+								<label for="">محدوده کسب و کار</label>
+								<div class="guiderlines">
+									<svg role="img" class="icon_svg">
+										<use xlink:href="#14x14_info">
+											<symbol id="14x14_info" height="14" width="14">
+												<path d="M7 13A6 6 0 117 1a6 6 0 010 12zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5zM6 6h2v4H6V6zm0-2h2v1H6V4z">
+												</path>
+											</symbol>
+										</use>
+									</svg>
+									<span>مشاهده خط مشی ها</span>
+									<div class="guider">
+										<div class="guider-container">
+											<div class="guider-header">
+												در این قسمت نام کسب و کار خود را وارد کنید
+											</div>
+											<div class="items">
+												<div class="item">
+													<img src="~/Designs/BusinessProfile/images/icon_computer.png" alt="">
+													<div class="content">
+														<div class="content-header">
+															درصورت نیاز با پشتیبانی تماس بگیرید
+														</div>
+														<p>عنوان کسب و کار باید مطابق مدارک کسب و کار شما باشد، در صورت تغییر نام کسب و کار ، با پشتیبانی بیزآپ هماهنگ فرمایید </p>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="autocomplete" style="width:150px;">
+								<input selectedId="" id="myInput2" value="" onkeypress="sayHello()" type="text" name="myCountry" placeholder="محدوده کسب و کار">
+							</div>
+						</div>
+						<div class="textfield half">
+							<div class="textfield-header">
+								<label for="">دسته بندی کسب و کار</label>
+							</div>
+							<input placeholder="biz name" type="text" name="" id="">
+						</div>
+						<div class="textfield">
+							<div class="textfield-header">
+								<label for="">نوضیحات</label>
+								<div class="guiderlines">
+									مشاهده خط مشی ها
+								</div>
+							</div>
+							<select name="" id="">
+								<option value="">tehran</option>
+								<option value="">tehran</option>
+								<option value="">tehran</option>
+							</select>
+						</div>
+						<div class="textfield">
+							<div class="textfield-header">
+								<label for="">نام کسب و کار</label>
+								<div class="guiderlines">
+									مشاهده خط مشی ها
+								</div>
+							</div>
+							<input placeholder="biz name" type="text" name="" id="">
+						</div>
+						<div class="textfield">
+							<div class="textfield-header">
+								<label for="">بیوگرافی</label>
+								<div class="guiderlines">
+									مشاهده خط مشی ها
+								</div>
+							</div>
+							<input disabled placeholder="biz name" type="text" name="" id="">
+						</div>
+						<div class="textfield">
+							<div class="textfield-header">
+								<label for="">نشانی </label>
+								<div class="guiderlines">
+									<svg role="img" class="icon_svg">
+										<use xlink:href="#14x14_info">
+											<symbol id="14x14_info" height="14" width="14">
+												<path d="M7 13A6 6 0 117 1a6 6 0 010 12zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5zM6 6h2v4H6V6zm0-2h2v1H6V4z">
+												</path>
+											</symbol>
+										</use>
+									</svg>
+									<span>مشاهده خط مشی ها</span>
+									<div class="guider">
+										<div class="guider-container">
+											<div class="guider-content">
+												yelp help and again yelp help and againyelp help and again
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+							<input disabled placeholder="biz name" type="text" name="" id="">
+						</div>
+						<div class="textfield">
+							<div class="textfield-header">
+								<label for="">کدپستی </label>
+								<div class="guiderlines">
+									<svg role="img" class="icon_svg">
+										<use xlink:href="#14x14_info">
+											<symbol id="14x14_info" height="14" width="14">
+												<path d="M7 13A6 6 0 117 1a6 6 0 010 12zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5zM6 6h2v4H6V6zm0-2h2v1H6V4z">
+												</path>
+											</symbol>
+										</use>
+									</svg>
+									<span>مشاهده خط مشی ها</span>
+									<div class="guider">
+										<div class="guider-container">
+											<div class="guider-content">
+												yelp help and again yelp help and againyelp help and again
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+							<input disabled placeholder="biz name" type="text" name="" id="">
+						</div>
+						<div class="textfield">
+							<div class="textfield-header">
+								<label for="">شماره تماس </label>
+								<div class="guiderlines">
+									<svg role="img" class="icon_svg">
+										<use xlink:href="#14x14_info">
+											<symbol id="14x14_info" height="14" width="14">
+												<path d="M7 13A6 6 0 117 1a6 6 0 010 12zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5zM6 6h2v4H6V6zm0-2h2v1H6V4z">
+												</path>
+											</symbol>
+										</use>
+									</svg>
+									<span>مشاهده خط مشی ها</span>
+									<div class="guider">
+										<div class="guider-container">
+											<div class="guider-content">
+												yelp help and again yelp help and againyelp help and again
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+							<input disabled placeholder="biz name" type="text" name="" id="">
+						</div>
+						<div class="textfield">
+							<div class="textfield-header">
+								<label for="">موبایل</label>
+								<div class="guiderlines">
+									<svg role="img" class="icon_svg">
+										<use xlink:href="#14x14_info">
+											<symbol id="14x14_info" height="14" width="14">
+												<path d="M7 13A6 6 0 117 1a6 6 0 010 12zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5zM6 6h2v4H6V6zm0-2h2v1H6V4z">
+												</path>
+											</symbol>
+										</use>
+									</svg>
+									<span>مشاهده خط مشی ها</span>
+									<div class="guider">
+										<div class="guider-container">
+											<div class="guider-content">
+												yelp help and again yelp help and againyelp help and again
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+							<input disabled placeholder="biz name" type="text" name="" id="">
+						</div>
+						<div class="textfield">
+							<div class="textfield-header">
+								<label for="">آدرس وب سایت</label>
+								<div class="guiderlines">
+									<svg role="img" class="icon_svg">
+										<use xlink:href="#14x14_info">
+											<symbol id="14x14_info" height="14" width="14">
+												<path d="M7 13A6 6 0 117 1a6 6 0 010 12zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5zM6 6h2v4H6V6zm0-2h2v1H6V4z">
+												</path>
+											</symbol>
+										</use>
+									</svg>
+									<span>مشاهده خط مشی ها</span>
+									<div class="guider">
+										<div class="guider-container">
+											<div class="guider-content">
+												yelp help and again yelp help and againyelp help and again
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+							<input disabled placeholder="biz name" type="text" name="" id="">
+						</div>
+						<div class="textfield">
+							<div class="textfield-header">
+								<label for="">ایمیل</label>
+								<div class="guiderlines">
+									<svg role="img" class="icon_svg">
+										<use xlink:href="#14x14_info">
+											<symbol id="14x14_info" height="14" width="14">
+												<path d="M7 13A6 6 0 117 1a6 6 0 010 12zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5zM6 6h2v4H6V6zm0-2h2v1H6V4z">
+												</path>
+											</symbol>
+										</use>
+									</svg>
+									<span>مشاهده خط مشی ها</span>
+									<div class="guider">
+										<div class="guider-container">
+											<div class="guider-content">
+												yelp help and again yelp help and againyelp help and again
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+							<input disabled placeholder="biz name" type="text" name="" id="">
+						</div>
+					</div>
+					<div class="map">
+						<img src="./images/staticmap.png" alt="">
+					</div>
+				</div>
+				<div class="options">
+					<div class="header">
+						<h2 class="title">Amenities and more</h2>
+						<p class="header-info">
+							Please note, certain subjective business details (such as "Good for Groups") can only be
+							updated by the Yelp community.
+						</p>
+					</div>
+					<div class="options-container">
+						<div class="option">
+							<div class="option-header">open all</div>
+
+							<div class="option-buttons">
+								<div class="option-button">
+									<label for="openyes">yes</label>
+									<input type="radio" name="openall" id="openyes">
+								</div>
+
+								<div class="option-button">
+									<label for="openno">yes</label>
+									<input type="radio" name="openall" id="openno">
+								</div>
+							</div>
+
+						</div>
+						<div class="option">
+							<div class="option-header">open all</div>
+
+							<div class="option-buttons">
+								<div class="option-button">
+									<label for="openyes">yes</label>
+									<input type="radio" name="openall" id="openyes">
+								</div>
+
+								<div class="option-button">
+									<label for="openno">yes</label>
+									<input type="radio" name="openall" id="openno">
+								</div>
+							</div>
+
+						</div>
+						<div class="option">
+							<div class="option-header">open all</div>
+
+							<div class="option-buttons">
+								<div class="option-button">
+									<label for="openyes">yes</label>
+									<input type="radio" name="openall" id="openyes">
+								</div>
+
+								<div class="option-button">
+									<label for="openno">yes</label>
+									<input type="radio" name="openall" id="openno">
+								</div>
+							</div>
+
+						</div>
+
+
+						<div class="option">
+							<div class="option-header">open all</div>
+
+							<div class="option-buttons">
+
+								<div class="option-button">
+									<label for="openno">yes</label>
+									<input type="checkbox" name="openall" id="openno">
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="footer">
+						<a href="" class="cancel">cancel</a>
+						<a href="" class="save">save changes</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</section>
+
+<script src="~/Scripts/BasicInformation/Index.js"></script>
+<script>
+
+	function sayHello() {
+		//var countries = ["Afghanistan", "Albania", "Algeria", "Andorra"];
+		var countries = [{ id: 1, name: "iran" }, { id: 2, name: "canada" }];
+
+		autocomplete(document.getElementById("myInput2"), countries);
+
+
+	}
+
+
+
+</script>
