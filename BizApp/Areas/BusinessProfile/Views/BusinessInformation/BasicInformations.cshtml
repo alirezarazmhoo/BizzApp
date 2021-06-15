@@ -1,4 +1,4 @@
-﻿
+﻿@model BizApp.Areas.BusinessProfile.Models.BusinessAccountBusinessInformationDto
 @{
 	ViewData["Title"] = "BasicInformations";
 	Layout = "~/Areas/BusinessProfile/Views/Shared/_BusinessAccountManageLayout.cshtml";
@@ -13,7 +13,7 @@
 
 		<div class="main-info">
 			<div class="header">
-				<h1>اطلاعات اولیه</h1>
+				<h1>اطلاعات اولیه کسب و کار @Model.Name</h1>
 			</div>
 			<div class="main">
 				<div class="main-fields">
@@ -55,7 +55,8 @@
 									</div>
 								</div>
 							</div>
-							<input placeholder="عنوان کسب و کار " type="text" name="" id="">
+							<input placeholder="عنوان کسب و کار" asp-for="Name" type="text" name="" id="Name">
+							<span asp-validation-for="Name"></span>
 						</div>
 						<div class="textfield">
 							<div class="textfield-header">
@@ -73,16 +74,16 @@
 									<div class="guider">
 										<div class="guider-container">
 											<div class="guider-header">
-												در این قسمت نام کسب و کار خود را وارد کنید
+												در این قسمت محدوده کسب و کار خود را وارد کنید
 											</div>
 											<div class="items">
 												<div class="item">
 													<img src="~/Designs/BusinessProfile/images/icon_computer.png" alt="">
 													<div class="content">
 														<div class="content-header">
-															درصورت نیاز با پشتیبانی تماس بگیرید
+															حتما باید از موارد پیشنهاد شده باشد
 														</div>
-														<p>عنوان کسب و کار باید مطابق مدارک کسب و کار شما باشد، در صورت تغییر نام کسب و کار ، با پشتیبانی بیزآپ هماهنگ فرمایید </p>
+														<p>با انتخاب دقیق محدوده، مشتریان سریع تر شما را پیدا خواهند کرد </p>
 													</div>
 												</div>
 											</div>
@@ -90,50 +91,128 @@
 									</div>
 								</div>
 							</div>
-							<div class="autocomplete" style="width:150px;">
-								<input selectedId="" id="myInput2" value="" onkeypress="sayHello()" type="text" name="myCountry" placeholder="محدوده کسب و کار">
+							<div class="autocomplete" style="width:100%">
+								<input selectedId="@Model.DistrictId" id="myInput" asp-for="DistricyName" oninput="chooseDistrict(this.value)" type="text" name="district" placeholder="حداقل 2 کاراکتر تایپ شود">
+								<span id="DistrictIdValication" style="color:red"></span>
+
 							</div>
 						</div>
-						<div class="textfield half">
+						<div class="textfield">
 							<div class="textfield-header">
 								<label for="">دسته بندی کسب و کار</label>
+								<div class="guiderlines">
+									<svg role="img" class="icon_svg">
+										<use xlink:href="#14x14_info">
+											<symbol id="14x14_info" height="14" width="14">
+												<path d="M7 13A6 6 0 117 1a6 6 0 010 12zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5zM6 6h2v4H6V6zm0-2h2v1H6V4z">
+												</path>
+											</symbol>
+										</use>
+									</svg>
+									<span>مشاهده خط مشی ها</span>
+									<div class="guider">
+										<div class="guider-container">
+											<div class="guider-header">
+												در این قسمت دسته بندی کسب و کار خود را وارد کنید
+											</div>
+											<div class="items">
+												<div class="item">
+													<img src="~/Designs/BusinessProfile/images/icon_computer.png" alt="">
+													<div class="content">
+														<div class="content-header">
+															حتما باید از موارد پیشنهاد شده باشد
+														</div>
+														<p>مشخص کنید که در چه زمینه ای مشفول به فعالیت هستید</p>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
-							<input placeholder="biz name" type="text" name="" id="">
+							<div class="autocomplete" style="width:100%">
+								<input selectedId="@Model.CategoryId" id="myInput2" asp-for="CategoryName" oninput="chooseCategory(this.value)" type="text" name="cateogry" placeholder="حداقل 2 کاراکتر تایپ شود">
+								<span id="CategoryIdValication" style="color:red"></span>
+
+							</div>
 						</div>
 						<div class="textfield">
 							<div class="textfield-header">
-								<label for="">نوضیحات</label>
+								<label for="">توضیحات</label>
 								<div class="guiderlines">
-									مشاهده خط مشی ها
+									<svg role="img" class="icon_svg">
+										<use xlink:href="#14x14_info">
+											<symbol id="14x14_info" height="14" width="14">
+												<path d="M7 13A6 6 0 117 1a6 6 0 010 12zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5zM6 6h2v4H6V6zm0-2h2v1H6V4z">
+												</path>
+											</symbol>
+										</use>
+									</svg>
+									<span>مشاهده خط مشی ها</span>
+									<div class="guider">
+										<div class="guider-container">
+											<div class="guider-header">
+												در این قسمت توضیحات کلی از  کسب و کار خود را وارد کنید
+											</div>
+											<div class="items">
+												<div class="item">
+													<img src="~/Designs/BusinessProfile/images/icon_computer.png" alt="">
+													<div class="content">
+														<div class="content-header">
+															توضیحات باید جامع، شفاف و بدون حاشیه باشد
+														</div>
+														<p>از تخریب دیگر کسب و کار ها پرهیز کنیدو مطابق با قوانین شرکت بیزآپ، محتوای خود را وارد کنید</p>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
-							<select name="" id="">
-								<option value="">tehran</option>
-								<option value="">tehran</option>
-								<option value="">tehran</option>
-							</select>
-						</div>
-						<div class="textfield">
-							<div class="textfield-header">
-								<label for="">نام کسب و کار</label>
-								<div class="guiderlines">
-									مشاهده خط مشی ها
-								</div>
-							</div>
-							<input placeholder="biz name" type="text" name="" id="">
+							<textarea asp-for="Description" placeholder="توضیحی وارد نشده است" type="text" id="Description">
+
+                           </textarea>
 						</div>
 						<div class="textfield">
 							<div class="textfield-header">
 								<label for="">بیوگرافی</label>
 								<div class="guiderlines">
-									مشاهده خط مشی ها
+									<svg role="img" class="icon_svg">
+										<use xlink:href="#14x14_info">
+											<symbol id="14x14_info" height="14" width="14">
+												<path d="M7 13A6 6 0 117 1a6 6 0 010 12zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5zM6 6h2v4H6V6zm0-2h2v1H6V4z">
+												</path>
+											</symbol>
+										</use>
+									</svg>
+									<span>مشاهده خط مشی ها</span>
+									<div class="guider">
+										<div class="guider-container">
+											<div class="guider-header">
+												در این قسمت  یک تاریخچه از  کسب و کار خود را وارد کنید
+											</div>
+											<div class="items">
+												<div class="item">
+													<img src="~/Designs/BusinessProfile/images/icon_computer.png" alt="">
+													<div class="content">
+														<div class="content-header">
+															به مشتریان بگویید از کی شروع به فعالیت کرده اید و سوابق کسب و کار خود را شرح دهید
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
-							<input disabled placeholder="biz name" type="text" name="" id="">
+							<textarea asp-for="Biography" placeholder="بیوگرافی وارد نشده است" type="text" name="" id="Biography">
+
+
+                           </textarea>
 						</div>
 						<div class="textfield">
 							<div class="textfield-header">
-								<label for="">نشانی </label>
+								<label for="">آدرس کسب و کار</label>
 								<div class="guiderlines">
 									<svg role="img" class="icon_svg">
 										<use xlink:href="#14x14_info">
@@ -146,19 +225,40 @@
 									<span>مشاهده خط مشی ها</span>
 									<div class="guider">
 										<div class="guider-container">
-											<div class="guider-content">
-												yelp help and again yelp help and againyelp help and again
+											<div class="guider-header">
+												آدرس متنی کسب و کار خود را، جهت راهنمایی بهتر به مشتریان وارد کنید.
 											</div>
+											<div class="items">
 
+												<div class="item">
+
+													<img src="~/Designs/BusinessProfile/images/icon_computer.png" alt="">
+													<div class="content">
+														<div class="content-header">
+															درصورت نیاز با پشتیبانی تماس بگیرید
+														</div>
+
+													</div>
+												</div>
+
+
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-							<input disabled placeholder="biz name" type="text" name="" id="">
+							<input asp-for="Address" placeholder="آدرسی پیدا نشد" type="text" name="" id="Address">
 						</div>
 						<div class="textfield">
 							<div class="textfield-header">
-								<label for="">کدپستی </label>
+								<label for="">کدپستی</label>
+
+							</div>
+							<input asp-for="PostalCode" placeholder="کدپستی را وارد کنید" maxlength="10" type="number" name="" id="PostalCode">
+						</div>
+						<div class="textfield">
+							<div class="textfield-header">
+								<label for="">تلفن ثابت</label>
 								<div class="guiderlines">
 									<svg role="img" class="icon_svg">
 										<use xlink:href="#14x14_info">
@@ -171,65 +271,27 @@
 									<span>مشاهده خط مشی ها</span>
 									<div class="guider">
 										<div class="guider-container">
-											<div class="guider-content">
-												yelp help and again yelp help and againyelp help and again
+											<div class="guider-header">
+												شماره ثابت محل کسب و کار خود وارد نمایید
 											</div>
+											<div class="items">
 
+												<div class="item">
+
+													<img src="~/Designs/BusinessProfile/images/icon_computer.png" alt="">
+													<div class="content">
+														<div class="content-header">
+															درصورت نیاز با پشتیبانی تماس بگیرید
+														</div>
+
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-							<input disabled placeholder="biz name" type="text" name="" id="">
-						</div>
-						<div class="textfield">
-							<div class="textfield-header">
-								<label for="">شماره تماس </label>
-								<div class="guiderlines">
-									<svg role="img" class="icon_svg">
-										<use xlink:href="#14x14_info">
-											<symbol id="14x14_info" height="14" width="14">
-												<path d="M7 13A6 6 0 117 1a6 6 0 010 12zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5zM6 6h2v4H6V6zm0-2h2v1H6V4z">
-												</path>
-											</symbol>
-										</use>
-									</svg>
-									<span>مشاهده خط مشی ها</span>
-									<div class="guider">
-										<div class="guider-container">
-											<div class="guider-content">
-												yelp help and again yelp help and againyelp help and again
-											</div>
-
-										</div>
-									</div>
-								</div>
-							</div>
-							<input disabled placeholder="biz name" type="text" name="" id="">
-						</div>
-						<div class="textfield">
-							<div class="textfield-header">
-								<label for="">موبایل</label>
-								<div class="guiderlines">
-									<svg role="img" class="icon_svg">
-										<use xlink:href="#14x14_info">
-											<symbol id="14x14_info" height="14" width="14">
-												<path d="M7 13A6 6 0 117 1a6 6 0 010 12zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5zM6 6h2v4H6V6zm0-2h2v1H6V4z">
-												</path>
-											</symbol>
-										</use>
-									</svg>
-									<span>مشاهده خط مشی ها</span>
-									<div class="guider">
-										<div class="guider-container">
-											<div class="guider-content">
-												yelp help and again yelp help and againyelp help and again
-											</div>
-
-										</div>
-									</div>
-								</div>
-							</div>
-							<input disabled placeholder="biz name" type="text" name="" id="">
+							<input asp-for="CallNumber" placeholder="شماره ثابت را وارد نمایید" type="text" name="" id="CallNumber">
 						</div>
 						<div class="textfield">
 							<div class="textfield-header">
@@ -246,141 +308,285 @@
 									<span>مشاهده خط مشی ها</span>
 									<div class="guider">
 										<div class="guider-container">
-											<div class="guider-content">
-												yelp help and again yelp help and againyelp help and again
+											<div class="guider-header">
+												به طور مثال : www.SampleWebSite.com
 											</div>
+											<div class="items">
+												<div class="item">
 
+													<img src="~/Designs/BusinessProfile/images/icon_computer.png" alt="">
+													<div class="content">
+														<div class="content-header">
+															درصورت نیاز با پشتیبانی تماس بگیرید
+														</div>
+
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-							<input disabled placeholder="biz name" type="text" name="" id="">
+							<input asp-for="WebSiteUrl" placeholder="موردی یافت نشد" type="text" name="" id="WebSiteUrl">
 						</div>
 						<div class="textfield">
 							<div class="textfield-header">
-								<label for="">ایمیل</label>
-								<div class="guiderlines">
-									<svg role="img" class="icon_svg">
-										<use xlink:href="#14x14_info">
-											<symbol id="14x14_info" height="14" width="14">
-												<path d="M7 13A6 6 0 117 1a6 6 0 010 12zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5zM6 6h2v4H6V6zm0-2h2v1H6V4z">
-												</path>
-											</symbol>
-										</use>
-									</svg>
-									<span>مشاهده خط مشی ها</span>
-									<div class="guider">
-										<div class="guider-container">
-											<div class="guider-content">
-												yelp help and again yelp help and againyelp help and again
-											</div>
+								<label for="">نشانی الکترونیکی</label>
 
-										</div>
-									</div>
-								</div>
 							</div>
-							<input disabled placeholder="biz name" type="text" name="" id="">
+							<input asp-for="Email" placeholder="موردی یافت نشد" type="text" name="" id="Email">
 						</div>
 					</div>
-					<div class="map">
-						<img src="./images/staticmap.png" alt="">
+					<div id="businessInfomapid" style="height:250px;width:250px;margin-top:5px">
+
 					</div>
 				</div>
 				<div class="options">
 					<div class="header">
-						<h2 class="title">Amenities and more</h2>
+						<h2 class="title">عکس اصلی</h2>
 						<p class="header-info">
-							Please note, certain subjective business details (such as "Good for Groups") can only be
-							updated by the Yelp community.
+							کاربران در همه جا، شمارا با این عکس مشاهده خواهند کرد
+						</p>
+					</div>
+					<div id="main-container">
+						<input style="width:50px;width:50%;margin-top:5px" name="Main_Image" type="file" class="form-control" id="Main_Image_Upload" onchange="setImage()">
+						<br />
+						<img alt="تصویری انتخاب نشده" id="Main_Image_Show" style="width:250px;height:230px;margin-top:10px" src="@Model.MainImage" />
+					</div>
+				</div>
+				<div class="options">
+					<div class="header">
+						<h2 class="title">ویژگی ها</h2>
+						<p class="header-info">
+							از بین ویژگی ها، انتخاب نمایید کسب و کار شما کدام ویژگی ها را دارد، و آن ها را تیک بزنید
 						</p>
 					</div>
 					<div class="options-container">
-						<div class="option">
-							<div class="option-header">open all</div>
 
-							<div class="option-buttons">
-								<div class="option-button">
-									<label for="openyes">yes</label>
-									<input type="radio" name="openall" id="openyes">
-								</div>
+						@foreach (var item in Model.BusinessFeatrues)
+						{
+							<div class="option">
+								<div class="option-header">@item.FeatureName</div>
 
-								<div class="option-button">
-									<label for="openno">yes</label>
-									<input type="radio" name="openall" id="openno">
-								</div>
-							</div>
+								<div class="option-buttons">
+									<div class="option-button">
+										@*<label for="openyes">بله</label>*@
+										@{
+											if (item.IsInFeatrue && item.Item4 == DomainClass.Enums.BusinessFeatureType.Boolean && item.Value == null)
+											{
 
-						</div>
-						<div class="option">
-							<div class="option-header">open all</div>
+												<input value="true" type="checkbox" name="@item.FeatureName" id="@item.FeatureId" checked>
+											}
+											if (!item.IsInFeatrue && item.Item4 == DomainClass.Enums.BusinessFeatureType.Boolean && item.Value == null)
+											{
+												<input value="false" type="checkbox" name="@item.FeatureName" id="@item.FeatureId" title="انتخاب کنید">
+											}
+											if (item.Item4 == DomainClass.Enums.BusinessFeatureType.Number)
+											{
+												<input value="@item.Value" name="@item.FeatureName" id="@item.FeatureId">
+											}
 
-							<div class="option-buttons">
-								<div class="option-button">
-									<label for="openyes">yes</label>
-									<input type="radio" name="openall" id="openyes">
-								</div>
+										}
+									</div>
 
-								<div class="option-button">
-									<label for="openno">yes</label>
-									<input type="radio" name="openall" id="openno">
-								</div>
-							</div>
-
-						</div>
-						<div class="option">
-							<div class="option-header">open all</div>
-
-							<div class="option-buttons">
-								<div class="option-button">
-									<label for="openyes">yes</label>
-									<input type="radio" name="openall" id="openyes">
-								</div>
-
-								<div class="option-button">
-									<label for="openno">yes</label>
-									<input type="radio" name="openall" id="openno">
 								</div>
 							</div>
-
-						</div>
-
-
-						<div class="option">
-							<div class="option-header">open all</div>
-
-							<div class="option-buttons">
-
-								<div class="option-button">
-									<label for="openno">yes</label>
-									<input type="checkbox" name="openall" id="openno">
-								</div>
-							</div>
-
-						</div>
+						}
 					</div>
 					<div class="footer">
-						<a href="" class="cancel">cancel</a>
-						<a href="" class="save">save changes</a>
+						<div style="color:red">
+							<p id="errorList">
+
+							</p>
+							<p>
+
+						</div>
+						<button class="save" onclick="submitData()">تایید و ثبت</button>
+						<a href="" class="cancel">انصراف</a>
+						<input value="@Model.Latitude" id="latitude" name="latitude" hidden />
+						<input value="@Model.Longitude" id="longitude" name="longitude" hidden />
+						<input value="@Model.Id" id="BusinessId" name="Id" hidden />
+
 					</div>
 				</div>
 			</div>
 		</div>
 
 	</div>
+
 </section>
 
 <script src="~/Scripts/BasicInformation/Index.js"></script>
 <script>
 
-	function sayHello() {
-		//var countries = ["Afghanistan", "Albania", "Algeria", "Andorra"];
-		var countries = [{ id: 1, name: "iran" }, { id: 2, name: "canada" }];
+	function Load() {
+		BusinessHomeLoadMap(@Model.Longitude, @Model.Latitude);
 
-		autocomplete(document.getElementById("myInput2"), countries);
+	}
+	function chooseDistrict(parameter) {
+		var districtIdItems = [];
+		var districts = [];
+		$.ajax({
+			type: "GET",
+			url: '/Home/GetAllWithParentNames?txtSearch=' + parameter + '',
+			dataType: "json",
+			contentType: false,
+			processData: false,
+			success: function (response) {
+
+
+				if (response.districts.length == 0) {
+					$("#DistrictIdValication").text("مقدار نامعتبر");
+				}
+				else {
+					$("#DistrictIdValication").text("");
+
+				$.each(response.districts, function () {
+
+					districtIdItems.push({ id: this.id, name: this.listName });
+
+				});
+				for (var i = 0; i < districtIdItems.length; i++) {
+
+					districts.push({ id: districtIdItems[i].id, name: districtIdItems[i].name });
+				}
+
+				}
+			},
+		});
+		autocomplete(document.getElementById("myInput"), districts);
+	}
+	function chooseCategory(parameter) {
+		var categoryIdItems = [];
+		var categories = [];
+
+		$.ajax({
+			type: "GET",
+			url: '/Home/SearchCategory?txtSearch=' + parameter + '',
+			dataType: "json",
+			contentType: false,
+			processData: false,
+			success: function (response) {
+				if (response.categories.length == 0) {
+					$("#CategoryIdValication").text("مقدار نامعتبر");
+				}
+				else {
+					$("#CategoryIdValication").text("");
+
+				$.each(response.categories, function () {
+					categoryIdItems.push({ id: this.categoryId, name: this.name });
+				});
+				for (var i = 0; i < categoryIdItems.length; i++) {
+
+					categories.push({ id: categoryIdItems[i].id, name: categoryIdItems[i].name });
+				}
+				}
+
+
+
+			},
+		});
+		autocomplete(document.getElementById("myInput2"), categories);
+	}
+	window.onload = Load;
+	function BusinessHomeLoadMap(lon, lat) {
+		var theMarker = {};
+		if (lon == 0 && lat == 0) {
+
+			lon = 51.668037;
+			lat = 32.650823;
+		}
+		var mymap = L.map('businessInfomapid').setView([lat, lon], 13);
+		if (lon !== 0 && lat !== 0) {
+			theMarker = L.marker([lat, lon]).addTo(mymap);
+		}
+		//var mymap = L.map('mapid').setView([32.650823, 51.668037], 13);
+		//theMarker = L.marker([lon,lat], {icon: icon }).addTo(mymap);
+		L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+			maxZoom: 18,
+			id: 'mapbox/streets-v11',
+			tileSize: 512,
+			zoomOffset: -1,
+			accessToken: 'pk.eyJ1IjoiYWxpcmV6YXJhem1qb28iLCJhIjoiY2s1Yzg2aTM4MWo1bjNvcDN2dWQwbGs5byJ9.0MqeBvs7xijOfpnGE73R_A'
+		}).addTo(mymap);
+		mymap.on('click', function (e) {
+			var icon = new L.Icon.Default();
+			icon.options.shadowSize = [0, 0];
+			lat = e.latlng.lat;
+			lon = e.latlng.lng;
+			if (theMarker !== undefined) {
+
+				mymap.removeLayer(theMarker);
+			}
+			theMarker = L.marker([lat, lon], { icon: icon }).addTo(mymap);
+
+			$("#latitude").val(e.latlng.lat);
+			$("#longitude").val(e.latlng.lng);
+		});
+	}
+	function setImage() {
+		var myURL = window.URL || window.webkitURL;
+		var fileURL = myURL.createObjectURL(Main_Image_Upload.files[0]);
+		Main_Image_Show.src = fileURL;
+	}
+	function submitData() {
+		var features = [];
+        var fd = new FormData();
+
+		$.each($(".option-button input"), function () {
+
+			//alert("Id is " + this.id + " and value is " + this.value + "");
+			if ($(this).attr("type") == "checkbox") {
+				if ($(this).prop("checked") == true) {
+					features.push({ id: this.id, value: 'true'});
+				}
+			}
+			else {
+				if (this.value != "") {
+					features.push({ id: this.id, value: this.value });
+				}
+			}
+		});
+		fd.append("Name", $("#Name").val());
+		fd.append("Description", $("#Description").val());
+		fd.append("Biography", $("#Biography").val());
+		fd.append("Address", $("#Address").val());
+		fd.append("PostalCode", $("#PostalCode").val());
+		fd.append("CallNumber", $("#CallNumber").val());
+		fd.append("WebSiteUrl", $("#WebSiteUrl").val());
+		fd.append("Email", $("#Email").val());
+
+		fd.append("Latitude", $("#latitude").val());
+		fd.append("Longitude", $("#longitude").val());
+		fd.append("Id", $("#BusinessId").val());
+		fd.append("SelectedFeatures", JSON.stringify(features));
+		fd.append("DistrictId", $("#myInput").attr("selectedId"));
+		fd.append("CategoryId", $("#myInput2").attr("selectedId"));
+		$.each($("#Main_Image_Upload"), function (i, obj) {
+			$.each(obj.files, function (j, file) {
+				fd.append("file", file);
+			});
+		});
+		$.ajax({
+			type: "Post",
+			url: '/BusinessProfile/BusinessInformation/UpdateBusinessInformations',
+			dataType: "json",
+			data: fd,
+			contentType: false,
+			processData: false,
+			success: function (response) {
+				if (response.success == false) {
+					$("#errorList").text("لطفا خطاهای مذکور را برطرف نمایید : " + response.responseText);
+				}
+				else {
+				window.location = "/BusinessProfile/BusinessInformation/BasicInformations?Id=" + $("#BusinessId").val()+"";
+
+				}
+			}
+		
+		});
 
 
 	}
-
-
-
 </script>

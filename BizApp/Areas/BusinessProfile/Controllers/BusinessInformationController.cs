@@ -1,7 +1,10 @@
-﻿using BizApp.Areas.BusinessProfile.Models;
+﻿using AutoMapper;
+using BizApp.Areas.BusinessProfile.Models;
 using DataLayer.Infrastructure;
+using DomainClass.Businesses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +18,14 @@ namespace BizApp.Areas.BusinessProfile.Controllers
 	{
 		private readonly IUnitOfWorkRepo _UnitOfWork;
 		private readonly IHttpContextAccessor _httpContextAccessor;
-		public BusinessInformationController(IUnitOfWorkRepo unitOfWork, IHttpContextAccessor httpContextAccessor)
+		private readonly IMapper _mapper;
+
+		public BusinessInformationController(IUnitOfWorkRepo unitOfWork, IHttpContextAccessor httpContextAccessor , IMapper mapper)
 		{
 			_UnitOfWork = unitOfWork;
 			_httpContextAccessor = httpContextAccessor;
+			_mapper = mapper;
+			 
 
 		}
 		public  async Task<IActionResult> Index()
@@ -42,7 +49,68 @@ namespace BizApp.Areas.BusinessProfile.Controllers
 		}
 		public async Task<IActionResult> BasicInformations(Guid Id)
 		{
-			return View(); 
+			#region Objects
+			BusinessAccountBusinessInformationDto businessAccountBusinessInformationDto = new BusinessAccountBusinessInformationDto();
+			List<(int FeatureId, string FeatureName, bool IsInFeatrue , DomainClass.Enums.BusinessFeatureType , string Value) > FeaturesInBusiness = new List<(int FeatureId, string FeatureName, bool IsInFeatrue , DomainClass.Enums.BusinessFeatureType , string Value)>();
+
+			#endregion
+			#region Resource
+			var Item = await _UnitOfWork.BusinessRepo.GetById(Id);
+			var BusinessFeatures = await _UnitOfWork.BusinessRepo.GetBusinessFature(Id);
+			businessAccountBusinessInformationDto.Id = Item.Id;
+			businessAccountBusinessInformationDto.Name = Item.Name;
+			businessAccountBusinessInformationDto.Longitude = Item.Longitude;
+			businessAccountBusinessInformationDto.Latitude = Item.Latitude;
+			businessAccountBusinessInformationDto.TotalReview = Item.Reviews.Count;
+			businessAccountBusinessInformationDto.WebSiteUrl = Item.WebsiteUrl;
+			businessAccountBusinessInformationDto.Address = Item.Address;
+			businessAccountBusinessInformationDto.CallNumber = Item.CallNumber;
+			businessAccountBusinessInformationDto.Email = Item.Email;
+			businessAccountBusinessInformationDto.DistricyName = Item.District.City.Name +" - "+Item.District.City.Province.Name + " - " + Item.District.Name;
+			businessAccountBusinessInformationDto.CategoryName = Item.Category.Name;
+			businessAccountBusinessInformationDto.Biography = Item.Biography;
+			businessAccountBusinessInformationDto.Description = Item.Description;
+			businessAccountBusinessInformationDto.PostalCode = Item.PostalCode;
+			businessAccountBusinessInformationDto.DistrictId = Item.DistrictId;
+			businessAccountBusinessInformationDto.MainImage = Item.FeatureImage;
+			businessAccountBusinessInformationDto.CategoryId = Item.CategoryId;
+
+			foreach (var item in BusinessFeatures)
+			{
+				FeaturesInBusiness.Add((item.FeatureId, item.FeatureName, item.IsInFeature ,item.ValueType , item.Value));		
+			}
+
+			businessAccountBusinessInformationDto.BusinessFeatrues = FeaturesInBusiness; 
+
+			#endregion
+			return View(businessAccountBusinessInformationDto); 
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> UpdateBusinessInformations(BusinessAccountBusinessInformationDto dto)
+		{
+			var BusinessNameToValidate = ModelState["Name"];
+			string Errors = string.Empty;
+			if(BusinessNameToValidate.ValidationState ==  Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+			{
+				Errors +=  "نام کسب و کار خالی است"; 
+
+				return Json(new { success = false , responseText = Errors });
+
+			}
+
+			try
+			{
+            var FeaturesJson = JsonConvert.DeserializeObject<DomainClass.Queries.SelectedFeaturesDto[]>(dto.SelectedFeatures);
+			await _UnitOfWork.BusinessRepo.UpdateBusinessFeaturesInBusinessAccount(FeaturesJson , dto.Id);
+			await _UnitOfWork.BusinessRepo.Update(_mapper.Map<Business>(dto) , false,dto.file ,null);
+			await _UnitOfWork.SaveAsync();
+				return Json(new { success = true});
+			}
+			catch (Exception e)
+			{
+				return Json(new { success = false, responseText = e.Message });
+			}
 		}
 		private string GetUserId()
 		{

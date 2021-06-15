@@ -296,6 +296,7 @@ section .section-container {
               background-color: white;
               z-index: 10;
               width: 350px;
+              left:70px;
               padding: 10px;
               border-radius: 5px;
               border: 1px solid #afafaf;
@@ -341,6 +342,16 @@ section .section-container {
           font-size: 14px;
           outline: unset;
           border: 1px solid #2f2f2f; }
+        section .section-container .main-info .main .main-fields .inputs .textfield textarea {
+            margin-right: 3px;
+            white-space: nowrap;
+            width: 100%;
+            max-width: 100%;
+            min-width: 100%;
+            max-height: 250px;
+        }
+
+
         section .section-container .main-info .main .main-fields .inputs .textfield:not(:first-child) {
           margin-top: 10px; }
         section .section-container .main-info .main .main-fields .inputs .half input {
@@ -392,10 +403,16 @@ section .section-container {
           padding: 5px 15px;
           font-size: 16px;
           font-weight: bold;
-          border-radius: 4px; }
+          border-radius: 4px; 
+          cursor:pointer
+
+
+        }
         section .section-container .main-info .main .options .footer .cancel {
-          padding: 5px 15px;
-          font-size: 16px;
-          font-weight: bold;
-          color: #0077ff; }
+            padding: 5px 15px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #0077ff;
+            cursor: pointer
+        }
 

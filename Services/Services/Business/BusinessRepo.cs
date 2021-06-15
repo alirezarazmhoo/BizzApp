@@ -298,7 +298,7 @@ namespace DataLayer.Services
 		}
 		public async Task<Business> GetById(Guid id)
 		{
-			return await FindByCondition(f => f.Id == id).Include(s => s.Galleries).Include(s => s.Reviews).ThenInclude(s => s.BizAppUser).ThenInclude(s => s.ApplicationUserMedias).Include(s => s.Reviews).ThenInclude(s => s.ReviewMedias).Include(s => s.District).Include(s => s.District).ThenInclude(s => s.City).Include(s => s.Category).FirstOrDefaultAsync();
+			return await FindByCondition(f => f.Id == id).Include(s => s.Galleries).Include(s => s.Reviews).ThenInclude(s => s.BizAppUser).ThenInclude(s => s.ApplicationUserMedias).Include(s => s.Reviews).ThenInclude(s => s.ReviewMedias).Include(s => s.District).Include(s => s.District).ThenInclude(s => s.City).ThenInclude(s => s.Province).Include(s => s.Category).FirstOrDefaultAsync();
 		}
 		public async Task Remove(Business model)
 		{
@@ -331,7 +331,8 @@ namespace DataLayer.Services
 						FeatureId = item.FeatureId,
 						Value = item.Value,
 						IsInFeature = true,
-						FeatureName = item.Feature.Name
+						FeatureName = item.Feature.Name,
+						ValueType = item.Feature.ValueType
 					});
 				}
 				foreach (var item in AllFeatures)
@@ -525,8 +526,8 @@ namespace DataLayer.Services
 			List<Category> categoryItem5 = new List<Category>();
 			List<Category> categoryItem6 = new List<Category>();
 			List<Category> finalList = new List<Category>();
-			bool searchBySubCategorys = false; 
-			if (await DbContext.Categories.AnyAsync(s=>s.ParentCategoryId== Id))
+			bool searchBySubCategorys = false;
+			if (await DbContext.Categories.AnyAsync(s => s.ParentCategoryId == Id))
 			{
 				categoryItem = await DbContext.Categories.Where(s => s.ParentCategoryId == Id).ToListAsync();
 				foreach (var item in categoryItem)
@@ -541,7 +542,7 @@ namespace DataLayer.Services
 						if (categoryItem2.Count == 0)
 						{
 							finalList.Add(item);
-							searchBySubCategorys = true; 
+							searchBySubCategorys = true;
 						}
 						else
 						{
@@ -594,7 +595,7 @@ namespace DataLayer.Services
 			}
 			if ((CategroyItem != null && Id != 0) || searchBySubCategorys)
 			{
-				BusinessItems = await DbContext.Businesses.Include(s => s.Reviews).Include(s => s.Galleries).Include(s => s.District).Include(s => s.Category).Include(s => s.Features).Where(s => s.CategoryId.Equals(CategroyItem.Id) || finalList.Select(s=>s.Id).Contains(s.CategoryId)).ToListAsync();
+				BusinessItems = await DbContext.Businesses.Include(s => s.Reviews).Include(s => s.Galleries).Include(s => s.District).Include(s => s.Category).Include(s => s.Features).Where(s => s.CategoryId.Equals(CategroyItem.Id) || finalList.Select(s => s.Id).Contains(s.CategoryId)).ToListAsync();
 				foreach (var item in BusinessItems)
 				{
 
@@ -751,7 +752,7 @@ namespace DataLayer.Services
 			List<BusinessFeature> businessFeatures = new List<BusinessFeature>();
 			if (Item != null)
 			{
-				var o = await DbContext.BusinessFeatures.Where(s => s.BusinessId.Equals(Id)).ToListAsync(); 
+				var o = await DbContext.BusinessFeatures.Where(s => s.BusinessId.Equals(Id)).ToListAsync();
 				foreach (var item in await DbContext.BusinessFeatures.Where(s => s.BusinessId.Equals(Id)).ToListAsync())
 				{
 					DbContext.BusinessFeatures.Remove(item);
@@ -785,22 +786,22 @@ namespace DataLayer.Services
 		public async Task UpdateBaseInformations(Business business)
 		{
 			var Item = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Id.Equals(business.Id));
-			if(Item != null)
+			if (Item != null)
 			{
 				if (!string.IsNullOrEmpty(business.Address))
 				{
-					Item.Address = business.Address; 
+					Item.Address = business.Address;
 				}
-				if(business.Longitude !=0 &&  business.Latitude != 0)
+				if (business.Longitude != 0 && business.Latitude != 0)
 				{
 					Item.Latitude = business.Latitude;
-					Item.Longitude = business.Longitude; 
+					Item.Longitude = business.Longitude;
 				}
 				if (!string.IsNullOrEmpty(business.WebsiteUrl))
 				{
-					Item.WebsiteUrl = business.WebsiteUrl; 
+					Item.WebsiteUrl = business.WebsiteUrl;
 				}
-				if(business.CallNumber != 0)
+				if (business.CallNumber != 0)
 				{
 					Item.CallNumber = business.CallNumber;
 				}
@@ -809,26 +810,49 @@ namespace DataLayer.Services
 
 
 		}
-		public async Task UpdateBusinessTime(List<BusinessTime> times , Guid businessId)
+		public async Task UpdateBusinessTime(List<BusinessTime> times, Guid businessId)
 		{
 			List<BusinessTime> businessTimes = new List<BusinessTime>();
 			var businessItem = await DbContext.Businesses.FirstOrDefaultAsync(s => s.Id.Equals(businessId));
 			TimeSpan fromTime = new TimeSpan();
-			TimeSpan toTime = new TimeSpan() ;
+			TimeSpan toTime = new TimeSpan();
 			if (businessItem != null)
-			{			
-			  DbContext.BusinessTimes.RemoveRange(await DbContext.BusinessTimes.Where(s => s.BusinessId.Equals(businessId)).ToListAsync());
+			{
+				DbContext.BusinessTimes.RemoveRange(await DbContext.BusinessTimes.Where(s => s.BusinessId.Equals(businessId)).ToListAsync());
 				foreach (var item in times)
 				{
-					businessTimes.Add(new BusinessTime() { BusinessId = businessId, Day = item.Day, FromTime = fromTime.Add(new TimeSpan(item.FromTime.Hours, item.FromTime.Minutes, 0)) , ToTime = toTime.Add(new TimeSpan(item.ToTime.Value.Hours , item.ToTime.Value.Minutes , 0))  });
+					businessTimes.Add(new BusinessTime() { BusinessId = businessId, Day = item.Day, FromTime = fromTime.Add(new TimeSpan(item.FromTime.Hours, item.FromTime.Minutes, 0)), ToTime = toTime.Add(new TimeSpan(item.ToTime.Value.Hours, item.ToTime.Value.Minutes, 0)) });
 				}
 				await DbContext.BusinessTimes.AddRangeAsync(businessTimes);
-				}
 			}
-		public async Task<List<Guid>> GetUserBusinessesIds (string UserId)
+		}
+		public async Task<List<Guid>> GetUserBusinessesIds(string UserId)
 		{
-			var Items  = await DbContext.Businesses.Select(s => new { s.Id, s.OwnerId ,s.CreatedDate}).Where(s => s.OwnerId.Equals(UserId)).OrderByDescending(s=>s.CreatedDate).ToListAsync();
-			return Items.Select(s=>s.Id).ToList(); 
+			var Items = await DbContext.Businesses.Select(s => new { s.Id, s.OwnerId, s.CreatedDate }).Where(s => s.OwnerId.Equals(UserId)).OrderByDescending(s => s.CreatedDate).ToListAsync();
+			return Items.Select(s => s.Id).ToList();
+		}
+
+		public async Task UpdateBusinessFeaturesInBusinessAccount(SelectedFeaturesDto[] model, Guid BusinessId)
+		{
+			List<BusinessFeature> businessFeatures = new List<BusinessFeature>();
+			if (await DbContext.Businesses.AnyAsync(s => s.Id.Equals(BusinessId)))
+			{
+				DbContext.BusinessFeatures.RemoveRange(await DbContext.BusinessFeatures.Where(s => s.BusinessId.Equals(BusinessId)).ToListAsync());
+				for (int i = 0; i < model.Count(); i++)
+				{
+					if (model[i].value == "true")
+					{
+
+						businessFeatures.Add(new BusinessFeature() { BusinessId = BusinessId, FeatureId = model[i].id, Value = null });
+					}
+					else
+					{
+						if(!string.IsNullOrEmpty(model[i].value))
+						businessFeatures.Add(new BusinessFeature() { BusinessId = BusinessId, FeatureId = model[i].id, Value = model[i].value });
+					}
+				}
+				await DbContext.BusinessFeatures.AddRangeAsync(businessFeatures);
+			}
 		}
 	}
 }

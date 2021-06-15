@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BizApp.Areas.Admin.Models;
+using BizApp.Areas.BusinessProfile.Models;
 using BizApp.Areas.Profile.Models;
 using BizApp.Areas.Profile.Models.Account;
 using BizApp.Areas.Profile.Models.Friends;
@@ -134,6 +135,20 @@ namespace BizApp.Automapper
 				.ForMember(dest => dest.name, opt => opt.MapFrom(src => src.Name))
 				.ForMember(dest => dest.reviews, opt => opt.MapFrom(src => src.Reviews))
 				.ReverseMap();
+			//BusinessUpdateFromBusinessAccount
+			CreateMap<Business, BusinessAccountBusinessInformationDto>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
+            .ForMember(dest => dest.DistrictId, opt => opt.MapFrom(src => src.DistrictId))
+            .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.CategoryId))
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+            .ForMember(dest => dest.Biography, opt => opt.MapFrom(src => src.Biography))
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+            .ForMember(dest => dest.PostalCode, opt => opt.MapFrom(src => src.PostalCode))
+			.ForMember(dest => dest.CallNumber, opt => opt.MapFrom(src => src.CallNumber))
+			.ForMember(dest => dest.WebSiteUrl, opt => opt.MapFrom(src => src.WebsiteUrl))
+			.ReverseMap();
 
 		}
 	}
