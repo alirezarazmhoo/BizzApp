@@ -41,7 +41,6 @@ namespace BizApp.Areas.WebApi.Controllers
 				else
 				{
 					state = false;
-
 				}
 				await _UnitOfWork.SaveAsync();
 				return Ok(state);
@@ -49,7 +48,6 @@ namespace BizApp.Areas.WebApi.Controllers
 			catch (Exception)
 			{
 				throw;
-
 			}
 
 		}
@@ -235,6 +233,17 @@ namespace BizApp.Areas.WebApi.Controllers
 			{
 				throw; 
 			}
+		}
+
+		[Route("OwnerUserMediaBusinessGallery")]
+		public async Task<IActionResult> GetUserMediaBusinessGalleryFromProfile()
+		{
+			string Token = HttpContext.Request?.Headers["Token"];
+			if (await _UnitOfWork.UserRepo.CheckUserToken(Token) == false)
+			{
+				return NotFound("کاربر مورد نظریافت نشد");
+			}
+			return RedirectToAction(nameof(UserMediaBusinessGallery), "Review", new { Id = await _UnitOfWork.UserRepo.UserTokenMaper(Token) });
 		}
 		private List<(Guid Id, string Image, string Description)> FillMediaType(ICollection<DomainClass.Review.ReviewMedia> reviewMedias)
 		{

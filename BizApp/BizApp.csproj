@@ -7,15 +7,19 @@
 
   <ItemGroup>
     <Compile Remove="Areas\Admin\Data\**" />
+    <Compile Remove="Areas\BusinessProfile\Data\**" />
     <Compile Remove="Areas\Profile\Data\**" />
     <Compile Remove="Areas\WebApi\Views\**" />
     <Content Remove="Areas\Admin\Data\**" />
+    <Content Remove="Areas\BusinessProfile\Data\**" />
     <Content Remove="Areas\Profile\Data\**" />
     <Content Remove="Areas\WebApi\Views\**" />
     <EmbeddedResource Remove="Areas\Admin\Data\**" />
+    <EmbeddedResource Remove="Areas\BusinessProfile\Data\**" />
     <EmbeddedResource Remove="Areas\Profile\Data\**" />
     <EmbeddedResource Remove="Areas\WebApi\Views\**" />
     <None Remove="Areas\Admin\Data\**" />
+    <None Remove="Areas\BusinessProfile\Data\**" />
     <None Remove="Areas\Profile\Data\**" />
     <None Remove="Areas\WebApi\Views\**" />
   </ItemGroup>
@@ -41,6 +45,7 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\BizAppQrCode\BizAppQrCode.csproj" />
     <ProjectReference Include="..\DataLayer\DataLayer.csproj" />
     <ProjectReference Include="..\DomainClass\DomainClass.csproj" />
     <ProjectReference Include="..\Services\Services.csproj" />
@@ -51,7 +56,6 @@
   <ItemGroup>
     <Folder Include="Areas\AdminControllPanel\Data\" />
     <Folder Include="Areas\AdminControllPanel\Models\" />
-    <Folder Include="Areas\BusinessProfile\Data\" />
     <Folder Include="wwwroot\Admin\bower_components\" />
     <Folder Include="wwwroot\Upload\Bussiness\Files\" />
     <Folder Include="wwwroot\Upload\Categories\Files\" />

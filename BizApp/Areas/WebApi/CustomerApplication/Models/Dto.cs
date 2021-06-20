@@ -40,9 +40,9 @@ namespace BizApp.Areas.WebApi.Models
 		public double latitude { get; set; }
 		public bool isOpen { get; set; }
 		public int categoryId { get; set; }
-		public double distance { get; set;  }
-		public DateTime date { get; set; } 
-		public List<int> featuresId { get; set;  }
+		public double distance { get; set; }
+		public DateTime date { get; set; }
+		public List<int> featuresId { get; set; }
 		public Guid id { get; set; }
 	}
 	public class BusinessItem
@@ -72,7 +72,7 @@ namespace BizApp.Areas.WebApi.Models
 		public string Image { get; set; }
 		public string FullName { get; set; }
 		public string UserId { get; set; }
-		public string BusinessImage { get; set;  }
+		public string BusinessImage { get; set; }
 		public int Rate { get; set; }
 		public string Date { get; set; }
 		public string Text { get; set; }
@@ -103,7 +103,7 @@ namespace BizApp.Areas.WebApi.Models
 		public string UserName { get; set; }
 		public string UserPicture { get; set; }
 		public string UserId { get; set; }
-		public string Date { get; set;   }
+		public string Date { get; set; }
 		public Guid BusinessId { get; set; }
 	}
 	public class BusinessTimeAndFeature
@@ -131,7 +131,7 @@ namespace BizApp.Areas.WebApi.Models
 	}
 	public class UserProfile
 	{
-		public string Id { get; set;  }
+		public string Id { get; set; }
 		public string UserName { get; set; }
 		public string Address { get; set; }
 		public int TotalReviewPicture { get; set; }
@@ -139,11 +139,11 @@ namespace BizApp.Areas.WebApi.Models
 		public int TotalBusinessMediaPicture { get; set; }
 		public int TotalFriends { get; set; }
 		public int TotalLikes { get; set; }
-		public int TotalVotes { get; set;  }
+		public int TotalVotes { get; set; }
 
 		public string Image { get; set; }
-		public string City { get; set;  }
-		public List<Tuple<Guid,string,string>> UserProfileImages { get; set;  }
+		public string City { get; set; }
+		public List<Tuple<Guid, string, string>> UserProfileImages { get; set; }
 
 	}
 	public class Activity : UserProfile
@@ -163,14 +163,14 @@ namespace BizApp.Areas.WebApi.Models
 		public Dictionary<Guid, string> Pictures { get; set; }
 		public List<(Guid Id, string Image, string Description)> ReviewMedias { get; set; }
 
-		public string UserId { get; set;  }
+		public string UserId { get; set; }
 	}
 	public class ReviewProfile
 	{
 		public Guid Id { get; set; }
 		public string Image { get; set; }
-		public string BusinessName { get; set;  }
-		public int TotalImages { get; set;  }
+		public string BusinessName { get; set; }
+		public int TotalImages { get; set; }
 		public string Text { get; set; }
 		public int Rate { get; set; }
 		public int UseFull { get; set; }
@@ -178,28 +178,29 @@ namespace BizApp.Areas.WebApi.Models
 		public int Funny { get; set; }
 		public List<(Guid Id, string Image, string Description)> ReviewMedias { get; set; }
 		public string UserName { get; set; }
-		public string UserId { get; set;   }
-		public string UserPicture { get; set;  }
-		public int UserTotalReview { get; set;  }
+		public string UserId { get; set; }
+		public string UserPicture { get; set; }
+		public int UserTotalReview { get; set; }
 		public int UserTotalFriend { get; set; }
-		public int UserTotalBusinessMedia { get; set;  }
-		public string Date { get; set;  }
+		public int UserTotalBusinessMedia { get; set; }
+		public string Date { get; set; }
 
 	}
 	public class AbutUserProfile
 	{
-		public string HomeTown { get; set;  }
+		public string HomeTown { get; set; }
 		public string MyFavoritMovie { get; set; }
 		public string WhyYouShouldReadMyReviews { get; set; }
-		public string WhenImNotYelping { get; set;  }
+		public string WhenImNotYelping { get; set; }
 
 	}
-	public class BookMark 
+	public class BookMark
 	{
 		public Guid id { get; set; }
 		public string name { get; set; }
-		public int rate { get; set;  }
-		public string businessImage { get; set; }	}
+		public int rate { get; set; }
+		public string businessImage { get; set; }
+	}
 	public class UserInputModel
 	{
 		[Required(ErrorMessage = "نام و نام خانوادگی خود را وارد کنید")]
@@ -216,7 +217,7 @@ namespace BizApp.Areas.WebApi.Models
 		[UniqueMemberMobile]
 		public long Mobile { get; set; }
 
-	
+
 		[Display(Name = "ایمیل", Prompt = "ایمیل")]
 		public string Email { get; set; }
 
@@ -260,8 +261,53 @@ namespace BizApp.Areas.WebApi.Models
 		public string name { get; set; }
 		public string districtname { get; set; }
 		public string featureimage { get; set; }
+	}
+
+	public class RecentActivityModel
+	{
+
+		public List<RecentActivityReviewModel> RecentActivityReviewModels { get; set; }
+		public List<RecentActivityUserBusinessMediaPicture>  RecentActivityUserBusinessMediaPictures { get; set; }
+
+	}
+	public class RecentActivityReviewModel 
+	{
+		public string UserId { get; set; }
+		public string UserName { get; set; }
+		public string UserImage { get; set; }
+		public int UserTotalReviews { get; set; }
+		public int UserTotalFriends { get; set; }
+		public int UserTotalBusinessImage { get; set; }
+		public Guid BusinessId { get; set; }
+		public string BusinessName { get; set; }
+		public string BusinessImage { get; set; }
+		public int BusinessRate { get; set; }
+		public List<(Guid Id, string Image, string Description)> ReviewMedias { get; set; }
+		public string ReviewText { get; set; }
+		public int ReviewRate { get; set; }
+		public int ReviewUseFull { get; set; }
+		public int ReviewCool { get; set; }
+		public int ReviewFunny { get; set; }
+	}
+
+	public class RecentActivityUserBusinessMediaPicture
+	{
+		public string UserId { get; set; }
+		public string UserName { get; set; }
+		public string UserImage { get; set; }
+		public int UserTotalReviews { get; set; }
+		public int UserTotalFriends { get; set; }
+		public int UserTotalBusinessImage { get; set; }
+		public Guid BusinessId { get; set; }
+		public string BusinessName { get; set; }
+		public string BusinessImage { get; set; }
+		public int BusinessRate { get; set; }
+		public long LikeCount { get; set; }
+		public List<(Guid Id, string Image, string Description)> Medias { get; set; }
 
 
 	}
+
+
 
 }

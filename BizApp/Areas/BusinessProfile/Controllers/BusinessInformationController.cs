@@ -28,14 +28,22 @@ namespace BizApp.Areas.BusinessProfile.Controllers
 			 
 
 		}
-		public  async Task<IActionResult> Index()
+		public  async Task<IActionResult> Index(Guid Id)
 		{
 			#region Objects
 			BusinessAccountBusinessInformationDto businessAccountBusinessInformationDto = new BusinessAccountBusinessInformationDto();
+			Business Item = new Business();
 			#endregion
 			#region Resource
 			var BusinessIdes = await _UnitOfWork.BusinessRepo.GetUserBusinessesIds(GetUserId());
-			var Item = await _UnitOfWork.BusinessRepo.GetById(BusinessIdes.FirstOrDefault());
+			if(Id ==  Guid.Empty)
+			{
+			 Item = await _UnitOfWork.BusinessRepo.GetById(BusinessIdes.FirstOrDefault());
+			}
+			else
+			{
+				Item = await _UnitOfWork.BusinessRepo.GetById(Id);
+			}
 			businessAccountBusinessInformationDto.Id = Item.Id;
 			businessAccountBusinessInformationDto.Name = Item.Name;
 			businessAccountBusinessInformationDto.Longitude = Item.Longitude;
@@ -52,7 +60,6 @@ namespace BizApp.Areas.BusinessProfile.Controllers
 			#region Objects
 			BusinessAccountBusinessInformationDto businessAccountBusinessInformationDto = new BusinessAccountBusinessInformationDto();
 			List<(int FeatureId, string FeatureName, bool IsInFeatrue , DomainClass.Enums.BusinessFeatureType , string Value) > FeaturesInBusiness = new List<(int FeatureId, string FeatureName, bool IsInFeatrue , DomainClass.Enums.BusinessFeatureType , string Value)>();
-
 			#endregion
 			#region Resource
 			var Item = await _UnitOfWork.BusinessRepo.GetById(Id);
@@ -90,13 +97,32 @@ namespace BizApp.Areas.BusinessProfile.Controllers
 		public async Task<IActionResult> UpdateBusinessInformations(BusinessAccountBusinessInformationDto dto)
 		{
 			var BusinessNameToValidate = ModelState["Name"];
+
 			string Errors = string.Empty;
+			bool Isvalid = true; 
+
 			if(BusinessNameToValidate.ValidationState ==  Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
 			{
-				Errors +=  "نام کسب و کار خالی است"; 
+				Errors +=  "نام کسب و کار خالی است";
+				Isvalid = false; 
 
-				return Json(new { success = false , responseText = Errors });
+			}
+			if (dto.CategoryId == 0 )
+			{
+				Errors += "دسته بندی انتخابی معتبر نمی باشد";
+				Isvalid = false;
 
+			}
+			if (dto.DistrictId == 0)
+			{
+				Errors += "ناحیه مورد نظر وجود ندارد ";
+				Isvalid = false;
+
+			}
+			if (!Isvalid)
+			{
+
+			return Json(new { success = false , responseText = Errors });
 			}
 
 			try

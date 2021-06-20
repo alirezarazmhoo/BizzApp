@@ -84,6 +84,7 @@ namespace BizApp.Models.Basic
 		public string WebSiteUrl { get; set; }
 		public string PhoneNumber { get; set;  }
 		public string Address { get; set;  }
+		public byte[] QrCode { get; set; }
 
 	}
 	#endregion

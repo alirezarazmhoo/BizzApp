@@ -20,7 +20,7 @@ namespace BizApp.Areas.WebApi.Controllers.Business
 		}
 
 		[HttpPost]
-		[Route("Add")]
+	
 		public async Task<IActionResult> AddPhotoForBusinessByCustomer([FromForm] CustomerBusinessMedia model, IFormFile[] files)
 		{
 			string UserToken = HttpContext.Request?.Headers["Token"];

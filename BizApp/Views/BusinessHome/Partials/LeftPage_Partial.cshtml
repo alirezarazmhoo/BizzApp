@@ -28,9 +28,15 @@
 						</i>@Model.Address
 					</a>
 				</li>
-			</ul>
-
+				<li>
+					<div>
+					<img src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(Model.QrCode))" height="200" width="200" />
 		</div>
+
+		</li>
+		</ul>
+
+	</div>
 			<div class="item-location__content__location__button" style="margin-top:10px">
 		<ul style="cursor:pointer">
 				<li>

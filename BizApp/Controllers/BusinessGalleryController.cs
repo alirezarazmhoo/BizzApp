@@ -1,6 +1,7 @@
 ﻿using BizApp.Models.Basic;
 using BizApp.Utility;
 using DataLayer.Infrastructure;
+using DomainClass.Review;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -44,8 +45,6 @@ namespace BizApp.Controllers
 			businessGalleryViewModel.BusinessTotalReview = BusinessItem.Reviews.Count;
 			foreach (var item in BusinessGallery)
 			{
-
-		
 				businessGallery_PictureViewModels.Add(new BusinessGallery_PictureViewModel() { description = item.Description, Image = item.Image, UserId = item.CustomerBusinessMedia.BizAppUserId, UserName = item.CustomerBusinessMedia.BizAppUser.FullName , Id =item.Id , UserTotalReview =await _unitOfWork.ReviewRepo.GetUserTotalReview(item.CustomerBusinessMedia.BizAppUserId) , Date =item.CustomerBusinessMedia.Date.ToPersianDateString() , UserImage= string.IsNullOrEmpty(item.CustomerBusinessMedia.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage).Select(s => s.UploadedPhoto).FirstOrDefault()) == true ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart" : item.CustomerBusinessMedia.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage).Select(s => s.UploadedPhoto).FirstOrDefault() , 
 			});
 			}
@@ -53,6 +52,28 @@ namespace BizApp.Controllers
 			#endregion
 			return View(businessGalleryViewModel);
 		}
+
+		[HttpPost]
+		public async Task<IActionResult> AddPhotoForBusinessByCustomer(IFormFile[] file)
+		{
+			try
+			{
+				//model.BizAppUserId = GetUserId();
+				//model.StatusEnum = DomainClass.Enums.StatusEnum.Waiting;
+				//await _unitOfWork.ReviewRepo.AddCustomerBusinessMedia(model, file, null);
+				//await _unitOfWork.SaveAsync();
+				return Json(new { id=4});
+
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+		}
+
+
+
+
 		private string GetUserId()
 		{
 			return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BizApp.Models.Basic;
 using BizApp.Utility;
+using BizAppQrCode;
 using BizzAppInfrastructure.Model;
 using DataLayer.Infrastructure;
 using DomainClass.Businesses;
@@ -46,6 +47,8 @@ namespace BizApp.Controllers
 			BusinessHomePage_HoursAndLocationViewModel businessHomePage_HoursAndLocationViewModel = new BusinessHomePage_HoursAndLocationViewModel();
 			List<LocationHours> locationHours = new List<LocationHours>();
 			List<BusinessFeatureItem> businessFeatureItems = new List<BusinessFeatureItem>();
+			ClassGenerator classGenerator = new ClassGenerator();
+
 			#endregion
 			#region Resource
 			var SliderItem = await _UnitOfWork.BusinessHomePageRepo.GetSlider(BusinessId);
@@ -125,7 +128,11 @@ namespace BizApp.Controllers
 				item.DayName = GetDayName.GetName(item.Day);
 				locationHours.Add(item);
 			}
-			businessHomePage_HoursAndLocationViewModel.LocationHours = locationHours; 
+			businessHomePage_HoursAndLocationViewModel.LocationHours = locationHours;
+			#endregion
+			#region QrCode
+			businessHomePage_RightPageBusinessInfoViewModel.QrCode =  classGenerator.Generate($"45.159.113.39/BusinessHome/Index?Id={Id}");
+
 			#endregion
 			#region FinalResults
 			businessHomePageViewModel.businessHomePage_SliderViewModel = businessHomePage_SliderViewModel;

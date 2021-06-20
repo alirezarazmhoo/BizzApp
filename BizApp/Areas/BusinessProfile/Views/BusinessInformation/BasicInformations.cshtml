@@ -402,7 +402,7 @@
 
 						</div>
 						<button class="save" onclick="submitData()">تایید و ثبت</button>
-						<a href="" class="cancel">انصراف</a>
+						<a href="/BusinessProfile/BusinessInformation/Index?Id=@Model.Id" class="cancel">انصراف</a>
 						<input value="@Model.Latitude" id="latitude" name="latitude" hidden />
 						<input value="@Model.Longitude" id="longitude" name="longitude" hidden />
 						<input value="@Model.Id" id="BusinessId" name="Id" hidden />
@@ -536,7 +536,7 @@
 
 		$.each($(".option-button input"), function () {
 
-			//alert("Id is " + this.id + " and value is " + this.value + "");
+		
 			if ($(this).attr("type") == "checkbox") {
 				if ($(this).prop("checked") == true) {
 					features.push({ id: this.id, value: 'true'});
@@ -580,7 +580,7 @@
 					$("#errorList").text("لطفا خطاهای مذکور را برطرف نمایید : " + response.responseText);
 				}
 				else {
-				window.location = "/BusinessProfile/BusinessInformation/BasicInformations?Id=" + $("#BusinessId").val()+"";
+				window.location = "/BusinessProfile/BusinessInformation/Index?Id=" + $("#BusinessId").val()+"";
 
 				}
 			}

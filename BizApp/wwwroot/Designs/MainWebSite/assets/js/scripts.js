@@ -1,5 +1,5 @@
 $(window).on('load', () => {
-
+    Dropzone.autoDiscover = false;
 
     $('a[href="#"]').on('click', function (e) {
         e.preventDefault();
@@ -488,30 +488,39 @@ $(window).on('load', () => {
     })
 
     $("#dropzone1").dropzone({
-        url: "/file/post",
-        autoProcessQueue: false,
+        url: "/BusinessGallery/AddPhotoForBusinessByCustomer",
+        autoProcessQueue: true,
+        uploadMultiple: true, // uplaod files in a single request
+        parallelUploads: 100,
         init: function () {
+    
             this.on("addedfile", function (file) {
                 $('.upload-pic__header h3').show();
                 $('.upload-pic__footer').show();
                 $('.upload-pic .dropzone .dz-message').remove();
                 $('.upload-pic .dropzone').addClass('loaded');
-
                 caption = file.caption == undefined ? "" : file.caption;
                 file._captionLabel = Dropzone.createElement("<label>توضیحات: <small>دلخواه</small></label>")
                 file._captionBox = Dropzone.createElement("<textarea id='image_" + file.lastModified + "' name='caption[]' placeholder='توضیحات را در این قسمت بنویسید'>" + caption + "</textarea>");
                 file.previewElement.appendChild(file._captionLabel);
                 file.previewElement.appendChild(file._captionBox);
             }),
-                this.on("sending", function (file, xhr, formData) {
-                    formData.append('yourPostName', file._captionBox.value);
+                this.on("sending", function (file, xhr, formData) {                   
+                    formData.append('file',file);
+                }),
+                this.on('success', function (file, message) {
+                    file.imageId = Dropzone.createElement("<input value=" + message.id + "></input>");
+                    file.previewElement.appendChild(file.imageId);
                 })
+
+
+       
         }
     });
 
     $("#dropzone2").dropzone({
         url: "/file/post",
-        autoProcessQueue: false,
+        autoProcessQueue: true,
         init: function () {
             this.on("addedfile", function (file) {
                 $('.review-content__modal__content__close h3').show();

@@ -666,6 +666,34 @@ namespace DataLayer.Services
 			}
 			return 0;
 		}
+		//public async Task<Guid> AddCustomerBusinessMediaDropZone(CustomerBusinessMedia model, IFormFile files)
+		//{
+		//	model.StatusEnum = StatusEnum.Waiting;
+		//	model.Date = DateTime.Now;
+		//	await DbContext.CustomerBusinessMedias.AddAsync(model);
+		//	if (files != null )
+		//	{mu
+				
+		//			var fileName = Guid.NewGuid().ToString().Replace('-', '0') + Path.GetExtension(files.FileName).ToLower();
+		//			var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Upload\CustomerMediaBusiess\Files\", fileName);
+		//			using (var stream = new FileStream(filePath, FileMode.Create))
+		//			{
+		//				files.CopyTo(stream);
+		//			}
+		//			var objet=  DbContext.CustomerBusinessMediaPictures.Add(new CustomerBusinessMediaPictures()
+		//			{
+		//				LikeCount = 0,
+		//				CustomerBusinessMediaId = model.Id,
+		//				Image = "/Upload/CustomerMediaBusiess/Files/" + fileName,
+		//			});
+		//		return objet.Entity.Id;
+
+
+		//	}
+		//}
+
+
+
 
 	}
 }

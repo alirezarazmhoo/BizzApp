@@ -3,6 +3,8 @@
 	ViewData["Title"] = "UserUploadPhoto";
 	Layout = "~/Views/Shared/_AllPagesLayout.cshtml";
 }
+
+
 <section class="page-header">
 	<div class="container">
 		<div class="page-header__wrapper">
@@ -14,17 +16,30 @@
 		</div>
 	</div>
 </section>
+
 <section class="upload-pic">
 	<div class="container">
-		<form action="/file-upload" class="dropzone" id="dropzone">
-			<div class="fallback">
-				<input name="file" type="file" multiple>
-			</div>
-			<div class="dz-message" data-dz-message>
-				<span>تصاویر خود را در این قسمت بکشید</span>
-				<div class="hr-line"><span>یا</span></div>
-				<button type="button">آدرس دهی</button>
-			</div>
-		</form>
+		<div class="upload-pic__header">
+			<h3>همه چی انجام شد! لطفا توضیحات را بنویسید و روی پیوست کنید.</h3>
+		</div>
+		<div class="dropzone">
+			<form method="post" enctype="multipart/form-data" action="/BusinessGallery/AddPhotoForBusinessByCustomer" id="dropzone1">
+				<div class="fallback">
+					<input name="file" type="file" multiple>
+				</div>
+				<div class="dz-message" data-dz-message>
+					<span>تصاویر خود را در این قسمت بکشید</span>
+					<div class="hr-line"><span>یا</span></div>
+					<button type="button">آدرس دهی</button>
+				</div>
+				<button type="submit">پیوست2</button>
+
+			</form>
+		</div>
+		<div class="upload-pic__footer">
+			<button>پیوست</button>
+
+		</div>
 	</div>
 </section>
+
