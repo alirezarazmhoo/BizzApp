@@ -38,7 +38,11 @@ namespace DataLayer.Services
 				.Include(s => s.UsersInReviewLikes)
 				.Include(s => s.BizAppUser)
 				.ThenInclude(s => s.ApplicationUserMedias)
-				.Include(s => s.Business).Where(s => s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted)
+				.Include(s => s.Business)
+				.ThenInclude(s=>s.District)
+				.ThenInclude(s=>s.City)
+				.ThenInclude(s=>s.Province)
+				.Where(s => s.StatusEnum == DomainClass.Enums.StatusEnum.Accepted)
 				.Skip((pageNumber.Value - 1) * 2).Take(2).ToListAsync();
 			return Items;
 		}
@@ -50,7 +54,11 @@ namespace DataLayer.Services
 				.Include(s => s.CustomerBusinessMediaPictures)
 				.Include(s => s.BizAppUser)
 				.ThenInclude(s => s.ApplicationUserMedias)
-				.Include(s => s.UsersInCustomerBusinessMediaLikes).Include(s => s.Business).Where(s => s.StatusEnum == StatusEnum.Accepted && s.CustomerBusinessMediaPictures.Where(s => s.StatusEnum == StatusEnum.Accepted).Count() > 0)
+				.Include(s => s.UsersInCustomerBusinessMediaLikes).Include(s => s.Business)
+				.ThenInclude(s => s.District)
+				.ThenInclude(s => s.City)
+				.ThenInclude(s => s.Province)
+				.Where(s => s.StatusEnum == StatusEnum.Accepted && s.CustomerBusinessMediaPictures.Where(s => s.StatusEnum == StatusEnum.Accepted).Count() > 0)
 				.Skip((pageNumber.Value - 1) * 2).Take(2).ToListAsync();
 			return Items;
 		}

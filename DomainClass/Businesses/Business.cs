@@ -15,7 +15,7 @@ namespace DomainClass.Businesses
 		[Required]
 		[Column(TypeName = "nvarchar(50)")]
 		public string Name { get; set; }
-		[Column(TypeName = "nvarchar(255)")]
+		[Column(TypeName = "nvarchar(300)")]
 		public string Description { get; set; }
 		[Column(TypeName = "nvarchar(200)")]
 		public string Address { get; set; }
@@ -25,7 +25,7 @@ namespace DomainClass.Businesses
 		public string WebsiteUrl { get; set; }
 		[Column(TypeName = "nvarchar(50)")]
 		public string Email { get; set; }
-		[Column(TypeName = "nvarchar(100)")]
+		[Column(TypeName = "nvarchar(300)")]
 		public string Biography { get; set; }
 		[Required]
 		public int DistrictId { get; set; }

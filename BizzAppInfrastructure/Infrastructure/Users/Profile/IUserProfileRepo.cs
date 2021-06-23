@@ -10,5 +10,7 @@ namespace DataLayer.Infrastructure
 		Task<Nullable<StatusEnum>> GetFriendShipStatus(string currentUserId, string friendUserName);
 		Task<UserProfileDetailQuery> GetUserDetail(string userName);
 		Task<SharedUserProfileDetailQuery> GetSharedUserDetail(string userName);
+		Task<CalculateUserProfileCompleted> CalculateUserProfileCompleted(string UserId);
+		Task<UserImpactDto> UserImpact(string UserId); 
 	}
 }

@@ -31,7 +31,6 @@ namespace BizApp.Areas.WebApi.Controllers
 			string url = string.Format("/api/Activity/Get?Id={0}&Page={1}",await _UnitOfWork.UserRepo.UserTokenMaper(UserToken), Page);
 			return Redirect(url);
 		}
-
 		[Route("Get")]
 		public async Task<IActionResult> Get(string Id, int Page)
 		{
@@ -137,7 +136,6 @@ namespace BizApp.Areas.WebApi.Controllers
 				throw; 
 			}
 		}
-
 		private Dictionary<Guid, string> FillPictures(List<DomainClass.Review.CustomerBusinessMediaPictures> lists)
 		{
 			Dictionary<Guid, string> keyValuePairs = new Dictionary<Guid, string>();
@@ -156,8 +154,6 @@ namespace BizApp.Areas.WebApi.Controllers
 			}
 			return keyValuePairs;
 		}
-
-
 		[Route("RecentActivty")]
 		public async Task<IActionResult> GetUerRecentActivity(int? page)
 		{
@@ -173,24 +169,21 @@ namespace BizApp.Areas.WebApi.Controllers
 			#endregion
 			try
 			{
-
 				#region Resource
 				var GetRecentActivityItems = await _UnitOfWork.ReviewRepo.GetRecentActivity(page);
 				var GetRecentActivityBusinessMediaItems = await _UnitOfWork.ReviewRepo.GetRecentActivityBusinessMedia(page);
-				#endregion
-		
+				#endregion		
 				foreach (var item in GetRecentActivityItems)
 				{
 					var UserItem = await _UnitOfWork.UserRepo.GetById(item.BizAppUserId);
 					recentActivityReviewModel.Add(new RecentActivityReviewModel() { BusinessId = item.BusinessId, BusinessImage = string.IsNullOrEmpty(item.Business.FeatureImage) == false ? "/Upload/DefaultPicutres/Bussiness/business-strategy-success-target-goals_1421-33.jpg" : item.Business.FeatureImage, BusinessName = item.Business.Name, BusinessRate = item.Business.Rate, ReviewCool = item.CoolCount, ReviewFunny = item.FunnyCount, ReviewUseFull = item.UsefulCount, ReviewMedias = FillMediaType(item.ReviewMedias), ReviewRate = item.Rate, ReviewText = item.Description , UserId = UserItem.Id , UserImage = string.IsNullOrEmpty(UserItem.ApplicationUserMedias
 					.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted)
-					.Select(s => s.UploadedPhoto).FirstOrDefault()) == true ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : UserItem.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault() , UserName = UserItem.UserName , UserTotalBusinessImage= await _UnitOfWork.BusinessHomePageRepo.GetTotalUserMedia(UserItem.Id), UserTotalFriends = await _UnitOfWork.UserRepo.GetUserFriendsCount(UserItem.Id) , UserTotalReviews = UserItem.Reviews.Count
+					.Select(s => s.UploadedPhoto).FirstOrDefault()) == true ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart.jpg" : UserItem.ApplicationUserMedias.Where(s => s.IsMainImage && s.Status == DomainClass.Enums.StatusEnum.Accepted).Select(s => s.UploadedPhoto).FirstOrDefault() , UserName = UserItem.UserName , UserTotalBusinessImage= await _UnitOfWork.BusinessHomePageRepo.GetTotalUserMedia(UserItem.Id), UserTotalFriends = await _UnitOfWork.UserRepo.GetUserFriendsCount(UserItem.Id) , UserTotalReviews = UserItem.Reviews.Count , BusinessTotalReview = item.Business.Reviews.Count , BusinessAddress = item.Business.District.City.Name + " " + item.Business.District.City.Province.Name + " " + item.Business.District.Name , ReviewId = item.Id
 					});
 				}
 				foreach (var item in GetRecentActivityBusinessMediaItems)
 				{
 					var UserItem = await _UnitOfWork.UserRepo.GetById(item.BizAppUserId);
-
 					recentActivityUserBusinessMediaPicture.Add(new RecentActivityUserBusinessMediaPicture() { BusinessId = item.BusinessId, BusinessImage = string.IsNullOrEmpty(item.Business.FeatureImage) == false ? "/Upload/DefaultPicutres/Bussiness/business-strategy-success-target-goals_1421-33.jpg" : item.Business.FeatureImage, BusinessName = item.Business.Name, BusinessRate = item.Business.Rate, LikeCount = item.LikeCount, Medias = UserBusinessMediaFillMediaType(item.CustomerBusinessMediaPictures)  ,
 						UserId = UserItem.Id,
 						UserImage = string.IsNullOrEmpty(UserItem.ApplicationUserMedias
@@ -199,7 +192,9 @@ namespace BizApp.Areas.WebApi.Controllers
 						UserName = UserItem.UserName,
 						UserTotalBusinessImage = await _UnitOfWork.BusinessHomePageRepo.GetTotalUserMedia(UserItem.Id),
 						UserTotalFriends = await _UnitOfWork.UserRepo.GetUserFriendsCount(UserItem.Id),
-						UserTotalReviews = UserItem.Reviews.Count
+						UserTotalReviews = UserItem.Reviews.Count ,
+						BusinessTotalReview = item.Business.Reviews.Count,
+						BusinessAddress = item.Business.District.City.Name + " " + item.Business.District.City.Province.Name + " " + item.Business.District.Name
 					});
 				}
 				recentActivityModel.RecentActivityReviewModels = recentActivityReviewModel;
@@ -211,8 +206,6 @@ namespace BizApp.Areas.WebApi.Controllers
 				return BadRequest(e.Message);
 			}
 		}
-
-
 		private List<(Guid Id, string Image, string Description)> UserBusinessMediaFillMediaType(ICollection<DomainClass.Review.CustomerBusinessMediaPictures> reviewMedias)
 		{
 			List<(Guid Id, string Image, string Description)> keyValuePairs = new List<(Guid Id, string Image, string Description)>();

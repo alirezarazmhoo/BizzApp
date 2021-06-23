@@ -48,6 +48,6 @@ namespace BizApp.Areas.Admin.Models
 		public string CategoryName { get; set; }
 		public string DistrictName { get; set; }
 		public string FeatureImage { get; set; }
-		public IList<string> GalleryImages { get; set; }
+		public Dictionary<int,string> GalleryImages { get; set; }
 	}
 }

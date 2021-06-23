@@ -74,6 +74,7 @@ namespace BizApp.Areas.Admin.Controllers
 		{
 			try
 			{
+				Dictionary<int, string> BusinessGallery = new Dictionary<int, string>();
 				// get business
 				var business = await _unitOfWork.BusinessRepo.GetById(id);
 				if (business == null) return NotFound();
@@ -89,6 +90,11 @@ namespace BizApp.Areas.Admin.Controllers
 				var model = _mapper.Map<Business, CreateBusinessViewModel>(business);
 				model.CategoryName = category.ListName;
 				model.DistrictName = district.ListName;
+				foreach (var item in business.Galleries)
+				{
+					BusinessGallery.Add(item.Id , item.FileAddress);
+				}
+				model.GalleryImages = BusinessGallery; 
 
 				// get galleryImages
 
@@ -226,18 +232,14 @@ namespace BizApp.Areas.Admin.Controllers
 		}
 
 		[HttpPost, ActionName("deleteGalleryImage")]
-		public IActionResult DeleteGalleryImage(string filePath)
+		public async Task< IActionResult> DeleteGalleryImage(BusinessGalleryImage dto)
 		{
 			try
 			{
-				//filePath = filePath.Substring(1);
-				//var result = _unitOfWork.BusinessRepo.DeleteFeatureImage(filePath);
-				//if (result)
-				//{
-				//	return Json(new { success = true, responseText = CustomeMessages.Succcess });
-				//}
+				await _unitOfWork.BusinessRepo.DeleteGalleryImage(dto.ImageId);
+				await _unitOfWork.SaveAsync();
+				return Json(new { success = true});
 
-				return Json(new { success = false, responseText = CustomeMessages.Fail });
 			}
 			catch (Exception ex)
 			{
@@ -264,6 +266,10 @@ namespace BizApp.Areas.Admin.Controllers
 				return Json(new { success = false, responseText = CustomeMessages.Fail });
 			}
 		}
+
+
+
+
 
 	}
 }

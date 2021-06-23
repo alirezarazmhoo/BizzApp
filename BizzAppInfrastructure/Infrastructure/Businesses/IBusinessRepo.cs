@@ -36,7 +36,8 @@ namespace DataLayer.Infrastructure
 		Task UpdateFrequenstlyFeature(Guid Id, string FeaturesLists);
 		Task UpdateBaseInformations(Business business);
 		Task UpdateBusinessTime(List<BusinessTime> times, Guid businessId);
-		Task<List<Guid>> GetUserBusinessesIds(string UserId); Task UpdateBusinessFeaturesInBusinessAccount(SelectedFeaturesDto[] model, Guid BusinessId); 
+		Task<List<Guid>> GetUserBusinessesIds(string UserId); Task UpdateBusinessFeaturesInBusinessAccount(SelectedFeaturesDto[] model, Guid BusinessId);
+		Task DeleteGalleryImage(int Id); 
 
 	}
 }

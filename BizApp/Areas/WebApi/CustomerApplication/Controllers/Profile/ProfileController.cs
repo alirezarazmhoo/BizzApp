@@ -186,6 +186,48 @@ namespace BizApp.Areas.WebApi.Controllers
 				return BadRequest(ex);
 			}
 		}
+
+		[Route("CalculateUserProfileCompleted")]
+		public async Task<IActionResult> CalculateUserProfileCompleted()
+		{
+			string UserToken = HttpContext.Request?.Headers["Token"];
+			if (!await _UnitOfWork.UserRepo.CheckUserToken(UserToken))
+			{
+				return NotFound("کاربر مورد نظر یافت نشد ");
+			}
+
+			try
+			{
+				return Ok(await _UnitOfWork.ProfileRepo.CalculateUserProfileCompleted(await _UnitOfWork.UserRepo.UserTokenMaper(UserToken)));
+			}
+			catch(Exception e)
+			{
+				return BadRequest(e.Message);
+			}
+		}
+		[Route("UserImpact")]
+		public async Task<IActionResult> UserImpact()
+		{
+			string UserToken = HttpContext.Request?.Headers["Token"];
+			if (!await _UnitOfWork.UserRepo.CheckUserToken(UserToken))
+			{
+				return NotFound("کاربر مورد نظر یافت نشد ");
+			}
+
+			try
+			{
+				return Ok(await _UnitOfWork.ProfileRepo.UserImpact(await _UnitOfWork.UserRepo.UserTokenMaper(UserToken)));
+			}
+			catch (Exception e)
+			{
+				return BadRequest(e.Message);
+			}
+
+
+		}
+
+
+
 	}
 
 }

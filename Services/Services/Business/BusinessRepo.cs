@@ -232,7 +232,25 @@ namespace DataLayer.Services
 			oldEntity.Longitude = model.Longitude;
 			oldEntity.PostalCode = model.PostalCode;
 			oldEntity.WebsiteUrl = model.WebsiteUrl;
+			string fileName, filePath;
+			if (gallery != null && gallery.Count() > 0)
+			{
+				foreach (var item in gallery)
+				{
+					fileName = Guid.NewGuid().ToString().Replace('-', '0') + Path.GetExtension(item.FileName).ToLower(); ;
+					filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Upload\Bussiness\Files\", fileName);
+					using (var stream = new FileStream(filePath, FileMode.Create))
+					{
+						item.CopyTo(stream);
+					}
 
+					DbContext.BusinessGalleries.Add(new BusinessGallery()
+					{
+						BusinessId = model.Id,
+						FileAddress = "/Upload/Bussiness/Files/" + fileName,
+					});
+				}
+			}
 			//Update(model);
 			//await DbContext.SaveChangesAsync();
 		}
@@ -831,7 +849,6 @@ namespace DataLayer.Services
 			var Items = await DbContext.Businesses.Select(s => new { s.Id, s.OwnerId, s.CreatedDate }).Where(s => s.OwnerId.Equals(UserId)).OrderByDescending(s => s.CreatedDate).ToListAsync();
 			return Items.Select(s => s.Id).ToList();
 		}
-
 		public async Task UpdateBusinessFeaturesInBusinessAccount(SelectedFeaturesDto[] model, Guid BusinessId)
 		{
 			List<BusinessFeature> businessFeatures = new List<BusinessFeature>();
@@ -854,5 +871,17 @@ namespace DataLayer.Services
 				await DbContext.BusinessFeatures.AddRangeAsync(businessFeatures);
 			}
 		}
+
+		public async Task DeleteGalleryImage(int Id)
+		{
+			var Item = await DbContext.BusinessGalleries.FirstOrDefaultAsync(s => s.Id.Equals(Id));
+			if(Item != null)
+			{
+				File.Delete($"wwwroot/{Item}");
+				DbContext.BusinessGalleries.Remove(Item);
+			}
+		}
+
+
 	}
 }

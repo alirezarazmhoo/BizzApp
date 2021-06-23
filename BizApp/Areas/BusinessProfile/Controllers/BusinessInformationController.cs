@@ -138,6 +138,16 @@ namespace BizApp.Areas.BusinessProfile.Controllers
 				return Json(new { success = false, responseText = e.Message });
 			}
 		}
+		public async Task<IActionResult> Specialities()
+		{
+
+
+
+			return View();
+		}
+
+
+
 		private string GetUserId()
 		{
 			return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;

@@ -82,5 +82,30 @@ namespace DataLayer.Services
 
 			return userDetail;
 		}
+
+		public async Task<CalculateUserProfileCompleted> CalculateUserProfileCompleted(string UserId)
+		{
+			CalculateUserProfileCompleted calculateUserProfileCompleted = new CalculateUserProfileCompleted();
+			calculateUserProfileCompleted.DidLikeACustomerBusinessPicture = await DbContext.UsersInCustomerBusinessMediaLikes.AnyAsync(s => s.BizAppUserId.Equals(UserId));
+			calculateUserProfileCompleted.DidSaveAPictureForBusiness = await DbContext.CustomerBusinessMedias.AnyAsync(s => s.BizAppUserId.Equals(UserId));
+			calculateUserProfileCompleted.HasAReview = await DbContext.Reviews.AnyAsync(s => s.BizAppUserId.Equals(UserId));
+			calculateUserProfileCompleted.HasBookMark = await DbContext.UserFavorits.AnyAsync(s => s.BizAppUserId.Equals(UserId));
+			calculateUserProfileCompleted.HasUseFullVoteForAReview = await DbContext.UsersInReviewVotes.AnyAsync(s => s.BizAppUserId.Equals(UserId) && s.VotesType == VotesType.HelpFull);
+			return calculateUserProfileCompleted; 
+		}
+		public async Task<UserImpactDto> UserImpact(string UserId)
+		{
+			UserImpactDto userImpactDto = new UserImpactDto();
+			userImpactDto.ReviewVotedAllTime = await DbContext.UsersInReviewVotes.Where(s => s.BizAppUserId.Equals(UserId)).CountAsync();
+			userImpactDto.ReviewVotedUseFull = await DbContext.UsersInReviewVotes.Where(s => s.BizAppUserId.Equals(UserId) && s.VotesType== VotesType.HelpFull).CountAsync();
+			userImpactDto.CustomerBusinessPictureLikedAllTime = await DbContext.UsersInCustomerBusinessMediaLikes.Where(s => s.BizAppUserId.Equals(UserId)).CountAsync();
+			userImpactDto.CustomerBusinessPictureLikedInPreviousDays = await DbContext.UsersInCustomerBusinessMediaLikes.Where(s => s.BizAppUserId.Equals(UserId)).CountAsync();
+			return userImpactDto; 
+		}
+
+		
+
+
+
 	}
 }

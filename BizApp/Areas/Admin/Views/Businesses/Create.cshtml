@@ -192,7 +192,7 @@
 											{
 												<div class="form-group col-md-6">
 													<div class="img-wrap" id="featureImageDiv">
-														<span class="close" onclick="deleteFeatureImageButton_click()">&times;</span>
+														<span style="height:20px" class="close" onclick="deleteFeatureImageButton_click()">&times;</span>
 														<input type="hidden" id="deletedFromServer" value="0" />
 														<img id="featureImage" src="@Model.FeatureImage" width="200">
 													</div>
@@ -209,9 +209,12 @@
 													{
 														foreach (var image in Model.GalleryImages)
 														{
-															<span class="close" onclick="deleteGalleryImageButton_click(@image)">&times;</span>
-															<input type="hidden" id="deletedFromServer" value="0" />
-															<img id="featureImage" src="@image" width="100">
+															<div>
+
+															<span style="height:25px" class="close" onclick="deleteGalleryImagebtn(this)" data-imageid="@image.Key">&times;</span>
+															<input type="hidden"  value="@image.Value" />
+															<img id="featureImage" src="@image.Value" width="100">
+															</div>
 														}
 													}
 												</div>
@@ -239,6 +242,23 @@
 	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 
 	<script type="text/javascript">
+
+		function deleteGalleryImagebtn(elem) {
+			//alert($(elem).attr("data-imageid"));
+			var fd = new FormData();
+			fd.append("ImageId", $(elem).attr("data-imageid"));
+			$.ajax({
+				type: "Post",
+				url: '/Admin/Businesses/deleteGalleryImage',
+				dataType: "json",
+				data: fd,
+				contentType: false,
+				processData: false,
+				success: function (response) {
+			$(elem).parent().remove();					
+				}
+			});
+		}
 		$(document).ready(function () {
 			var longitude = @Model.Longitude;
 			var latitude = @Model.Latitude;

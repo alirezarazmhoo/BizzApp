@@ -131,7 +131,7 @@ namespace BizApp.Controllers
 			businessHomePage_HoursAndLocationViewModel.LocationHours = locationHours;
 			#endregion
 			#region QrCode
-			businessHomePage_RightPageBusinessInfoViewModel.QrCode =  classGenerator.Generate($"45.159.113.39/BusinessHome/Index?Id={Id}");
+			businessHomePage_RightPageBusinessInfoViewModel.QrCode =  classGenerator.Generate($"http://45.159.113.39/BusinessHome/Index?Id={Id}");
 
 			#endregion
 			#region FinalResults

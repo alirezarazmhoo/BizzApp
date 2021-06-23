@@ -272,6 +272,7 @@ namespace BizApp.Areas.WebApi.Models
 	}
 	public class RecentActivityReviewModel 
 	{
+		public Guid ReviewId { get; set;  }
 		public string UserId { get; set; }
 		public string UserName { get; set; }
 		public string UserImage { get; set; }
@@ -282,6 +283,10 @@ namespace BizApp.Areas.WebApi.Models
 		public string BusinessName { get; set; }
 		public string BusinessImage { get; set; }
 		public int BusinessRate { get; set; }
+		public int BusinessTotalReview { get; set;  }
+		public string BusinessAddress { get; set;  }
+
+
 		public List<(Guid Id, string Image, string Description)> ReviewMedias { get; set; }
 		public string ReviewText { get; set; }
 		public int ReviewRate { get; set; }
@@ -292,6 +297,7 @@ namespace BizApp.Areas.WebApi.Models
 
 	public class RecentActivityUserBusinessMediaPicture
 	{
+
 		public string UserId { get; set; }
 		public string UserName { get; set; }
 		public string UserImage { get; set; }
@@ -302,6 +308,9 @@ namespace BizApp.Areas.WebApi.Models
 		public string BusinessName { get; set; }
 		public string BusinessImage { get; set; }
 		public int BusinessRate { get; set; }
+		public int BusinessTotalReview { get; set; }
+		public string BusinessAddress { get; set; }
+
 		public long LikeCount { get; set; }
 		public List<(Guid Id, string Image, string Description)> Medias { get; set; }
 
