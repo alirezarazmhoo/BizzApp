@@ -35,17 +35,7 @@ namespace BizApp.Controllers
 			#endregion
 			#region Resource
 			var BusinessItem = await _unitOfWork.BusinessRepo.GetById(Id);
-			var BusinessGallery = await _unitOfWork.BusinessHomePageRepo.GetBusinessGallery(BusinessItem.Id);
-			#endregion
-			#region FinalResault
-			businessGalleryViewModel.BusinessId = BusinessItem.Id;
-			businessGalleryViewModel.BusinessName = BusinessItem.Name;
-			businessGalleryViewModel.Image = string.IsNullOrEmpty(BusinessItem.FeatureImage) == true ? "/Upload/DefaultPicutres/Bussiness/Business.jpg" : BusinessItem.FeatureImage;
-			businessGalleryViewModel.BusinessRate = BusinessItem.Rate == 0 ? 1 : BusinessItem.Rate;
-			businessGalleryViewModel.BusinessTotalReview = BusinessItem.Reviews.Count;
-			foreach (var item in BusinessGallery)
-			{
-				businessGallery_PictureViewModels.Add(new BusinessGallery_PictureViewModel() { description = item.Description, Image = item.Image, UserId = item.CustomerBusinessMedia.BizAppUserId, UserName = item.CustomerBusinessMedia.BizAppUser.FullName , Id =item.Id , UserTotalReview =await _unitOfWork.ReviewRepo.GetUserTotalReview(item.CustomerBusinessMedia.BizAppUserId) , Date =item.CustomerBusinessMedia.Date.ToPersianDateString() , UserImage= string.IsNullOrEmpty(item.CustomerBusinessMedia.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage).Select(s => s.UploadedPhoto).FirstOrDefault()) == true ? "/Upload/DefaultPicutres/User/66-660853_png-file-svg-business-person-icon-png-clipart" : item.CustomerBusinessMedia.BizAppUser.ApplicationUserMedias.Where(s => s.IsMainImage).Select(s => s.UploadedPhoto).FirstOrDefault() , 
+mage).Select(s => s.UploadedPhoto).FirstOrDefault() , 
 			});
 			}
 			businessGalleryViewModel.businessGallery_PictureViewModels = businessGallery_PictureViewModels;
